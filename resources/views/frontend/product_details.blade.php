@@ -247,13 +247,10 @@
                                     <div class="col-10">
                                         <div class="col-lg-9">
                                             <div class="form-group">
-                                                <div id="demo-dp-range">
-                                                <input type="text" name="date_start" class="form-control datetimepicker">
-                                                    <!-- <div class="input-daterange input-group" id="datepicker">
-                                                        <input type="text" class="form-control datetimepicker" name="start_date">
-                                                        <span class="input-group-addon">{{__('to')}}</span>
-                                                        <input type="text" class="form-control " name="end_date">
-                                                    </div> -->
+                                                <div class="input-daterange input-group" >
+                                                    <input type="text" class="form-control datetimepicker" >
+                                                    <span class="input-group-addon">{{__('to')}}</span>
+                                                    <input type="text" class="form-control" >
                                                 </div>
                                             </div>
                                         </div>
@@ -802,26 +799,3 @@
         });
     </script>
 @endsection
-@section('javascript')
-    @parent
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
-    <script>
-        $('.datetimepicker').datetimepicker({
-            format: "YYYY-MM-DD HH:mm"
-        });
-        console.log('test');
-    </script>
-    <script>
-    var myEl = document.getElementById('myelement');
-
-myEl.addEventListener('click', function() {
-    alert('Hello world');
-}, false);
-
-myEl.addEventListener('click', function() {
-    alert('Hello world again!!!');
-}, false);
-    </script>
-@stop
