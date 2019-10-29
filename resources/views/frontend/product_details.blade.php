@@ -245,19 +245,19 @@
                                         <div class="product-description-label mt-2">{{__('Date')}}:</div>
                                     </div>
                                     <div class="col-10">
-                                        <div class="col-lg-9">
-                                            <div class="form-group">
-                                                <div class="input-daterange input-group" >
-                                                    <input type="text" class="form-control datetimepicker" >
-                                                    <span class="input-group-addon">{{__('to')}}</span>
-                                                    <input type="text" class="form-control" >
-                                                </div>
+                                        <div class="row">
+                                            <div class="col-md-5">
+                                                <input type="text" class="form-control" id="startDate">
+                                            </div>
+                                            <p>To</p>
+                                            <div class="col-md-5">
+                                                <input type="text" class="form-control" id="endDate">
                                             </div>
                                         </div>
-
                                     </div>
                                 </div>
 
+                                
                                 <hr>
 
                                 <div class="row no-gutters pb-3 d-none" id="chosen_price_div">

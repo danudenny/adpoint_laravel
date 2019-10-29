@@ -6,6 +6,7 @@
 @endif
 <head>
 
+
 @php
     $seosetting = \App\SeoSetting::first();
 @endphp
@@ -51,6 +52,7 @@
 <!-- Bootstrap -->
 <link rel="stylesheet" href="{{ asset('frontend/css/bootstrap.min.css') }}" type="text/css">
 
+
 <!-- Icons -->
 <link rel="stylesheet" href="{{ asset('frontend/css/font-awesome.min.css') }}" type="text/css">
 <link rel="stylesheet" href="{{ asset('frontend/css/line-awesome.min.css') }}" type="text/css">
@@ -61,8 +63,9 @@
 <link type="text/css" href="{{ asset('frontend/css/slick.css') }}" rel="stylesheet">
 <link type="text/css" href="{{ asset('frontend/css/xzoom.css') }}" rel="stylesheet">
 <link type="text/css" href="{{ asset('frontend/css/jquery.share.css') }}" rel="stylesheet">
-<link type="text/css" href="{{ asset('frontend/css/bootstrap-datetimepicker.min.css') }}" rel="stylesheet">
+{{-- <link type="text/css" href="{{ asset('frontend/css/bootstrap-datetimepicker.min.css') }}" rel="stylesheet"> --}}
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.0.1/css/ol.css" type="text/css">
+
 <style>
     .map {
     height: 400px;
@@ -104,6 +107,10 @@
       gtag('config', @php env('TRACKING_ID') @endphp);
     </script>
 @endif
+
+{{-- Datepicker css --}}
+<link href="{{ asset('frontend/css/gijgo.min.css')}}" rel="stylesheet">
+{{-- <link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css" /> --}}
 
 </head>
 <body>
@@ -161,6 +168,7 @@
 <script src="{{ asset('frontend/js/nouislider.min.js') }}"></script>
 
 
+
 <script src="{{ asset('frontend/js/sweetalert2.min.js') }}"></script>
 <script src="{{ asset('frontend/js/slick.min.js') }}"></script>
 
@@ -202,7 +210,7 @@
 
                 });
             });
-        }
+        }   
 
         if ($('#currency-change').length > 0) {
             $('#currency-change .dropdown-item a').each(function() {
@@ -544,10 +552,31 @@
 <script src="{{ asset('frontend/js/main.js') }}"></script>
 <script src="{{ asset('frontend/js/fb-script.js') }}"></script>
 <script src="{{ asset('frontend/js/moment.min.js') }}"></script>
-<script src="{{ asset('frontend/js/bootstrap-datetimepicker.min.js') }}"></script>
+{{-- <script src="{{ asset('frontend/js/bootstrap-datetimepicker.min.js') }}"></script> --}}
+{{-- Datepicker js --}}
+{{-- <script src="https://unpkg.com/gijgo@1.9.13/js/gijgo.min.js" type="text/javascript"></script> --}}
+<script src="{{ asset('frontend/js/gijgo.min.js') }}" type="text/javascript"></script>
 <script src="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.0.1/build/ol.js"></script>
-
 @yield('script')
+
+<script>
+    var today = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
+        $('#startDate').datepicker({
+            uiLibrary: 'bootstrap4',
+            iconsLibrary: 'fontawesome',
+            minDate: today,
+            maxDate: function () {
+                return $('#endDate').val();
+            }
+        });
+        $('#endDate').datepicker({
+            uiLibrary: 'bootstrap4',
+            iconsLibrary: 'fontawesome',
+            minDate: function () {
+                return $('#startDate').val();
+            }
+        });
+</script>
 
 </body>
 </html>
