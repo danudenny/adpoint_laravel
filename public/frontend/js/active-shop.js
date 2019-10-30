@@ -208,23 +208,42 @@ $(document).ready(function() {
     });
 
     // Datepicker
-    if ($('.datepicker')[0]) {
-        $('.datepicker').each(function() {
-            var $this = $(this);
+    var today = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
+    $('#startDate').datepicker({
+        uiLibrary: 'bootstrap4',
+        iconsLibrary: 'fontawesome',
+        minDate: today,
+        maxDate: function () {
+            return $('#endDate').val();
+        }
+    });
 
-            $this.flatpickr({
-                noCalendar: $this.data('datepicker-no-calendar') ? $this.data('datepicker-no-calendar') : false,
-                enableTime: $this.data('datepicker-enable-time') ? $this.data('datepicker-enable-time') : false,
-                inline: $this.data('datepicker-inline') ? $this.data('datepicker-inline') : false,
-                allowInput: $this.data('datepicker-allow-input') ? $this.data('datepicker-allow-input') : true,
-                mode: $this.data('datepicker-mode') ? $this.data('datepicker-mode') : 'single',
-                static: true,
-                inline: $this.data('datepicker-inline') ? $this.data('datepicker-inline') : false,
-                nextArrow: '<i class="ion-ios-arrow-right" />',
-                prevArrow: '<i class="ion-ios-arrow-left" />'
-            });
-        })
-    }
+    $('#endDate').datepicker({
+        uiLibrary: 'bootstrap4',
+        iconsLibrary: 'fontawesome',
+        minDate: function () {
+            return $('#startDate').val();
+        }
+    });
+
+    // if ($('.datepicker')[0]) {
+    //     $('.datepicker').each(function() {
+    //         var $this = $(this);
+
+    //         $this.flatpickr({
+    //             noCalendar: $this.data('datepicker-no-calendar') ? $this.data('datepicker-no-calendar') : false,
+    //             enableTime: $this.data('datepicker-enable-time') ? $this.data('datepicker-enable-time') : false,
+    //             inline: $this.data('datepicker-inline') ? $this.data('datepicker-inline') : false,
+    //             allowInput: $this.data('datepicker-allow-input') ? $this.data('datepicker-allow-input') : true,
+    //             mode: $this.data('datepicker-mode') ? $this.data('datepicker-mode') : 'single',
+    //             static: true,
+    //             inline: $this.data('datepicker-inline') ? $this.data('datepicker-inline') : false,
+    //             nextArrow: '<i class="ion-ios-arrow-right" />',
+    //             prevArrow: '<i class="ion-ios-arrow-left" />'
+    //         });
+    //     })
+    // }
+    // end datepicker
 
     // Custom file input
     $('.custom-input-file').each(function() {
