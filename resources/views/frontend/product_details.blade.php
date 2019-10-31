@@ -797,5 +797,7 @@
     		});
             getVariantPrice();
         });
+
+        
     </script>
 @endsection

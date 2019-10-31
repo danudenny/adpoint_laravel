@@ -435,12 +435,15 @@
                                     {{__('Lokasi')}}
                                 </div>
                                 <div class="form-box-content p-3">
+                                    <div id="map" class="map mb-3"></div>
                                     <div class="row">
                                         <div class="col-md-2">
                                             <label>{{__('Alamat')}}</label>
                                         </div>
                                         <div class="col-md-10">
-                                            <input type="textarea" class="form-control mb-3" name="alamat" value="{{ $product->alamat }}">
+                                            <textarea name="alamat" class="form-control mb-3" id="alamat" cols="20" rows="5" disabled>
+                                                {{ $product->alamat }}
+                                            </textarea>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -448,7 +451,7 @@
                                             <label>{{__('Provinsi')}}</label>
                                         </div>
                                         <div class="col-md-10">
-                                            <input type="text" class="form-control mb-3" name="provinsi" value="{{ $product->provinsi }}">
+                                            <input type="text" class="form-control mb-3" name="provinsi">
                                         </div>
                                     </div>
                                     <div class="row">
@@ -456,7 +459,7 @@
                                             <label>{{__('Kota / Kabupaten')}}</label>
                                         </div>
                                         <div class="col-md-10">
-                                            <input type="text" class="form-control mb-3" name="kota" value="{{ $product->kota }}">
+                                            <input type="text" class="form-control mb-3" name="kota">
                                         </div>
                                     </div>
                                     <div class="row">
@@ -464,7 +467,7 @@
                                             <label>{{__('Kecamatan')}}</label>
                                         </div>
                                         <div class="col-md-10">
-                                            <input type="text" class="form-control mb-3" name="kecamatan" value="{{ $product->kecamatan }}">
+                                            <input type="text" class="form-control mb-3" name="kecamatan">
                                         </div>
                                     </div>
                                 </div>
@@ -803,6 +806,10 @@
         function delete_this_row(em){
             $(em).closest('.row').remove();
         }
+
+
+        // gmaps
+
 
 
     </script>
