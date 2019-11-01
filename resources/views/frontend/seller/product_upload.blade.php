@@ -368,7 +368,7 @@
                                             <label>{{__('Alamat')}}</label>
                                         </div>
                                         <div class="col-md-10">
-                                            <textarea name="alamat" class="form-control mb-3" id="alamat" cols="20" rows="5" disabled></textarea>
+                                            <textarea name="alamat" class="form-control mb-3" id="alamat" cols="20" rows="5"></textarea>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -376,7 +376,9 @@
                                             <label>{{__('Provinsi')}}</label>
                                         </div>
                                         <div class="col-md-10">
-                                            <input type="text" class="form-control mb-3" id="provinsi" name="provinsi" >
+                                            <select name="provinsi" id="prov" class="form-control mb-3">
+                                                <option selected disabled>--- SELECT PROVINSI ---</option>
+                                            </select>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -384,7 +386,9 @@
                                             <label>{{__('Kota / Kabupaten')}}</label>
                                         </div>
                                         <div class="col-md-10">
-                                            <input type="text" class="form-control mb-3" id="kota" name="kota" >
+                                            <select name="kota" id="kab" class="form-control mb-3">
+                                                
+                                            </select>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -392,7 +396,9 @@
                                             <label>{{__('Kecamatan')}}</label>
                                         </div>
                                         <div class="col-md-10">
-                                            <input type="text" class="form-control mb-3" id="kecamatan" name="kecamatan" >
+                                            <select name="kecamatan" id="kec" class="form-control mb-3">
+                                                
+                                            </select>
                                         </div>
                                     </div>
                                 </div>

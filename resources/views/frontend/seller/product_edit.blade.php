@@ -441,7 +441,7 @@
                                             <label>{{__('Alamat')}}</label>
                                         </div>
                                         <div class="col-md-10">
-                                            <textarea name="alamat" class="form-control mb-3" id="alamat" cols="20" rows="5" disabled>
+                                            <textarea name="alamat" class="form-control mb-3" id="alamat" cols="20" rows="5">
                                                 {{ $product->alamat }}
                                             </textarea>
                                         </div>
