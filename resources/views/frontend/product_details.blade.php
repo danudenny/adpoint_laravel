@@ -224,7 +224,7 @@
                                                         <i class="la la-minus"></i>
                                                     </button>
                                                 </span>
-                                                <input type="text" name="quantity" class="form-control input-number text-center" placeholder="1" value="1" min="1" max="10">
+                                                <input type="text" name="quantity" class="form-control input-number text-center" placeholder="1" id="quantity" value="1" min="1" max="10">
                                                 <span class="input-group-btn">
                                                     <button class="btn btn-number" type="button" data-type="plus" data-field="quantity">
                                                         <i class="la la-plus"></i>
@@ -251,7 +251,7 @@
                                             </div>
                                             <p>To</p>
                                             <div class="col-md-5">
-                                                <input type="text" class="form-control" id="endDate">
+                                                <input type="text" class="form-control" id="dateEnd" readonly>
                                             </div>
                                         </div>
                                     </div>
@@ -796,6 +796,41 @@
     			theme: 'square'
     		});
             getVariantPrice();
+
+            $('#startDate').change(function(){
+                endDate();
+            })
+
+            $('#quantity').change(function(){
+                endDate();
+            })
+
+            function endDate(){
+                const quantity = parseInt($('#quantity').val());
+                let date = new Date($('#startDate').val());
+
+                let newDate = new Date(date.getFullYear(), date.getMonth() + quantity, date.getDate());
+                let bulan =new Date(date.getFullYear(), date.getMonth() + (quantity + 1), 0);
+                if(newDate.getMonth() != bulan.getMonth()){
+                    newDate = bulan;
+                }
+
+                $('#dateEnd').val(dateFormat(newDate));
+            }
+
+            function nol(x){
+                const y = (x>9)?(x>99)?x:''+x:'0'+x;
+                return y; 
+            }
+
+            function dateFormat(date){
+                const bulan = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+                const year = date.getFullYear();
+                const month = date.getMonth();
+                const dates = date.getDate();
+
+                return nol(dates) + ' ' + bulan[month] + ' ' + year;
+            }
         });
     </script>
 @endsection
