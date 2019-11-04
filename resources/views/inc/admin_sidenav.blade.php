@@ -112,15 +112,15 @@
                                     <li class="{{ areActiveRoutes(['subcategories.index', 'subcategories.create', 'subcategories.edit'])}}">
                                         <a class="nav-link" href="{{route('subcategories.index')}}">{{__('Subcategory')}}</a>
                                     </li>
-                                    <li class="{{ areActiveRoutes(['subsubcategories.index', 'subsubcategories.create', 'subsubcategories.edit'])}}">
+                                    {{-- <li class="{{ areActiveRoutes(['subsubcategories.index', 'subsubcategories.create', 'subsubcategories.edit'])}}">
                                         <a class="nav-link" href="{{route('subsubcategories.index')}}">{{__('Sub Subcategory')}}</a>
-                                    </li>
-                                    <li class="{{ areActiveRoutes(['products.admin', 'products.create', 'products.admin.edit'])}}">
+                                    </li> --}}
+                                    {{-- <li class="{{ areActiveRoutes(['products.admin', 'products.create', 'products.admin.edit'])}}">
                                         <a class="nav-link" href="{{route('products.admin')}}">{{__('In House Products')}}</a>
-                                    </li>
+                                    </li> --}}
                                     @if(\App\BusinessSetting::where('type', 'vendor_system_activation')->first()->value == 1)
                                         <li class="{{ areActiveRoutes(['products.seller', 'products.seller.edit'])}}">
-                                            <a class="nav-link" href="{{route('products.seller')}}">{{__('Seller Products')}}</a>
+                                            <a class="nav-link" href="{{route('products.seller')}}">{{__('List Products')}}</a>
                                         </li>
                                     @endif
                                     <li class="{{ areActiveRoutes(['reviews.index'])}}">
@@ -139,7 +139,7 @@
                         </li>
                         @endif
 
-                        @if(Auth::user()->user_type == 'admin' || in_array('3', json_decode(Auth::user()->staff->role->permissions)))
+                        {{-- @if(Auth::user()->user_type == 'admin' || in_array('3', json_decode(Auth::user()->staff->role->permissions)))
                             @php
                                 $orders = DB::table('orders')
                                             ->orderBy('code', 'desc')
@@ -156,7 +156,7 @@
                                 <span class="menu-title">{{__('Inhouse orders')}} @if($orders > 0)<span class="pull-right badge badge-info">{{ $orders }}</span>@endif</span>
                             </a>
                         </li>
-                        @endif
+                        @endif --}}
 
                         @if(Auth::user()->user_type == 'admin' || in_array('4', json_decode(Auth::user()->staff->role->permissions)))
                         <li class="{{ areActiveRoutes(['sales.index', 'sales.show'])}}">
@@ -225,9 +225,9 @@
                                 <li class="{{ areActiveRoutes(['stock_report.index'])}}">
                                     <a class="nav-link" href="{{ route('stock_report.index') }}">{{__('Stock Report')}}</a>
                                 </li>
-                                <li class="{{ areActiveRoutes(['in_house_sale_report.index'])}}">
+                                {{-- <li class="{{ areActiveRoutes(['in_house_sale_report.index'])}}">
                                     <a class="nav-link" href="{{ route('in_house_sale_report.index') }}">{{__('In House Sale Report')}}</a>
-                                </li>
+                                </li> --}}
                                 <li class="{{ areActiveRoutes(['seller_report.index'])}}">
                                     <a class="nav-link" href="{{ route('seller_report.index') }}">{{__('Seller Report')}}</a>
                                 </li>
@@ -270,13 +270,13 @@
                                 <li class="{{ areActiveRoutes(['activation.index'])}}">
                                     <a class="nav-link" href="{{route('activation.index')}}">{{__('Activation')}}</a>
                                 </li>
-                                <li class="{{ areActiveRoutes(['payment_method.index'])}}">
+                                {{-- <li class="{{ areActiveRoutes(['payment_method.index'])}}">
                                     <a class="nav-link" href="{{ route('payment_method.index') }}">{{__('Payment method')}}</a>
-                                </li>
+                                </li> --}}
                                 <li class="{{ areActiveRoutes(['smtp_settings.index'])}}">
                                     <a class="nav-link" href="{{ route('smtp_settings.index') }}">{{__('SMTP Settings')}}</a>
                                 </li>
-                                <li class="{{ areActiveRoutes(['google_analytics.index'])}}">
+                                {{-- <li class="{{ areActiveRoutes(['google_analytics.index'])}}">
                                     <a class="nav-link" href="{{ route('google_analytics.index') }}">{{__('Google Analytics')}}</a>
                                 </li>
                                 <li class="{{ areActiveRoutes(['facebook_chat.index'])}}">
@@ -284,13 +284,13 @@
                                 </li>
                                 <li class="{{ areActiveRoutes(['social_login.index'])}}">
                                     <a class="nav-link" href="{{ route('social_login.index') }}">{{__('Social Media Login')}}</a>
-                                </li>
-                                <li class="{{ areActiveRoutes(['currency.index'])}}">
+                                </li> --}}
+                                {{-- <li class="{{ areActiveRoutes(['currency.index'])}}">
                                     <a class="nav-link" href="{{route('currency.index')}}">{{__('Currency')}}</a>
                                 </li>
                                 <li class="{{ areActiveRoutes(['languages.index', 'languages.create', 'languages.store', 'languages.show', 'languages.edit'])}}">
                                     <a class="nav-link" href="{{route('languages.index')}}">{{__('Languages')}}</a>
-                                </li>
+                                </li> --}}
                             </ul>
                         </li>
                         @endif
@@ -344,14 +344,14 @@
                                 <li class="{{ areActiveRoutes(['generalsettings.logo'])}}">
                                     <a class="nav-link" href="{{route('generalsettings.logo')}}">{{__('Logo Settings')}}</a>
                                 </li>
-                                <li class="{{ areActiveRoutes(['generalsettings.color'])}}">
+                                {{-- <li class="{{ areActiveRoutes(['generalsettings.color'])}}">
                                     <a class="nav-link" href="{{route('generalsettings.color')}}">{{__('Color Settings')}}</a>
-                                </li>
+                                </li> --}}
                             </ul>
                         </li>
                         @endif
 
-                        @if(Auth::user()->user_type == 'admin' || in_array('12', json_decode(Auth::user()->staff->role->permissions)))
+                        {{-- @if(Auth::user()->user_type == 'admin' || in_array('12', json_decode(Auth::user()->staff->role->permissions)))
                         <li>
                             <a href="#">
                                 <i class="fa fa-desktop"></i>
@@ -383,16 +383,16 @@
                                 <span class="menu-title">{{__('Suppot Ticket')}} @if($support_ticket > 0)<span class="pull-right badge badge-info">{{ $support_ticket }}</span>@endif</span>
                             </a>
                         </li>
-                        @endif
+                        @endif --}}
 
-                        @if(Auth::user()->user_type == 'admin' || in_array('11', json_decode(Auth::user()->staff->role->permissions)))
+                        {{-- @if(Auth::user()->user_type == 'admin' || in_array('11', json_decode(Auth::user()->staff->role->permissions)))
                         <li class="{{ areActiveRoutes(['seosetting.index'])}}">
                             <a class="nav-link" href="{{ route('seosetting.index') }}">
                                 <i class="fa fa-search"></i>
                                 <span class="menu-title">{{__('SEO Setting')}}</span>
                             </a>
                         </li>
-                        @endif
+                        @endif --}}
 
                         @if(Auth::user()->user_type == 'admin' || in_array('10', json_decode(Auth::user()->staff->role->permissions)))
                         <li>

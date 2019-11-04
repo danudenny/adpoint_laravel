@@ -56,7 +56,7 @@
                                             <div class="form-control mb-3 c-pointer" data-toggle="modal" data-target="#categorySelectModal" id="product_category">{{__('Select a category')}}</div>
                                             <input type="hidden" name="category_id" id="category_id" value="" required>
                                             <input type="hidden" name="subcategory_id" id="subcategory_id" value="" required>
-                                            <input type="hidden" name="subsubcategory_id" id="subsubcategory_id" value="" required>
+                                            {{-- <input type="hidden" name="subsubcategory_id" id="subsubcategory_id" value="" required> --}}
                                         </div>
                                     </div>
                                     <div class="row">
@@ -65,7 +65,7 @@
                                         </div>
                                         <div class="col-md-10">
                                             <div class="mb-3">
-                                                <select class="form-control mb-3 selectpicker" data-placeholder="Select a brand" id="brands" name="brand_id" required>
+                                                <select class="form-control mb-3 selectpicker" data-placeholder="Select a media partner" id="brands" name="brand_id" required>
 
                                                 </select>
                                             </div>
@@ -104,7 +104,7 @@
                                         </div>
                                         <div class="col-md-10">
                                             <div class="mb-3">
-                                                <textarea class="editor" name="termin_pembayaran"></textarea>
+                                                <textarea class="form-control mb-3" name="termin_pembayaran" cols="20" rows="5"></textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -252,6 +252,10 @@
                                     {{__('Periode')}}
                                 </div>
                                 <div class="form-box-content p-3">
+                                    <span>
+                                        <i style="color: red">Tambahkan Periode menggunakan kategori periode seperti <b>"Harian, Bulanan, atau Tahunan"</b>. Tekan enter untuk menambah kategori periode.</i>
+                                    </span>
+                                    <hr>
                                     
                                     <div id="customer_choice_options">
 
@@ -270,21 +274,21 @@
                                 <div class="form-box-content p-3">
                                     <div class="row">
                                         <div class="col-md-2">
-                                            <label>{{__('Unit Price')}} <span class="required-star">*</span></label>
+                                            <label>{{__('Base Price')}} <span class="required-star">*</span></label>
                                         </div>
                                         <div class="col-md-10">
                                             <input type="number" min="0" value="0" step="0.01" class="form-control mb-3" name="unit_price" placeholder="{{__('Unit Price')}} ({{__('Base Price')}})" required>
                                         </div>
                                     </div>
-                                    <div class="row">
+                                    {{-- <div class="row">
                                         <div class="col-md-2">
-                                            <label>{{__('Purchase Price')}} <span class="required-star">*</span></label>
+                                            <label>{{__('Purchase Price')}} </label>
                                         </div>
                                         <div class="col-md-10">
-                                            <input type="number" min="0" value="0" step="0.01" class="form-control mb-3" name="purchase_price" placeholder="{{__('Purchase Price')}}" required>
+                                            <input type="number" min="0" value="0" step="0.01" class="form-control mb-3" name="purchase_price" placeholder="{{__('Purchase Price')}}">
                                         </div>
-                                    </div>
-                                    <div class="row">
+                                    </div> --}}
+                                    {{-- <div class="row">
                                         <div class="col-md-2">
                                             <label>{{__('Tax (10%)')}}</label>
                                         </div>
@@ -299,7 +303,7 @@
                                                 </select>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> --}}
                                     <div class="row">
                                         <div class="col-12" id="sku_combination">
 
@@ -362,6 +366,11 @@
                                     {{__('Lokasi')}}
                                 </div>
                                 <div class="form-box-content p-3">
+                                    <span>
+                                        <i style="color: red">Pilih lokasi yang sesuai pada peta. <b>Klik pada peta untuk menandai alamat.</b> Gunakan "CTRL + Scroll untuk zoom in dan zoom out</i>
+                                    </span>
+                                    <hr>
+        
                                     <div id="map" class="map mb-3"></div>
                                     <div class="row">
                                         <div class="col-md-2">
@@ -489,7 +498,8 @@
                 <div class="modal-body">
                     <div class="target-category heading-6">
                         <span class="mr-3">{{__('Target Category')}}:</span>
-                        <span>{{__('category')}} > {{__('subcategory')}} > {{__('subsubcategory')}}</span>
+                        {{-- <span>{{__('category')}} > {{__('subcategory')}} > {{__('subsubcategory')}}</span> --}}
+                        <span>{{__('category')}} > {{__('subcategory')}}</span>
                     </div>
                     <div class="row no-gutters modal-categories mt-4 mb-2">
                         <div class="col-4">
@@ -528,7 +538,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-4">
+                        {{-- <div class="col-4">
                             <div class="modal-category-box c-scrollbar" id="subsubcategory_list">
                                 <div class="sort-by-box">
                                     <form role="form" class="search-widget">
@@ -544,7 +554,7 @@
                                     </ul>
                                 </div>
                             </div>
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -562,15 +572,12 @@
 
         var category_name = "";
         var subcategory_name = "";
-        var subsubcategory_name = "";
 
         var category_id = null;
         var subcategory_id = null;
-        var subsubcategory_id = null;
 
         $(document).ready(function(){
             $('#subcategory_list').hide();
-            $('#subsubcategory_list').hide();
         });
 
         function list_item_highlight(el){
@@ -584,41 +591,25 @@
             list_item_highlight(el);
             category_id = cat_id;
             subcategory_id = null;
-            subsubcategory_id = null;
             category_name = $(el).html();
             $('#subcategories').html(null);
-            $('#subsubcategory_list').hide();
             $.post('{{ route('subcategories.get_subcategories_by_category') }}',{_token:'{{ csrf_token() }}', category_id:category_id}, function(data){
                 for (var i = 0; i < data.length; i++) {
-                    $('#subcategories').append('<li onclick="get_subsubcategories_by_subcategory(this, '+data[i].id+')">'+data[i].name+'</li>');
+                    $('#subcategories').append('<li onclick="confirm_subcategory(this, '+data[i].id+')">'+data[i].name+'</li>');
                 }
                 $('#subcategory_list').show();
             });
         }
 
-        function get_subsubcategories_by_subcategory(el, subcat_id){
+        function confirm_subcategory(el, subcat_id){
             list_item_highlight(el);
             subcategory_id = subcat_id;
-            subsubcategory_id = null;
             subcategory_name = $(el).html();
-            $('#subsubcategories').html(null);
-            $.post('{{ route('subsubcategories.get_subsubcategories_by_subcategory') }}',{_token:'{{ csrf_token() }}', subcategory_id:subcategory_id}, function(data){
-                for (var i = 0; i < data.length; i++) {
-                    $('#subsubcategories').append('<li onclick="confirm_subsubcategory(this, '+data[i].id+')">'+data[i].name+'</li>');
-                }
-                $('#subsubcategory_list').show();
-            });
-        }
-
-        function confirm_subsubcategory(el, subsubcat_id){
-            list_item_highlight(el);
-            subsubcategory_id = subsubcat_id;
-            subsubcategory_name = $(el).html();
     	}
 
-        function get_brands_by_subsubcategory(subsubcat_id){
+        function get_brands_by_subcategory(subcat_id){
             $('#brands').html(null);
-    		$.post('{{ route('subsubcategories.get_brands_by_subsubcategory') }}',{_token:'{{ csrf_token() }}', subsubcategory_id:subsubcategory_id}, function(data){
+    		$.post('{{ route('subcategories.get_brands_by_subcategory') }}',{_token:'{{ csrf_token() }}', subcategory_id:subcategory_id}, function(data){
     		    for (var i = 0; i < data.length; i++) {
     		        $('#brands').append($('<option>', {
     		            value: data[i].id,
@@ -641,43 +632,40 @@
         }
 
         function closeModal(){
-            if(category_id > 0 && subcategory_id > 0 && subsubcategory_id > 0){
+            if(category_id > 0 && subcategory_id > 0 ){
                 $('#category_id').val(category_id);
                 $('#subcategory_id').val(subcategory_id);
-                $('#subsubcategory_id').val(subsubcategory_id);
-                $('#product_category').html(category_name+'>'+subcategory_name+'>'+subsubcategory_name);
+                $('#product_category').html(category_name+'>'+subcategory_name);
                 $('#categorySelectModal').modal('hide');
-                get_brands_by_subsubcategory(subsubcategory_id);
+                get_brands_by_subcategory(subcategory_id);
             }
             else{
                 alert('Please choose categories...');
                 console.log(category_id);
                 console.log(subcategory_id);
-                console.log(subsubcategory_id);
                 //showAlert();
             }
         }
 
         var i = 0;
     	function add_more_customer_choice_option(){
-    		$('#customer_choice_options').append('<div class="row mb-3"><div class="col-8 col-md-3 order-1 order-md-0"><input type="hidden" name="choice_no[]" value="'+i+'"><input type="text" class="form-control" name="choice[]" value="" placeholder="Choice Title"></div><div class="col-12 col-md-7 col-xl-8 order-3 order-md-0 mt-2 mt-md-0"><input type="text" class="form-control tagsInput" name="choice_options_'+i+'[]" placeholder="Enter choice values" onchange="update_sku()"></div><div class="col-4 col-xl-1 col-md-2 order-2 order-md-0 text-right"><button type="button" onclick="delete_row(this)" class="btn btn-link btn-icon text-danger"><i class="fa fa-trash-o"></i></button></div></div>');
+    		$('#customer_choice_options').append('<div class="row mb-3"><div class="col-8 col-md-3 order-1 order-md-0"><input type="hidden" name="choice_no[]" value="'+i+'"><input type="text" class="form-control" name="choice[]" value="Periode" disabled></div><div class="col-12 col-md-7 col-xl-8 order-3 order-md-0 mt-2 mt-md-0"><input type="text" class="form-control tagsInput auto" name="choice_options_'+i+'[]" placeholder="Harian / Bulanan / Tahunan" onchange="update_sku()"></div><div class="col-4 col-xl-1 col-md-2 order-2 order-md-0 text-right"><button type="button" onclick="delete_row(this)" class="btn btn-link btn-icon text-danger"><i class="fa fa-trash-o"></i></button></div></div>');
     		i++;
             $('.tagsInput').tagsinput('items');
     	}
+    	// $('input[name="colors_active"]').on('change', function() {
+    	//     if(!$('input[name="colors_active"]').is(':checked')){
+    	// 		$('#colors').prop('disabled', true);
+    	// 	}
+    	// 	else{
+    	// 		$('#colors').prop('disabled', false);
+    	// 	}
+    	// 	update_sku();
+    	// });
 
-    	$('input[name="colors_active"]').on('change', function() {
-    	    if(!$('input[name="colors_active"]').is(':checked')){
-    			$('#colors').prop('disabled', true);
-    		}
-    		else{
-    			$('#colors').prop('disabled', false);
-    		}
-    		update_sku();
-    	});
-
-    	$('#colors').on('change', function() {
-    	    update_sku();
-    	});
+    	// $('#colors').on('change', function() {
+    	//     update_sku();
+    	// });
 
     	$('input[name="unit_price"]').on('keyup', function() {
     	    update_sku();

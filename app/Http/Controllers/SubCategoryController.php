@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\SubCategory;
 use App\SubSubCategory;
 use App\Category;
+use App\Brand;
 use App\Product;
 use App\Language;
 
@@ -30,7 +31,8 @@ class SubCategoryController extends Controller
     public function create()
     {
         $categories = Category::all();
-        return view('subcategories.create', compact('categories'));
+        $brands = Brand::all();
+        return view('subcategories.create', compact('categories', 'brands'));
     }
 
     /**
@@ -44,6 +46,8 @@ class SubCategoryController extends Controller
         $subcategory = new SubCategory;
         $subcategory->name = $request->name;
         $subcategory->category_id = $request->category_id;
+        $subcategory->brands = json_encode($request->brands);
+
         $subcategory->meta_title = $request->meta_title;
         $subcategory->meta_description = $request->meta_description;
         if ($request->slug != null) {
@@ -88,7 +92,8 @@ class SubCategoryController extends Controller
     {
         $subcategory = SubCategory::findOrFail(decrypt($id));
         $categories = Category::all();
-        return view('subcategories.edit', compact('categories', 'subcategory'));
+        $brands = Brand::all();
+        return view('subcategories.edit', compact('categories', 'subcategory', 'brands'));
     }
 
     /**
@@ -111,6 +116,7 @@ class SubCategoryController extends Controller
 
         $subcategory->name = $request->name;
         $subcategory->category_id = $request->category_id;
+        $subcategory->brands = json_encode($request->brands);
         $subcategory->meta_title = $request->meta_title;
         $subcategory->meta_description = $request->meta_description;
         if ($request->slug != null) {
@@ -163,5 +169,15 @@ class SubCategoryController extends Controller
     {
         $subcategories = SubCategory::where('category_id', $request->category_id)->get();
         return $subcategories;
+    }
+
+    public function get_brands_by_subcategory(Request $request)
+    {
+        $brand_ids = json_decode(SubCategory::findOrFail($request->subcategory_id)->brands);
+        $brands = array();
+        foreach ($brand_ids as $key => $brand_id) {
+            array_push($brands, Brand::findOrFail($brand_id));
+        }
+        return $brands;
     }
 }

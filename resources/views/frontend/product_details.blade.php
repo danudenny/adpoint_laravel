@@ -72,7 +72,6 @@
                                 <li><a href="{{ route('categories.all') }}">{{__('All Categories')}}</a></li>
                                 <li><a href="{{ route('products.category', $product->category->slug) }}">{{ $product->category->name }}</a></li>
                                 <li><a href="{{ route('products.subcategory', $product->subcategory->slug) }}">{{ $product->subcategory->name }}</a></li>
-                                <li class="active"><a href="{{ route('products.subsubcategory', $product->subsubcategory->slug) }}">{{ $product->subsubcategory->name }}</a></li>
                             </ul>
 
                             <div class="row">
@@ -340,18 +339,7 @@
                                     </ul>
                                 </div>
                             </div>
-                            {{-- <div class="row no-gutters mt-3">
-                                <div class="col-2">
-                                    <img src="{{ asset('frontend/images/icons/buyer-protection.png') }}" width="40" class="">
-                                </div>
-                                <div class="col-10">
-                                    <div class="heading-6 strong-700 text-info d-inline-block">Buyer protection</div><a href="" class="ml-2">View details</a>
-                                    <ul class="list-symbol--1 pl-4 mb-0 mt-2">
-                                        <li><strong>Full Refund</strong> if you don't receive your order</li>
-                                        <li><strong>Full or Partial Refund</strong>, if the item is not as described</li>
-                                    </ul>
-                                </div>
-                            </div> --}}
+                            
                             <hr class="mt-4">
                             <div class="row no-gutters mt-4">
                                 <div class="col-2">
@@ -448,38 +436,6 @@
                                     </ul>
                                 </div>
                             @endif
-                        </div>
-                    </div>
-                    <div class="seller-category-box bg-white sidebar-box mb-3">
-                        <div class="box-title">
-                            {{__("This Seller's Categories")}}
-                        </div>
-                        <div class="box-content">
-                            <div class="category-accordion">
-                                @foreach (\App\Product::where('user_id', $product->user_id)->select('category_id')->distinct()->get() as $key => $category)
-                                    <div class="single-category">
-                                        <button class="btn w-100 category-name collapsed" type="button" data-toggle="collapse" data-target="#category-{{ $key }}" aria-expanded="false">
-                                        {{ App\Category::findOrFail($category->category_id)->name }}
-                                        </button>
-
-                                        <div id="category-{{ $key }}" class="collapse">
-                                            @foreach (\App\Product::where('user_id', $product->user_id)->where('category_id', $category->category_id)->select('subcategory_id')->distinct()->get() as $subcategory)
-                                                <div class="single-sub-category">
-                                                    <button class="btn w-100 sub-category-name" type="button" data-toggle="collapse" data-target="#subCategory-{{ $subcategory->subcategory_id }}" aria-expanded="false">
-                                                    {{ App\SubCategory::findOrFail($subcategory->subcategory_id)->name }}
-                                                    </button>
-                                                    <div id="subCategory-{{ $subcategory->subcategory_id }}" class="collapse show">
-                                                        <ul class="sub-sub-category-list">
-                                                            @foreach (\App\Product::where('user_id', $product->user_id)->where('category_id',            $category->category_id)->where('subcategory_id', $subcategory->subcategory_id)->select('subsubcategory_id')->distinct()->get() as $subsubcategory)
-                                                                <li><a href="{{ route('products.subsubcategory', App\SubSubCategory::findOrFail($subsubcategory->subsubcategory_id)->slug) }}">{{ App\SubSubCategory::findOrFail($subsubcategory->subsubcategory_id)->name }}</a></li>
-                                                            @endforeach
-                                                    </div>
-                                                </div>
-                                            @endforeach
-                                        </div>
-                                    </div>
-                                @endforeach
-                            </div>
                         </div>
                     </div>
                     <div class="seller-top-products-box bg-white sidebar-box mb-3">

@@ -31,6 +31,16 @@
                     </div>
                 </div>
                 <div class="form-group">
+                    <label class="col-sm-3 control-label" for="name">{{__('Brands')}}</label>
+                    <div class="col-sm-9">
+                        <select name="brands[]" id="brands" class="form-control demo-select2" multiple  required data-placeholder="Choose Brands">
+                            @foreach($brands as $brand)
+                                <option value="{{$brand->id}}" <?php if(in_array($brand->id, json_decode($subcategory->brands))) echo "selected";?> >{{$brand->name}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
                     <label class="col-sm-3 control-label">{{__('Meta Title')}}</label>
                     <div class="col-sm-9">
                         <input type="text" class="form-control" name="meta_title" value="{{ $subcategory->meta_title }}" placeholder="{{__('Meta Title')}}">

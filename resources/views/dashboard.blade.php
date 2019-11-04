@@ -193,7 +193,7 @@
 </div>
 @endif
 
-@if(Auth::user()->user_type == 'admin' || in_array('9', json_decode(Auth::user()->staff->role->permissions)))
+{{-- @if(Auth::user()->user_type == 'admin' || in_array('9', json_decode(Auth::user()->staff->role->permissions)))
     <div class="row">
     <div class="col-md-6">
         <div class="panel">
@@ -373,6 +373,6 @@
         </div>
     </div>
 </div>
-@endif
+@endif --}}
 
 @endsection

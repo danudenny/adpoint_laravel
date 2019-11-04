@@ -55,10 +55,10 @@
                                             <label>{{__('Product Category')}} <span class="required-star">*</span></label>
                                         </div>
                                         <div class="col-md-10">
-                                            <div class="form-control mb-3 c-pointer" data-toggle="modal" data-target="#categorySelectModal" id="product_category">{{ $product->category->name.'>'.$product->subcategory->name.'>'.$product->subsubcategory->name }}</div>
+                                            <div class="form-control mb-3 c-pointer" data-toggle="modal" data-target="#categorySelectModal" id="product_category">{{ $product->category->name.'>'.$product->subcategory->name}}</div>
                                             <input type="hidden" name="category_id" id="category_id" value="{{ $product->category_id }}" required>
                                             <input type="hidden" name="subcategory_id" id="subcategory_id" value="{{ $product->subcategory_id }}" required>
-                                            <input type="hidden" name="subsubcategory_id" id="subsubcategory_id" value="{{ $product->subsubcategory_id }}" required>
+                                            {{-- <input type="hidden" name="subsubcategory_id" id="subsubcategory_id" value="{{ $product->subsubcategory_id }}" required> --}}
                                         </div>
                                     </div>
                                     <div class="row">
@@ -68,7 +68,7 @@
                                         <div class="col-md-10">
                                             <div class="mb-3">
                                                 <select class="form-control mb-3 selectpicker" data-placeholder="Select a brand" id="brands" name="brand_id">
-                                                    @foreach (json_decode($product->subsubcategory->brands) as $key => $brand_id)
+                                                    @foreach (json_decode($product->subcategory->brands) as $key => $brand_id)
                                                         <option value="{{ \App\Brand::find($brand_id)->id }}" <?php if($brand_id == $product->brand_id) echo "selected";?> >{{ \App\Brand::find($brand_id)->name }}</option>
                                                     @endforeach
                                                 </select>
@@ -597,23 +597,6 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-4">
-                            <div class="modal-category-box c-scrollbar" id="subsubcategory_list">
-                                <div class="sort-by-box">
-                                    <form role="form" class="search-widget">
-                                        <input class="form-control input-lg" type="text" placeholder="Search SubSubCategory" onkeyup="filterListItems(this, 'subsubcategories')">
-                                        <button type="button" class="btn-inner">
-                                            <i class="fa fa-search"></i>
-                                        </button>
-                                    </form>
-                                </div>
-                                <div class="modal-category-list">
-                                    <ul id="subsubcategories">
-
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -631,15 +614,15 @@
 
         var category_name = "";
         var subcategory_name = "";
-        var subsubcategory_name = "";
+        // var subsubcategory_name = "";
 
         var category_id = null;
         var subcategory_id = null;
-        var subsubcategory_id = null;
+        // var subsubcategory_id = null;
 
         $(document).ready(function(){
             $('#subcategory_list').hide();
-            $('#subsubcategory_list').hide();
+            // $('#subsubcategory_list').hide();
             update_sku();
 
             $('.remove-files').on('click', function(){
@@ -658,41 +641,25 @@
             list_item_highlight(el);
             category_id = cat_id;
             subcategory_id = null;
-            subsubcategory_id = null;
             category_name = $(el).html();
             $('#subcategories').html(null);
-            $('#subsubcategory_list').hide();
             $.post('{{ route('subcategories.get_subcategories_by_category') }}',{_token:'{{ csrf_token() }}', category_id:category_id}, function(data){
                 for (var i = 0; i < data.length; i++) {
-                    $('#subcategories').append('<li onclick="get_subsubcategories_by_subcategory(this, '+data[i].id+')">'+data[i].name+'</li>');
+                    $('#subcategories').append('<li onclick="confirm_subcategory(this, '+data[i].id+')">'+data[i].name+'</li>');
                 }
                 $('#subcategory_list').show();
             });
         }
 
-        function get_subsubcategories_by_subcategory(el, subcat_id){
+        function confirm_subcategory(el, subcat_id){
             list_item_highlight(el);
             subcategory_id = subcat_id;
-            subsubcategory_id = null;
             subcategory_name = $(el).html();
-            $('#subsubcategories').html(null);
-            $.post('{{ route('subsubcategories.get_subsubcategories_by_subcategory') }}',{_token:'{{ csrf_token() }}', subcategory_id:subcategory_id}, function(data){
-                for (var i = 0; i < data.length; i++) {
-                    $('#subsubcategories').append('<li onclick="confirm_subsubcategory(this, '+data[i].id+')">'+data[i].name+'</li>');
-                }
-                $('#subsubcategory_list').show();
-            });
-        }
-
-        function confirm_subsubcategory(el, subsubcat_id){
-            list_item_highlight(el);
-            subsubcategory_id = subsubcat_id;
-            subsubcategory_name = $(el).html();
     	}
 
-        function get_brands_by_subsubcategory(subsubcat_id){
+        function get_brands_by_subcategory(subcat_id){
             $('#brands').html(null);
-    		$.post('{{ route('subsubcategories.get_brands_by_subsubcategory') }}',{_token:'{{ csrf_token() }}', subsubcategory_id:subsubcategory_id}, function(data){
+    		$.post('{{ route('subcategories.get_brands_by_subcategory') }}',{_token:'{{ csrf_token() }}', subcategory_id:subcategory_id}, function(data){
     		    for (var i = 0; i < data.length; i++) {
     		        $('#brands').append($('<option>', {
     		            value: data[i].id,
@@ -715,19 +682,17 @@
         }
 
         function closeModal(){
-            if(category_id > 0 && subcategory_id > 0 && subsubcategory_id > 0){
+            if(category_id > 0 && subcategory_id > 0 ){
                 $('#category_id').val(category_id);
                 $('#subcategory_id').val(subcategory_id);
-                $('#subsubcategory_id').val(subsubcategory_id);
-                $('#product_category').html(category_name+'>'+subcategory_name+'>'+subsubcategory_name);
+                $('#product_category').html(category_name+'>'+subcategory_name);
                 $('#categorySelectModal').modal('hide');
-                get_brands_by_subsubcategory(subsubcategory_id);
+                get_brands_by_subcategory(subcategory_id);
             }
             else{
                 alert('Please choose categories...');
                 console.log(category_id);
                 console.log(subcategory_id);
-                console.log(subsubcategory_id);
                 //showAlert();
             }
         }
