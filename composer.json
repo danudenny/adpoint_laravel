@@ -16,6 +16,7 @@
         "laravel/socialite": "^3.1",
         "laravel/tinker": "^1.0",
         "mehedi-iitdu/laravel-paystack": "dev-master",
+        "midtrans/midtrans-php": "^2.0",
         "netshell/paypal": "dev-master",
         "razorpay/razorpay": "2.0.0",
         "spatie/laravel-image-optimizer": "^1.3",

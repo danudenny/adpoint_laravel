@@ -26,6 +26,7 @@ Route::post('/users/login/cart', 'HomeController@cart_login')->name('cart.login.
 Route::post('/subcategories/get_subcategories_by_category', 'SubCategoryController@get_subcategories_by_category')->name('subcategories.get_subcategories_by_category');
 Route::post('/subsubcategories/get_subsubcategories_by_subcategory', 'SubSubCategoryController@get_subsubcategories_by_subcategory')->name('subsubcategories.get_subsubcategories_by_subcategory');
 Route::post('/subsubcategories/get_brands_by_subsubcategory', 'SubSubCategoryController@get_brands_by_subsubcategory')->name('subsubcategories.get_brands_by_subsubcategory');
+Route::post('/subsubcategories/get_brands_by_subcategory', 'SubCategoryController@get_brands_by_subcategory')->name('subcategories.get_brands_by_subcategory');
 
 Route::get('/', 'HomeController@index')->name('home');
 Route::get('/sitemap.xml', function(){
