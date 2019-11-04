@@ -64,7 +64,7 @@
 <link type="text/css" href="{{ asset('frontend/css/xzoom.css') }}" rel="stylesheet">
 <link type="text/css" href="{{ asset('frontend/css/jquery.share.css') }}" rel="stylesheet">
 {{-- <link type="text/css" href="{{ asset('frontend/css/bootstrap-datetimepicker.min.css') }}" rel="stylesheet"> --}}
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.0.1/css/ol.css" type="text/css">
+{{-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.0.1/css/ol.css" type="text/css"> --}}
 
 <style>
     .map {
@@ -223,6 +223,71 @@
                 });
             });
         }
+        // get propinsi kabupaten dan kecamatan
+        var token = 'ZG0MysXFq2utuYL96oPI3P08EMl8E7i1IVDw3MHOdedBgrRoik';
+        var url = 'https://x.rajaapi.com/MeP7c5ne'+ token +'/m/wilayah/';
+
+        // --load data awal--
+        $.ajax({
+            url : url+'provinsi',
+            type : "get",
+            dataType : "json"
+        }).done(function(result){
+            let provinsi = result.data;
+            $.each(provinsi, function (i, data) {
+                $('#prov').append(`<option id="provinsi" value="`+ data.id +`">`+ data.name +`</option>`)
+            })
+        }).fail(function(xhr, status, error){
+            console.log(xhr.status)
+        })
+
+        // get data kabupaten berdasarkan provinsi
+        $('#prov').on('change',function(){
+            let id_prov = $(this).val();
+            $('#kab').empty();
+            if (id_prov) {
+                $.ajax({
+                    url : url + 'kabupaten?idpropinsi=' + id_prov,
+                    type : "get",
+                    dataType : "json"
+                    }).done(function(result){
+                        let kabupaten = result.data;
+                        // console.log(kabupaten);
+                        $.each(kabupaten, function (i, data) {
+                            var kab = `<option value="`+ data.id +`">`+ data.name +`</option>`;
+                            $('#kab').append(kab);
+                        })
+                    }).fail(function(xhr, error, status){
+                        console.log(xhr);
+                    })
+            }else{
+                $('#kab').empty();
+            }
+        });
+        // ambil data kecamatan berdasarkan kabupaten
+        $('#kab').on('change', function(){
+            let id_kec = $(this).val();
+            $('#kec').empty();
+            if (id_kec) {
+                $.ajax({
+                    url : url + 'kecamatan?idkabupaten=' + id_kec,
+                    type : "get",
+                    dataType : "json"
+                    }).done(function(result){
+                        let kecamatan = result.data;
+                        // console.log(kecamatan);
+                        $.each(kecamatan, function (i, data) {
+                            var kec = `<option value="`+ data.id +`">`+ data.name +`</option>`;
+                            $('#kec').append(kec);
+                        })
+                    }).fail(function(xhr, error, status){
+                        console.log(xhr);
+                    })
+            }else{
+                $('#kec').empty();
+            }
+        })
+        // end get prov kab kec
     });
 
     $('#search').on('keyup', function(){
@@ -552,8 +617,83 @@
 <script src="{{ asset('frontend/js/fb-script.js') }}"></script>
 <script src="{{ asset('frontend/js/moment.min.js') }}"></script>
 {{-- <script src="{{ asset('frontend/js/bootstrap-datetimepicker.min.js') }}"></script> --}}
-<script src="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.0.1/build/ol.js"></script>
+{{-- <script src="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.0.1/build/ol.js"></script> --}}
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBsVHufr4pDssMKPVCFZO6yXe58oalrtHs&callback=initMap"async defer></script>
 @yield('script')
+
+
+<script>
+    var map, infoWindow;
+    var key = 'AIzaSyBsVHufr4pDssMKPVCFZO6yXe58oalrtHs';
+    var alamat = document.getElementById('alamat')
+    function initMap() {
+        map = new google.maps.Map(document.getElementById('map'), {
+            center: {lat: -2.6000285, lng: 118.015776},
+            zoom: 6
+        });
+
+        function domInputValue(data){
+            var address = data[0].formatted_address;
+            console.log(address)
+            alamat.innerHTML = address;
+        }
+
+        function reverseGeocode(_lat, _lng) {
+            fetch('https://maps.googleapis.com/maps/api/geocode/json?latlng='+_lat+','+_lng+'&key=' + key)
+                .then(function(response) {
+                    return response.json();
+                }).then(function(json) {
+                    // data
+                    var plus_code = json.plus_code;
+                    var results = json.results;
+                    //console.log(plus_code);
+                    domInputValue(results);
+                    console.log(results);
+                });
+        }
+
+        map.addListener('click', function(e){
+            console.log(e);
+            var coords = e.latLng;
+            // lat.innerHTML = coords.lat()
+            // lng.innerHTML = coords.lng()
+
+            reverseGeocode(coords.lat(), coords.lng());
+
+        });
+
+
+        infoWindow = new google.maps.InfoWindow;
+
+        // Try HTML5 geolocation.
+        if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+            var pos = {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude
+            };
+
+            infoWindow.setPosition(pos);
+            infoWindow.setContent('Jakarta');
+            infoWindow.open(map);
+            map.setCenter(pos);
+        }, function() {
+            handleLocationError(true, infoWindow, map.getCenter());
+        });
+        } else {
+        // Browser doesn't support Geolocation
+        handleLocationError(false, infoWindow, map.getCenter());
+        }
+    }
+
+        function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+            infoWindow.setPosition(pos);
+            infoWindow.setContent(browserHasGeolocation ?
+                                'Error: The Geolocation service failed.' :
+                                'Error: Your browser doesn\'t support geolocation.');
+            infoWindow.open(map);
+    }
+</script>
 
 </body>
 </html>

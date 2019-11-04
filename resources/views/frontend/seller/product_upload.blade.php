@@ -210,6 +210,44 @@
                                 </div>
                             </div>
                             <div class="form-box bg-white mt-4">
+                                    <div class="form-box-title px-3 py-2">
+                                        {{__('Meta Tags')}}
+                                    </div>
+                                    <div class="form-box-content p-3">
+                                        <div class="row">
+                                            <div class="col-md-2">
+                                                <label>{{__('Meta Title')}}</label>
+                                            </div>
+                                            <div class="col-md-10">
+                                                <input type="text" class="form-control mb-3" name="meta_title" placeholder="{{__('Meta Title')}}">
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-2">
+                                                <label>{{__('Description')}}</label>
+                                            </div>
+                                            <div class="col-md-10">
+                                                <textarea name="meta_description" rows="8" class="form-control mb-3" placeholder="{{__('Meta Description')}}"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-2">
+                                                <label>{{__('Meta Image')}}</label>
+                                            </div>
+                                            <div class="col-md-10">
+                                                <input type="file" name="meta_img" id="file-5" class="custom-input-file custom-input-file--4" data-multiple-caption="{count} files selected" accept="image/*" />
+                                                <label for="file-5" class="mw-100 mb-3">
+                                                    <span></span>
+                                                    <strong>
+                                                        <i class="fa fa-upload"></i>
+                                                        {{__('Choose image')}}
+                                                    </strong>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            <div class="form-box bg-white mt-4">
                                 <div class="form-box-title px-3 py-2">
                                     {{__('Periode')}}
                                 </div>
@@ -330,7 +368,7 @@
                                             <label>{{__('Alamat')}}</label>
                                         </div>
                                         <div class="col-md-10">
-                                            <input type="text" class="form-control mb-3" name="alamat" >
+                                            <textarea name="alamat" class="form-control mb-3" id="alamat" cols="20" rows="5"></textarea>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -338,7 +376,9 @@
                                             <label>{{__('Provinsi')}}</label>
                                         </div>
                                         <div class="col-md-10">
-                                            <input type="text" class="form-control mb-3" name="provinsi" >
+                                            <select name="provinsi" id="prov" class="form-control mb-3">
+                                                <option selected disabled>--- SELECT PROVINSI ---</option>
+                                            </select>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -346,7 +386,9 @@
                                             <label>{{__('Kota / Kabupaten')}}</label>
                                         </div>
                                         <div class="col-md-10">
-                                            <input type="text" class="form-control mb-3" name="kota" >
+                                            <select name="kota" id="kab" class="form-control mb-3">
+                                                
+                                            </select>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -354,7 +396,9 @@
                                             <label>{{__('Kecamatan')}}</label>
                                         </div>
                                         <div class="col-md-10">
-                                            <input type="text" class="form-control mb-3" name="kecamatan" >
+                                            <select name="kecamatan" id="kec" class="form-control mb-3">
+                                                
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
@@ -685,19 +729,5 @@
             $(em).closest('.row').remove();
         }
 
-    </script>
-    <script type="text/javascript">
-      var map = new ol.Map({
-        target: 'map',
-        layers: [
-          new ol.layer.Tile({
-            source: new ol.source.OSM()
-          })
-        ],
-        view: new ol.View({
-          center: ol.proj.fromLonLat([37.41, 8.82]),
-          zoom: 4
-        })
-      });
     </script>
 @endsection
