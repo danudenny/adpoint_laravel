@@ -802,7 +802,9 @@
             })
 
             $('#quantity').change(function(){
-                endDate();
+                if($('#dateEnd').val() != ''){
+                    endDate();
+                }
             })
 
             function endDate(){
