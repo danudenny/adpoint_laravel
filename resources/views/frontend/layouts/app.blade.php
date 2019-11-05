@@ -224,7 +224,24 @@
             });
         }
         // get propinsi kabupaten dan kecamatan
-        var token = 'ZG0MysXFq2utuYL96oPI3P08EMl8E7i1IVDw3MHOdedBgrRoik';
+
+        function getToken(){
+            var endpoint = "https://x.rajaapi.com/poe";
+            var result;
+            $.ajax({
+                async: false,
+                url: endpoint,
+                type: 'get',
+                dataType: 'json',
+                success: function(data){
+                    result = data.token
+                }
+            })
+            return result;
+        }
+
+        // var token = 'ZG0MysXFq2utuYL96oPI3P08EMl8E7i1IVDw3MHOdedBgrRoik';
+        var token = getToken();
         var url = 'https://x.rajaapi.com/MeP7c5ne'+ token +'/m/wilayah/';
 
         // --load data awal--
@@ -235,7 +252,7 @@
         }).done(function(result){
             let provinsi = result.data;
             $.each(provinsi, function (i, data) {
-                $('#prov').append(`<option id="provinsi" value="`+ data.id +`">`+ data.name +`</option>`)
+                $('#prov').append(`<option id="`+ data.id +`" value="`+ data.name +`">`+ data.name +`</option>`)
             })
         }).fail(function(xhr, status, error){
             console.log(xhr.status)
@@ -243,7 +260,7 @@
 
         // get data kabupaten berdasarkan provinsi
         $('#prov').on('change',function(){
-            let id_prov = $(this).val();
+            let id_prov = $(this).children(':selected').attr('id');
             $('#kab').empty();
             if (id_prov) {
                 $.ajax({
@@ -254,7 +271,7 @@
                         let kabupaten = result.data;
                         // console.log(kabupaten);
                         $.each(kabupaten, function (i, data) {
-                            var kab = `<option value="`+ data.id +`">`+ data.name +`</option>`;
+                            var kab = `<option id="`+ data.id +`" value="`+ data.name +`">`+ data.name +`</option>`;
                             $('#kab').append(kab);
                         })
                     }).fail(function(xhr, error, status){
@@ -266,7 +283,7 @@
         });
         // ambil data kecamatan berdasarkan kabupaten
         $('#kab').on('change', function(){
-            let id_kec = $(this).val();
+            let id_kec = $(this).children(':selected').attr('id');
             $('#kec').empty();
             if (id_kec) {
                 $.ajax({
@@ -277,7 +294,7 @@
                         let kecamatan = result.data;
                         // console.log(kecamatan);
                         $.each(kecamatan, function (i, data) {
-                            var kec = `<option value="`+ data.id +`">`+ data.name +`</option>`;
+                            var kec = `<option value="`+ data.name +`">`+ data.name +`</option>`;
                             $('#kec').append(kec);
                         })
                     }).fail(function(xhr, error, status){
@@ -626,7 +643,6 @@
     var map;
     var key = 'AIzaSyBsVHufr4pDssMKPVCFZO6yXe58oalrtHs';
     var alamat = document.getElementById('alamat');
-    var lat = document.getElementById('lat');
     function initMap() {
         map = new google.maps.Map(document.getElementById('map'), {
             center: {lat: -2.6000285, lng: 118.015776},
@@ -635,10 +651,20 @@
 
         function domInputValue(data){
             var address = data[0].formatted_address;
-            var lat = data[0].geometry.location.lat;
-            console.log(lat);
             alamat.innerHTML = address;
-            lat.innerHTML = lat;
+        }
+
+        var marker;
+        function placeMarker(position, map) {
+            if (marker) {
+                marker.setPosition(position)
+            } else {
+                marker = new google.maps.Marker({
+                    position: position, 
+                    map: map
+                });
+            }
+            map.panTo(position);
         }
 
         function reverseGeocode(_lat, _lng) {
@@ -649,19 +675,20 @@
                     // data
                     var plus_code = json.plus_code;
                     var results = json.results;
-                    //console.log(plus_code);
                     domInputValue(results);
                     console.log(results);
                 });
         }
 
         map.addListener('click', function(e){
-            // console.log(e);
+            var result = "";
             var coords = e.latLng;
-            // lat.innerHTML = coords.lat()
-            // lng.innerHTML = coords.lng()
-
+            result += coords.lat() + ",";
+            result += coords.lng();
+            var latlong = document.getElementById('latlong');
+            latlong.setAttribute('value', result)
             reverseGeocode(coords.lat(), coords.lng());
+            placeMarker(e.latLng, map);
 
         });
 
