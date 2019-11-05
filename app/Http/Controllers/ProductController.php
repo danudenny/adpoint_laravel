@@ -56,7 +56,7 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //dd($request->all());
+        // dd($request->all());
         $product = new Product;
         $product->name = $request->name;
         $product->added_by = $request->added_by;
@@ -129,6 +129,7 @@ class ProductController extends Controller
         $product->slug = preg_replace('/[^A-Za-z0-9\-]/', '', str_replace(' ', '-', $request->name)).'-'.str_random(5);
 
         $product->alamat = $request->alamat;
+        $product->latlong = $request->latlong;
         $product->provinsi = $request->provinsi;
         $product->kota = $request->kota;
         $product->kecamatan = $request->kecamatan;

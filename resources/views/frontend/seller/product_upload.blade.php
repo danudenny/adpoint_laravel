@@ -182,7 +182,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-box bg-white mt-4">
+                            <div class="form-box bg-white mt-4" hidden>
                                 <div class="form-box-title px-3 py-2">
                                     {{__('Videos')}}
                                 </div>
@@ -366,13 +366,8 @@
                                     {{__('Lokasi')}}
                                 </div>
                                 <div class="form-box-content p-3">
-                                    <span>
-                                        <i style="color: red">Pilih lokasi yang sesuai pada peta. <b>Klik pada peta untuk menandai alamat.</b> Gunakan "CTRL + Scroll untuk zoom in dan zoom out</i>
-                                    </span>
-                                    <hr>
-        
                                     <div id="map" class="map mb-3"></div>
-                                    <input name="lat" class="form-control mb-3" id="lat" >
+                                    <input type="hidden" class="form-control mb-3" name="latlong" id="latlong">
                                     <div class="row">
                                         <div class="col-md-2">
                                             <label>{{__('Alamat')}}</label>
