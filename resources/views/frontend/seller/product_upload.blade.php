@@ -372,6 +372,7 @@
                                     <hr>
         
                                     <div id="map" class="map mb-3"></div>
+                                    <input name="lat" class="form-control mb-3" id="lat" >
                                     <div class="row">
                                         <div class="col-md-2">
                                             <label>{{__('Alamat')}}</label>

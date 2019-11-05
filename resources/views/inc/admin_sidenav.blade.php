@@ -261,7 +261,7 @@
                         <li>
                             <a href="#">
                                 <i class="fa fa-briefcase"></i>
-                                <span class="menu-title">{{__('Business Settings')}}</span>
+                                <span class="menu-title">{{__('General Settings')}}</span>
                                 <i class="arrow"></i>
                             </a>
 

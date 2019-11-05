@@ -623,19 +623,22 @@
 
 
 <script>
-    var map, infoWindow;
+    var map;
     var key = 'AIzaSyBsVHufr4pDssMKPVCFZO6yXe58oalrtHs';
-    var alamat = document.getElementById('alamat')
+    var alamat = document.getElementById('alamat');
+    var lat = document.getElementById('lat');
     function initMap() {
         map = new google.maps.Map(document.getElementById('map'), {
             center: {lat: -2.6000285, lng: 118.015776},
-            zoom: 6
+            zoom: 10
         });
 
         function domInputValue(data){
             var address = data[0].formatted_address;
-            console.log(address)
+            var lat = data[0].geometry.location.lat;
+            console.log(lat);
             alamat.innerHTML = address;
+            lat.innerHTML = lat;
         }
 
         function reverseGeocode(_lat, _lng) {
@@ -653,7 +656,7 @@
         }
 
         map.addListener('click', function(e){
-            console.log(e);
+            // console.log(e);
             var coords = e.latLng;
             // lat.innerHTML = coords.lat()
             // lng.innerHTML = coords.lng()
@@ -663,7 +666,6 @@
         });
 
 
-        infoWindow = new google.maps.InfoWindow;
 
         // Try HTML5 geolocation.
         if (navigator.geolocation) {
@@ -672,17 +674,14 @@
             lat: position.coords.latitude,
             lng: position.coords.longitude
             };
-
-            infoWindow.setPosition(pos);
-            infoWindow.setContent('Jakarta');
-            infoWindow.open(map);
             map.setCenter(pos);
+            map.setZoom(17);
         }, function() {
-            handleLocationError(true, infoWindow, map.getCenter());
+            handleLocationError(true, map.getCenter());
         });
         } else {
         // Browser doesn't support Geolocation
-        handleLocationError(false, infoWindow, map.getCenter());
+        handleLocationError(false, map.getCenter());
         }
     }
 

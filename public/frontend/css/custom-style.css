@@ -643,6 +643,7 @@ select + .select2-container{
 /* category menu area */
 section.home-banner-area {
     background: #FCF9F7;
+    height: 455px;
 }
 
 

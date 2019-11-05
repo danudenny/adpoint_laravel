@@ -537,62 +537,38 @@
                                         @if(count($category->subcategories)>0)
                                             <div class="sub-cat-menu c-scrollbar">
                                                 <div class="sub-cat-main row no-gutters">
-                                                    <div class="col-9">
+                                                    <div class="col-7">
                                                         <div class="sub-cat-content">
                                                             <div class="sub-cat-list">
+                                                                <div>
+                                                                    <label class="sub-cat-name" style="margin-top: 20px; margin-left: 10px;"><b>SUB CATEGORIES</b></label>
+                                                                </div>
                                                                 <div class="card-columns">
                                                                     @foreach ($category->subcategories as $subcategory)
                                                                         <div class="card">
                                                                             <ul class="sub-cat-items">
-                                                                                <li class="sub-cat-name"><a href="{{ route('products.subcategory', $subcategory->slug) }}">{{ __($subcategory->name) }}</a></li>
-                                                                                @foreach ($subcategory->subsubcategories as $subsubcategory)
-                                                                                    @php
-                                                                                        foreach (json_decode($subsubcategory->brands) as $brand) {
-                                                                                            if(!in_array($brand, $brands)){
-                                                                                                array_push($brands, $brand);
-                                                                                            }
+                                                                                @php
+                                                                                    foreach (json_decode($subcategory->brands) as $brand) {
+                                                                                        if(!in_array($brand, $brands)){
+                                                                                            array_push($brands, $brand);
                                                                                         }
-                                                                                    @endphp
-                                                                                    <li><a href="{{ route('products.subsubcategory', $subsubcategory->slug) }}">{{ __($subsubcategory->name) }}</a></li>
-                                                                                @endforeach
+                                                                                    }
+                                                                                @endphp
+                                                                                <li><a href="{{ route('products.subcategory', $subcategory->slug) }}">{{ __($subcategory->name) }}</a></li>
                                                                             </ul>
                                                                         </div>
                                                                     @endforeach
                                                                 </div>
                                                             </div>
-                                                            <div class="sub-cat-featured">
-                                                                {{-- <ul class="sub-cat-featured-list inline-links d-flex">
-                                                                    <li class="col">
-                                                                        <a href="" >
-                                                                            <span class="featured-name">New arrival plus size</span>
-                                                                            <span class="featured-img">
-                                                                                <img src="{{ asset('frontend/images/girls/1.png') }}" class="img-fluid">
-                                                                            </span>
-                                                                        </a>
-                                                                    </li>
-                                                                    <li class="col">
-                                                                        <a href="" >
-                                                                            <span class="featured-name">Sweater Collection</span>
-                                                                            <span class="featured-img">
-                                                                                <img src="{{ asset('frontend/images/girls/2.png') }}" class="img-fluid">
-                                                                            </span>
-                                                                        </a>
-                                                                    </li>
-                                                                    <li class="col">
-                                                                        <a href="" >
-                                                                            <span class="featured-name">High Quality Formal Dresses</span>
-                                                                            <span class="featured-img">
-                                                                                <img src="{{ asset('frontend/images/girls/3.png') }}" class="img-fluid">
-                                                                            </span>
-                                                                        </a>
-                                                                    </li>
-                                                                </ul> --}}
-                                                            </div>
                                                         </div>
                                                     </div>
 
-                                                    <div class="col-3">
+                                                    <div class="col-5">
                                                         <div class="sub-cat-brand">
+                                                            <div>
+                                                                <label class="sub-cat-name" style="margin-top: 10px; "><b>MEDIA PARTNERS</b></label>
+                                                                <hr>
+                                                            </div>
                                                             <ul class="sub-brand-list">
                                                                 @foreach ($brands as $brand_id)
                                                                     @if(\App\Brand::find($brand_id) != null)

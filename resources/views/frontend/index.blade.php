@@ -31,24 +31,25 @@
                                     @if(count($category->subcategories)>0)
                                         <div class="sub-cat-menu c-scrollbar" style="left: 220px;">
                                             <div class="sub-cat-main row no-gutters">
-                                                <div class="col-9">
+                                                <div class="col-7">
                                                     <div class="sub-cat-content">
                                                         <div class="sub-cat-list">
+                                                            <div>
+                                                                <label class="sub-cat-name" style="margin-top: 20px; margin-left: 10px;"><b>SUB CATEGORIES</b></label>
+                                                                <hr>
+                                                            </div>
                                                             <div class="card-columns">
                                                                 @foreach ($category->subcategories as $subcategory)
                                                                     <div class="card">
                                                                         <ul class="sub-cat-items">
-                                                                            <li class="sub-cat-name"><a href="{{ route('products.subcategory', $subcategory->slug) }}">{{ __($subcategory->name) }}</a></li>
-                                                                            @foreach ($subcategory->subsubcategories as $subsubcategory)
-                                                                                @php
-                                                                                    foreach (json_decode($subsubcategory->brands) as $brand) {
-                                                                                        if(!in_array($brand, $brands)){
-                                                                                            array_push($brands, $brand);
-                                                                                        }
+                                                                            @php
+                                                                                foreach (json_decode($subcategory->brands) as $brand) {
+                                                                                    if(!in_array($brand, $brands)){
+                                                                                        array_push($brands, $brand);
                                                                                     }
-                                                                                @endphp
-                                                                                <li><a href="{{ route('products.subsubcategory', $subsubcategory->slug) }}">{{ __($subsubcategory->name) }}</a></li>
-                                                                            @endforeach
+                                                                                }
+                                                                            @endphp
+                                                                            <li><a href="{{ route('products.subcategory', $subcategory->slug) }}">{{ __($subcategory->name) }}</a></li>
                                                                         </ul>
                                                                     </div>
                                                                 @endforeach
@@ -57,8 +58,12 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="col-3">
+                                                <div class="col-5">
                                                     <div class="sub-cat-brand">
+                                                        <div>
+                                                            <label class="sub-cat-name" style="margin-top: 10px; "><b>MEDIA PARTNERS</b></label>
+                                                            <hr>
+                                                        </div>
                                                         <ul class="sub-brand-list">
                                                             @foreach ($brands as $brand_id)
                                                                 @if(\App\Brand::find($brand_id) != null)
@@ -79,94 +84,9 @@
                     </div>
                 </div>
 
-                <div class="col-lg-8 order-1 order-lg-0">
-                    <div class="home-slide">
-                        <div class="home-slide">
-                            <div class="slick-carousel" data-slick-arrows="true" data-slick-dots="true" data-slick-autoplay="true">
-                                @foreach (\App\Slider::where('published', 1)->get() as $key => $slider)
-                                    <div class="" style="height:456px;;">
-                                        <img class="d-block w-100 h-100" src="{{ asset($slider->photo) }}" alt="Slider Image">
-                                    </div>
-                                @endforeach
-                            </div>
-                        </div>
-                    </div>
+                <div class="col-lg-10 order-1 order-lg-0">
+                    <div id="map" class="map mb-3" style="height: 455px;"></div>
                 </div>
-
-                @php
-                    $flash_deal = \App\FlashDeal::where('status', 1)->first();
-                @endphp
-                @if($flash_deal != null && strtotime(date('d-m-Y')) >= $flash_deal->start_date && strtotime(date('d-m-Y')) <= $flash_deal->end_date)
-                    <div class="col-lg-2 d-none d-lg-block">
-                        <div class="flash-deal-box bg-white h-100">
-                            <div class="title text-center p-2 gry-bg">
-                                <h3 class="heading-6 mb-0">
-                                    {{__('Flash Deal')}}
-                                    <span class="badge badge-danger">{{__('Hot')}}</span>
-                                </h3>
-                                <div class="countdown countdown--style-1 countdown--style-1-v1" data-countdown-date="{{ date('m/d/Y', $flash_deal->end_date) }}" data-countdown-label="show"></div>
-                            </div>
-                            <div class="flash-content c-scrollbar">
-                                @foreach ($flash_deal->flash_deal_products as $key => $flash_deal_product)
-                                    @php
-                                        $product = \App\Product::find($flash_deal_product->product_id);
-                                    @endphp
-                                    @if ($product != null)
-                                        <a href="{{ route('product', $product->slug) }}" class="d-block flash-deal-item">
-                                            <div class="row no-gutters align-items-center">
-                                                <div class="col">
-                                                    <div class="img" style="background-image:url('{{ asset($product->flash_deal_img) }}')">
-                                                    </div>
-                                                </div>
-                                                <div class="col">
-                                                    <div class="price">
-                                                        <span class="d-block">{{ home_discounted_base_price($product->id) }}</span>
-                                                        @if(home_base_price($product->id) != home_discounted_base_price($product->id))
-                                                            <del class="d-block">{{ home_base_price($product->id) }}</del>
-                                                        @endif
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    @endif
-                                @endforeach
-                            </div>
-                        </div>
-                    </div>
-                @else
-                    <div class="col-lg-2 d-none d-lg-block">
-                        <div class="flash-deal-box bg-white h-100">
-                            <div class="title text-center p-2 gry-bg">
-                                <h3 class="heading-6 mb-0">
-                                    {{ __('Todays Deal') }}
-                                    <span class="badge badge-danger">{{__('Hot')}}</span>
-                                </h3>
-                            </div>
-                            <div class="flash-content c-scrollbar c-height">
-                                @foreach (filter_products(\App\Product::where('published', 1)->where('todays_deal', '1'))->get() as $key => $product)
-                                    @if ($product != null)
-                                        <a href="{{ route('product', $product->slug) }}" class="d-block flash-deal-item">
-                                            <div class="row no-gutters align-items-center">
-                                                <div class="col">
-                                                    <div class="img" style="background-image:url('{{ asset($product->flash_deal_img) }}')">
-                                                    </div>
-                                                </div>
-                                                <div class="col">
-                                                    <div class="price">
-                                                        <span class="d-block">{{ home_discounted_base_price($product->id) }}</span>
-                                                        @if(home_base_price($product->id) != home_discounted_base_price($product->id))
-                                                            <del class="d-block">{{ home_base_price($product->id) }}</del>
-                                                        @endif
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    @endif
-                                @endforeach
-                            </div>
-                        </div>
-                    </div>
-                @endif
             </div>
         </div>
     </section>
@@ -185,6 +105,61 @@
                 @endforeach
             </div>
         </div>
+    </section>
+
+    <section class="mb-4">
+        @php
+            $flash_deal = \App\FlashDeal::where('status', 1)->first();
+        @endphp
+        @if($flash_deal != null && strtotime(date('d-m-Y')) >= $flash_deal->start_date && strtotime(date('d-m-Y')) <= $flash_deal->end_date)
+        <div class="container">
+            <div class="px-2 py-4 p-md-4 bg-white shadow-sm">
+                <div class="section-title-1 clearfix">
+                    <h3 class="heading-5 strong-700 mb-0 float-left">
+                        <span class="mr-4">{{__('Flash Deal')}}</span> <br><br>
+                        <div class="countdown countdown--style-1 countdown--style-1-v1" data-countdown-date="{{ date('m/d/Y', $flash_deal->end_date) }}" data-countdown-label="show"></div>
+                    </h3>
+                </div>
+                <div class="caorusel-box">
+                    <div class="slick-carousel" data-slick-items="6" data-slick-xl-items="5" data-slick-lg-items="4"  data-slick-md-items="3" data-slick-sm-items="2" data-slick-xs-items="2">
+                        @foreach ($flash_deal->flash_deal_products as $key => $flash_deal_product)
+                        @php
+                            $product = \App\Product::find($flash_deal_product->product_id);
+                        @endphp
+                        @if ($product != null)
+                        <div class="product-card-2 card card-product m-2 shop-cards shop-tech">
+                            <div class="card-body p-0">
+
+                                <div class="card-image">
+                                    <a href="{{ route('product', $product->slug) }}" class="d-block" style="background-image:url('{{ asset($product->flash_deal_img) }}');">
+                                    </a>
+                                </div>
+
+                                <div class="p-3" style="height: 150px;">
+                                    <div class="price-box">
+                                        @if(home_base_price($product->id) != home_discounted_base_price($product->id))
+                                            <del class="old-product-price strong-400">{{ home_base_price($product->id) }}</del>
+                                        @endif
+                                        <span class="product-price strong-600">{{ home_discounted_base_price($product->id) }}</span>
+                                    </div>
+                                    <div class="star-rating star-rating-sm mt-1">
+                                        {{ renderStarRating($product->rating) }}
+                                    </div>
+                                    <h2 class="product-title p-0 text-truncate-2">
+                                        <a href="{{ route('product', $product->slug) }}">{{ __($product->name) }}</a>
+                                    </h2>
+                                </div>
+                            </div>
+                        </div>
+                        @endif
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+        </div>
+        @else
+            <div class="container" hidden></div>
+        @endif
     </section>
 
     <section class="mb-4">

@@ -63,9 +63,7 @@
                                     <h3 class="category-name"><a href="{{ route('products.category', $category->slug) }}">{{ __($category->name) }}</a></h3>
                                     <ul>
                                         @foreach ($category->subcategories as $key => $subcategory)
-                                            @foreach ($subcategory->subsubcategories as $key => $subsubcategory)
-                                                <li><a href="{{ route('products.subsubcategory', $subsubcategory->slug) }}" >{{ __($subsubcategory->name) }}</a></li>
-                                            @endforeach
+                                            <li><a href="{{ route('products.subcategory', $subcategory->slug) }}" >{{ __($subcategory->name) }}</a></li>
                                         @endforeach
                                     </ul>
                                 </div>
@@ -74,10 +72,9 @@
                                     <h3 class="category-name"><a href="{{ route('products.category', $category->slug) }}" >{{ __($category->name) }}</a></h3>
                                     <ul>
                                         @foreach ($category->subcategories as $key => $subcategory)
-                                            @foreach ($subcategory->subsubcategories as $key => $subsubcategory)
-                                                <li><a href="{{ route('products.subsubcategory', $subsubcategory->slug) }}" >{{ __($subsubcategory->name) }}</a></li>
-                                            @endforeach
+                                            <li><a href="{{ route('products.subcategory', $subcategory->slug) }}" >{{ __($subcategory->name) }}</a></li>
                                         @endforeach
+                                        
                                     </ul>
                                 </div>
                             @endif

@@ -52,7 +52,7 @@
                             <label class="control-label">{{__('MAIL PASSWORD')}}</label>
                         </div>
                         <div class="col-lg-6">
-                            <input type="text" class="form-control" name="MAIL_PASSWORD" value="{{  env('MAIL_PASSWORD') }}" placeholder="MAIL PASSWORD" required>
+                            <input type="password" class="form-control" name="MAIL_PASSWORD" value="{{  env('MAIL_PASSWORD') }}" placeholder="MAIL PASSWORD" required>
                         </div>
                     </div>
                     <div class="form-group">
