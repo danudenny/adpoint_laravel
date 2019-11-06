@@ -472,7 +472,10 @@
                                             <label>{{__('Kecamatan')}}</label>
                                         </div>
                                         <div class="col-md-10">
-                                            <input type="text" class="form-control mb-3" name="kecamatan">
+                                            <small id="namaKec" hidden>{{ $product->kecamatan }}</small>
+                                            <select name="kota" id="kecEdit" class="form-control mb-3">
+                                                
+                                            </select>
                                         </div>
                                     </div>
                                 </div>

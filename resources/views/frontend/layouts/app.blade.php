@@ -273,6 +273,21 @@
                         $.each(kabupaten, function (i, data) {
                             var kab = `<option id="`+ data.id +`" value="`+ data.name +`">`+ data.name +`</option>`;
                             $('#kab').append(kab);
+                            if (i === 0) {
+                                $('#kec').empty();
+                                $.ajax({
+                                    url: url +'kecamatan?idkabupaten='+ data.id,
+                                    type: 'get',
+                                    dataType: 'json',
+                                    success: function(result){
+                                        var kecamatan = result.data;
+                                        $.each(kecamatan, function(i, data){
+                                            var kec = `<option id="`+ data.id +`" value="`+ data.name +`">`+ data.name +`</option>`;
+                                            $('#kec').append(kec);
+                                        });
+                                    }
+                                });
+                            }
                         })
                     }).fail(function(xhr, error, status){
                         console.log(xhr);
@@ -280,6 +295,8 @@
             }else{
                 $('#kab').empty();
             }
+            // var kabup = $("select#kab").children(':selected')[0];
+            // console.log(kabup);
         });
         // ambil data kecamatan berdasarkan kabupaten
         $('#kab').on('change', function(){
@@ -308,7 +325,6 @@
 
         // get data wilayah indonesia di edit product
         var namaProv = $('#namaProv').text();
-        console.log(namaProv);
         $.ajax({
             url: url+'provinsi',
             type: 'get',
@@ -318,6 +334,7 @@
                 $.each(prov, function(i, data){
                     $('#provEdit').append(`<option class="provEdit" id="`+ data.id +`" value="`+ data.name +`">`+ data.name +`</option>`);
                     if (namaProv === data.name) {
+                        getKab(data.id);
                         $('.provEdit').prop('selected',true);
                     }
                 });
@@ -328,6 +345,110 @@
         });
 
         var namaKota = $('#namaKota').text();
+        function getKab(id){
+            $.ajax({
+                url: url +'kabupaten?idpropinsi='+ id,
+                type: 'get',
+                dataType: 'json',
+                success: function(result){
+                    var kec = result.data;
+                    $.each(kec, function(i, data){
+                        $('#kotaEdit').append(`<option class="kotaEdit" id="`+ data.id +`" value="`+ data.name +`">`+ data.name +`</option>`);
+                        if (namaKota === data.name) {
+                            getKec(data.id);
+                            $('.kotaEdit').prop('selected',true);
+                        }
+                    });
+                },
+                error: function(err){
+                    console.log(err);
+                }
+            });
+        }
+
+        var namaKec = $('#namaKec').text();
+        function getKec(id){
+            $.ajax({
+                url: url +'kecamatan?idkabupaten='+ id,
+                type: 'get',
+                dataType: 'json',
+                success: function(result){
+                    var kab = result.data;
+                    $.each(kab, function(i, data){
+                        $('#kecEdit').append(`<option class="kecEdit" id="`+ data.id +`" value="`+ data.name +`">`+ data.name +`</option>`);
+                        if (namaKec === data.name) {
+                            $('.kecEdit').prop('selected',true);
+                        }
+                    });
+                },
+                error: function(err){
+                    console.log(err);
+                }
+            });
+        }
+
+        $('#provEdit').on('change',function(){
+            let id_prov = $(this).children(':selected').attr('id');
+            $('#kotaEdit').empty();
+            if (id_prov) {
+                $.ajax({
+                    url : url + 'kabupaten?idpropinsi=' + id_prov,
+                    type : "get",
+                    dataType : "json"
+                    }).done(function(result){
+                        let kabupaten = result.data;
+                        // console.log(kabupaten);
+                        $.each(kabupaten, function (i, data) {
+                            var kab = `<option id="`+ data.id +`" value="`+ data.name +`">`+ data.name +`</option>`;
+                            $('#kotaEdit').append(kab);
+                            if (i === 0) {
+                                $('#kecEdit').empty();
+                                $.ajax({
+                                    url: url +'kecamatan?idkabupaten='+ data.id,
+                                    type: 'get',
+                                    dataType: 'json',
+                                    success: function(result){
+                                        var kecamatan = result.data;
+                                        $.each(kecamatan, function(i, data){
+                                            var kec = `<option id="`+ data.id +`" value="`+ data.name +`">`+ data.name +`</option>`;
+                                            $('#kecEdit').append(kec);
+                                        });
+                                    }
+                                });
+                            }
+                        })
+                    }).fail(function(xhr, error, status){
+                        console.log(xhr);
+                    })
+            }else{
+                $('#kotaEdit').empty();
+            }
+        });
+        // ambil data kecamatan berdasarkan kabupaten
+        $('#kotaEdit').on('change', function(){
+            let id_kec = $(this).children(':selected').attr('id');
+            $('#kecEdit').empty();
+            if (id_kec) {
+                $.ajax({
+                    url : url + 'kecamatan?idkabupaten=' + id_kec,
+                    type : "get",
+                    dataType : "json"
+                    }).done(function(result){
+                        let kecamatan = result.data;
+                        // console.log(kecamatan);
+                        $.each(kecamatan, function (i, data) {
+                            var kec = `<option value="`+ data.name +`">`+ data.name +`</option>`;
+                            $('#kecEdit').append(kec);
+                        })
+                    }).fail(function(xhr, error, status){
+                        console.log(xhr);
+                    })
+            }else{
+                $('#kecEdit').empty();
+            }
+        })
+
+        
 
         // end get edit
 
