@@ -211,6 +211,7 @@ $(document).ready(function() {
     var today = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
     $('#startDate').datepicker({
         uiLibrary: 'bootstrap4',
+        format: 'dd mmm yyyy',
         iconsLibrary: 'fontawesome',
         minDate: today,
         maxDate: function () {
@@ -220,6 +221,7 @@ $(document).ready(function() {
 
     $('#endDate').datepicker({
         uiLibrary: 'bootstrap4',
+        format: 'dd mmm yyyy',
         iconsLibrary: 'fontawesome',
         minDate: function () {
             return $('#startDate').val();

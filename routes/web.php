@@ -34,6 +34,8 @@ Route::get('/sitemap.xml', function(){
 });
 Route::get('/product/{slug}', 'HomeController@product')->name('product');
 Route::get('/products', 'HomeController@listing')->name('products');
+// list product untuk di konsum jquery
+Route::get('/listproduct', 'HomeController@getlistProduct');
 Route::get('/search?category={category_slug}', 'HomeController@search')->name('products.category');
 Route::get('/search?subcategory={subcategory_slug}', 'HomeController@search')->name('products.subcategory');
 Route::get('/search?subsubcategory={subsubcategory_slug}', 'HomeController@search')->name('products.subsubcategory');

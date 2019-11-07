@@ -128,8 +128,8 @@ class ProductController extends Controller
 
         $product->slug = preg_replace('/[^A-Za-z0-9\-]/', '', str_replace(' ', '-', $request->name)).'-'.str_random(5);
 
-        $product->alamat = $request->alamat;
         $product->latlong = $request->latlong;
+        $product->alamat = $request->alamat;
         $product->provinsi = $request->provinsi;
         $product->kota = $request->kota;
         $product->kecamatan = $request->kecamatan;
@@ -348,7 +348,8 @@ class ProductController extends Controller
             $product->meta_img = $request->meta_img->store('uploads/products/meta');
             //ImageOptimizer::optimize(base_path('public/').$product->meta_img);
         }
-
+        
+        $product->latlong = $request->latlong;
         $product->alamat = $request->alamat;
         $product->provinsi = $request->provinsi;
         $product->kota = $request->kota;

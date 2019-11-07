@@ -85,7 +85,7 @@
                 </div>
 
                 <div class="col-lg-10 order-1 order-lg-0">
-                    <div id="map" class="map mb-3" style="height: 455px;"></div>
+                    <div id="dashboardMap" class="map mb-3" style="height: 455px;"></div>
                 </div>
             </div>
         </div>

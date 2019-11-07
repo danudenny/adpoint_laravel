@@ -177,7 +177,7 @@
                                         <div class="product-description-label mt-2 ">{{ $choice->title }}:</div>
                                     </div>
                                     <div class="col-10">
-                                        <ul class="list-inline checkbox-alphanumeric checkbox-alphanumeric--style-1 mb-2">
+                                        <ul id="choiceOptions" class="list-inline checkbox-alphanumeric checkbox-alphanumeric--style-1 mb-2">
                                             @foreach ($choice->options as $key => $option)
                                                 <li>
                                                     <input type="radio" id="{{ $choice->name }}-{{ $option }}" name="{{ $choice->name }}" value="{{ $option }}" @if($key == 0) checked @endif>
@@ -733,7 +733,18 @@
     		});
             getVariantPrice();
 
-            $('#startDate').change(function(){
+
+            var data = [];
+            $('#choiceOptions').children().each(function(i, result){
+                var periode = result.getElementsByTagName('input');
+                $.each(periode, function(i, option){
+                    var choice = $(this).val();
+                    data.push(choice);
+                })
+            });
+            console.log(data);
+
+            $('#startDate').on('change', function(){
                 endDate();
             })
 
@@ -753,7 +764,8 @@
                     newDate = bulan;
                 }
 
-                $('#dateEnd').val(dateFormat(newDate));
+                $('#dateEnd').attr('value', dateFormat(newDate))
+                // $('#dateEnd').val(newDate);
             }
 
             function nol(x){
@@ -762,7 +774,7 @@
             }
 
             function dateFormat(date){
-                const bulan = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+                const bulan = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
                 const year = date.getFullYear();
                 const month = date.getMonth();
                 const dates = date.getDate();
