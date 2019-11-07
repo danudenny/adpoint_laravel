@@ -318,7 +318,7 @@
         									<div class="row mb-3">
         										<div class="col-8 col-md-3 order-1 order-md-0">
         											<input type="hidden" name="choice_no[]" value="{{ explode('_', $choice_option->name)[1] }}">
-        											<input type="text" class="form-control" name="choice[]" value="{{ $choice_option->title }}" placeholder="Choice Title">
+        											<input type="text" class="form-control" name="choice[]" value="{{ $choice_option->title }}" placeholder="Choice Title" readonly>
         										</div>
         										<div class="col-12 col-md-7 col-xl-8 order-3 order-md-0 mt-2 mt-md-0">
         											<input type="text" class="form-control" name="choice_options_{{ explode('_', $choice_option->name)[1] }}[]" placeholder="Enter choice values" value="{{ implode(',', $choice_option->options) }}" data-role="tagsinput" onchange="update_sku()">
@@ -435,15 +435,14 @@
                                     {{__('Lokasi')}}
                                 </div>
                                 <div class="form-box-content p-3">
-                                    <div id="map" class="map mb-3"></div>
+                                    <div id="editProductMap" class="map mb-3"></div>
+                                    <input type="hidden" class="form-control mb-3" value="{{ $product->latlong }}" name="latlong" id="latlong">
                                     <div class="row">
                                         <div class="col-md-2">
                                             <label>{{__('Alamat')}}</label>
                                         </div>
                                         <div class="col-md-10">
-                                            <textarea name="alamat" class="form-control mb-3" id="alamat" cols="20" rows="5">
-                                                {{ $product->alamat }}
-                                            </textarea>
+                                            <textarea name="alamat" class="form-control mb-3" id="alamat" cols="20" rows="5">{{ $product->alamat }}</textarea>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -451,7 +450,10 @@
                                             <label>{{__('Provinsi')}}</label>
                                         </div>
                                         <div class="col-md-10">
-                                            <input type="text" class="form-control mb-3" name="provinsi">
+                                            <small id="namaProv" hidden>{{ $product->provinsi }}</small>
+                                            <select name="provinsi" id="provEdit" class="form-control mb-3">
+                                                
+                                            </select>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -459,7 +461,10 @@
                                             <label>{{__('Kota / Kabupaten')}}</label>
                                         </div>
                                         <div class="col-md-10">
-                                            <input type="text" class="form-control mb-3" name="kota">
+                                            <small id="namaKota" hidden>{{ $product->kota }}</small>
+                                            <select name="kota" id="kotaEdit" class="form-control mb-3">
+                                                
+                                            </select>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -467,7 +472,10 @@
                                             <label>{{__('Kecamatan')}}</label>
                                         </div>
                                         <div class="col-md-10">
-                                            <input type="text" class="form-control mb-3" name="kecamatan">
+                                            <small id="namaKec" hidden>{{ $product->kecamatan }}</small>
+                                            <select name="kota" id="kecEdit" class="form-control mb-3">
+                                                
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
@@ -774,8 +782,6 @@
 
 
         // gmaps
-
-
-
+        // mapEditProduct
     </script>
 @endsection

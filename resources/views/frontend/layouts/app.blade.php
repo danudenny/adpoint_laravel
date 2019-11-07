@@ -195,7 +195,7 @@
 
 <script>
 
-    $(document).ready(function() {
+    $(document).ready(function() { 
         if ($('#lang-change').length > 0) {
             $('#lang-change .dropdown-item a').each(function() {
                 $(this).on('click', function(e){
@@ -273,6 +273,21 @@
                         $.each(kabupaten, function (i, data) {
                             var kab = `<option id="`+ data.id +`" value="`+ data.name +`">`+ data.name +`</option>`;
                             $('#kab').append(kab);
+                            if (i === 0) {
+                                $('#kec').empty();
+                                $.ajax({
+                                    url: url +'kecamatan?idkabupaten='+ data.id,
+                                    type: 'get',
+                                    dataType: 'json',
+                                    success: function(result){
+                                        var kecamatan = result.data;
+                                        $.each(kecamatan, function(i, data){
+                                            var kec = `<option id="`+ data.id +`" value="`+ data.name +`">`+ data.name +`</option>`;
+                                            $('#kec').append(kec);
+                                        });
+                                    }
+                                });
+                            }
                         })
                     }).fail(function(xhr, error, status){
                         console.log(xhr);
@@ -280,6 +295,8 @@
             }else{
                 $('#kab').empty();
             }
+            // var kabup = $("select#kab").children(':selected')[0];
+            // console.log(kabup);
         });
         // ambil data kecamatan berdasarkan kabupaten
         $('#kab').on('change', function(){
@@ -305,6 +322,136 @@
             }
         })
         // end get prov kab kec
+
+        // get data wilayah indonesia di edit product
+        var namaProv = $('#namaProv').text();
+        $.ajax({
+            url: url+'provinsi',
+            type: 'get',
+            dataType: 'json',
+            success: function(result){
+                var prov = result.data;
+                $.each(prov, function(i, data){
+                    $('#provEdit').append(`<option class="provEdit" id="`+ data.id +`" value="`+ data.name +`">`+ data.name +`</option>`);
+                    if (namaProv === data.name) {
+                        getKab(data.id);
+                        $('.provEdit').prop('selected',true);
+                    }
+                });
+            },
+            error: function(err){
+                console.log(err);
+            }
+        });
+
+        var namaKota = $('#namaKota').text();
+        function getKab(id){
+            $.ajax({
+                url: url +'kabupaten?idpropinsi='+ id,
+                type: 'get',
+                dataType: 'json',
+                success: function(result){
+                    var kec = result.data;
+                    $.each(kec, function(i, data){
+                        $('#kotaEdit').append(`<option class="kotaEdit" id="`+ data.id +`" value="`+ data.name +`">`+ data.name +`</option>`);
+                        if (namaKota === data.name) {
+                            getKec(data.id);
+                            $('.kotaEdit').prop('selected',true);
+                        }
+                    });
+                },
+                error: function(err){
+                    console.log(err);
+                }
+            });
+        }
+
+        var namaKec = $('#namaKec').text();
+        function getKec(id){
+            $.ajax({
+                url: url +'kecamatan?idkabupaten='+ id,
+                type: 'get',
+                dataType: 'json',
+                success: function(result){
+                    var kab = result.data;
+                    $.each(kab, function(i, data){
+                        $('#kecEdit').append(`<option class="kecEdit" id="`+ data.id +`" value="`+ data.name +`">`+ data.name +`</option>`);
+                        if (namaKec === data.name) {
+                            $('.kecEdit').prop('selected',true);
+                        }
+                    });
+                },
+                error: function(err){
+                    console.log(err);
+                }
+            });
+        }
+
+        $('#provEdit').on('change',function(){
+            let id_prov = $(this).children(':selected').attr('id');
+            $('#kotaEdit').empty();
+            if (id_prov) {
+                $.ajax({
+                    url : url + 'kabupaten?idpropinsi=' + id_prov,
+                    type : "get",
+                    dataType : "json"
+                    }).done(function(result){
+                        let kabupaten = result.data;
+                        // console.log(kabupaten);
+                        $.each(kabupaten, function (i, data) {
+                            var kab = `<option id="`+ data.id +`" value="`+ data.name +`">`+ data.name +`</option>`;
+                            $('#kotaEdit').append(kab);
+                            if (i === 0) {
+                                $('#kecEdit').empty();
+                                $.ajax({
+                                    url: url +'kecamatan?idkabupaten='+ data.id,
+                                    type: 'get',
+                                    dataType: 'json',
+                                    success: function(result){
+                                        var kecamatan = result.data;
+                                        $.each(kecamatan, function(i, data){
+                                            var kec = `<option id="`+ data.id +`" value="`+ data.name +`">`+ data.name +`</option>`;
+                                            $('#kecEdit').append(kec);
+                                        });
+                                    }
+                                });
+                            }
+                        })
+                    }).fail(function(xhr, error, status){
+                        console.log(xhr);
+                    })
+            }else{
+                $('#kotaEdit').empty();
+            }
+        });
+        // ambil data kecamatan berdasarkan kabupaten
+        $('#kotaEdit').on('change', function(){
+            let id_kec = $(this).children(':selected').attr('id');
+            $('#kecEdit').empty();
+            if (id_kec) {
+                $.ajax({
+                    url : url + 'kecamatan?idkabupaten=' + id_kec,
+                    type : "get",
+                    dataType : "json"
+                    }).done(function(result){
+                        let kecamatan = result.data;
+                        // console.log(kecamatan);
+                        $.each(kecamatan, function (i, data) {
+                            var kec = `<option value="`+ data.name +`">`+ data.name +`</option>`;
+                            $('#kecEdit').append(kec);
+                        })
+                    }).fail(function(xhr, error, status){
+                        console.log(xhr);
+                    })
+            }else{
+                $('#kecEdit').empty();
+            }
+        })
+
+        
+
+        // end get edit
+
     });
 
     $('#search').on('keyup', function(){
@@ -635,90 +782,183 @@
 <script src="{{ asset('frontend/js/moment.min.js') }}"></script>
 {{-- <script src="{{ asset('frontend/js/bootstrap-datetimepicker.min.js') }}"></script> --}}
 {{-- <script src="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.0.1/build/ol.js"></script> --}}
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBsVHufr4pDssMKPVCFZO6yXe58oalrtHs&callback=initMap"async defer></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBsVHufr4pDssMKPVCFZO6yXe58oalrtHs"></script>
 @yield('script')
 
 
 <script>
-    var map;
-    var key = 'AIzaSyBsVHufr4pDssMKPVCFZO6yXe58oalrtHs';
-    var alamat = document.getElementById('alamat');
-    function initMap() {
-        map = new google.maps.Map(document.getElementById('map'), {
-            center: {lat: -2.6000285, lng: 118.015776},
-            zoom: 10
-        });
 
-        function domInputValue(data){
-            var address = data[0].formatted_address;
-            alamat.innerHTML = address;
-        }
+    $(document).ready(function(){
+        var map;
+        var key = 'AIzaSyBsVHufr4pDssMKPVCFZO6yXe58oalrtHs';
+        var idMap = $('.map').attr('id');
 
-        var marker;
-        function placeMarker(position, map) {
-            if (marker) {
-                marker.setPosition(position)
-            } else {
-                marker = new google.maps.Marker({
-                    position: position, 
-                    map: map
-                });
-            }
-            map.panTo(position);
-        }
+        console.log(idMap);
 
-        function reverseGeocode(_lat, _lng) {
-            fetch('https://maps.googleapis.com/maps/api/geocode/json?latlng='+_lat+','+_lng+'&key=' + key)
-                .then(function(response) {
-                    return response.json();
-                }).then(function(json) {
-                    // data
-                    var plus_code = json.plus_code;
-                    var results = json.results;
-                    domInputValue(results);
-                    console.log(results);
-                });
-        }
-
-        map.addListener('click', function(e){
-            var result = "";
-            var coords = e.latLng;
-            result += coords.lat() + ",";
-            result += coords.lng();
-            var latlong = document.getElementById('latlong');
-            latlong.setAttribute('value', result)
-            reverseGeocode(coords.lat(), coords.lng());
-            placeMarker(e.latLng, map);
-
-        });
-
-
-
-        // Try HTML5 geolocation.
-        if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(function(position) {
-            var pos = {
-            lat: position.coords.latitude,
-            lng: position.coords.longitude
-            };
-            map.setCenter(pos);
-            map.setZoom(17);
-        }, function() {
-            handleLocationError(true, map.getCenter());
-        });
-        } else {
-        // Browser doesn't support Geolocation
-        handleLocationError(false, map.getCenter());
-        }
-    }
-
+        // handle error
         function handleLocationError(browserHasGeolocation, infoWindow, pos) {
             infoWindow.setPosition(pos);
             infoWindow.setContent(browserHasGeolocation ?
                                 'Error: The Geolocation service failed.' :
                                 'Error: Your browser doesn\'t support geolocation.');
             infoWindow.open(map);
-    }
+        }
+
+        if (idMap === 'addProductMap') {
+            map = new google.maps.Map(document.getElementById('addProductMap'), {
+                center: {lat: -2.6000285, lng: 118.015776},
+                zoom: 10,
+                gestureHandling: 'greedy'
+            });
+
+            function domInputValue(data){
+                var address = data[0].formatted_address;
+                var alamat = document.getElementById('alamat');
+                alamat.innerHTML = address;
+            }
+
+            var marker;
+            function placeMarker(position, map) {
+                if (marker) {
+                    marker.setPosition(position)
+                } else {
+                    marker = new google.maps.Marker({
+                        position: position, 
+                        map: map
+                    });
+                }
+                map.panTo(position);
+            }
+
+            function reverseGeocode(_lat, _lng) {
+                fetch('https://maps.googleapis.com/maps/api/geocode/json?latlng='+_lat+','+_lng+'&key=' + key)
+                    .then(function(response) {
+                        return response.json();
+                    }).then(function(json) {
+                        // data
+                        var plus_code = json.plus_code;
+                        var results = json.results;
+                        domInputValue(results);
+                        console.log(results);
+                    });
+            }
+
+            map.addListener('click', function(e){
+                console.log(e.latLng);
+                var result = "";
+                var coords = e.latLng;
+                result += coords.lat() + ",";
+                result += coords.lng();
+                var latlong = document.getElementById('latlong');
+                latlong.setAttribute('value', result)
+                reverseGeocode(coords.lat(), coords.lng());
+                placeMarker(e.latLng, map);
+
+            });
+
+            // Try HTML5 geolocation.
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    var pos = {
+                    lat: position.coords.latitude,
+                    lng: position.coords.longitude
+                    };
+                    map.setCenter(pos);
+                    map.setZoom(17);
+                }, function() {
+                    handleLocationError(true, map.getCenter());
+                });
+            } else {
+                handleLocationError(false, map.getCenter());
+            }
+
+        }else if(idMap === 'editProductMap'){
+            var latlong = $('#latlong').val();
+            var koordinat = latlong.split(',');
+            // console.log(koordinat);
+            var lat = Number(koordinat[0]);
+            var lng = Number(koordinat[1]);
+            // console.log(lat);
+            var position = {lat: lat, lng: lng};
+            map = new google.maps.Map(document.getElementById('editProductMap'), {
+                center: {lat: lat, lng: lng},
+                zoom: 10,
+                gestureHandling: 'greedy'
+            });
+
+            function domInputValue(data){
+                var address = data[0].formatted_address;
+                var alamat = document.getElementById('alamat');
+                alamat.innerHTML = address;
+            }
+
+            var marker = new google.maps.Marker({
+                position: position,
+                map: map,
+                title: 'Hello World!'
+            });
+
+            function reverseGeocode(_lat, _lng) {
+                fetch('https://maps.googleapis.com/maps/api/geocode/json?latlng='+_lat+','+_lng+'&key=' + key)
+                    .then(function(response) {
+                        return response.json();
+                    }).then(function(json) {
+                        // data
+                        var plus_code = json.plus_code;
+                        var results = json.results;
+                        domInputValue(results);
+                        console.log(results);
+                    });
+            }
+
+            var marker;
+            function placeMarker(position, map) {
+                if (marker) {
+                    marker.setPosition(position)
+                } else {
+                    marker = new google.maps.Marker({
+                        position: position, 
+                        map: map
+                    });
+                }
+                map.panTo(position);
+            }
+
+            map.addListener('click', function(e){
+                console.log(e.latLng);
+                var result = "";
+                var coords = e.latLng;
+                result += coords.lat() + ",";
+                result += coords.lng();
+                var latlong = document.getElementById('latlong');
+                latlong.setAttribute('value', result)
+                reverseGeocode(coords.lat(), coords.lng());
+                placeMarker(e.latLng, map);
+
+            });
+
+            // Try HTML5 geolocation.
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function() {
+                    var pos = {
+                        lat: lat,
+                        lng: lng
+                    };
+                    map.setCenter(pos);
+                    map.setZoom(15);
+                }, function() {
+                    handleLocationError(true, map.getCenter());
+                });
+            } else {
+                handleLocationError(false, map.getCenter());
+            }
+        }
+
+    });
+    
+    
+
+    
 </script>
 
 </body>

@@ -366,7 +366,7 @@
                                     {{__('Lokasi')}}
                                 </div>
                                 <div class="form-box-content p-3">
-                                    <div id="map" class="map mb-3"></div>
+                                    <div id="addProductMap" class="map mb-3"></div>
                                     <input type="hidden" class="form-control mb-3" name="latlong" id="latlong">
                                     <div class="row">
                                         <div class="col-md-2">
@@ -645,7 +645,7 @@
 
         var i = 0;
     	function add_more_customer_choice_option(){
-    		$('#customer_choice_options').append('<div class="row mb-3"><div class="col-8 col-md-3 order-1 order-md-0"><input type="hidden" name="choice_no[]" value="'+i+'"><input type="text" class="form-control" name="choice[]" value="Periode" disabled></div><div class="col-12 col-md-7 col-xl-8 order-3 order-md-0 mt-2 mt-md-0"><input type="text" class="form-control tagsInput auto" name="choice_options_'+i+'[]" placeholder="Harian / Bulanan / Tahunan" onchange="update_sku()"></div><div class="col-4 col-xl-1 col-md-2 order-2 order-md-0 text-right"><button type="button" onclick="delete_row(this)" class="btn btn-link btn-icon text-danger"><i class="fa fa-trash-o"></i></button></div></div>');
+    		$('#customer_choice_options').append('<div class="row mb-3"><div class="col-8 col-md-3 order-1 order-md-0"><input type="hidden" name="choice_no[]" value="'+i+'"><input type="text" class="form-control" name="choice[]" value="Periode" readonly></div><div class="col-12 col-md-7 col-xl-8 order-3 order-md-0 mt-2 mt-md-0"><input type="text" class="form-control tagsInput auto" name="choice_options_'+i+'[]" placeholder="Harian / Bulanan / Tahunan" onchange="update_sku()"></div><div class="col-4 col-xl-1 col-md-2 order-2 order-md-0 text-right"><button type="button" onclick="delete_row(this)" class="btn btn-link btn-icon text-danger"><i class="fa fa-trash-o"></i></button></div></div>');
     		i++;
             $('.tagsInput').tagsinput('items');
     	}
