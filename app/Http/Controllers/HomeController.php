@@ -500,4 +500,9 @@ class HomeController extends Controller
     public function privacypolicy(){
         return view("frontend.policies.privacypolicy");
     }
+
+    public function getlistProduct(){
+        return Product::all();
+    }
+
 }

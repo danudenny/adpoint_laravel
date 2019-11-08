@@ -9,6 +9,7 @@
 
 @php
     $seosetting = \App\SeoSetting::first();
+    $product = \App\Product::first();
 @endphp
 
 <meta charset="utf-8">
@@ -789,12 +790,24 @@
 <script>
 
     $(document).ready(function(){
+        function getDataProduct(){
+            var dataProduct = [];
+            $.ajax({
+                async: false,
+                url: '{{ url("/listproduct") }}',
+                type: 'get',
+                dataType: 'json',
+                success: function(result){
+                    dataProduct = result;
+                }
+            });
+            return dataProduct;
+        }
+
+        console.log(getDataProduct());
         var map;
         var key = 'AIzaSyBsVHufr4pDssMKPVCFZO6yXe58oalrtHs';
         var idMap = $('.map').attr('id');
-
-        console.log(idMap);
-
         // handle error
         function handleLocationError(browserHasGeolocation, infoWindow, pos) {
             infoWindow.setPosition(pos);
@@ -934,7 +947,6 @@
                 latlong.setAttribute('value', result)
                 reverseGeocode(coords.lat(), coords.lng());
                 placeMarker(e.latLng, map);
-
             });
 
             // Try HTML5 geolocation.
@@ -946,6 +958,67 @@
                     };
                     map.setCenter(pos);
                     map.setZoom(15);
+                }, function() {
+                    handleLocationError(true, map.getCenter());
+                });
+            } else {
+                handleLocationError(false, map.getCenter());
+            }
+        }else if(idMap === 'dashboardMap'){
+            map = new google.maps.Map(document.getElementById('dashboardMap'), {
+                center: {lat: -2.6000285, lng: 118.015776},
+                zoom: 10,
+                gestureHandling: 'greedy'
+            });
+
+            var product = getDataProduct();
+            $.each(product, function(i, data){
+                var nama = data.name;
+                var alamat = data.alamat;
+                var photos = JSON.parse(data.photos);
+                var coords = data.latlong;
+                var latlong = coords.split(',');
+                console.log(latlong);
+                var url = 'http://localhost:8000/' + photos[0];
+                // var url = {!! url("/") !!};
+                //console.log(url);
+                var template = '<div id="content">'+
+                            '<div id="siteNotice">'+
+                            '</div>'+
+                            '<h4 id="firstHeading" class="firstHeading">'+ nama +'</h4>'+
+                            '<div id="bodyContent">'+
+                            '<img src="'+ url +'" class="img-thumbnail" width="300" height="200">'+
+                            '</div>'+
+                            '</div>';
+                
+                var infowindow = new google.maps.InfoWindow({
+                    content: template
+                });
+                var lat = Number(latlong[0]);
+                var lng = Number(latlong[1]);
+                var posisi = {lat: lat, lng: lng};
+                var marker = new google.maps.Marker({
+                    position: posisi,
+                    map: map,
+                    title: nama
+                });
+                marker.addListener('click', function() {
+                    infowindow.open(map, marker);
+                });
+
+            });
+            
+            
+            
+            // Try HTML5 geolocation.
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    var pos = {
+                    lat: position.coords.latitude,
+                    lng: position.coords.longitude
+                    };
+                    map.setCenter(pos);
+                    map.setZoom(17);
                 }, function() {
                     handleLocationError(true, map.getCenter());
                 });

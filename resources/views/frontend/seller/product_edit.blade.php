@@ -232,7 +232,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-box bg-white mt-4">
+                            <div class="form-box bg-white mt-4" hidden>
                                 <div class="form-box-title px-3 py-2">
                                     {{__('Videos')}}
                                 </div>
@@ -269,7 +269,7 @@
                                             <label>{{__('Meta Title')}}</label>
                                         </div>
                                         <div class="col-md-10">
-                                            <input type="text" class="form-control mb-3" value="{{ $product->meta_title }}" placeholder="{{__('Meta Title')}}">
+                                            <input type="text" class="form-control mb-3" name="meta_title" value="{{ $product->meta_title }}" placeholder="{{__('Meta Title')}}">
                                         </div>
                                     </div>
                                     <div class="row">
@@ -349,15 +349,15 @@
                                             <input type="number" min="0" step="0.01" class="form-control mb-3" name="unit_price" placeholder="{{__('Unit Price')}} ({{__('Base Price')}})" value="{{$product->unit_price}}">
                                         </div>
                                     </div>
-                                    <div class="row">
+                                    <div class="row" hidden>
                                         <div class="col-md-2">
                                             <label>{{__('Purchase Price')}} <span class="required-star">*</span></label>
                                         </div>
                                         <div class="col-md-10">
-                                            <input type="number" min="0" step="0.01" class="form-control mb-3" name="purchase_price" placeholder="{{__('Purchase Price')}}" value="{{$product->purchase_price}}" required>
+                                            <input type="number" min="0" step="0.01" class="form-control mb-3" name="purchase_price" placeholder="{{__('Purchase Price')}}" value="{{$product->purchase_price}}">
                                         </div>
                                     </div>
-                                    <div class="row">
+                                    <div class="row" hidden>
                                         <div class="col-md-2">
                                             <label>{{__('Tax')}}</label>
                                         </div>
@@ -473,7 +473,7 @@
                                         </div>
                                         <div class="col-md-10">
                                             <small id="namaKec" hidden>{{ $product->kecamatan }}</small>
-                                            <select name="kota" id="kecEdit" class="form-control mb-3">
+                                            <select name="kecamatan" id="kecEdit" class="form-control mb-3">
                                                 
                                             </select>
                                         </div>
