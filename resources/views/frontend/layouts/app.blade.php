@@ -908,7 +908,7 @@
             var marker = new google.maps.Marker({
                 position: position,
                 map: map,
-                title: 'Hello World!'
+                title: latlong
             });
 
             function reverseGeocode(_lat, _lng) {
@@ -973,23 +973,24 @@
 
             var product = getDataProduct();
             $.each(product, function(i, data){
-                var nama = data.name;
+                var name = data.name;
                 var alamat = data.alamat;
                 var photos = JSON.parse(data.photos);
                 var coords = data.latlong;
                 var latlong = coords.split(',');
-                console.log(latlong);
-                var url = 'http://localhost:8000/' + photos[0];
-                // var url = {!! url("/") !!};
-                //console.log(url);
-                var template = '<div id="content">'+
-                            '<div id="siteNotice">'+
-                            '</div>'+
-                            '<h4 id="firstHeading" class="firstHeading">'+ nama +'</h4>'+
-                            '<div id="bodyContent">'+
-                            '<img src="'+ url +'" class="img-thumbnail" width="300" height="200">'+
-                            '</div>'+
-                            '</div>';
+                var base_url = {!! json_encode(url('/')) !!};
+                var poto = base_url+'/'+photos[0];
+                var detail = '{{ url("/product/") }}';
+                var template = `<div class="card" style="width: 18rem;">
+                                <div class="card-body pt-1 pb-1 pr-1 pl-1">
+                                    <a href="`+detail+ '/' + data.slug +`" target="_blank">
+                                        <strong class="text-primary text-uppercase">`+name+`</strong>
+                                        <img src="`+poto+`" class="card-img-top">
+                                    </a>
+                                    <i class="fa fa-map-marker"></i>
+                                    <small class="text-primary">`+alamat+`</small>
+                                </div>
+                                </div>`;
                 
                 var infowindow = new google.maps.InfoWindow({
                     content: template
@@ -1000,15 +1001,16 @@
                 var marker = new google.maps.Marker({
                     position: posisi,
                     map: map,
-                    title: nama
+                    title: name
                 });
-                marker.addListener('click', function() {
+                marker.addListener('mouseover', function() {
+                    infowindow.open(map, marker);
+                });
+                marker.addListener('mouseout', function() {
                     infowindow.open(map, marker);
                 });
 
             });
-            
-            
             
             // Try HTML5 geolocation.
             if (navigator.geolocation) {
@@ -1016,6 +1018,58 @@
                     var pos = {
                     lat: position.coords.latitude,
                     lng: position.coords.longitude
+                    };
+                    map.setCenter(pos);
+                    map.setZoom(17);
+                }, function() {
+                    handleLocationError(true, map.getCenter());
+                });
+            } else {
+                handleLocationError(false, map.getCenter());
+            }
+        }else if(idMap === 'detailsProductMap'){
+            map = new google.maps.Map(document.getElementById('detailsProductMap'), {
+                center: {lat: -2.6000285, lng: 118.015776},
+                zoom: 10,
+                gestureHandling: 'greedy'
+            });
+
+            var coords = $('#coords').text();
+            var alamat = $('#alamat').text();
+            var latlong = coords.split(',');
+            var lat = Number(latlong[0]);
+            var lng = Number(latlong[1]);
+            var posisi = {lat: lat, lng: lng};
+
+            var template = `<div class="card" style="width: 14rem;">
+                            <div class="card-body">
+                                <strong class="text-primary">`+alamat+`</strong>
+                            </div>
+                            </div>`;
+                
+            var infowindow = new google.maps.InfoWindow({
+                content: template
+            });
+
+            var marker = new google.maps.Marker({
+                position: posisi,
+                map: map,
+                title: coords
+            });
+
+            marker.addListener('mouseover', function() {
+                infowindow.open(map, marker);
+            });
+            marker.addListener('mouseout', function() {
+                infowindow.open(map, marker);
+            });
+
+            // Try HTML5 geolocation.
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    var pos = {
+                    lat: lat,
+                    lng: lng
                     };
                     map.setCenter(pos);
                     map.setZoom(17);

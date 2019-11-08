@@ -480,16 +480,19 @@
                                 </li>
                                 @endif
                             </ul>
-
                             <div class="tab-content pt-0">
                                 <div class="tab-pane active show" id="tab_default_1">
                                     <div class="py-2 px-4">
                                         <div class="row">
-                                            <div class="col-md-12">
-                                                <?php echo $product->description; ?>
+                                            <div class="col-md-5">
+                                                <small id="alamat" hidden>{{ $product->alamat }}</small>
+                                                <p>{{ $product->description }}</p>
+                                            </div>
+                                            <div class="col-md-7">
+                                                <small id="coords" hidden>{{ $product->latlong }}</small>
+                                                <div id="detailsProductMap" class="map" style="height: 300px;"></div>
                                             </div>
                                         </div>
-                                        <span class="space-md-md"></span>
                                     </div>
                                 </div>
 
