@@ -147,66 +147,67 @@ class ProductController extends Controller
         //     $product->colors = json_encode($colors);
         // }
 
-        $choice_options = array();
+        // $choice_options = array();
 
-        if($request->has('choice')){
-            foreach ($request->choice_no as $key => $no) {
-                $str = 'choice_options_'.$no;
-                $item['name'] = 'choice_'.$no;
-                $item['title'] = $request->choice[$key];
-                $item['options'] = explode(',', implode('|', $request[$str]));
-                array_push($choice_options, $item);
-            }
-        }
+        // if($request->has('choice')){
+        //     foreach ($request->choice_no as $key => $no) {
+        //         $str = 'choice_options_'.$no;
+        //         $item['name'] = 'choice_'.$no;
+        //         $item['title'] = $request->choice[$key];
+        //         $item['options'] = explode(',', implode('|', $request[$str]));
+        //         array_push($choice_options, $item);
+        //     }
+        // }
 
-        $product->choice_options = json_encode($choice_options);
+        $product->choice_options = $request->choice_options;
+        $product->variations = $request->variations;
 
-        $variations = array();
+        // $variations = array();
 
-        //combinations start
-        $options = array();
-        if($request->has('colors_active') && $request->has('colors') && count($request->colors) > 0){
-            $colors_active = 1;
-            array_push($options, $request->colors);
-        }
+        // //combinations start
+        // $options = array();
+        // if($request->has('colors_active') && $request->has('colors') && count($request->colors) > 0){
+        //     $colors_active = 1;
+        //     array_push($options, $request->colors);
+        // }
 
-        if($request->has('choice_no')){
-            foreach ($request->choice_no as $key => $no) {
-                $name = 'choice_options_'.$no;
-                $my_str = implode('|',$request[$name]);
-                array_push($options, explode(',', $my_str));
-            }
-        }
+        // if($request->has('choice_no')){
+        //     foreach ($request->choice_no as $key => $no) {
+        //         $name = 'choice_options_'.$no;
+        //         $my_str = implode('|',$request[$name]);
+        //         array_push($options, explode(',', $my_str));
+        //     }
+        // }
 
         //Generates the combinations of customer choice options
-        $combinations = combinations($options);
-        if(count($combinations[0]) > 0){
-            foreach ($combinations as $key => $combination){
-                $str = '';
-                foreach ($combination as $key => $item){
-                    if($key > 0 ){
-                        $str .= '-'.str_replace(' ', '', $item);
-                    }
-                    else{
-                        if($request->has('colors_active') && $request->has('colors') && count($request->colors) > 0){
-                            $color_name = \App\Color::where('code', $item)->first()->name;
-                            $str .= $color_name;
-                        }
-                        else{
-                            $str .= str_replace(' ', '', $item);
-                        }
-                    }
-                }
-                $item = array();
-                $item['price'] = $request['price_'.str_replace('.', '_', $str)];
-                $item['sku'] = $request['sku_'.str_replace('.', '_', $str)];
-                $item['qty'] = $request['qty_'.str_replace('.', '_', $str)];
-                $variations[$str] = $item;
-            }
-        }
-        //combinations end
+        // $combinations = combinations($options);
+        // if(count($combinations[0]) > 0){
+        //     foreach ($combinations as $key => $combination){
+        //         $str = '';
+        //         foreach ($combination as $key => $item){
+        //             if($key > 0 ){
+        //                 $str .= '-'.str_replace(' ', '', $item);
+        //             }
+        //             else{
+        //                 if($request->has('colors_active') && $request->has('colors') && count($request->colors) > 0){
+        //                     $color_name = \App\Color::where('code', $item)->first()->name;
+        //                     $str .= $color_name;
+        //                 }
+        //                 else{
+        //                     $str .= str_replace(' ', '', $item);
+        //                 }
+        //             }
+        //         }
+        //         $item = array();
+        //         $item['price'] = $request['price_'.str_replace('.', '_', $str)];
+        //         $item['sku'] = $request['sku_'.str_replace('.', '_', $str)];
+        //         $item['qty'] = $request['qty_'.str_replace('.', '_', $str)];
+        //         $variations[$str] = $item;
+        //     }
+        // }
+        // //combinations end
 
-        $product->variations = json_encode($variations);
+        // $product->variations = json_encode($variations);
 
         $data = openJSONFile('en');
         $data[$product->name] = $product->name;
