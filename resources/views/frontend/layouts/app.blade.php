@@ -52,7 +52,7 @@
 
 <!-- Bootstrap -->
 <link rel="stylesheet" href="{{ asset('frontend/css/bootstrap.min.css') }}" type="text/css">
-
+<link type="text/css" href="{{ asset('frontend/css/select2.min.css') }}" rel="stylesheet">
 
 <!-- Icons -->
 <link rel="stylesheet" href="{{ asset('frontend/css/font-awesome.min.css') }}" type="text/css">
@@ -163,15 +163,14 @@
 
 <!-- Plugins: Sorted A-Z -->
 <script src="{{ asset('frontend/js/jquery.countdown.min.js') }}"></script>
-<script src="{{ asset('frontend/js/select2.min.js') }}"></script>
 <script src="{{ asset('frontend/js/nouislider.min.js') }}"></script>
-
 
 
 <script src="{{ asset('frontend/js/sweetalert2.min.js') }}"></script>
 <script src="{{ asset('frontend/js/slick.min.js') }}"></script>
 
 <script src="{{ asset('frontend/js/jquery.share.js') }}"></script>
+<script src="{{ asset('frontend/js/select2.min.js') }}"></script>
 
 <script type="text/javascript">
     function showFrontendAlert(type, message){
@@ -804,7 +803,7 @@
             return dataProduct;
         }
 
-        console.log(getDataProduct());
+        // console.log(getDataProduct());
         var map;
         var key = 'AIzaSyBsVHufr4pDssMKPVCFZO6yXe58oalrtHs';
         var idMap = $('.map').attr('id');
@@ -817,18 +816,25 @@
             infoWindow.open(map);
         }
 
+        function reverseGeocode(_lat, _lng) {
+            fetch('https://maps.googleapis.com/maps/api/geocode/json?latlng='+_lat+','+_lng+'&key=' + key)
+                .then(function(response) {
+                    return response.json();
+                }).then(function(json) {
+                    // data
+                    var plus_code = json.plus_code;
+                    var data = json.results;
+                    var address = data[0].formatted_address;
+                    document.getElementById('alamat').innerHTML = address;
+                });
+        }
+
         if (idMap === 'addProductMap') {
             map = new google.maps.Map(document.getElementById('addProductMap'), {
                 center: {lat: -2.6000285, lng: 118.015776},
                 zoom: 10,
                 gestureHandling: 'greedy'
             });
-
-            function domInputValue(data){
-                var address = data[0].formatted_address;
-                var alamat = document.getElementById('alamat');
-                alamat.innerHTML = address;
-            }
 
             var marker;
             function placeMarker(position, map) {
@@ -843,21 +849,7 @@
                 map.panTo(position);
             }
 
-            function reverseGeocode(_lat, _lng) {
-                fetch('https://maps.googleapis.com/maps/api/geocode/json?latlng='+_lat+','+_lng+'&key=' + key)
-                    .then(function(response) {
-                        return response.json();
-                    }).then(function(json) {
-                        // data
-                        var plus_code = json.plus_code;
-                        var results = json.results;
-                        domInputValue(results);
-                        console.log(results);
-                    });
-            }
-
             map.addListener('click', function(e){
-                console.log(e.latLng);
                 var result = "";
                 var coords = e.latLng;
                 result += coords.lat() + ",";
@@ -877,7 +869,7 @@
                     lng: position.coords.longitude
                     };
                     map.setCenter(pos);
-                    map.setZoom(17);
+                    map.setZoom(15);
                 }, function() {
                     handleLocationError(true, map.getCenter());
                 });
@@ -899,30 +891,11 @@
                 gestureHandling: 'greedy'
             });
 
-            function domInputValue(data){
-                var address = data[0].formatted_address;
-                var alamat = document.getElementById('alamat');
-                alamat.innerHTML = address;
-            }
-
             var marker = new google.maps.Marker({
                 position: position,
                 map: map,
                 title: latlong
             });
-
-            function reverseGeocode(_lat, _lng) {
-                fetch('https://maps.googleapis.com/maps/api/geocode/json?latlng='+_lat+','+_lng+'&key=' + key)
-                    .then(function(response) {
-                        return response.json();
-                    }).then(function(json) {
-                        // data
-                        var plus_code = json.plus_code;
-                        var results = json.results;
-                        domInputValue(results);
-                        console.log(results);
-                    });
-            }
 
             var marker;
             function placeMarker(position, map) {
@@ -977,8 +950,15 @@
                 var alamat = data.alamat;
                 var photos = JSON.parse(data.photos);
                 var coords = data.latlong;
-                var latlong = coords.split(',');
+                var latlong;
+                if (coords === null) {
+                    coords = "-6.566656540244916,106.62076009899442";
+                    latlong = coords.split(",");
+                }else{
+                    latlong = coords.split(",");
+                }
                 var base_url = {!! json_encode(url('/')) !!};
+                console.log(base_url);
                 var poto = base_url+'/'+photos[0];
                 var detail = '{{ url("/product/") }}';
                 var template = `<div class="card" style="width: 18rem;">
@@ -1020,7 +1000,7 @@
                     lng: position.coords.longitude
                     };
                     map.setCenter(pos);
-                    map.setZoom(17);
+                    map.setZoom(15);
                 }, function() {
                     handleLocationError(true, map.getCenter());
                 });
@@ -1034,9 +1014,15 @@
                 gestureHandling: 'greedy'
             });
 
-            var coords = $('#coords').text();
             var alamat = $('#alamat').text();
-            var latlong = coords.split(',');
+            var coords = $('#coords').text();
+            var latlong;
+            if (coords === null) {
+                coords = "-6.566656540244916,106.62076009899442";
+                latlong = coords.split(",");
+            }else{
+                latlong = coords.split(",");
+            }
             var lat = Number(latlong[0]);
             var lng = Number(latlong[1]);
             var posisi = {lat: lat, lng: lng};
@@ -1063,7 +1049,6 @@
             marker.addListener('mouseout', function() {
                 infowindow.open(map, marker);
             });
-
             // Try HTML5 geolocation.
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(function(position) {
@@ -1072,7 +1057,7 @@
                     lng: lng
                     };
                     map.setCenter(pos);
-                    map.setZoom(17);
+                    map.setZoom(15);
                 }, function() {
                     handleLocationError(true, map.getCenter());
                 });
