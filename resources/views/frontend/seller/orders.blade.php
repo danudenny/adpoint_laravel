@@ -39,11 +39,11 @@
                                         <thead>
                                             <tr>
                                                 <th>#</th>
-                                                <th>{{__('Order Code')}}</th>
-                                                <th>{{__('Num. of Products')}}</th>
+                                                <th>{{__('Order Number')}}</th>
+                                                <th>{{__('Num. of Media')}}</th>
                                                 <th>{{__('Customer')}}</th>
                                                 <th>{{__('Amount')}}</th>
-                                                <th>{{__('Delivery Status')}}</th>
+                                                <th>{{__('Order Status')}}</th>
                                                 <th>{{__('Payment Status')}}</th>
                                                 <th>{{__('Options')}}</th>
                                             </tr>

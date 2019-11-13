@@ -158,18 +158,18 @@
                                         @php
                                             $brands = array();
                                         @endphp
-                                        @if(isset($subsubcategory_id))
+                                        @if(isset($subcategory_id))
                                             @php
-                                                foreach (json_decode(\App\SubSubCategory::find($subsubcategory_id)->brands) as $brand) {
+                                                foreach (json_decode(\App\SubCategory::find($subcategory_id)->brands) as $brand) {
                                                     if(!in_array($brand, $brands)){
                                                         array_push($brands, $brand);
                                                     }
                                                 }
                                             @endphp
                                         @elseif(isset($subcategory_id))
-                                            @foreach (\App\SubCategory::find($subcategory_id)->subsubcategories as $key => $subsubcategory)
+                                            @foreach (\App\SubCategory::find($subcategory_id)->subcategories as $key => $subcategory)
                                                 @php
-                                                    foreach (json_decode($subsubcategory->brands) as $brand) {
+                                                    foreach (json_decode($subcategory->brands) as $brand) {
                                                         if(!in_array($brand, $brands)){
                                                             array_push($brands, $brand);
                                                         }
@@ -178,9 +178,9 @@
                                             @endforeach
                                         @elseif(isset($category_id))
                                             @foreach (\App\Category::find($category_id)->subcategories as $key => $subcategory)
-                                                @foreach ($subcategory->subsubcategories as $key => $subsubcategory)
+                                                @foreach ($subcategory->subcategories as $key => $subcategory)
                                                     @php
-                                                        foreach (json_decode($subsubcategory->brands) as $brand) {
+                                                        foreach (json_decode($subcategory->brands) as $brand) {
                                                             if(!in_array($brand, $brands)){
                                                                 array_push($brands, $brand);
                                                             }

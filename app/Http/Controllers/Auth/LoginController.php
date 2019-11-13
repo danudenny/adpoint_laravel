@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\Auth;
 
+use Redirect;
+use Illuminate\Support\MessageBag;
+use Illuminate\Support\Facades\Input;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Socialite;
@@ -84,7 +87,9 @@ class LoginController extends Controller
             auth()->login($newUser, true);
         }
         if(session('link') != null){
-            return redirect(session('link'));
+            $errors = new MessageBag(['password' => ['Email and/or password invalid.']]);
+            return Redirect::back()->withErrors($errors)->withInput(Input::except('password'));
+            // return redirect(session('link'));
         }
         else{
             return redirect()->route('dashboard');

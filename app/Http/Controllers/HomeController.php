@@ -323,7 +323,7 @@ class HomeController extends Controller
         $sort_by = $request->sort_by;
         $category_id = (Category::where('slug', $request->category)->first() != null) ? Category::where('slug', $request->category)->first()->id : null;
         $subcategory_id = (SubCategory::where('slug', $request->subcategory)->first() != null) ? SubCategory::where('slug', $request->subcategory)->first()->id : null;
-        $subsubcategory_id = (SubSubCategory::where('slug', $request->subsubcategory)->first() != null) ? SubSubCategory::where('slug', $request->subsubcategory)->first()->id : null;
+        // $subsubcategory_id = (SubSubCategory::where('slug', $request->subsubcategory)->first() != null) ? SubSubCategory::where('slug', $request->subsubcategory)->first()->id : null;
         $min_price = $request->min_price;
         $max_price = $request->max_price;
         $seller_id = $request->seller_id;
@@ -339,9 +339,9 @@ class HomeController extends Controller
         if($subcategory_id != null){
             $conditions = array_merge($conditions, ['subcategory_id' => $subcategory_id]);
         }
-        if($subsubcategory_id != null){
-            $conditions = array_merge($conditions, ['subsubcategory_id' => $subsubcategory_id]);
-        }
+        // if($subsubcategory_id != null){
+        //     $conditions = array_merge($conditions, ['subsubcategory_id' => $subsubcategory_id]);
+        // }
         if($seller_id != null){
             $conditions = array_merge($conditions, ['user_id' => Seller::findOrFail($seller_id)->user->id]);
         }
@@ -380,7 +380,7 @@ class HomeController extends Controller
 
         $products = filter_products($products)->paginate(12)->appends(request()->query());
 
-        return view('frontend.product_listing', compact('products', 'query', 'category_id', 'subcategory_id', 'subsubcategory_id', 'brand_id', 'sort_by', 'seller_id','min_price', 'max_price'));
+        return view('frontend.product_listing', compact('products', 'query', 'category_id', 'subcategory_id', 'brand_id', 'sort_by', 'seller_id','min_price', 'max_price'));
     }
 
     public function product_content(Request $request){
