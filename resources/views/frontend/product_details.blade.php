@@ -171,7 +171,7 @@
 
                                 @foreach (json_decode($product->choice_options) as $key => $choice)
 
-                                {{-- <div class="row no-gutters">
+                                <div class="row no-gutters">
                                     <div class="col-2">
                                         <div class="product-description-label mt-2 ">{{ $choice->title }}:</div>
                                     </div>
@@ -179,13 +179,13 @@
                                         <ul id="choiceOptions" class="list-inline checkbox-alphanumeric checkbox-alphanumeric--style-1 mb-2">
                                             @foreach ($choice->options as $key => $option)
                                                 <li>
-                                                    <input type="radio" id="{{ $choice->name }}-{{ $option }}" name="{{ $choice->title }}" value="{{ $option }}" @if($key == 0) checked @endif>
+                                                    <input type="radio" id="{{ $choice->title }}-{{ $option }}" name="{{ $choice->title }}" value="{{ $option }}" @if($key == 0) checked @endif>
                                                     <label for="{{ $choice->title }}-{{ $option }}">{{ $option }}</label>
                                                 </li>
                                             @endforeach
                                         </ul>
                                     </div>
-                                </div> --}}
+                                </div>
 
                                 @endforeach
 
