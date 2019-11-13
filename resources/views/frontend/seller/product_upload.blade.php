@@ -42,21 +42,20 @@
                                 <div class="form-box-content p-3">
                                     <div class="row">
                                         <div class="col-md-2">
-                                            <label>{{__('Media Name')}} <span class="required-star">*</span></label>
-                                        </div>
-                                        <div class="col-md-10">
-                                            <input type="text" id="product_name" class="form-control mb-3" name="name" placeholder="{{__('Product Name')}}" required>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-2">
                                             <label>{{__('Media Category')}} <span class="required-star">*</span></label>
                                         </div>
                                         <div class="col-md-10">
                                             <div class="form-control mb-3 c-pointer" data-toggle="modal" data-target="#categorySelectModal" id="product_category">{{__('Select a category')}}</div>
                                             <input type="hidden" name="category_id" id="category_id" value="" required>
                                             <input type="hidden" name="subcategory_id" id="subcategory_id" value="" required>
-                                            {{-- <input type="hidden" name="subsubcategory_id" id="subsubcategory_id" value="" required> --}}
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <label>{{__('Media Name')}} <span class="required-star">*</span></label>
+                                        </div>
+                                        <div class="col-md-10">
+                                            <input type="text" id="product_name" class="form-control mb-3" name="name" placeholder="{{__('Product Name')}}" required>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -256,14 +255,12 @@
                                         <i style="color: red">Tambahkan Periode menggunakan kategori periode seperti <b>"Harian, Bulanan, atau Tahunan"</b>. Tekan enter untuk menambah kategori periode.</i>
                                     </span>
                                     <hr>
-                                    
                                     <div class="row mb-3">
                                         <div class="col-8 col-md-3 order-1 order-md-0">
                                             <input type="hidden" id="choice_options" name="choice_options">
                                             <input type="text" class="form-control" value="Periode" disabled>
                                         </div>
                                         <div class="col-12 col-md-7 col-xl-8 order-3 order-md-0 mt-2 mt-md-0">
-                                            {{-- <input type="text" class="form-control tagsInput auto" name="choice_options_`+i+`[]" placeholder="Harian / Bulanan / Tahunan" onchange="update_sku()"> --}}
                                             <select class="js-example-basic-multiple" name="" id="selectOption" multiple="multiple">
                                                 <option value="Harian">Harian</option>
                                                 <option value="Bulanan">Bulanan</option>
@@ -272,12 +269,6 @@
                                             </select>
                                         </div>
                                     </div>
-                                    
-                                    {{-- <div class="row">
-                                        <div class="col-2">
-        									<button type="button" class="btn btn-info" onclick="add_more_customer_choice_option()">{{ __('Add Periode Option') }}</button>
-        								</div>
-                                    </div> --}}
                                 </div>
                             </div>
                             <div class="form-box bg-white mt-4">
@@ -290,7 +281,7 @@
                                             <label>{{__('Base Price')}} <span class="required-star">*</span></label>
                                         </div>
                                         <div class="col-md-10">
-                                            <input type="number" min="0" value="0" step="0.01" name="unit_price" class="form-control mb-3" id="var_base_price" placeholder="{{__('Unit Price')}} ({{__('Base Price')}})" required>
+                                            <input type="number" min="0" step="0.01" name="unit_price" class="form-control mb-3" id="unit_price" placeholder="{{__('Unit Price')}} ({{__('Base Price')}})" required readonly>
                                         </div>
                                     </div>
                                     {{-- <div class="row">
@@ -337,7 +328,7 @@
                                                         </td>
                                                     </tr>
                                                 </thead>
-                                                <tbody id="row_sku">
+                                                <tbody id="row_variations">
                                                     
                                                 </tbody>
                                             </table>
@@ -568,23 +559,6 @@
                                 </div>
                             </div>
                         </div>
-                        {{-- <div class="col-4">
-                            <div class="modal-category-box c-scrollbar" id="subsubcategory_list">
-                                <div class="sort-by-box">
-                                    <form role="form" class="search-widget">
-                                        <input class="form-control input-lg" type="text" placeholder="Search SubSubCategory" onkeyup="filterListItems(this, 'subsubcategories')">
-                                        <button type="button" class="btn-inner">
-                                            <i class="fa fa-search"></i>
-                                        </button>
-                                    </form>
-                                </div>
-                                <div class="modal-category-list">
-                                    <ul id="subsubcategories">
-
-                                    </ul>
-                                </div>
-                            </div>
-                        </div> --}}
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -677,251 +651,133 @@
             }
         }
 
-        $('#selectOption').on('change', function(){
-            var variations = {};
-            var choice_options = [{title : 'Periode',options: []}];
-            $('#row_sku').html('');
-            $('#var_base_price').val('0');
-
-            $('option:selected', $(this)).each(function(i, data){
-                
-                var product_name = $('#product_name').val();
-                var sku_awal = product_name.split(' ');
-                var sku_akhir;
-                if (sku_awal.length === 1) {
-                    sku_akhir = ''; 
-                }else{
-                    sku_akhir = sku_awal[0][0] + sku_awal[1][0];
-                }
-                
-
-                var selected = $(data).val();
-                var row =   `<tr>
-                                <td>
-                                    <label class="control-label">`+selected+`</label>
-                                </td>
-                                <td>
-                                    <input type="number" name="var_price" id="var_price_`+i+`" min="0" step="0.01" class="form-control">
-                                </td>
-                                <td>
-                                    <input type="text" id="var_sku_`+i+`" value="`+ sku_akhir + '-' + selected +`" class="form-control">
-                                </td>
-                                <td>
-                                    <input type="number" id="var_qty_`+i+`" value="10" min="0" step="1" class="form-control">
-                                </td>
-                            </tr>`;
-                $('#row_sku').append(row);
-                choice_options[0].options.push(selected);
-                variations[selected] = {};
-            });
-
-            $('#choice_options').attr('value', JSON.stringify(choice_options));
-
-            $('#var_base_price').on('keyup', function(){
-                var value = $(this).val();
-                $('#var_price_0').attr('value', value);
-                $('#var_price_1').attr('value', value);
-                $('#var_price_2').attr('value', value);
-                $('#var_price_3').attr('value', value);
-                if (variations.Harian) {
-                    variations.Harian['price'] = $('#var_price_0').val(); 
-                    variations.Harian['sku'] = $('#var_sku_0').val(); 
-                    variations.Harian['qty'] = $('#var_qty_0').val(); 
-                }
-
-                if (variations.Bulanan) {
-                    variations.Bulanan['price'] = $('#var_price_1').val(); 
-                    variations.Bulanan['sku'] = $('#var_sku_1').val(); 
-                    variations.Bulanan['qty'] = $('#var_qty_1').val(); 
-                }
-
-                if (variations.EnamBulan) {
-                    variations.EnamBulan['price'] = $('#var_price_2').val(); 
-                    variations.EnamBulan['sku'] = $('#var_sku_2').val(); 
-                    variations.EnamBulan['qty'] = $('#var_qty_2').val(); 
-                }
-
-                if (variations.Tahunan) {
-                    variations.Tahunan['price'] = $('#var_price_3').val(); 
-                    variations.Tahunan['sku'] = $('#var_sku_3').val(); 
-                    variations.Tahunan['qty'] = $('#var_qty_3').val(); 
-                }
-                $('#variations').attr('value', JSON.stringify(variations));
-
-            })
-
-            
-            // price
-            $('#var_price_0').on('keyup', function(){
-                variations.Harian['price'] = $(this).val();
-                $('#variations').attr('value', JSON.stringify(variations));
-            })
-            $('#var_price_1').on('keyup', function(){
-                variations.Bulanan['price'] = $(this).val();
-                $('#variations').attr('value', JSON.stringify(variations));
-            })
-            $('#var_price_2').on('keyup', function(){
-                variations.EnamBulan['price'] = $(this).val();
-                $('#variations').attr('value', JSON.stringify(variations));
-            })
-            $('#var_price_3').on('keyup', function(){
-                variations.Tahunan['price'] = $(this).val();
-                $('#variations').attr('value', JSON.stringify(variations));
-            })
-
-            // sku
-            $('#var_sku_0').on('keyup', function(){
-                variations.Harian['sku'] = $(this).val();
-                $('#variations').attr('value', JSON.stringify(variations));
-            })
-            $('#var_sku_1').on('keyup', function(){
-                variations.Bulanan['sku'] = $(this).val();
-                $('#variations').attr('value', JSON.stringify(variations));
-            })
-            $('#var_sku_2').on('keyup', function(){
-                variations.EnamBulan['sku'] = $(this).val();
-                $('#variations').attr('value', JSON.stringify(variations));
-            })
-            $('#var_sku_3').on('keyup', function(){
-                variations.Tahunan['sku'] = $(this).val();
-                $('#variations').attr('value', JSON.stringify(variations));
-            })
-
-            // qty
-            $('#var_qty_0').on('keyup', function(){
-                variations.Harian['qty'] = $(this).val();
-                $('#variations').attr('value', JSON.stringify(variations));
-            })
-            $('#var_qty_1').on('keyup', function(){
-                variations.Bulanan['qty'] = $(this).val();
-                $('#variations').attr('value', JSON.stringify(variations));
-            })
-            $('#var_qty_2').on('keyup', function(){
-                variations.EnamBulan['qty'] = $(this).val();
-                $('#variations').attr('value', JSON.stringify(variations));
-            })
-            $('#var_qty_3').on('keyup', function(){
-                variations.Tahunan['qty'] = $(this).val();
-                $('#variations').attr('value', JSON.stringify(variations));
-            })
-
+        // dropdown choice options and variation
+        $('.js-example-basic-multiple').select2({
+            placeholder: 'Harian / Bulanan / Enam Bulan / Tahunan',
         });
 
-        var id;
-        $('.js-example-basic-multiple').on('select2:unselecting', function(e){
-            id = e.params.args.data.id;
-            console.log(id);
-            variations = $('#variations').val();
-            console.log(variations);
-            if (variations != null) {
-                variations = {Harian:{},Bulanan:{},EnamBulan:{},Tahunan:{}};
+        var choice_options = [{title : 'Periode',options: []}];
+        var variations = {};
+        $('.js-example-basic-multiple').on('select2:selecting', function(e){
+            var selected = e.params.args.data.id;
+            var product_name = $('#product_name').val();
+            var sku_awal = product_name.split(' ');
+            var sku_akhir;
+            if (sku_awal.length === 1) {
+                sku_akhir = ''; 
             }else{
-                variations = JSON.parse(variations);
+                sku_akhir = sku_awal[0][0] + sku_awal[1][0];
             }
-            switch (id) {
-                case 'Harian':
-                    delete variations.Harian;
-                    console.log(variations);
+            var row = `<tr id="id_`+selected+`">
+                        <td><label class="control-label">`+selected+`</label></td>
+                        <td><input type="number" name="var_price" id="var_price_`+selected+`" min="0" step="0.01" class="form-control"></td>
+                        <td><input type="text" id="var_sku_`+selected+`" value="`+ sku_akhir + '-' + selected +`" class="form-control"></td>
+                        <td><input type="number" id="var_qty_`+selected+`" value="10" min="0" step="1" class="form-control"></td>
+                       </tr>`;
+            $('#unit_price').prop('readonly', false);
+            $('#row_variations').append(row);
+            choice_options[0].options.push(selected);
+            variations[selected] = {};
+            variations[selected]['price'] = "";
+            variations[selected]['sku'] = sku_akhir+'-'+selected;
+            variations[selected]['qty'] = "10";
+            $('#choice_options').attr('value', JSON.stringify(choice_options));
+            $('#variations').attr('value', JSON.stringify(variations));
+            
+            function changeVariations(prop){
+                $('#var_price_'+prop).on('keyup', function(){
+                    var value = $(this).val();
+                    variations[prop].price = value;
                     $('#variations').attr('value', JSON.stringify(variations));
+                });
+                $('#var_sku_'+prop).on('keyup', function(){
+                    var value = $(this).val();
+                    variations[prop].sku = value;
+                    $('#variations').attr('value', JSON.stringify(variations));
+                });
+                $('#var_qty_'+prop).on('keyup', function(){
+                    var value = $(this).val();
+                    variations[prop].qty = value;
+                    $('#variations').attr('value', JSON.stringify(variations));
+                });
+            }
+
+            if(selected === 'Harian'){
+                changeVariations(selected);
+            }else if(selected === 'Bulanan'){
+                changeVariations(selected);
+            }else if(selected === 'EnamBulan'){
+                changeVariations(selected);
+            }else if(selected === 'Tahunan'){
+                changeVariations(selected);
+            }
+        });
+
+        $('.js-example-basic-multiple').on('select2:unselecting', function(e){
+            var unselected = e.params.args.data.id;
+            var id_row = '#id_'+unselected;
+            if(unselected === 'Harian'){
+                if(e.params.args.data.selected === true){
+                    $('#unit_price').prop('readonly', true);
+                }
+            }
+            $(id_row).remove();
+
+            Array.prototype.remove = function() {
+                var what, a = arguments, L = a.length, ax;
+                while (L && this.length) {
+                    what = a[--L];
+                    while ((ax = this.indexOf(what)) !== -1) {
+                        this.splice(ax, 1);
+                    }
+                }
+                return this;
+            };
+
+            switch (unselected) {
+                case 'Harian':
+                    deleteVariations(unselected);
+                    deleteChoice(unselected);
                     break;
                 case 'Bulanan':
-                    delete variations.Bulanan;
-                    console.log(variations);
-                    $('#variations').attr('value', JSON.stringify(variations));
+                    deleteVariations(unselected);
+                    deleteChoice(unselected);
                     break;
                 case 'EnamBulan':
-                    delete variations.EnamBulan;
-                    console.log(variations);
-                    $('#variations').attr('value', JSON.stringify(variations));
+                    deleteVariations(unselected);
+                    deleteChoice(unselected);
                     break;
                 case 'Tahunan':
-                    delete variations.Tahunan;
-                    console.log(variations);
-                    $('#variations').attr('value', JSON.stringify(variations));
+                    deleteVariations(unselected);
+                    deleteChoice(unselected);
+                    break;
                 default:
                     break;
             }
 
+            function deleteChoice(prop){
+                choice_options[0].options.remove(prop);
+                $('#choice_options').attr('value', JSON.stringify(choice_options));
+            }
+
+            function deleteVariations(prop) {
+                delete variations[prop];
+                $('#variations').attr('value', JSON.stringify(variations));
+            }
             
-        });
+        })
 
-    
-        $('.js-example-basic-multiple').select2({
-            placeholder: 'Harian / Bulanan / 6 Bulan / Tahunan',
-        });
+        // disable scrool input number
+        $('form').on('focus', 'input[type=number]', function (e) {
+            $(this).on('wheel.disableScroll', function (e) {
+                e.preventDefault()
+            })
+        })
+        $('form').on('blur', 'input[type=number]', function (e) {
+            $(this).off('wheel.disableScroll')
+        })
+        // end dropdown choice option and variation
 
-        
-
-
-
-        
-
-        
-
-    
-        
-       
-        
-        
-        // var i = 0;
-    	// function add_more_customer_choice_option(){
-        //     var periode = `<div class="row mb-3">
-        //                     <div class="col-8 col-md-3 order-1 order-md-0">
-        //                         <input type="hidden" name="choice_no[]" value="`+i+`">
-        //                         <input type="text" class="form-control" name="choice[]" value="Periode" readonly>
-        //                     </div>
-        //                     <div class="col-12 col-md-7 col-xl-8 order-3 order-md-0 mt-2 mt-md-0">
-        //                         <input type="text" class="form-control tagsInput auto" name="choice_options_`+i+`[]" placeholder="Harian / Bulanan / Tahunan" onchange="update_sku()">
-        //                     </div>
-        //                     <div class="col-4 col-xl-1 col-md-2 order-2 order-md-0 text-right">
-        //                         <button type="button" onclick="delete_row(this)" class="btn btn-link btn-icon text-danger">
-        //                         <i class="fa fa-trash-o"></i>
-        //                         </button>
-        //                     </div>
-        //                     </div>`;
-
-    	// 	$('#customer_choice_options').append(periode);
-    	// 	i++;
-        //     $('.tagsInput').tagsinput('items');
-    	// }
-    	// $('input[name="colors_active"]').on('change', function() {
-    	//     if(!$('input[name="colors_active"]').is(':checked')){
-    	// 		$('#colors').prop('disabled', true);
-    	// 	}
-    	// 	else{
-    	// 		$('#colors').prop('disabled', false);
-    	// 	}
-    	// 	update_sku();
-    	// });
-
-    	// $('#colors').on('change', function() {
-    	//     update_sku();
-    	// });
-
-    	// $('input[name="unit_price"]').on('keyup', function() {
-    	//     update_sku();
-    	// });
-
-        // $('input[name="name"]').on('keyup', function() {
-    	//     update_sku();
-    	// });
-
-    	function delete_row(em){
-    		$(em).closest('.row').remove();
-    		update_sku();
-    	}
-
-    	function update_sku(){
-            $.ajax({
-    		   type:"POST",
-    		   url:'{{ route('products.sku_combination') }}',
-    		   data:$('#choice_form').serialize(),
-    		   success: function(data){
-                   console.log(data);
-    			   $('#sku_combination').html(data);
-    		   }
-    	   });
-    	}
 
         var photo_id = 2;
         function add_more_slider_image(){
