@@ -38,7 +38,7 @@
                         $product_name_with_choice .= ' - '.\App\Color::where('code', $cartItem['color'])->first()->name;
                     }
                     foreach (json_decode($product->choice_options) as $choice){
-                        $str = $choice->name; // example $str =  choice_0
+                        $str = $choice->title; // example $str =  choice_0
                         $product_name_with_choice .= ' - '.$cartItem[$str];
                     }
                     @endphp

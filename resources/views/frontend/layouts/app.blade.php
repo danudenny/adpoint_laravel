@@ -549,10 +549,6 @@
         });
     }
 
-    $('#option-choice-form input').on('change', function(){
-        getVariantPrice();
-    });
-
     function getVariantPrice(){
         if($('#option-choice-form input[name=quantity]').val() > 0 && checkAddToCartValidity()){
             $.ajax({
@@ -587,6 +583,8 @@
         if(checkAddToCartValidity()) {
             $('#addToCart').modal();
             $('.c-preloader').show();
+            let start_date = $('#startDate').val();
+            let end_date = $('#endDate').val();
             $.ajax({
                type:"POST",
                url: '{{ route('cart.addToCart') }}',
@@ -594,8 +592,11 @@
                success: function(data){
                    $('#addToCart-modal-body').html(null);
                    $('.c-preloader').hide();
+                   var strend = `<strong class="text-black">`+start_date+ ' - ' +end_date+`</strong>`
+                   console.log(start_date + end_date);
                    $('#modal-size').removeClass('modal-lg');
                    $('#addToCart-modal-body').html(data);
+                   $('#startendDate').html(strend);
                    updateNavCart();
                    $('#cart_items_sidenav').html(parseInt($('#cart_items_sidenav').html())+1);
                }
@@ -961,10 +962,12 @@
                 console.log(base_url);
                 var poto = base_url+'/'+photos[0];
                 var detail = '{{ url("/product/") }}';
-                var template = `<div class="card" style="width: 18rem;">
+                var template = `<div class="card" style="width: 18rem; border: none">
                                 <div class="card-body pt-1 pb-1 pr-1 pl-1">
                                     <a href="`+detail+ '/' + data.slug +`" target="_blank">
                                         <strong class="text-primary text-uppercase">`+name+`</strong>
+                                        <br>
+                                        <br>
                                         <img src="`+poto+`" class="card-img-top">
                                     </a>
                                     <i class="fa fa-map-marker"></i>

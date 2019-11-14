@@ -68,8 +68,8 @@
                             <ul class="list-inline checkbox-alphanumeric checkbox-alphanumeric--style-1 mb-2">
                                 @foreach ($choice->options as $key => $option)
                                     <li>
-                                        <input type="radio" id="{{ $choice->name }}-{{ $option }}" name="{{ $choice->name }}" value="{{ $option }}" @if($key == 0) checked @endif>
-                                        <label for="{{ $choice->name }}-{{ $option }}">{{ $option }}</label>
+                                        <input type="radio" id="{{ $choice->title }}-{{ $option }}" name="{{ $choice->title }}" value="{{ $option }}" @if($key == 0) checked @endif>
+                                        <label for="{{ $choice->title }}-{{ $option }}">{{ $option }}</label>
                                     </li>
                                 @endforeach
                             </ul>

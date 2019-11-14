@@ -437,10 +437,10 @@ class HomeController extends Controller
 
         foreach (json_decode(Product::find($request->id)->choice_options) as $key => $choice) {
             if($str != null){
-                $str .= '-'.str_replace(' ', '', $request[$choice->name]);
+                $str .= $request[$choice->title];
             }
             else{
-                $str .= str_replace(' ', '', $request[$choice->name]);
+                $str .= $request[$choice->title];
             }
         }
 

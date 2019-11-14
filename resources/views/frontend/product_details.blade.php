@@ -128,7 +128,7 @@
                                         <div class="product-price-old">
                                             <del>
                                                 {{ home_price($product->id) }}
-                                                <span>/{{ $product->unit }}</span>
+                                                <span>{{ $product->unit }}</span>
                                             </del>
                                         </div>
                                     </div>
@@ -143,7 +143,7 @@
                                             <strong>
                                                 {{ home_discounted_price($product->id) }}
                                             </strong>
-                                            <span class="piece">/{{ $product->unit }}</span>
+                                            <span class="piece">{{ $product->unit }}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -157,7 +157,7 @@
                                             <strong>
                                                 {{ home_discounted_price($product->id) }}
                                             </strong>
-                                            <span class="piece">/{{ $product->unit }}</span>
+                                            <span class="piece">{{ $product->unit }}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -225,11 +225,11 @@
                                     <div class="col-10">
                                         <div class="row">
                                             <div class="col-md-5">
-                                                <input type="text" class="form-control" id="startDate">
+                                                <input type="text" class="form-control" name="start_date" id="startDate">
                                             </div>
                                             <p>To</p>
                                             <div class="col-md-5">
-                                                <input type="text" class="form-control" id="dateEnd" readonly>
+                                                <input type="text" class="form-control" name="end_date" id="endDate" readonly>
                                             </div>
                                         </div>
                                     </div>
@@ -245,7 +245,7 @@
                                     <div class="col-10">
                                         <div class="product-price">
                                             <strong id="chosen_price">
-
+                                                
                                             </strong>
                                         </div>
                                     </div>
@@ -735,7 +735,6 @@
     		});
             getVariantPrice();
 
-
             var data = [];
             $('#choiceOptions').children().each(function(i, result){
                 var periode = result.getElementsByTagName('input');
@@ -746,30 +745,111 @@
             });
             // console.log(data);
 
-            $('#startDate').on('change', function(){
-                endDate();
-            })
 
-            $('#quantity').change(function(){
-                if($('#dateEnd').val() != ''){
-                    endDate();
+            $('#option-choice-form input').on('change', function(e){
+                var periode = $(this).val();
+                var start_date = $('#startDate').val();
+
+                if (start_date != '') {
+                    if (periode === 'Harian') {
+                        dateEndByDay();
+                    }else if (periode === 'Bulanan') {
+                        dateEndByMonth();
+                    }else if(periode === 'EnamBulan'){
+                        dateEndBySixMonth();
+                    }else if (periode === 'Tahunan') {
+                        dateEndByYear();
+                    }
+                }else{
+                    $('#endDate').attr('value', '');
                 }
-            })
+                getVariantPrice();
+            });
 
-            function endDate(){
+            // Datepicker
+            var today = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
+            $('#startDate').datepicker({
+                uiLibrary: 'bootstrap4',
+                format: 'dd mmm yyyy',
+                iconsLibrary: 'fontawesome',
+                minDate: today,
+                close: function(e) {
+                    let checked = $('input[name=Periode]:checked').val();
+                    switch (checked) {
+                        case 'Harian':
+                            dateEndByDay();
+                            break;
+                        case 'Bulanan':                        
+                            dateEndByMonth();
+                            break;
+                        case 'EnamBulan':
+                            dateEndBySixMonth();
+                            break;
+                        case 'Tahunan':
+                            dateEndByYear();
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            });
+
+            function dateEndByDay() {
+                $('#endDate').empty();
                 const quantity = parseInt($('#quantity').val());
-                let date = new Date($('#startDate').val());
-
-                let newDate = new Date(date.getFullYear(), date.getMonth() + quantity, date.getDate());
-                let bulan =new Date(date.getFullYear(), date.getMonth() + (quantity + 1), 0);
-                if(newDate.getMonth() != bulan.getMonth()){
-                    newDate = bulan;
-                }
-
-                $('#dateEnd').attr('value', dateFormat(newDate))
-                // $('#dateEnd').val(newDate);
+                let currentDate = new Date($('#startDate').val());
+                let newDate = new Date(currentDate.getFullYear(), currentDate.getMonth() , currentDate.getDate() + quantity);
+                $('#endDate').attr('value', dateFormat(newDate))
+            }
+            function dateEndByMonth() {
+                $('#endDate').empty();
+                const quantity = parseInt($('#quantity').val());
+                changeDate(quantity);
+            }
+            function dateEndBySixMonth() {
+                $('#endDate').empty();
+                const quantity = parseInt($('#quantity').val()) * 6;
+                changeDate(quantity);
+            }
+            function dateEndByYear() {
+                $('#endDate').empty();
+                const quantity = parseInt($('#quantity').val()) * 12;
+                changeDate(quantity);
             }
 
+            function changeDate(qty){
+                let currentDate = new Date($('#startDate').val());
+                let newDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + qty, currentDate.getDate());
+                let month =new Date(currentDate.getFullYear(), currentDate.getMonth() + (qty + 1), 0);
+                if(newDate.getMonth() != month.getMonth()){
+                    newDate = month;
+                }
+                $('#endDate').attr('value', dateFormat(newDate))
+            }
+            
+
+            $('#quantity').change(function(){
+                let checked = $('input[name=Periode]:checked').val();
+                if (checked === 'Harian') {
+                    if($('#endDate').val() != ''){
+                        dateEndByDay();
+                    }
+                }else if (checked === 'Bulanan') {
+                    if($('#endDate').val() != ''){
+                        dateEndByMonth();
+                    }
+                }else if (checked === 'EnamBulan') {
+                    if($('#endDate').val() != ''){
+                        dateEndBySixMonth();
+                    }
+                }else if (checked === 'Tahunan') {
+                    if($('#endDate').val() != ''){
+                        dateEndByYear();
+                    }
+                }
+            })
+
+           
             function nol(x){
                 const y = (x>9)?(x>99)?x:''+x:'0'+x;
                 return y; 
@@ -780,7 +860,6 @@
                 const year = date.getFullYear();
                 const month = date.getMonth();
                 const dates = date.getDate();
-
                 return nol(dates) + ' ' + bulan[month] + ' ' + year;
             }
         });

@@ -392,7 +392,7 @@
                                                             </td>
                                                         </tr>
                                                     </thead>
-                                                    <tbody id="row_variations">
+                                                    <tbody id="body_variations">
                                                         
                                                     </tbody>
                                                 </table>
@@ -563,7 +563,7 @@
                                             <div class="row">
                                                 @if ($product->pdf != null)
                                                     <div class="col-md-3">
-                                                        <a href="{{ asset($product->pdf) }}" target="_blank" class="btn btn-outline-info btn-sm">
+                                                        <a href="{{ asset($product->pdf) }}" target="_blank" class="btn btn-outline-warning btn-sm">
                                                             <i class="fa fa-file-pdf-o"></i> Lihat Brosur
                                                         </a>
                                                         <button type="button" class="btn btn-danger btn-sm close-btn remove-files"><i class="fa fa-times"></i></button>
@@ -755,7 +755,7 @@
                             <td><input type="text" id="var_sku_`+selected+`" value="`+ opsi.sku +`" class="form-control"></td>
                             <td><input type="number" id="var_qty_`+selected+`" value="`+ opsi.qty +`" min="0" step="1" class="form-control"></td>
                         </tr>`;
-            $('#row_variations').append(row);
+            $('#body_variations').append(row);
             function changeVariations(prop){
                 $('#var_price_'+prop).on('keyup', function(){
                     var value = $(this).val();
@@ -787,11 +787,13 @@
 
         $('.js-example-basic-multiple').on('select2:unselecting', function(e){
             var unselected = e.params.args.data.id;
+            var id_row = '#row_'+unselected;
             if(unselected === 'Harian'){
                 if(e.params.args.data.selected === true){
                     $('#unit_price').prop('readonly', true);
                 }
             }
+            $(id_row).remove();
             Array.prototype.remove = function() {
                 var what, a = arguments, L = a.length, ax;
                 while (L && this.length) {
@@ -804,22 +806,18 @@
             };
             switch (unselected) {
                 case 'Harian':
-                    $('#row_Harian').remove();
                     deleteVariations(unselected);
                     deleteChoice(unselected);
                     break;
                 case 'Bulanan':
-                    $('#row_Bulanan').remove();
                     deleteVariations(unselected);
                     deleteChoice(unselected);
                     break;
                 case 'EnamBulan':
-                    $('#row_EnamBulan').remove();
                     deleteVariations(unselected);
                     deleteChoice(unselected);
                     break;
                 case 'Tahunan':
-                    $('#row_Tahunan').remove();
                     deleteVariations(unselected);
                     deleteChoice(unselected);
                     break;
@@ -851,13 +849,13 @@
             if(e.params.args.data.selected === false){
                 $('#unit_price').prop('readonly', false);
             }
-            var row = `<tr id="id_`+selected+`">
+            var row = `<tr id="row_`+selected+`">
                         <td><label class="control-label">`+selected+`</label></td>
                         <td><input type="number" name="var_price" id="var_price_`+selected+`" min="0" step="0.01" class="form-control"></td>
                         <td><input type="text" id="var_sku_`+selected+`" value="`+ sku_akhir + '-' + selected +`" class="form-control"></td>
                         <td><input type="number" id="var_qty_`+selected+`" value="10" min="0" step="1" class="form-control"></td>
                        </tr>`;
-            $('#row_variations').append(row);
+            $('#body_variations').append(row);
             choice_options[0].options.push(selected);
             variations[selected] = {};
             variations[selected]['price'] = "";
