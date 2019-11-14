@@ -328,7 +328,7 @@
                                                         </td>
                                                     </tr>
                                                 </thead>
-                                                <tbody id="row_variations">
+                                                <tbody id="body_variations">
                                                     
                                                 </tbody>
                                             </table>
@@ -668,14 +668,14 @@
             }else{
                 sku_akhir = sku_awal[0][0] + sku_awal[1][0];
             }
-            var row = `<tr id="id_`+selected+`">
+            var row = `<tr id="row_`+selected+`">
                         <td><label class="control-label">`+selected+`</label></td>
                         <td><input type="number" name="var_price" id="var_price_`+selected+`" min="0" step="0.01" class="form-control"></td>
                         <td><input type="text" id="var_sku_`+selected+`" value="`+ sku_akhir + '-' + selected +`" class="form-control"></td>
                         <td><input type="number" id="var_qty_`+selected+`" value="10" min="0" step="1" class="form-control"></td>
                        </tr>`;
             $('#unit_price').prop('readonly', false);
-            $('#row_variations').append(row);
+            $('#body_variations').append(row);
             choice_options[0].options.push(selected);
             variations[selected] = {};
             variations[selected]['price'] = "";
@@ -715,14 +715,13 @@
 
         $('.js-example-basic-multiple').on('select2:unselecting', function(e){
             var unselected = e.params.args.data.id;
-            var id_row = '#id_'+unselected;
+            var id_row = '#row_'+unselected;
             if(unselected === 'Harian'){
                 if(e.params.args.data.selected === true){
                     $('#unit_price').prop('readonly', true);
                 }
             }
             $(id_row).remove();
-
             Array.prototype.remove = function() {
                 var what, a = arguments, L = a.length, ax;
                 while (L && this.length) {

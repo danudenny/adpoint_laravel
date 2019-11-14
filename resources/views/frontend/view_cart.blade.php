@@ -71,11 +71,12 @@
                                             $product = \App\Product::find($cartItem['id']);
                                             $total = $total + $cartItem['price']*$cartItem['quantity'];
                                             $product_name_with_choice = $product->name;
+                                            var_dump($cartItem);
                                             if(isset($cartItem['color'])){
                                                 $product_name_with_choice .= ' - '.\App\Color::where('code', $cartItem['color'])->first()->name;
                                             }
                                             foreach (json_decode($product->choice_options) as $choice){
-                                                $str = $choice->name; // example $str =  choice_0
+                                                $str = $choice->title; // example $str =  choice_0
                                                 $product_name_with_choice .= ' - '.$cartItem[$str];
                                             }
                                             @endphp
@@ -88,6 +89,7 @@
 
                                                 <td class="product-name">
                                                     <span class="pr-4 d-block">{{ $product_name_with_choice }}</span>
+                                                    {{-- <strong>{{  }}</strong> --}}
                                                 </td>
 
                                                 <td class="product-price d-none d-lg-table-cell">

@@ -1,7 +1,3 @@
-
-
-
-
 // Background image holder with fullscreen option
 $(window).on('load resize', function() {
 
@@ -14,46 +10,45 @@ $(window).on('load resize', function() {
         if ($("[data-toggle='headroom']").length > 0) {
             $("[data-toggle='headroom']").headroom({
                 // vertical offset in px before element is first unpinned
-                offset : 0,
+                offset: 0,
                 // or you can specify tolerance individually for up/down scroll
-                tolerance : {
-                    up : 40,
-                    down : 5
+                tolerance: {
+                    up: 40,
+                    down: 5
                 },
                 // css classes to apply
-                classes : {
+                classes: {
                     // when element is initialised
-                    initial : "headroom",
+                    initial: "headroom",
                     // when scrolling up
-                    pinned : "headroom--pinned",
+                    pinned: "headroom--pinned",
                     // when scrolling down
-                    unpinned : "headroom--unpinned",
+                    unpinned: "headroom--unpinned",
                     // when above offset
-                    top : "headroom--top",
+                    top: "headroom--top",
                     // when below offset
-                    notTop : "fixed-top",
+                    notTop: "fixed-top",
                     // when at bottom of scoll area
-                    bottom : "headroom--bottom",
+                    bottom: "headroom--bottom",
                     // when not at bottom of scroll area
                     //notBottom : "headroom--not-bottom"
                 },
-                onPin : function() {
-                    if($(window).offset.top > 0) {
+                onPin: function() {
+                    if ($(window).offset.top > 0) {
                         var height = $("[data-toggle='headroom']").height();
-                        $('body').css({"padding-top": height+"px"});
-                    }
-                    else {
-                        $('body').css({"padding-top": 0});
+                        $('body').css({ "padding-top": height + "px" });
+                    } else {
+                        $('body').css({ "padding-top": 0 });
                     }
                 },
-                onUnpin : function() {
+                onUnpin: function() {
                     var height = $("[data-toggle='headroom']").height();
-                    $('body').css({"padding-top": height+"px"});
+                    $('body').css({ "padding-top": height + "px" });
                 },
-                onTop : function() {
-                    $('body').css({"padding-top": 0});
+                onTop: function() {
+                    $('body').css({ "padding-top": 0 });
                 },
-                onBottom : function() {
+                onBottom: function() {
 
                 },
             });
@@ -67,18 +62,18 @@ $(document).ready(function() {
     // Bootstrap - Submenu event for small resolutions
     $('.dropdown-menu .dropdown-submenu [data-toggle="dropdown"]').on('click', function(e) {
 
-            if (!$(this).next().hasClass('show')) {
-                $(this).parents('.dropdown-menu').first().find('.show').removeClass("show");
-            }
-            var $subMenu = $(this).next(".dropdown-menu");
-            $subMenu.toggleClass('show');
-            $subMenu.parent().toggleClass('show');
+        if (!$(this).next().hasClass('show')) {
+            $(this).parents('.dropdown-menu').first().find('.show').removeClass("show");
+        }
+        var $subMenu = $(this).next(".dropdown-menu");
+        $subMenu.toggleClass('show');
+        $subMenu.parent().toggleClass('show');
 
-            $(this).parents('.nav-item.dropdown.show').on('hidden.bs.dropdown', function(e) {
-                $('.dropdown-submenu .show').removeClass("show");
-            });
+        $(this).parents('.nav-item.dropdown.show').on('hidden.bs.dropdown', function(e) {
+            $('.dropdown-submenu .show').removeClass("show");
+        });
 
-            return false;
+        return false;
 
     });
 
@@ -207,26 +202,6 @@ $(document).ready(function() {
         });
     });
 
-    // Datepicker
-    var today = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
-    $('#startDate').datepicker({
-        uiLibrary: 'bootstrap4',
-        format: 'dd mmm yyyy',
-        iconsLibrary: 'fontawesome',
-        minDate: today,
-        maxDate: function () {
-            return $('#endDate').val();
-        }
-    });
-
-    $('#endDate').datepicker({
-        uiLibrary: 'bootstrap4',
-        format: 'dd mmm yyyy',
-        iconsLibrary: 'fontawesome',
-        minDate: function () {
-            return $('#startDate').val();
-        }
-    });
 
     // if ($('.datepicker')[0]) {
     //     $('.datepicker').each(function() {
@@ -753,7 +728,7 @@ $(document).ready(function() {
                 userId: userId,
                 limit: limit,
                 resolution: 'thumbnail',
-                template: '<div class="col-sm-' + col + ' col-6"><a href="{{link}}"'+lightbox+'><img src="{{image}}" class="img-fluid '+classes+'" /></a></div>'
+                template: '<div class="col-sm-' + col + ' col-6"><a href="{{link}}"' + lightbox + '><img src="{{image}}" class="img-fluid ' + classes + '" /></a></div>'
             });
             instafeed.run();
         });
@@ -780,7 +755,7 @@ $(document).ready(function() {
     if ($('#form_contact').length > 0) {
         $('#form_contact').on('submit', function(e) {
             var $this = $(this);
-            var buttonText =  $this.find('button[type="submit"]').text();
+            var buttonText = $this.find('button[type="submit"]').text();
 
             if (e.isDefaultPrevented()) {
                 // handle the invalid form...
@@ -887,7 +862,7 @@ $(document).ready(function() {
 }); // END document ready
 
 
-$(document).ajaxComplete(function(){
+$(document).ajaxComplete(function() {
     $('.custom-input-file').each(function() {
         var $input = $(this),
             $label = $input.next('label'),

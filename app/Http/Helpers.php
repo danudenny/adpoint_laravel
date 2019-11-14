@@ -207,9 +207,9 @@ if (! function_exists('format_price')) {
     function format_price($price)
     {
         if(BusinessSetting::where('type', 'symbol_format')->first()->value == 1){
-            return currency_symbol().number_format($price, 2);
+            return currency_symbol().number_format($price);
         }
-        return number_format($price, 2).currency_symbol();
+        return number_format($price).currency_symbol();
     }
 }
 

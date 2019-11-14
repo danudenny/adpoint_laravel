@@ -32,7 +32,6 @@ class CartController extends Controller
     public function addToCart(Request $request)
     {
         $product = Product::find($request->id);
-
         $data = array();
         $data['id'] = $product->id;
         $str = '';
@@ -46,12 +45,12 @@ class CartController extends Controller
 
         //Gets all the choice values of customer choice option and generate a string like Black-S-Cotton
         foreach (json_decode(Product::find($request->id)->choice_options) as $key => $choice) {
-            $data[$choice->name] = $request[$choice->name];
+            $data[$choice->title] = $request[$choice->title];
             if($str != null){
-                $str .= '-'.str_replace(' ', '', $request[$choice->name]);
+                $str .= $request[$choice->title];
             }
             else{
-                $str .= str_replace(' ', '', $request[$choice->name]);
+                $str .= $request[$choice->title];
             }
         }
 
@@ -120,6 +119,7 @@ class CartController extends Controller
             $cart = collect([$data]);
             $request->session()->put('cart', $cart);
         }
+        // dd($data);
 
         return view('frontend.partials.addedToCart', compact('product', 'data'));
     }

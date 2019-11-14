@@ -5,23 +5,15 @@
     </div>
     <div class="product-box">
         <div class="block">
-            <div class="block-image">
-                <img src="{{ asset($product->thumbnail_img) }}" class="" alt="Product Image">
-            </div>
-            <div class="block-body">
-                <h6 class="strong-600">
-                    {{ __($product->name) }}
-                </h6>
-                <div class="row no-gutters mt-2 mb-2">
-                    <div class="col-2">
-                        <div>{{__('Price')}}:</div>
-                    </div>
-                    <div class="col-10">
-                        <div class="heading-6 text-danger">
-                            <strong>
-                                {{ single_price($data['price']*$data['quantity']) }}
-                            </strong>
-                        </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <img src="{{ asset($product->thumbnail_img) }}" class="img-fluid img-thumbnail" alt="Product Image">
+                </div>
+                <div class="col-md-8">
+                    <h6>{{ __($product->name) }}</h6>
+                    <strong class="text-black">Price : {{ single_price($data['price']*$data['quantity']) }}</strong>
+                    <div id="startendDate">
+
                     </div>
                 </div>
             </div>
