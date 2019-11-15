@@ -12,8 +12,8 @@
                 <div class="col-md-8">
                     <h6>{{ __($product->name) }}</h6>
                     <strong class="text-black">Price : {{ single_price($data['price']*$data['quantity']) }}</strong>
-                    <div id="startendDate">
-
+                    <div>
+                        <strong class="text-warning">{{ $data['start_date']}} s/d {{ $data['end_date'] }}</strong>
                     </div>
                 </div>
             </div>

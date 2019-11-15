@@ -38,10 +38,42 @@
                                             <a href="#" class="mr-3">
                                                 <img src="{{ asset($product->thumbnail_img) }}">
                                             </a>
+                                            <input type="hidden" id="periode" value="{{$cartItem['Periode']}}">
                                         </td>
 
                                         <td class="product-name">
                                             <span class="pr-4 d-block">{{ $product_name_with_choice }}</span>
+                                            @php
+                                                if ($cartItem['Periode'] === 'Harian') {
+                                                    $end_date = date('d M Y', strtotime($cartItem['start_date']. ' + '.$cartItem['quantity'].' days'));
+                                                    echo '<span class="badge badge-warning">'.$cartItem['start_date'].'</span>';
+                                                    echo ' s/d ';
+                                                    echo '<span class="badge badge-warning">'.$end_date.'</span>';
+                                                }
+                                                if ($cartItem['Periode'] === 'Bulanan') {
+                                                    $end_date = date('d M Y', strtotime($cartItem['start_date']. ' + '.$cartItem['quantity'].' months'));
+                                                    echo '<span class="badge badge-warning">'.$cartItem['start_date'].'</span>';
+                                                    echo ' s/d ';
+                                                    echo '<span class="badge badge-warning">'.$end_date.'</span>';
+                                                }
+                                                if ($cartItem['Periode'] === 'EnamBulan') {
+                                                    $_qty = (int)$cartItem['quantity'] * 6;
+                                                    $end_date = date('d M Y', strtotime($cartItem['start_date']. ' + '.(string)$_qty.' months'));
+                                                    echo '<span class="badge badge-warning">'.$cartItem['start_date'].'</span>';
+                                                    echo ' s/d ';
+                                                    echo '<span class="badge badge-warning">'.$end_date.'</span>';
+                                                }
+                                                if ($cartItem['Periode'] === 'Tahunan') {
+                                                    $_qty = (int)$cartItem['quantity'] * 12;
+                                                    $end_date = date('d M Y', strtotime($cartItem['start_date']. ' + '.(string)$_qty.' months'));
+                                                    echo '<span class="badge badge-warning">'.$cartItem['start_date'].'</span>';
+                                                    echo ' s/d ';
+                                                    echo '<span class="badge badge-warning">'.$end_date.'</span>';
+                                                }
+
+                                            @endphp
+                                            <b hidden id="start_{{ $cartItem['Periode'] }}" class="text-sm text-info">{{ $cartItem['start_date'] }}</b> 
+                                            <b hidden id="end_{{ $cartItem['Periode'] }}" class="text-sm text-info">{{ $cartItem['end_date'] }}</b>
                                         </td>
 
                                         <td class="product-price d-none d-lg-table-cell">
@@ -51,13 +83,13 @@
                                         <td class="product-quantity d-none d-md-table-cell">
                                             <div class="input-group input-group--style-2 pr-4" style="width: 130px;">
                                                 <span class="input-group-btn">
-                                                    <button class="btn btn-number" type="button" data-type="minus" data-field="quantity[{{ $key }}]">
+                                                    <button class="btn btn-number" id="minus_{{ $cartItem['Periode'] }}" type="button" data-type="minus" data-field="quantity[{{ $key }}]">
                                                         <i class="la la-minus"></i>
                                                     </button>
                                                 </span>
-                                                <input type="text" name="quantity[{{ $key }}]" class="form-control input-number" placeholder="1" value="{{ $cartItem['quantity'] }}" min="1" max="10" onchange="updateQuantity({{ $key }}, this)">
+                                                <input type="text" name="quantity[{{ $key }}]" id="qty_{{ $cartItem['Periode'] }}" class="form-control input-number" placeholder="1" value="{{ $cartItem['quantity'] }}" min="1" max="10" onchange="updateQuantity({{ $key }}, this, $('#start_{{$cartItem['Periode']}}').text(), $('#end_{{$cartItem['Periode']}}').text(), $('#periode').val())">
                                                 <span class="input-group-btn">
-                                                    <button class="btn btn-number" type="button" data-type="plus" data-field="quantity[{{ $key }}]">
+                                                    <button class="btn btn-number" id="plus_{{ $cartItem['Periode'] }}" type="button" data-type="plus" data-field="quantity[{{ $key }}]">
                                                         <i class="la la-plus"></i>
                                                     </button>
                                                 </span>
@@ -81,8 +113,8 @@
                 <div class="row align-items-center pt-4">
                     <div class="col-6">
                         <a href="{{ route('home') }}" class="link link--style-3">
-                            <i class="ion-android-arrow-back"></i>
-                            {{__('Return to home')}}
+                            <i class="la la-mail-reply"></i>
+                            {{__('Return to shop')}}
                         </a>
                     </div>
                     <div class="col-6 text-right">
