@@ -269,16 +269,16 @@
                                                     </button>
                                                     <div id="subCategory-{{ $subcategory->subcategory_id }}" class="collapse">
                                                         <ul class="sub-sub-category-list">
-                                                            @foreach (\App\Product::where('user_id', $shop->user->id)->where('category_id',            $category->category_id)->where('subcategory_id', $subcategory->subcategory_id)->select('subsubcategory_id')->distinct()->get() as $subsubcategory)
+                                                            @foreach (\App\Product::where('user_id', $shop->user->id)->where('category_id', $category->category_id)->where('subcategory_id', $subcategory->subcategory_id)->select('subcategory_id')->distinct()->get() as $subcategory)
                                                                 @php
-                                                                    $subsubcategory = App\SubSubCategory::findOrFail($subsubcategory->subsubcategory_id);
-                                                                    foreach (json_decode($subsubcategory->brands) as $brand) {
+                                                                    $subcategory = App\SubCategory::findOrFail($subcategory->subcategory_id);
+                                                                    foreach (json_decode($subcategory->brands) as $brand) {
                                                                         if(!in_array($brand, $brands)){
                                                                             array_push($brands, $brand);
                                                                         }
                                                                     }
                                                                 @endphp
-                                                                <li><a href="{{ route('products.subsubcategory', $subsubcategory->slug) }}">{{__($subsubcategory->name) }}</a></li>
+                                                                <li><a href="{{ route('products.subcategory', $subcategory->slug) }}">{{__($subcategory->name) }}</a></li>
                                                             @endforeach
                                                     </div>
                                                 </div>
@@ -291,7 +291,7 @@
                     </div>
                     <div class="seller-top-products-box bg-white sidebar-box mb-4">
                         <div class="box-title">
-                            {{__('Brands')}}
+                            {{__('Related Media Owner')}}
                         </div>
                         <div class="box-content">
                             <div class="seller-brands">
