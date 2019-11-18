@@ -120,12 +120,12 @@ class OrderController extends Controller
                     $product_variation .= Color::where('code', $cartItem['color'])->first()->name;
                 }
                 foreach (json_decode($product->choice_options) as $choice){
-                    $str = $choice->name; // example $str =  choice_0
+                    $str = $choice->title; // example $str =  choice_0
                     if ($product_variation != null) {
-                        $product_variation .= '-'.str_replace(' ', '', $cartItem[$str]);
+                        $product_variation .= $cartItem[$str];
                     }
                     else {
-                        $product_variation .= str_replace(' ', '', $cartItem[$str]);
+                        $product_variation .= $cartItem[$str];
                     }
                 }
 
@@ -150,9 +150,10 @@ class OrderController extends Controller
                 $product->num_of_sale++;
                 $product->save();
             }
-
+            
             $order->grand_total = $subtotal + $tax + $shipping;
-
+            $order->start_date = date('Y-m-d', strtotime($cartItem['start_date']));
+            $order->end_date = date('Y-m-d', strtotime($cartItem['end_date']));
             if(Session::has('coupon_discount')){
                 $order->grand_total -= Session::get('coupon_discount');
                 $order->coupon_discount = Session::get('coupon_discount');
