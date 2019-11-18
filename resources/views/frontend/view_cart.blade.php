@@ -1,7 +1,5 @@
 @extends('frontend.layouts.app')
-
 @section('content')
-
     <section class="slice-xs sct-color-2 border-bottom">
         <div class="container container-sm">
             <div class="row cols-delimited">
@@ -71,7 +69,6 @@
                                             $product = \App\Product::find($cartItem['id']);
                                             $total = $total + $cartItem['price']*$cartItem['quantity'];
                                             $product_name_with_choice = $product->name;
-                                            var_dump($cartItem);
                                             if(isset($cartItem['color'])){
                                                 $product_name_with_choice .= ' - '.\App\Color::where('code', $cartItem['color'])->first()->name;
                                             }
@@ -83,15 +80,46 @@
                                             <tr class="cart-item">
                                                 <td class="product-image">
                                                     <a href="#" class="mr-3">
-                                                        <img src="{{ asset($product->thumbnail_img) }}">
+                                                        <img class="img-fluid" src="{{ asset($product->thumbnail_img) }}">
                                                     </a>
+                                                    <input type="hidden" id="periode_{{$cartItem['Periode']}}" value="{{$cartItem['Periode']}}">
                                                 </td>
-
+                                                
                                                 <td class="product-name">
                                                     <span class="pr-4 d-block">{{ $product_name_with_choice }}</span>
-                                                    {{-- <strong>{{  }}</strong> --}}
-                                                </td>
+                                                    @php
+                                                        if ($cartItem['Periode'] === 'Harian') {
+                                                            $end_date = date('d M Y', strtotime($cartItem['start_date']. ' + '.$cartItem['quantity'].' days'));
+                                                            echo '<span class="badge badge-warning">'.$cartItem['start_date'].'</span>';
+                                                            echo ' s/d ';
+                                                            echo '<span class="badge badge-warning">'.$end_date.'</span>';
+                                                        }
+                                                        if ($cartItem['Periode'] === 'Bulanan') {
+                                                            $end_date = date('d M Y', strtotime($cartItem['start_date']. ' + '.$cartItem['quantity'].' months'));
+                                                            echo '<span class="badge badge-warning">'.$cartItem['start_date'].'</span>';
+                                                            echo ' s/d ';
+                                                            echo '<span class="badge badge-warning">'.$end_date.'</span>';
+                                                        }
+                                                        if ($cartItem['Periode'] === 'EnamBulan') {
+                                                            $_qty = (int)$cartItem['quantity'] * 6;
+                                                            $end_date = date('d M Y', strtotime($cartItem['start_date']. ' + '.(string)$_qty.' months'));
+                                                            echo '<span class="badge badge-warning">'.$cartItem['start_date'].'</span>';
+                                                            echo ' s/d ';
+                                                            echo '<span class="badge badge-warning">'.$end_date.'</span>';
+                                                        }
+                                                        if ($cartItem['Periode'] === 'Tahunan') {
+                                                            $_qty = (int)$cartItem['quantity'] * 12;
+                                                            $end_date = date('d M Y', strtotime($cartItem['start_date']. ' + '.(string)$_qty.' months'));
+                                                            echo '<span class="badge badge-warning">'.$cartItem['start_date'].'</span>';
+                                                            echo ' s/d ';
+                                                            echo '<span class="badge badge-warning">'.$end_date.'</span>';
+                                                        }
 
+                                                    @endphp
+                                                    <b hidden id="start_{{ $cartItem['Periode'] }}" class="text-sm text-info">{{ $cartItem['start_date'] }}</b>
+                                                    <b hidden id="end_{{ $cartItem['Periode'] }}" class="text-sm text-info">{{ $cartItem['end_date'] }}</b>
+                                                </td>
+                                                
                                                 <td class="product-price d-none d-lg-table-cell">
                                                     <span class="pr-3 d-block">{{ single_price($cartItem['price']) }}</span>
                                                 </td>
@@ -99,13 +127,13 @@
                                                 <td class="product-quantity d-none d-md-table-cell">
                                                     <div class="input-group input-group--style-2 pr-4" style="width: 130px;">
                                                         <span class="input-group-btn">
-                                                            <button class="btn btn-number" type="button" data-type="minus" data-field="quantity[{{ $key }}]">
+                                                            <button class="btn btn-number" id="minus_{{ $cartItem['Periode'] }}" type="button" data-type="minus" data-field="quantity[{{ $key }}]">
                                                                 <i class="la la-minus"></i>
                                                             </button>
                                                         </span>
-                                                        <input type="text" name="quantity[{{ $key }}]" class="form-control input-number" placeholder="1" value="{{ $cartItem['quantity'] }}" min="1" max="10" onchange="updateQuantity({{ $key }}, this)">
+                                                    <input type="text" name="quantity[{{ $key }}]" id="qty_{{ $cartItem['Periode'] }}" class="form-control input-number" placeholder="1" value="{{ $cartItem['quantity'] }}" min="1" max="10" onchange="updateQuantity({{ $key }}, this, $('#start_{{$cartItem['Periode']}}').text(), $('#end_{{$cartItem['Periode']}}').text(), $('#periode').val())">
                                                         <span class="input-group-btn">
-                                                            <button class="btn btn-number" type="button" data-type="plus" data-field="quantity[{{ $key }}]">
+                                                            <button class="btn btn-number" id="plus_{{ $cartItem['Periode'] }}" type="button" data-type="plus" data-field="quantity[{{ $key }}]">
                                                                 <i class="la la-plus"></i>
                                                             </button>
                                                         </span>
@@ -250,20 +278,28 @@
 
 @section('script')
     <script type="text/javascript">
-    function removeFromCartView(e, key){
-        e.preventDefault();
-        removeFromCart(key);
-    }
-
-    function updateQuantity(key, element){
-        $.post('{{ route('cart.updateQuantity') }}', { _token:'{{ csrf_token() }}', key:key, quantity: element.value}, function(data){
-            updateNavCart();
-            $('#cart-summary').html(data);
-        });
-    }
-
-    function showCheckoutModal(){
-        $('#GuestCheckout').modal();
-    }
+        function removeFromCartView(e, key){
+            e.preventDefault();
+            removeFromCart(key);
+        }
+        $(".se-pre-con").hide();
+        function updateQuantity(key, element, start_date, end_date, periode){
+            console.log(element);
+            $.post('{{ route('cart.updateQuantity') }}', { 
+                _token:'{{ csrf_token() }}', 
+                key:key, 
+                quantity: element.value,
+                start_date : start_date,
+                end_date : end_date,
+                periode : periode
+            },function(data){
+                updateNavCart();
+                $('#cart-summary').html(data);
+            });
+        }
+        
+        function showCheckoutModal(){
+            $('#GuestCheckout').modal();
+        }
     </script>
 @endsection

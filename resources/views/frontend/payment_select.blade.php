@@ -61,7 +61,7 @@
                                     <div class="row">
                                         <div class="col-md-6 mx-auto">
                                             <div class="row">
-                                                @if(\App\BusinessSetting::where('type', 'Mandiri')->first()->value == 1)
+                                                {{-- @if(\App\BusinessSetting::where('type', 'Mandiri')->first()->value == 1)
                                                     <div class="col-6">
                                                         <label class="payment_option mb-4" data-toggle="tooltip" data-title="Cash on Delivery">
                                                             <input type="radio" id="" name="payment_option" value="cash_on_delivery" checked>
@@ -70,7 +70,7 @@
                                                             </span>
                                                         </label>
                                                     </div>
-                                                @endif
+                                                @endif --}}
                                             </div>
                                         </div>
                                     </div>

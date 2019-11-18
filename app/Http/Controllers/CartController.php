@@ -13,7 +13,6 @@ class CartController extends Controller
 {
     public function index(Request $request)
     {
-        //dd($cart->all());
         $categories = Category::all();
         return view('frontend.view_cart', compact('categories'));
     }
@@ -103,6 +102,8 @@ class CartController extends Controller
         $data['price'] = $price;
         $data['tax'] = $tax;
         $data['shipping_type'] = $product->shipping_type;
+        $data['start_date'] = $request['start_date'];
+        $data['end_date'] = $request['end_date'];
 
         if($product->shipping_type == 'free'){
             $data['shipping'] = 0;
@@ -119,8 +120,6 @@ class CartController extends Controller
             $cart = collect([$data]);
             $request->session()->put('cart', $cart);
         }
-        // dd($data);
-
         return view('frontend.partials.addedToCart', compact('product', 'data'));
     }
 
@@ -141,13 +140,15 @@ class CartController extends Controller
     {
         $cart = $request->session()->get('cart', collect([]));
         $cart = $cart->map(function ($object, $key) use ($request) {
-            if($key == $request->key){
+            if((string)$key === $request->key){
                 $object['quantity'] = $request->quantity;
+                $object['start_date'] = $request->start_date;
+                $object['end_date'] = $request->end_date;
+                $object['periode']  = $request->periode;
             }
             return $object;
         });
         $request->session()->put('cart', $cart);
-
         return view('frontend.partials.cart_details');
     }
 }

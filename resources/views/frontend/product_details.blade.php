@@ -425,12 +425,12 @@
                             @foreach (filter_products(\App\Product::where('user_id', $product->user_id)->orderBy('num_of_sale', 'desc'))->limit(4)->get() as $key => $top_product)
                             <div class="mb-3 product-box-3">
                                 <div class="clearfix">
-                                    <div class="product-image float-left">
+                                    <div class="product-image float-left img-fluid">
                                         <a href="{{ route('product', $top_product->slug) }}" style="background-image:url('{{ asset($top_product->thumbnail_img) }}');"></a>
                                     </div>
                                     <div class="product-details float-left">
                                         <h4 class="title text-truncate">
-                                            <a href="{{ route('product', $top_product->slug) }}" class="d-block">{{ $top_product->name }}</a>
+                                            <a href="{{ route('product', $top_product->slug) }}" class="d-block text-sm">{{ $top_product->name }}</a>
                                         </h4>
                                         <div class="star-rating star-rating-sm mt-1">
                                             {{ renderStarRating($top_product->rating) }}
@@ -439,7 +439,7 @@
                                             <!-- @if(home_base_price($top_product->id) != home_discounted_base_price($top_product->id))
                                                 <del class="old-product-price strong-400">{{ home_base_price($top_product->id) }}</del>
                                             @endif -->
-                                            <span class="product-price strong-600">{{ home_discounted_base_price($top_product->id) }}</span>
+                                            <span class="product-price strong-600 text-sm">{{ home_discounted_base_price($top_product->id) }}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -483,11 +483,11 @@
                                 <div class="tab-pane active show" id="tab_default_1">
                                     <div class="py-2 px-4">
                                         <div class="row">
-                                            <div class="col-md-5">
+                                            <div class="col-md-6">
                                                 <small id="alamat" hidden>{{ $product->alamat }}</small>
-                                                <p>{{ $product->description }}</p>
+                                                <p>{!! $product->description !!}</p>
                                             </div>
-                                            <div class="col-md-7">
+                                            <div class="col-md-6">
                                                 <small id="coords" hidden>{{ $product->latlong }}</small>
                                                 <div id="detailsProductMap" class="map" style="height: 300px;"></div>
                                             </div>
@@ -863,6 +863,7 @@
                 return nol(dates) + ' ' + bulan[month] + ' ' + year;
             }
         });
+
 
         
     </script>
