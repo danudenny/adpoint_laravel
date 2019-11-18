@@ -1,11 +1,6 @@
 @extends('frontend.layouts.app')
 
-@if(isset($subsubcategory_id))
-    @php
-        $meta_title = \App\SubSubCategory::find($subsubcategory_id)->meta_title;
-        $meta_description = \App\SubSubCategory::find($subsubcategory_id)->meta_description;
-    @endphp
-@elseif (isset($subcategory_id))
+@if (isset($subcategory_id))
     @php
         $meta_title = \App\SubCategory::find($subcategory_id)->meta_title;
         $meta_description = \App\SubCategory::find($subcategory_id)->meta_description;
@@ -60,11 +55,6 @@
                             <li ><a href="{{ route('products.category', \App\SubCategory::find($subcategory_id)->category->slug) }}">{{ \App\SubCategory::find($subcategory_id)->category->name }}</a></li>
                             <li class="active"><a href="{{ route('products.subcategory', \App\SubCategory::find($subcategory_id)->slug) }}">{{ \App\SubCategory::find($subcategory_id)->name }}</a></li>
                         @endif
-                        @if(isset($subsubcategory_id))
-                            <li ><a href="{{ route('products.category', \App\SubSubCategory::find($subsubcategory_id)->subcategory->category->slug) }}">{{ \App\SubSubCategory::find($subsubcategory_id)->subcategory->category->name }}</a></li>
-                            <li ><a href="{{ route('products.subcategory', \App\SubsubCategory::find($subsubcategory_id)->subcategory->slug) }}">{{ \App\SubsubCategory::find($subsubcategory_id)->subcategory->name }}</a></li>
-                            <li class="active"><a href="{{ route('products.subsubcategory', \App\SubSubCategory::find($subsubcategory_id)->slug) }}">{{ \App\SubSubCategory::find($subsubcategory_id)->name }}</a></li>
-                        @endif
                     </ul>
                 </div>
             </div>
@@ -97,9 +87,7 @@
                                                     </button>
                                                     <div id="subCategory-{{ $key }}-{{ $key2 }}" class="collapse">
                                                         <ul class="sub-sub-category-list">
-                                                            @foreach ($subcategory->subsubcategories as $key3 => $subsubcategory)
-                                                                <li><a href="{{ route('products.subsubcategory', $subsubcategory->slug) }}">{{ __($subsubcategory->name) }}</a></li>
-                                                            @endforeach
+                                                            <li><a href="{{ route('products.subcategory', $subcategory->slug) }}">{{ __($subcategory->name) }}</a></li>
                                                         </ul>
                                                     </div>
                                                 </div>
@@ -178,15 +166,13 @@
                                             @endforeach
                                         @elseif(isset($category_id))
                                             @foreach (\App\Category::find($category_id)->subcategories as $key => $subcategory)
-                                                @foreach ($subcategory->subcategories as $key => $subcategory)
-                                                    @php
-                                                        foreach (json_decode($subcategory->brands) as $brand) {
-                                                            if(!in_array($brand, $brands)){
-                                                                array_push($brands, $brand);
-                                                            }
+                                                @php
+                                                    foreach (json_decode($subcategory->brands) as $brand) {
+                                                        if(!in_array($brand, $brands)){
+                                                            array_push($brands, $brand);
                                                         }
-                                                    @endphp
-                                                @endforeach
+                                                    }
+                                                @endphp
                                             @endforeach
                                         @else
                                             @php

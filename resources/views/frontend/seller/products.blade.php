@@ -58,10 +58,11 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div class="card no-border mt-1">
+
                             <div>
-                                <table class="table table-sm table-hover table-responsive-md">
+                                <table class="table table-striped table-hover" id="example" style="padding-bottom: 20px; padding-top: 20px;">
                                     <thead style="text-align: center">
                                         <tr>
                                             <th>#</th>
@@ -124,6 +125,9 @@
 
 @section('script')
     <script type="text/javascript">
+        $(document).ready(function() {
+            $('#example').DataTable();
+        } );
         function update_featured(el){
             if(el.checked){
                 var status = 1;
