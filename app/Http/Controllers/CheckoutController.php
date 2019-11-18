@@ -27,10 +27,10 @@ class CheckoutController extends Controller
     //check the selected payment gateway and redirect to that controller accordingly
     public function checkout(Request $request)
     {
-        $orderController = new OrderController;
-        $orderController->store($request);
+        // $orderController = new OrderController;
+        // $orderController->store($request);
 
-        $request->session()->put('payment_type', 'cart_payment');
+        // $request->session()->put('payment_type', 'cart_payment');
 
         if($request->session()->get('order_id') != null){
             if($request->payment_option == 'paypal'){
@@ -114,7 +114,8 @@ class CheckoutController extends Controller
     {
         if(Session::has('cart') && count(Session::get('cart')) > 0){
             $categories = Category::all();
-            return view('frontend.shipping_info', compact('categories'));
+            $cart = $request->session()->get('cart');
+            return view('frontend.shipping_info', compact('categories','cart'));
         }
         flash(__('Your cart is empty'))->success();
         return back();
@@ -122,6 +123,7 @@ class CheckoutController extends Controller
 
     public function store_shipping_info(Request $request)
     {
+        // dd($request);
         $data['name'] = $request->name;
         $data['email'] = $request->email;
         $data['address'] = $request->address;
@@ -137,16 +139,19 @@ class CheckoutController extends Controller
         $subtotal = 0;
         $tax = 0;
         $shipping = 0;
+        
         foreach (Session::get('cart') as $key => $cartItem){
             $subtotal += $cartItem['price']*$cartItem['quantity'];
             $tax += $cartItem['tax']*$cartItem['quantity'];
             $shipping += $cartItem['shipping']*$cartItem['quantity'];
         }
 
+        
         $total = $subtotal + $tax + $shipping;
-
+        // dd($total);
+        
         if(Session::has('coupon_discount')){
-                $total -= Session::get('coupon_discount');
+            $total -= Session::get('coupon_discount');
         }
 
         return view('frontend.payment_select', compact('total'));

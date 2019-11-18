@@ -39,8 +39,27 @@
                                 </a>
                             </div>
                         </div>
+
+                        <div class="row">
+                            <div class="col-md-2">
+                                <label>Published</label>
+                                <select class="form-control form-control-sm">
+                                    <option value="1">Yes</option>
+                                    <option value="0">No</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3 ml-auto">
+                                <label>Search by name</label>
+                                <div class="input-group mb-3">
+                                <input type="text" class="form-control form-control-sm" placeholder="Search by name" aria-label="Search by name" aria-describedby="basic-addon2">
+                                <div class="input-group-append">
+                                    <span class="input-group-text" style="cursor: pointer;" id="basic-addon2"><i class="fa fa-search" aria-hidden="true"></i></span>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
                         
-                        <div class="card no-border mt-4">
+                        <div class="card no-border mt-1">
                             <div>
                                 <table class="table table-sm table-hover table-responsive-md">
                                     <thead style="text-align: center">
@@ -89,7 +108,7 @@
                             </div>
                         </div>
 
-                        <div class="pagination-wrapper py-4">
+                        <div class="pagination-wrapper py-2">
                             <ul class="pagination justify-content-end">
                                 {{ $products->links() }}
                             </ul>

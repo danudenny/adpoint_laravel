@@ -225,7 +225,7 @@
                                     <div class="col-10">
                                         <div class="row">
                                             <div class="col-md-5">
-                                                <input type="text" class="form-control" name="start_date" id="startDate">
+                                                <input type="text" class="form-control" name="start_date" id="startDate" autocomplete="off" required>
                                             </div>
                                             <p>To</p>
                                             <div class="col-md-5">
@@ -258,13 +258,13 @@
                                     <!-- Buy Now button -->
                                     @if(count(json_decode($product->variations, true)) >= 1)
                                         @if ($qty > 0)
-                                            <button type="button" class="btn btn-styled btn-base-1 btn-icon-left strong-700 hov-bounce hov-shaddow" onclick="buyNow()">
+                                            <button type="button" id="buynow" class="btn btn-styled btn-base-1 btn-icon-left strong-700 hov-bounce hov-shaddow" onclick="buyNow()">
                                                 <i class="fa fa-shopping-cart"></i> {{__('Buy Now')}}
                                             </button>
                                         @endif
                                     @endif
                                     <!-- Add to cart button -->
-                                    <button type="button" class="btn btn-styled btn-alt-base-1 c-white btn-icon-left strong-700 hov-bounce hov-shaddow ml-2" onclick="addToCart()">
+                                    <button type="button" id="addtocart" class="btn btn-styled btn-alt-base-1 c-white btn-icon-left strong-700 hov-bounce hov-shaddow ml-2" onclick="addToCart()">
                                         <i class="fa fa-cart-plus"></i>
                                         <span class="d-none d-md-inline-block"> {{__('Add to cart')}}</span>
                                     </button>
@@ -729,6 +729,8 @@
 @section('script')
     <script type="text/javascript">
         $(document).ready(function() {
+            $('#addtocart').prop('disabled', true);
+            $('#buynow').prop('disabled', true);
     		$('#share').share({
     			networks: ['facebook','twitter','linkedin','tumblr','in1','stumbleupon','digg'],
     			theme: 'square'
@@ -775,6 +777,8 @@
                 minDate: today,
                 close: function(e) {
                     let checked = $('input[name=Periode]:checked').val();
+                    $('#addtocart').prop('disabled', false);
+                    $('#buynow').prop('disabled', false);
                     switch (checked) {
                         case 'Harian':
                             dateEndByDay();

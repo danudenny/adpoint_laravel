@@ -38,7 +38,6 @@
                                             <a href="#" class="mr-3">
                                                 <img src="{{ asset($product->thumbnail_img) }}">
                                             </a>
-                                            <input type="hidden" id="periode" value="{{$cartItem['Periode']}}">
                                         </td>
 
                                         <td class="product-name">
@@ -48,32 +47,31 @@
                                                     $end_date = date('d M Y', strtotime($cartItem['start_date']. ' + '.$cartItem['quantity'].' days'));
                                                     echo '<span class="badge badge-warning">'.$cartItem['start_date'].'</span>';
                                                     echo ' s/d ';
-                                                    echo '<span class="badge badge-warning">'.$end_date.'</span>';
+                                                    echo '<span id="e" class="badge badge-warning">'.$end_date.'</span>';
                                                 }
                                                 if ($cartItem['Periode'] === 'Bulanan') {
                                                     $end_date = date('d M Y', strtotime($cartItem['start_date']. ' + '.$cartItem['quantity'].' months'));
                                                     echo '<span class="badge badge-warning">'.$cartItem['start_date'].'</span>';
                                                     echo ' s/d ';
-                                                    echo '<span class="badge badge-warning">'.$end_date.'</span>';
+                                                    echo '<span id="e" class="badge badge-warning">'.$end_date.'</span>';
                                                 }
                                                 if ($cartItem['Periode'] === 'EnamBulan') {
                                                     $_qty = (int)$cartItem['quantity'] * 6;
                                                     $end_date = date('d M Y', strtotime($cartItem['start_date']. ' + '.(string)$_qty.' months'));
                                                     echo '<span class="badge badge-warning">'.$cartItem['start_date'].'</span>';
                                                     echo ' s/d ';
-                                                    echo '<span class="badge badge-warning">'.$end_date.'</span>';
+                                                    echo '<span id="e" class="badge badge-warning">'.$end_date.'</span>';
                                                 }
                                                 if ($cartItem['Periode'] === 'Tahunan') {
                                                     $_qty = (int)$cartItem['quantity'] * 12;
                                                     $end_date = date('d M Y', strtotime($cartItem['start_date']. ' + '.(string)$_qty.' months'));
                                                     echo '<span class="badge badge-warning">'.$cartItem['start_date'].'</span>';
                                                     echo ' s/d ';
-                                                    echo '<span class="badge badge-warning">'.$end_date.'</span>';
+                                                    echo '<span id="e" class="badge badge-warning">'.$end_date.'</span>';
                                                 }
 
                                             @endphp
                                             <b hidden id="start_{{ $cartItem['Periode'] }}" class="text-sm text-info">{{ $cartItem['start_date'] }}</b> 
-                                            <b hidden id="end_{{ $cartItem['Periode'] }}" class="text-sm text-info">{{ $cartItem['end_date'] }}</b>
                                         </td>
 
                                         <td class="product-price d-none d-lg-table-cell">
@@ -87,7 +85,7 @@
                                                         <i class="la la-minus"></i>
                                                     </button>
                                                 </span>
-                                                <input type="text" name="quantity[{{ $key }}]" id="qty_{{ $cartItem['Periode'] }}" class="form-control input-number" placeholder="1" value="{{ $cartItem['quantity'] }}" min="1" max="10" onchange="updateQuantity({{ $key }}, this, $('#start_{{$cartItem['Periode']}}').text(), $('#end_{{$cartItem['Periode']}}').text(), $('#periode').val())">
+                                                <input type="text" name="quantity[{{ $key }}]" id="qty_{{ $cartItem['Periode'] }}" class="form-control input-number" placeholder="1" value="{{ $cartItem['quantity'] }}" min="1" max="10" onchange="updateQuantity({{ $key }}, this, $('#start_{{$cartItem['Periode']}}').text(), $('#e').text())">
                                                 <span class="input-group-btn">
                                                     <button class="btn btn-number" id="plus_{{ $cartItem['Periode'] }}" type="button" data-type="plus" data-field="quantity[{{ $key }}]">
                                                         <i class="la la-plus"></i>

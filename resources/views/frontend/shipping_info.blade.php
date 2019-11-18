@@ -52,6 +52,7 @@
                                 @if(Auth::check())
                                     @php
                                         $user = Auth::user();
+                                        // dd($cart);
                                     @endphp
                                     <div class="card-body">
                                         <div class="row">

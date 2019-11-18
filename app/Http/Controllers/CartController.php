@@ -14,7 +14,8 @@ class CartController extends Controller
     public function index(Request $request)
     {
         $categories = Category::all();
-        return view('frontend.view_cart', compact('categories'));
+        $cart = $request->session()->get('cart');
+        return view('frontend.view_cart', compact('categories', 'cart'));
     }
 
     public function showCartModal(Request $request)
@@ -137,17 +138,38 @@ class CartController extends Controller
 
     //updated the quantity for a cart item
     public function updateQuantity(Request $request)
-    {
+    {   
+
         $cart = $request->session()->get('cart', collect([]));
+        
         $cart = $cart->map(function ($object, $key) use ($request) {
             if((string)$key === $request->key){
-                $object['quantity'] = $request->quantity;
-                $object['start_date'] = $request->start_date;
-                $object['end_date'] = $request->end_date;
-                $object['periode']  = $request->periode;
+                if ($object['Periode'] === 'Harian') {
+                    $object['quantity'] = $request->quantity;
+                    $object['start_date'] = $request->start_date;
+                    $object['end_date'] = date('d M Y', strtotime($request->start_date. ' + '.$request->quantity.' days'));
+                }
+                if ($object['Periode'] === 'Bulanan') {
+                    $object['quantity'] = $request->quantity;
+                    $object['start_date'] = $request->start_date;
+                    $object['end_date'] = date('d M Y', strtotime($request->start_date. ' + '.$request->quantity.' months'));
+                }
+                if ($object['Periode'] === 'EnamBulan') {
+                    $_qty = (int)$request->quantity * 6;
+                    $object['quantity'] = $request->quantity;
+                    $object['start_date'] = $request->start_date;
+                    $object['end_date'] = date('d M Y', strtotime($request->start_date. ' + '.(string)$_qty.' months'));
+                }
+                if ($object['Periode'] === 'Tahunan') {
+                    $_qty = (int)$request->quantity * 12;
+                    $object['quantity'] = $request->quantity;
+                    $object['start_date'] = $request->start_date;
+                    $object['end_date'] = date('d M Y', strtotime($request->start_date. ' + '.(string)$_qty.' months'));
+                }
             }
             return $object;
         });
+
         $request->session()->put('cart', $cart);
         return view('frontend.partials.cart_details');
     }
