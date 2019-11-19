@@ -50,7 +50,7 @@
                                                 <th scope="row">{{__('Image')}}</th>
                                                 @foreach (Session::get('compare') as $key => $item)
                                                     <td>
-                                                        <img src="{{ asset(\App\Product::find($item)->thumbnail_img) }}" alt="Product Image" class="img-fluid py-4">
+                                                        <img src="{{ asset(\App\Product::find($item)->thumbnail_img) }}" alt="Product Image" class="img-fluid">
                                                     </td>
                                                 @endforeach
                                             </tr>
@@ -64,12 +64,6 @@
                                                 <th scope="row">{{__('Brand')}}</th>
                                                 @foreach (Session::get('compare') as $key => $item)
                                                     <td>{{ \App\Product::find($item)->brand->name }}</td>
-                                                @endforeach
-                                            </tr>
-                                            <tr>
-                                                <th scope="row">{{__('Sub Sub Category')}}</th>
-                                                @foreach (Session::get('compare') as $key => $item)
-                                                    <td>{{ \App\Product::find($item)->subsubcategory->name }}</td>
                                                 @endforeach
                                             </tr>
                                             <tr>

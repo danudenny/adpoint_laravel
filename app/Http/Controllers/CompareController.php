@@ -9,7 +9,7 @@ class CompareController extends Controller
 {
     public function index(Request $request)
     {
-        //dd($request->session()->get('compare'));
+        // dd($request);
         $categories = Category::all();
         return view('frontend.view_compare', compact('categories'));
     }

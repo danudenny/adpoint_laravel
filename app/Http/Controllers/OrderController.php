@@ -142,7 +142,15 @@ class OrderController extends Controller
                     $order_detail->start_date = date('Y-m-d', strtotime($cartItem['start_date']));
                     $order_detail->end_date = date('Y-m-d', strtotime($cartItem['end_date']));
                 }
+                if ($product_variation == 'Mingguan') {
+                    $order_detail->start_date = date('Y-m-d', strtotime($cartItem['start_date']));
+                    $order_detail->end_date = date('Y-m-d', strtotime($cartItem['end_date']));
+                }
                 if ($product_variation == 'Bulanan') {
+                    $order_detail->start_date = date('Y-m-d', strtotime($cartItem['start_date']));
+                    $order_detail->end_date = date('Y-m-d', strtotime($cartItem['end_date']));
+                }
+                if ($product_variation == 'TigaBulan') {
                     $order_detail->start_date = date('Y-m-d', strtotime($cartItem['start_date']));
                     $order_detail->end_date = date('Y-m-d', strtotime($cartItem['end_date']));
                 }
@@ -169,8 +177,6 @@ class OrderController extends Controller
             }
             
             $order->grand_total = $subtotal + $tax + $shipping;
-            // $order->start_date = date('Y-m-d', strtotime($cartItem['start_date']));
-            // $order->end_date = date('Y-m-d', strtotime($cartItem['end_date']));
             if(Session::has('coupon_discount')){
                 $order->grand_total -= Session::get('coupon_discount');
                 $order->coupon_discount = Session::get('coupon_discount');

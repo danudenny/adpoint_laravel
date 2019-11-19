@@ -209,9 +209,7 @@
                                                     </button>
                                                 </span>
                                             </div>
-                                            <!-- @if(count(json_decode($product->variations, true)) >= 1)
-                                                <div class="avialable-amount">(<span id="available-quantity">{{ $qty }}</span> {{__('available')}})</div>
-                                            @endif -->
+                                            
                                         </div>
                                     </div>
                                 </div>
@@ -745,8 +743,6 @@
                     data.push(choice);
                 })
             });
-            // console.log(data);
-
 
             $('#option-choice-form input').on('change', function(e){
                 var periode = $(this).val();
@@ -755,9 +751,13 @@
                 if (start_date != '') {
                     if (periode === 'Harian') {
                         dateEndByDay();
-                    }else if (periode === 'Bulanan') {
+                    }else if (periode === 'Mingguan') {
+                        dateEndByWeek();
+                    }else if(periode === 'Bulanan'){
                         dateEndByMonth();
-                    }else if(periode === 'EnamBulan'){
+                    }else if (periode === 'TigaBulan') {
+                        dateEndByThreeMonth();
+                    }else if (periode === 'EnamBulan') {
                         dateEndBySixMonth();
                     }else if (periode === 'Tahunan') {
                         dateEndByYear();
@@ -783,8 +783,14 @@
                         case 'Harian':
                             dateEndByDay();
                             break;
+                        case 'Mingguan':                        
+                            dateEndByWeek();
+                            break;
                         case 'Bulanan':                        
                             dateEndByMonth();
+                            break;
+                        case 'TigaBulan':                        
+                            dateEndByThreeMonth();
                             break;
                         case 'EnamBulan':
                             dateEndBySixMonth();
@@ -805,9 +811,21 @@
                 let newDate = new Date(currentDate.getFullYear(), currentDate.getMonth() , currentDate.getDate() + quantity);
                 $('#endDate').attr('value', dateFormat(newDate))
             }
+            function dateEndByWeek(){
+                $('#endDate').empty();
+                const quantity = parseInt($('#quantity').val()) * 7;
+                let currentDate = new Date($('#startDate').val());
+                let newDate = new Date(currentDate.getFullYear(), currentDate.getMonth() , currentDate.getDate() + quantity);
+                $('#endDate').attr('value', dateFormat(newDate))
+            }
             function dateEndByMonth() {
                 $('#endDate').empty();
                 const quantity = parseInt($('#quantity').val());
+                changeDate(quantity);
+            }
+            function dateEndByThreeMonth() {
+                $('#endDate').empty();
+                const quantity = parseInt($('#quantity').val()) * 3;
                 changeDate(quantity);
             }
             function dateEndBySixMonth() {
@@ -838,9 +856,17 @@
                     if($('#endDate').val() != ''){
                         dateEndByDay();
                     }
+                }else if (checked === 'Mingguan') {
+                    if($('#endDate').val() != ''){
+                        dateEndByWeek();
+                    }
                 }else if (checked === 'Bulanan') {
                     if($('#endDate').val() != ''){
                         dateEndByMonth();
+                    }
+                }else if (checked === 'TigaBulan') {
+                    if($('#endDate').val() != ''){
+                        dateEndByThreeMonth();
                     }
                 }else if (checked === 'EnamBulan') {
                     if($('#endDate').val() != ''){

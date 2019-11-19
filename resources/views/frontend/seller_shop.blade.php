@@ -342,20 +342,23 @@
                                             </h2>
                                         </div>
                                         <div class="price-bar row no-gutters">
-                                            <div class="price col-7">
+                                            <div class="price col-12">
                                                 @if(home_price($product->id) != home_discounted_price($product->id))
                                                     <del class="old-product-price strong-600">{{ home_base_price($product->id) }}</del>
                                                     <span class="product-price strong-600">{{ home_discounted_base_price($product->id) }}</span>
                                                 @else
                                                     <span class="product-price strong-600">{{ home_discounted_base_price($product->id) }}</span>
                                                 @endif
-                                            </div>
-                                            <div class="col-5">
-                                                <div class="star-rating star-rating-sm float-right">
-                                                    {{ renderStarRating($product->rating) }}
-                                                </div>
+                                                <div class="row">
+                                                        <div class="col-12 col-centered">
+                                                            <div class="star-rating star-rating-sm">
+                                                                {{ renderStarRating($product->rating) }}
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                             </div>
                                         </div>
+                                        
                                         <div class="cart-add d-flex">
                                                 <button class="btn add-wishlist border-right" title="Add to Wishlist" onclick="addToWishList({{ $product->id }})">
                                                     <i class="la la-heart-o"></i>
