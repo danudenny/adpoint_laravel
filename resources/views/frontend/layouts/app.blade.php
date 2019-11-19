@@ -72,6 +72,21 @@
     height: 400px;
     width: 100%;
     }
+
+    #pac-input {
+        background-color: #fff;
+        font-family: Roboto;
+        font-size: 15px;
+        font-weight: 300;
+        margin-left: 12px;
+        padding: 0 11px 0 13px;
+        text-overflow: ellipsis;
+        width: 400px;
+    }
+
+    #pac-input:focus {
+        border-color: #4d90fe;
+    }
 </style>
 
 <!-- Global style (main) -->
@@ -780,7 +795,7 @@
 <script src="{{ asset('frontend/js/moment.min.js') }}"></script>
 {{-- <script src="{{ asset('frontend/js/bootstrap-datetimepicker.min.js') }}"></script> --}}
 {{-- <script src="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.0.1/build/ol.js"></script> --}}
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBsVHufr4pDssMKPVCFZO6yXe58oalrtHs"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBsVHufr4pDssMKPVCFZO6yXe58oalrtHs&libraries=places"></script>
 @yield('script')
 
 
@@ -834,6 +849,58 @@
                 gestureHandling: 'greedy'
             });
 
+            var input = document.getElementById('pac-input');
+            var searchBox = new google.maps.places.SearchBox(input);
+            map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+
+            map.addListener('bounds_changed', function() {
+                searchBox.setBounds(map.getBounds());
+            });
+            var markers = [];
+            searchBox.addListener('places_changed', function() {
+                var places = searchBox.getPlaces();
+
+                if (places.length == 0) {
+                    return;
+                }
+
+                // Clear out the old markers.
+                markers.forEach(function(marker) {
+                    marker.setMap(null);
+                });
+
+                markers = [];
+
+                // For each place, get the icon, name and location.
+                var bounds = new google.maps.LatLngBounds();
+                places.forEach(function(place) {
+                    if (!place.geometry) {
+                        console.log("Returned place contains no geometry");
+                        return;
+                    }
+                    var base_url = {!! json_encode(url('/')) !!};
+                    var icon = {
+                        url: base_url+'/img/marker/hand.png'
+                    };
+
+                    markers.push(new google.maps.Marker({
+                        map: map,
+                        icon: icon,
+                        animation: google.maps.Animation.BOUNCE,
+                        position: place.geometry.location
+                    }));
+
+                    reverseGeocode(place.geometry.location.lat(),place.geometry.location.lng());
+
+                    if (place.geometry.viewport) {
+                        bounds.union(place.geometry.viewport);
+                    } else {
+                        bounds.extend(place.geometry.location);
+                    }
+                });
+                map.fitBounds(bounds);
+            });
+
             var marker;
             function placeMarker(position, map) {
                 if (marker) {
@@ -856,7 +923,6 @@
                 latlong.setAttribute('value', result)
                 reverseGeocode(coords.lat(), coords.lng());
                 placeMarker(e.latLng, map);
-
             });
 
             // Try HTML5 geolocation.
@@ -887,6 +953,58 @@
                 center: {lat: lat, lng: lng},
                 zoom: 10,
                 gestureHandling: 'greedy'
+            });
+
+            var input = document.getElementById('pac-input');
+            var searchBox = new google.maps.places.SearchBox(input);
+            map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+
+            map.addListener('bounds_changed', function() {
+                searchBox.setBounds(map.getBounds());
+            });
+            var markers = [];
+            searchBox.addListener('places_changed', function() {
+                var places = searchBox.getPlaces();
+
+                if (places.length == 0) {
+                    return;
+                }
+
+                // Clear out the old markers.
+                markers.forEach(function(marker) {
+                    marker.setMap(null);
+                });
+
+                markers = [];
+
+                // For each place, get the icon, name and location.
+                var bounds = new google.maps.LatLngBounds();
+                places.forEach(function(place) {
+                    if (!place.geometry) {
+                        console.log("Returned place contains no geometry");
+                        return;
+                    }
+                    var base_url = {!! json_encode(url('/')) !!};
+                    var icon = {
+                        url: base_url+'/img/marker/hand.png'
+                    };
+
+                    markers.push(new google.maps.Marker({
+                        map: map,
+                        icon: icon,
+                        animation: google.maps.Animation.BOUNCE,
+                        position: place.geometry.location
+                    }));
+
+                    reverseGeocode(place.geometry.location.lat(),place.geometry.location.lng());
+
+                    if (place.geometry.viewport) {
+                        bounds.union(place.geometry.viewport);
+                    } else {
+                        bounds.extend(place.geometry.location);
+                    }
+                });
+                map.fitBounds(bounds);
             });
 
             var marker = new google.maps.Marker({
@@ -983,12 +1101,28 @@
                     map: map,
                     title: name
                 });
-                marker.addListener('mouseover', function() {
-                    infowindow.open(map, marker);
-                });
-                marker.addListener('mouseout', function() {
-                    infowindow.open(map, marker);
-                });
+               
+                google.maps.event.addListener(marker, 'mouseover', (function(marker, template){
+                    return function(){
+                        infowindow.setContent(template);
+                        infowindow.open(map,marker);
+                    }
+                })(marker, template, infowindow));
+
+                google.maps.event.addListener(marker, 'click', (function(marker, template){
+                    return function(){
+                        infowindow.setContent(template);
+                        infowindow.open(map,marker);
+                    }
+                })(marker, template, infowindow));
+
+                google.maps.event.addListener(marker, 'mouseout', (function(marker, template){
+                    return function(){
+                        setTimeout(function(){
+                            infowindow.close();
+                        }, 1000);
+                    }
+                })(marker, template, infowindow));
 
             });
             
