@@ -455,6 +455,7 @@
                                     {{__('Lokasi')}}
                                 </div>
                                 <div class="form-box-content p-3">
+                                    <input id="pac-input" style="cursor:pointer;" class="controls" type="text" placeholder="Search Box">
                                     <div id="editProductMap" class="map mb-3"></div>
                                     <input type="hidden" class="form-control mb-3" value="{{ $product->latlong }}" name="latlong" id="latlong">
                                     <div class="row">
