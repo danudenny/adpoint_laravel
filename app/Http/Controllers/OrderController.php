@@ -136,7 +136,24 @@ class OrderController extends Controller
                     $product->save();
                 }
 
+                
                 $order_detail = new OrderDetail;
+                if ($product_variation == 'Harian') {
+                    $order_detail->start_date = date('Y-m-d', strtotime($cartItem['start_date']));
+                    $order_detail->end_date = date('Y-m-d', strtotime($cartItem['end_date']));
+                }
+                if ($product_variation == 'Bulanan') {
+                    $order_detail->start_date = date('Y-m-d', strtotime($cartItem['start_date']));
+                    $order_detail->end_date = date('Y-m-d', strtotime($cartItem['end_date']));
+                }
+                if ($product_variation == 'EnamBulan') {
+                    $order_detail->start_date = date('Y-m-d', strtotime($cartItem['start_date']));
+                    $order_detail->end_date = date('Y-m-d', strtotime($cartItem['end_date']));
+                }
+                if ($product_variation == 'Tahunan') {
+                    $order_detail->start_date = date('Y-m-d', strtotime($cartItem['start_date']));
+                    $order_detail->end_date = date('Y-m-d', strtotime($cartItem['end_date']));
+                }
                 $order_detail->order_id  =$order->id;
                 $order_detail->seller_id = $product->user_id;
                 $order_detail->product_id = $product->id;
@@ -152,8 +169,8 @@ class OrderController extends Controller
             }
             
             $order->grand_total = $subtotal + $tax + $shipping;
-            $order->start_date = date('Y-m-d', strtotime($cartItem['start_date']));
-            $order->end_date = date('Y-m-d', strtotime($cartItem['end_date']));
+            // $order->start_date = date('Y-m-d', strtotime($cartItem['start_date']));
+            // $order->end_date = date('Y-m-d', strtotime($cartItem['end_date']));
             if(Session::has('coupon_discount')){
                 $order->grand_total -= Session::get('coupon_discount');
                 $order->coupon_discount = Session::get('coupon_discount');
