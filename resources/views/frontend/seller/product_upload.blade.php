@@ -263,8 +263,10 @@
                                         <div class="col-12 col-md-7 col-xl-8 order-3 order-md-0 mt-2 mt-md-0">
                                             <select class="js-example-basic-multiple" name="" id="selectOption" multiple="multiple">
                                                 <option value="Harian">Harian</option>
+                                                <option value="Mingguan">Mingguan</option>
                                                 <option value="Bulanan">Bulanan</option>
-                                                <option value="EnamBulan">6 Bulan</option>
+                                                <option value="TigaBulan">TigaBulan</option>
+                                                <option value="EnamBulan">EnamBulan</option>
                                                 <option value="Tahunan">Tahunan</option>
                                             </select>
                                         </div>
@@ -391,7 +393,7 @@
                                     {{__('Lokasi')}}
                                 </div>
                                 <div class="form-box-content p-3">
-                                    <div class="col-md-4"></div>
+                                    
                                     <input id="pac-input" style="cursor:pointer;" class="controls" type="text" placeholder="Search Box">
                                     <div id="addProductMap" class="map mb-3"></div>
                                     <input type="hidden" class="form-control mb-3" name="latlong" id="latlong">
@@ -655,7 +657,7 @@
 
         // dropdown choice options and variation
         $('.js-example-basic-multiple').select2({
-            placeholder: 'Harian / Bulanan / Enam Bulan / Tahunan',
+            placeholder: 'Harian / Mingguan / Bulanan / Tiga Bulan / Enam Bulan / Tahunan',
         });
 
         var choice_options = [{title : 'Periode',options: []}];
@@ -706,11 +708,15 @@
 
             if(selected === 'Harian'){
                 changeVariations(selected);
+            }else if(selected === 'Mingguan'){
+                changeVariations(selected);
             }else if(selected === 'Bulanan'){
                 changeVariations(selected);
-            }else if(selected === 'EnamBulan'){
+            }else if(selected === 'TigaBulan'){
                 changeVariations(selected);
-            }else if(selected === 'Tahunan'){
+            }else if(selected == 'EnamBulan'){
+                changeVariations(selected);
+            }else if(selected == 'Tahunan'){
                 changeVariations(selected);
             }
         });
@@ -740,7 +746,15 @@
                     deleteVariations(unselected);
                     deleteChoice(unselected);
                     break;
+                case 'Mingguan':
+                    deleteVariations(unselected);
+                    deleteChoice(unselected);
+                    break;
                 case 'Bulanan':
+                    deleteVariations(unselected);
+                    deleteChoice(unselected);
+                    break;
+                case 'TigaBulan':
                     deleteVariations(unselected);
                     deleteChoice(unselected);
                     break;

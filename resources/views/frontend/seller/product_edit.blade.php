@@ -327,8 +327,10 @@
                                         <div class="col-12 col-md-7 col-xl-8 order-3 order-md-0 mt-2 mt-md-0">
                                             <select class="js-example-basic-multiple" id="selectOptionEdit" multiple>
                                                 <option value="Harian">Harian</option>
+                                                <option value="Mingguan">Mingguan</option>
                                                 <option value="Bulanan">Bulanan</option>
-                                                <option value="EnamBulan">6 Bulan</option>
+                                                <option value="TigaBulan">TigaBulan</option>
+                                                <option value="EnamBulan">EnamBulan</option>
                                                 <option value="Tahunan">Tahunan</option>
                                             </select>
                                         </div>
@@ -744,7 +746,7 @@
         var variations = JSON.parse($('#variationsEdit').val());
 
         $.each(choice_options[0].options, function(i, data){
-           $('.js-example-basic-multiple option[value="'+data+'"]').prop('selected', true);
+            $('.js-example-basic-multiple option[value="'+data+'"]').prop('selected', true);
         });
 
         $('.js-example-basic-multiple option:selected').each(function(i, data){
@@ -777,7 +779,11 @@
 
             if(selected === 'Harian'){
                 changeVariations(selected);
+            }else if(selected === 'Mingguan'){
+                changeVariations(selected);
             }else if(selected === 'Bulanan'){
+                changeVariations(selected);
+            }else if(selected === 'TigaBulan'){
                 changeVariations(selected);
             }else if(selected === 'EnamBulan'){
                 changeVariations(selected);
@@ -810,7 +816,15 @@
                     deleteVariations(unselected);
                     deleteChoice(unselected);
                     break;
+                case 'Mingguan':
+                    deleteVariations(unselected);
+                    deleteChoice(unselected);
+                    break;
                 case 'Bulanan':
+                    deleteVariations(unselected);
+                    deleteChoice(unselected);
+                    break;
+                case 'TigaBulan':
                     deleteVariations(unselected);
                     deleteChoice(unselected);
                     break;
@@ -884,7 +898,11 @@
 
             if(selected === 'Harian'){
                 changeVariations(selected);
+            }else if(selected === 'Mingguan'){
+                changeVariations(selected);
             }else if(selected === 'Bulanan'){
+                changeVariations(selected);
+            }else if(selected === 'TigaBulan'){
                 changeVariations(selected);
             }else if(selected === 'EnamBulan'){
                 changeVariations(selected);

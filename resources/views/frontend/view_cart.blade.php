@@ -95,8 +95,22 @@
                                                             echo ' s/d ';
                                                             echo '<span id="e" class="badge badge-warning">'.$end_date.'</span>';
                                                         }
+                                                        if ($cartItem['Periode'] === 'Mingguan') {
+                                                            $_qty = (int)$cartItem['quantity'] * 7;
+                                                            $end_date = date('d M Y', strtotime($cartItem['start_date']. ' + '.$_qty.' days'));
+                                                            echo '<span class="badge badge-warning">'.$cartItem['start_date'].'</span>';
+                                                            echo ' s/d ';
+                                                            echo '<span id="e" class="badge badge-warning">'.$end_date.'</span>';
+                                                        }
                                                         if ($cartItem['Periode'] === 'Bulanan') {
                                                             $end_date = date('d M Y', strtotime($cartItem['start_date']. ' + '.$cartItem['quantity'].' months'));
+                                                            echo '<span class="badge badge-warning">'.$cartItem['start_date'].'</span>';
+                                                            echo ' s/d ';
+                                                            echo '<span id="e" class="badge badge-warning">'.$end_date.'</span>';
+                                                        }
+                                                        if ($cartItem['Periode'] === 'TigaBulan') {
+                                                            $_qty = (int)$cartItem['quantity'] * 3;
+                                                            $end_date = date('d M Y', strtotime($cartItem['start_date']. ' + '.(string)$_qty.' months'));
                                                             echo '<span class="badge badge-warning">'.$cartItem['start_date'].'</span>';
                                                             echo ' s/d ';
                                                             echo '<span id="e" class="badge badge-warning">'.$end_date.'</span>';

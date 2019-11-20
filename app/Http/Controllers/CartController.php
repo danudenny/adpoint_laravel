@@ -149,10 +149,22 @@ class CartController extends Controller
                     $object['start_date'] = $request->start_date;
                     $object['end_date'] = date('d M Y', strtotime($request->start_date. ' + '.$request->quantity.' days'));
                 }
+                if ($object['Periode'] === 'Mingguan') {
+                    $_qty = (int)$request->quantity * 7;
+                    $object['quantity'] = $request->quantity;
+                    $object['start_date'] = $request->start_date;
+                    $object['end_date'] = date('d M Y', strtotime($request->start_date. ' + '.$_qty.' days'));
+                }
                 if ($object['Periode'] === 'Bulanan') {
                     $object['quantity'] = $request->quantity;
                     $object['start_date'] = $request->start_date;
                     $object['end_date'] = date('d M Y', strtotime($request->start_date. ' + '.$request->quantity.' months'));
+                }
+                if ($object['Periode'] === 'TigaBulan') {
+                    $_qty = (int)$request->quantity * 3;
+                    $object['quantity'] = $request->quantity;
+                    $object['start_date'] = $request->start_date;
+                    $object['end_date'] = date('d M Y', strtotime($request->start_date. ' + '.(string)$_qty.' months'));
                 }
                 if ($object['Periode'] === 'EnamBulan') {
                     $_qty = (int)$request->quantity * 6;

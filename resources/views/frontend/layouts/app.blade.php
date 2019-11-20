@@ -53,6 +53,7 @@
 <!-- Bootstrap -->
 <link rel="stylesheet" href="{{ asset('frontend/css/bootstrap.min.css') }}" type="text/css">
 <link type="text/css" href="{{ asset('frontend/css/select2.min.css') }}" rel="stylesheet">
+<link type="text/css" href="{{ asset('frontend/css/jquery.desoslide.min.css') }}" rel="stylesheet">
 
 <!-- Icons -->
 <link rel="stylesheet" href="{{ asset('frontend/css/font-awesome.min.css') }}" type="text/css">
@@ -66,8 +67,6 @@
 <link type="text/css" href="{{ asset('frontend/css/jquery.share.css') }}" rel="stylesheet">
 <link rel="stylesheet" href="//cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css">
 <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap.min.css">
-{{-- <link type="text/css" href="{{ asset('frontend/css/bootstrap-datetimepicker.min.css') }}" rel="stylesheet"> --}}
-{{-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.0.1/css/ol.css" type="text/css"> --}}
 
 <style>
     .map {
@@ -415,31 +414,31 @@
                     url : url + 'kabupaten?idpropinsi=' + id_prov,
                     type : "get",
                     dataType : "json"
-                    }).done(function(result){
-                        let kabupaten = result.data;
-                        // console.log(kabupaten);
-                        $.each(kabupaten, function (i, data) {
-                            var kab = `<option id="`+ data.id +`" value="`+ data.name +`">`+ data.name +`</option>`;
-                            $('#kotaEdit').append(kab);
-                            if (i === 0) {
-                                $('#kecEdit').empty();
-                                $.ajax({
-                                    url: url +'kecamatan?idkabupaten='+ data.id,
-                                    type: 'get',
-                                    dataType: 'json',
-                                    success: function(result){
-                                        var kecamatan = result.data;
-                                        $.each(kecamatan, function(i, data){
-                                            var kec = `<option id="`+ data.id +`" value="`+ data.name +`">`+ data.name +`</option>`;
-                                            $('#kecEdit').append(kec);
-                                        });
-                                    }
-                                });
-                            }
-                        })
-                    }).fail(function(xhr, error, status){
-                        console.log(xhr);
+                }).done(function(result){
+                    let kabupaten = result.data;
+                    // console.log(kabupaten);
+                    $.each(kabupaten, function (i, data) {
+                        var kab = `<option id="`+ data.id +`" value="`+ data.name +`">`+ data.name +`</option>`;
+                        $('#kotaEdit').append(kab);
+                        if (i === 0) {
+                            $('#kecEdit').empty();
+                            $.ajax({
+                                url: url +'kecamatan?idkabupaten='+ data.id,
+                                type: 'get',
+                                dataType: 'json',
+                                success: function(result){
+                                    var kecamatan = result.data;
+                                    $.each(kecamatan, function(i, data){
+                                        var kec = `<option id="`+ data.id +`" value="`+ data.name +`">`+ data.name +`</option>`;
+                                        $('#kecEdit').append(kec);
+                                    });
+                                }
+                            });
+                        }
                     })
+                }).fail(function(xhr, error, status){
+                    console.log(xhr);
+                })
             }else{
                 $('#kotaEdit').empty();
             }
@@ -453,22 +452,20 @@
                     url : url + 'kecamatan?idkabupaten=' + id_kec,
                     type : "get",
                     dataType : "json"
-                    }).done(function(result){
-                        let kecamatan = result.data;
-                        // console.log(kecamatan);
-                        $.each(kecamatan, function (i, data) {
-                            var kec = `<option value="`+ data.name +`">`+ data.name +`</option>`;
-                            $('#kecEdit').append(kec);
-                        })
-                    }).fail(function(xhr, error, status){
-                        console.log(xhr);
+                }).done(function(result){
+                    let kecamatan = result.data;
+                    // console.log(kecamatan);
+                    $.each(kecamatan, function (i, data) {
+                        var kec = `<option value="`+ data.name +`">`+ data.name +`</option>`;
+                        $('#kecEdit').append(kec);
                     })
+                }).fail(function(xhr, error, status){
+                    console.log(xhr);
+                })
             }else{
                 $('#kecEdit').empty();
             }
         })
-
-        
 
         // end get edit
 
@@ -513,7 +510,6 @@
     function updateNavCart(){
         $.post('{{ route('cart.nav_cart') }}', {_token:'{{ csrf_token() }}'}, function(data){
             $('#cart_items').html(data);
-            // console.log(data);
         });
     }
 
@@ -791,6 +787,8 @@
 <script src="{{ asset('frontend/js/bootstrap-tagsinput.min.js') }}"></script>
 <script src="{{ asset('frontend/js/jodit.min.js') }}"></script>
 <script src="{{ asset('frontend/js/xzoom.min.js') }}"></script>
+<script src="{{ asset('frontend/js/jquery.desoslide.min.js') }}"></script>
+
 
 <!-- App JS -->
 <script src="{{ asset('frontend/js/gijgo.min.js') }}"></script>
@@ -1080,7 +1078,7 @@
                     latlong = coords.split(",");
                 }
                 var base_url = {!! json_encode(url('/')) !!};
-                console.log(base_url);
+                // console.log(base_url);
                 var poto = base_url+'/'+photos[0];
                 var detail = '{{ url("/product/") }}';
                 var template = `<div class="card" style="width: 18rem; border: none">
