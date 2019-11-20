@@ -1065,6 +1065,7 @@
             });
 
             var product = getDataProduct();
+            var markers = [];
             $.each(product, function(i, data){
                 var name = data.name;
                 var alamat = data.alamat;
@@ -1105,6 +1106,8 @@
                     map: map,
                     title: name
                 });
+
+                
                
                 google.maps.event.addListener(marker, 'mouseover', (function(marker, template){
                     return function(){
@@ -1124,9 +1127,13 @@
                     return function(){
                         setTimeout(function(){
                             infowindow.close();
-                        }, 1000);
+                        }, 2000);
                     }
                 })(marker, template, infowindow));
+
+                markers.push(marker);
+
+                
 
             });
             

@@ -57,9 +57,11 @@ Route::group(['prefix' =>'admin', 'middleware' => ['auth', 'admin']], function()
 	Route::get('/payment-method', 'BusinessSettingsController@payment_method')->name('payment_method.index');
 	Route::get('/social-login', 'BusinessSettingsController@social_login')->name('social_login.index');
 	Route::get('/smtp-settings', 'BusinessSettingsController@smtp_settings')->name('smtp_settings.index');
+	Route::get('/whatsapp-settings', 'BusinessSettingsController@whatsapp_settings')->name('whatsapp_settings.index');
 	Route::get('/google-analytics', 'BusinessSettingsController@google_analytics')->name('google_analytics.index');
 	Route::get('/facebook-chat', 'BusinessSettingsController@facebook_chat')->name('facebook_chat.index');
 	Route::post('/env_key_update', 'BusinessSettingsController@env_key_update')->name('env_key_update.update');
+	Route::post('/whatsapp_chat_update', 'BusinessSettingsController@whatsapp_chat_update')->name('whatsapp_chat_update.update');
 	Route::post('/payment_method_update', 'BusinessSettingsController@payment_method_update')->name('payment_method.update');
 	Route::post('/google_analytics', 'BusinessSettingsController@google_analytics_update')->name('google_analytics.update');
 	Route::post('/facebook_chat', 'BusinessSettingsController@facebook_chat_update')->name('facebook_chat.update');

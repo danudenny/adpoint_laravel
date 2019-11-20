@@ -276,6 +276,9 @@
                                 <li class="{{ areActiveRoutes(['smtp_settings.index'])}}">
                                     <a class="nav-link" href="{{ route('smtp_settings.index') }}">{{__('SMTP Settings')}}</a>
                                 </li>
+                                <li class="{{ areActiveRoutes(['whatsapp_settings.index'])}}">
+                                    <a class="nav-link" href="{{ route('whatsapp_settings.index') }}">{{__('Whatsapp Settings')}}</a>
+                                </li>
                                 {{-- <li class="{{ areActiveRoutes(['google_analytics.index'])}}">
                                     <a class="nav-link" href="{{ route('google_analytics.index') }}">{{__('Google Analytics')}}</a>
                                 </li>

@@ -37,6 +37,8 @@
     <!-- Open Graph data -->
     <meta property="og:title" content="{{ $meta_title }}" />
     <meta property="og:description" content="{{ $meta_description }}" />
+
+    
 @endsection
 
 @section('content')
@@ -367,6 +369,79 @@
         </div>
     </section>
 
+    <style>
+        .open-button {
+            background-color: #F79F1F;
+            color: white;
+            border: none;
+            cursor: pointer;
+            position: fixed;
+            width:280px;
+            height:27px;
+            bottom:0;
+            right:0;
+            z-index:100;
+        }
+
+        .form-popup {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            right:0;
+            outline: 1px solid #F79F1F;
+            z-index: 9;
+        }
+
+        .form-container {
+            width:280px;
+            padding: 10px;
+            background-color: white;
+        }
+
+        .form-container .cs {
+            margin: 0 0 30px 0;
+            border: none;
+        }
+
+        .form-container .cs:focus {
+            background-color: #ddd;
+            outline: none;
+        }
+
+        .cs li {
+            list-style: none;
+            padding: 7px;
+        }
+
+        .cs li a {
+            background: #F79F1F;
+            padding: 5px;
+            color: white;
+        }
+
+        .form-container .btn:hover, .open-button:hover {
+            opacity: 1;
+        }
+    </style>
+
+    <div class="form-popup" id="myForm">
+        <button type="button" onclick="closeForm()" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <div class="form-container">
+            <h5 class="text-center">Customer Services</h5>
+            <hr>
+            <span id="_cs" hidden>{{ \App\BusinessSetting::where('type', 'whatsapp_settings')->first()->value }}</span>
+            <div class="cs">
+                
+            </div>
+        </div>
+      </div>
+
+    <button onclick="openForm()" class="open-button">
+    <i class="fa fa-whatsapp my-float"> Contact us</i>
+    </button>
+
 @endsection
 
 @section('script')
@@ -378,6 +453,23 @@
             $('input[name=min_price]').val(arg[0]);
             $('input[name=max_price]').val(arg[1]);
             filter();
+        }
+
+        var url_send_wa = 'https://api.whatsapp.com/send?phone=';
+        var cs = JSON.parse($('#_cs').text()); 
+        var msg = cs.message.replace(/\s/g,"%20");
+        // console.log(msg);
+        $.each(cs.cs, function(i, data){
+            var temp = `<li><a target="_blank" href="`+url_send_wa+data.contact+'&text='+msg+`">`+data.name+`</a></li>`;
+            $('.cs').append(temp);
+        });
+
+        function openForm() {
+            $('#myForm').attr('style','display:block');
+        }
+
+        function closeForm() {
+            $('#myForm').attr('style','display:none');
         }
     </script>
 @endsection
