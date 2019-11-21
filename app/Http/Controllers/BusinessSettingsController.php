@@ -100,11 +100,21 @@ class BusinessSettingsController extends Controller
     public function whatsapp_chat_update(Request $request)
     {
         $whatsapp_settings = BusinessSetting::where('type', 'whatsapp_settings')->first();
-        $whatsapp_settings->value = $request->whatsapp;
-        $whatsapp_settings->save();
-        flash("Settings updated successfully")->success();
-        return back();
+        if ($request->value != null) {
+            $active = json_decode($whatsapp_settings->value);
+            $active->active = $request->value;
+            $whatsapp_settings->value = json_encode($active);
+            $whatsapp_settings->save();
+        }
+
+        if ($request->whatsapp != null) {
+            $whatsapp_settings->value = $request->whatsapp;
+            $whatsapp_settings->save();
+            flash("Settings updated successfully")->success();
+            return back();
+        }
     }
+
     /**
      * Update the API key's for GOOGLE analytics.
      * @param  \Illuminate\Http\Request  $request

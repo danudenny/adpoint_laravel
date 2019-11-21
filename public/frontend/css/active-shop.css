@@ -2393,7 +2393,7 @@ a:hover {
     height: 40px;
     width: 40px;
     position: fixed;
-    bottom: 40px;
+    bottom: 60px;
     right: 10px;
     text-align: center;
     line-height: 40px;
@@ -2441,7 +2441,7 @@ a:hover {
 @media only screen and (min-width: 768px) {
     .btn-back-to-top {
         right: 20px;
-        bottom: 20px;
+        bottom: 80px;
     }
 }
 
@@ -2450,7 +2450,7 @@ a:hover {
         height: 40px;
         width: 40px;
         right: 30px;
-        bottom: 30px;
+        bottom: 60px;
         line-height: 40px;
     }
 }
