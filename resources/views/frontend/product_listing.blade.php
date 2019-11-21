@@ -395,45 +395,43 @@
             text-shadow: 0 1px 0 rgba(255,255,255,.5);
         }
         
-        ol ol {
-            margin: 0 0 0 2em;
-        }
         .rounded-list a{
             position: relative;
             display: block;
             padding: .4em .4em .4em 2em;
             *padding: .4em;
-            margin: .2em 0;
-            background: #61ed95;
-            color: #000;
+            margin: 1.3em 0 0 1em;
+            background: #25d366;
+            color: #fff;
             text-decoration: none;
-            border-radius: .3em;
+            border-radius: .8em;
             transition: all .3s ease-out;   
         }
  
         .rounded-list a:hover{
-            background: #eee;
+            background: #00bf47;
         }
+
         
-        .rounded-list a:hover:before{
+        /* .rounded-list a:hover:before{
             transform: rotate(360deg);  
         }
-        
+         */
         .rounded-list a:before{
             content: counter(li);
-            counter-increment: li;
+            /* counter-increment: li; */
             position: absolute; 
-            right: 0em;
+            left: -1.0em;
             top: 50%;
-            margin-top: -1.0em;
-            background: #38B7EE;
-            height: 2em;
-            width: 2em;
+            margin-top: -1.5em;
+            background: #fff;
+            height: 3em;
+            width: 3em;
             line-height: 2em;
-            border: .1em solid #fff;
+            border: .1em outset #25d366;
             text-align: center;
             font-weight: bold;
-            border-radius: 2em;
+            border-radius: 50%;
             transition: all .3s ease-out;
         }
 
@@ -448,7 +446,7 @@
                 width:280px;
                 height:50px;
                 bottom:0;
-                right:0;
+                right:1px;
                 z-index:100;
             }
         
@@ -456,7 +454,7 @@
                 display: none;
                 position: fixed;
                 bottom: 0;
-                right:0;
+                right:1px;
                 outline: 1px solid #25d366;
                 z-index: 9;
             }
@@ -465,7 +463,7 @@
                 width:280px;
                 padding: 10px;
                 margin-bottom: 24px;
-                background-color: white;
+                background-color: #fff;
             }
 
         }
@@ -559,6 +557,8 @@
         <i class="fa fa-close"></i> Close
     </button>
 
+    
+    
 @endsection
     
 @section('script')
@@ -573,6 +573,9 @@
         }
 
         var url_send_wa = 'https://api.whatsapp.com/send?phone=';
+        // var base_url = {!! json_encode(url('/')) !!};
+        // var image = `<img class="rounded-circle" src="`+base_url+'/img/icon-wa.png'+`" data-holder-rendered="true">`;
+        // console.log(image);
         var cs = JSON.parse($('#_cs').text());
         if (cs.active != "0") {
             $('#btn_open').show();
@@ -581,7 +584,7 @@
         }
         var msg = cs.message.replace(/\s/g,"%20");
         $.each(cs.cs, function(i, data){
-            var temp = `<li><a target="_blank" href="`+url_send_wa+data.contact+'&text='+msg+`">`+data.name+`</a></li>`;
+            var temp = `<li><i class="fas fa-user-astronaut"></i><a target="_blank" href="`+url_send_wa+data.contact+'&text='+msg+`">`+data.name+`</a></li>`;
             $('.rounded-list').append(temp);
         });
 
