@@ -162,6 +162,25 @@
         </div>
     </div>
 
+    <div class="form-popup" id="myForm">
+        <div class="form-container">
+            <h5 class="text-center">Customer Services</h5>
+            <hr>
+            <span id="_cs" hidden>{{ \App\BusinessSetting::where('type', 'whatsapp_settings')->first()->value }}</span>
+            <div class="cs">
+                <ol class="rounded-list">
+                                
+                </ol>
+            </div>
+        </div>
+    </div>
+    <button id="btn_open" onclick="openForm()" class="open-button">
+        <i class="fa fa-whatsapp my-float"></i> Contact us
+    </button>
+    <button id="btn_close" onclick="closeForm()" class="open-button" style="display: none;">
+        <i class="fa fa-close"></i> Close
+    </button>
+
     @if (\App\BusinessSetting::where('type', 'facebook_chat')->first()->value == 1)
         <div id="fb-root"></div>
         <!-- Your customer chat code -->
@@ -1079,7 +1098,6 @@
                     latlong = coords.split(",");
                 }
                 var base_url = {!! json_encode(url('/')) !!};
-                // console.log(base_url);
                 var poto = base_url+'/'+photos[0];
                 var detail = '{{ url("/product/") }}';
                 var template = `<div class="card" style="width: 18rem; border: none">
@@ -1213,6 +1231,36 @@
 
     });
 
+
+    // whatsapp chat
+    var url_send_wa = 'https://api.whatsapp.com/send?phone=';
+    var base_url = {!! json_encode(url('/')) !!};
+    var image = `<img id="img" class="rounded-circle" src="`+base_url+'/img/icon-wa.png'+`" data-holder-rendered="true">`;
+    var cs = JSON.parse($('#_cs').text());
+    if (cs.active != "0") {
+        $('#btn_open').show();
+    } else{
+        $('#btn_open').hide();
+    }
+    var msg = cs.message.replace(/\s/g,"%20");
+    $.each(cs.cs, function(i, data){
+        var temp = `<li><a target="_blank" href="`+url_send_wa+data.contact+'&text='+msg+`">`+image+data.name+`</a></li>`;
+        $('.rounded-list').append(temp);
+    });
+
+    function openForm() {
+        $('#myForm').attr('style','display:block');
+        $("#btn_open").hide();
+        $('#btn_close').show();
+        
+    }
+
+    function closeForm() {
+        $('#myForm').attr('style','display:none');
+        $('#btn_open').show();
+        $('#btn_close').hide();
+    }
+    // end whatsapp
     
 </script>
 
