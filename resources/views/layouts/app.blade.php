@@ -15,6 +15,7 @@
     <link rel="dns-prefetch" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet" type="text/css">
 
+    
     <!--Bootstrap Stylesheet [ REQUIRED ]-->
     <link href="{{ asset('css/bootstrap.min.css')}}" rel="stylesheet">
 
@@ -62,6 +63,8 @@
 
     <!--jQuery [ REQUIRED ]-->
     <script src=" {{asset('js/jquery.min.js') }}"></script>
+    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
 
 
     <!--BootstrapJS [ RECOMMENDED ]-->

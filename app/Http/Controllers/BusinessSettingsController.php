@@ -23,6 +23,12 @@ class BusinessSettingsController extends Controller
         return view('business_settings.smtp_settings');
     }
 
+    public function whatsapp_settings(Request $request)
+    {
+        $whatsapp_settings = BusinessSetting::where('type', 'whatsapp_settings')->first();
+        return view('business_settings.whatsapp_settings', compact('whatsapp_settings'));
+    }
+
     public function google_analytics(Request $request)
     {
         return view('business_settings.google_analytics');
@@ -89,6 +95,24 @@ class BusinessSettingsController extends Controller
 
         flash("Settings updated successfully")->success();
         return back();
+    }
+
+    public function whatsapp_chat_update(Request $request)
+    {
+        $whatsapp_settings = BusinessSetting::where('type', 'whatsapp_settings')->first();
+        if ($request->value != null) {
+            $active = json_decode($whatsapp_settings->value);
+            $active->active = $request->value;
+            $whatsapp_settings->value = json_encode($active);
+            $whatsapp_settings->save();
+        }
+
+        if ($request->whatsapp != null) {
+            $whatsapp_settings->value = $request->whatsapp;
+            $whatsapp_settings->save();
+            flash("Settings updated successfully")->success();
+            return back();
+        }
     }
 
     /**
@@ -207,6 +231,7 @@ class BusinessSettingsController extends Controller
 
     public function updateActivationSettings(Request $request)
     {
+        dd($request->type);
         $business_settings = BusinessSetting::where('type', $request->type)->first();
         if($business_settings!=null){
             $business_settings->value = $request->value;

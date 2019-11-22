@@ -37,6 +37,8 @@
     <!-- Open Graph data -->
     <meta property="og:title" content="{{ $meta_title }}" />
     <meta property="og:description" content="{{ $meta_description }}" />
+
+    
 @endsection
 
 @section('content')
@@ -366,9 +368,9 @@
             </div>
         </div>
     </section>
-
+    
 @endsection
-
+    
 @section('script')
     <script type="text/javascript">
         function filter(){
