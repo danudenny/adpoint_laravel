@@ -57,8 +57,8 @@
                                                 <label>{{ $element->label }}</label>
                                             </div>
                                             <div class="col-md-10">
-                                                <input type="{{ $element->type }}" name="element_{{ $key }}" id="file-2" class="custom-input-file custom-input-file--4" data-multiple-caption="{count} files selected" required/>
-                                                <label for="file-2" class="mw-100 mb-3">
+                                                <input type="{{ $element->type }}" name="element_{{ $key }}" id="file-{{ $key }}" class="custom-input-file custom-input-file--4" data-multiple-caption="{count} files selected" required/>
+                                                <label for="file-{{ $key }}" class="mw-100 mb-3">
                                                     <span></span>
                                                     <strong>
                                                         <i class="fa fa-upload"></i>

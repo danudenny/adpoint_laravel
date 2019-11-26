@@ -5,7 +5,7 @@
         <div class="profile">
             <div class="container">
                 <div class="row">
-                    <div class="col-xl-10 offset-xl-1">
+                    <div class="col-md-6 mx-auto">
                         <div class="card">
                             <div class="text-center px-35 pt-5">
                                 <h3 class="heading heading-4 strong-500">
@@ -15,7 +15,7 @@
                             <div class="px-5 py-3 py-lg-5">
                                 <div class="row align-items-center">
                                     <div class="col-12 col-lg">
-                                        <form class="form-default" role="form" action="{{ route('register') }}" method="POST">
+                                        <form class="form-default" role="form" action="{{ route('register') }}" method="POST" enctype="multipart/form-data">
                                             @csrf
                                             <div class="row">
                                                 <div class="col-12">
@@ -24,13 +24,13 @@
                                                         <div class="input-group input-group--style-1">
                                                             <input type="text" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" value="{{ old('name') }}" placeholder="{{ __('Name') }}" name="name">
                                                             <span class="input-group-addon">
-                                                                <i class="text-md la la-user"></i>
+                                                                <i class="text-sm la la-user"></i>
                                                             </span>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-
+                
                                             <div class="row">
                                                 <div class="col-12">
                                                     <div class="form-group">
@@ -38,13 +38,13 @@
                                                         <div class="input-group input-group--style-1">
                                                             <input type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" value="{{ old('email') }}" placeholder="{{ __('Email') }}" name="email">
                                                             <span class="input-group-addon">
-                                                                <i class="text-md la la-envelope"></i>
+                                                                <i class="text-sm la la-envelope"></i>
                                                             </span>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-
+                
                                             <div class="row">
                                                 <div class="col-12">
                                                     <div class="form-group">
@@ -52,7 +52,21 @@
                                                         <div class="input-group input-group--style-1">
                                                             <input type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" placeholder="{{ __('Password') }}" name="password">
                                                             <span class="input-group-addon">
-                                                                <i class="text-md la la-lock"></i>
+                                                                <i class="text-sm la la-lock"></i>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <div class="form-group">
+                                                        <!-- <label>{{ __('confirm_password') }}</label> -->
+                                                        <div class="input-group input-group--style-1">
+                                                            <input type="password" class="form-control" placeholder="{{ __('Confirm Password') }}" name="password_confirmation">
+                                                            <span class="input-group-addon">
+                                                                <i class="text-sm la la-lock"></i>
                                                             </span>
                                                         </div>
                                                     </div>
@@ -61,18 +75,28 @@
 
                                             <div class="row">
                                                 <div class="col-12">
-                                                    <div class="form-group">
-                                                        <!-- <label>{{ __('confirm_password') }}</label> -->
-                                                        <div class="input-group input-group--style-1">
-                                                            <input type="password" class="form-control" placeholder="{{ __('Confirm Password') }}" name="password_confirmation">
-                                                            <span class="input-group-addon">
-                                                                <i class="text-md la la-lock"></i>
-                                                            </span>
-                                                        </div>
-                                                    </div>
+                                                    <input type="file" name="ktp" id="ktp" class="custom-input-file custom-input-file--4"  />
+                                                    <label for="ktp" class="mw-100 mb-3">
+                                                        <span style="color: #a8a8a8">Upload KTP</span>
+                                                        <strong>
+                                                            <i class="fa fa-upload"></i>
+                                                        </strong>
+                                                    </label>
                                                 </div>
                                             </div>
 
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <input type="file" name="npwp" id="npwp" class="custom-input-file custom-input-file--4"  />
+                                                    <label for="npwp" class="mw-100 mb-3">
+                                                        <span style="color: #a8a8a8">Upload NPWP</span>
+                                                        <strong>
+                                                            <i class="fa fa-upload"></i>
+                                                        </strong>
+                                                    </label>
+                                                </div>
+                                            </div>
+                
                                             <div class="row">
                                                 <div class="col-12">
                                                     <div class="form-group">
@@ -86,8 +110,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-
-
+                
                                             <div class="row">
                                                 <div class="col-12">
                                                     <div class="checkbox pad-btm text-left">
@@ -96,33 +119,13 @@
                                                     </div>
                                                 </div>
                                             </div>
-
+                
                                             <div class="row align-items-center">
                                                 <div class="col-12 text-right  mt-3">
                                                     <button type="submit" class="btn btn-styled btn-base-1 w-100 btn-md">{{ __('Create Account') }}</button>
                                                 </div>
                                             </div>
                                         </form>
-                                    </div>
-                                    <div class="col-lg-1 text-center align-self-stretch">
-                                        <div class="border-right h-100 mx-auto" style="width:1px;"></div>
-                                    </div>
-                                    <div class="col-12 col-lg">
-                                        @if(\App\BusinessSetting::where('type', 'google_login')->first()->value == 1)
-                                            <a href="{{ route('social.login', ['provider' => 'google']) }}" class="btn btn-styled btn-block btn-google btn-icon--2 btn-icon-left px-4 my-4">
-                                                <i class="icon fa fa-google"></i> {{__('Login with Google')}}
-                                            </a>
-                                        @endif
-                                        @if (\App\BusinessSetting::where('type', 'facebook_login')->first()->value == 1)
-                                            <a href="{{ route('social.login', ['provider' => 'facebook']) }}" class="btn btn-styled btn-block btn-facebook btn-icon--2 btn-icon-left px-4 my-4">
-                                                <i class="icon fa fa-facebook"></i> {{__('Login with Facebook')}}
-                                            </a>
-                                        @endif
-                                        @if (\App\BusinessSetting::where('type', 'twitter_login')->first()->value == 1)
-                                        <a href="{{ route('social.login', ['provider' => 'twitter']) }}" class="btn btn-styled btn-block btn-twitter btn-icon--2 btn-icon-left px-4 my-4">
-                                            <i class="icon fa fa-twitter"></i> {{__('Login with Twitter')}}
-                                        </a>
-                                        @endif
                                     </div>
                                 </div>
                             </div>
@@ -133,7 +136,6 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>

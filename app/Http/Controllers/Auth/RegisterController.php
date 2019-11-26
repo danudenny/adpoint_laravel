@@ -9,6 +9,10 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Http\Request;
+use Mail;
+use App\Mail\UsersMail;
+
 
 class RegisterController extends Controller
 {
@@ -69,15 +73,26 @@ class RegisterController extends Controller
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
+            'ktp' => $data['ktp']->store('uploads/users'),
+            'npwp' => $data['npwp']->store('uploads/users')
         ]);
 
         if(BusinessSetting::where('type', 'email_verification')->first()->value != 1){
             $user->email_verified_at = date('Y-m-d H:m:s');
+            $user->ktp = $data['ktp']->store('uploads/users');
+            $user->npwp = $data['npwp']->store('uploads/users');
+            $user->verified = 0;
             $user->save();
-            flash(__('Registration successfull.'))->success();
+            flash(__('Registration successfull. Please check your email.'))->success();
         }
         else {
-            flash(__('Registration successfull. Please verify your email.'))->success();
+            $user->email_verified_at = date('Y-m-d H:m:s');
+            $user->ktp = $data['ktp']->store('uploads/users');
+            $user->npwp = $data['npwp']->store('uploads/users');
+            $user->verified = 0;
+            $user->save();
+            Mail::to($user->email)->send(new UsersMail($user));
+            flash(__('Registration successfull. Please check your email.'))->success();
         }
 
         $customer = new Customer;

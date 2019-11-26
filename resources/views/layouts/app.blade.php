@@ -147,6 +147,8 @@
                 });
             }
 
+            $('[data-toggle="tooltip"]').tooltip()
+
         });
 
     </script>
@@ -174,6 +176,28 @@
             });
         </script>
     @endforeach
+
+    {{-- modal --}}
+    <div class="modal fade" id="addToCart" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-zoom product-modal" id="modal-size" role="document">
+            <div class="modal-content position-relative">
+                <div class="c-preloader">
+                    <i class="fa fa-spin fa-spinner"></i>
+                </div>
+                <button type="button" class="close absolute-close-btn" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <div id="addToCart-modal-body" style="margin: 20px; padding: 10px;">
+                    <div class="row">
+                        <div id="content-body" class="col-md-12 mx-auto">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{-- endmodal --}}
 
 
     <div id="container" class="effect aside-float aside-bright mainnav-lg">

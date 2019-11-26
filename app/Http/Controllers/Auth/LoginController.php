@@ -11,6 +11,7 @@ use Socialite;
 use App\User;
 use App\Customer;
 use Illuminate\Http\Request;
+use Auth;
 
 class LoginController extends Controller
 {
@@ -103,15 +104,15 @@ class LoginController extends Controller
      */
     public function authenticated()
     {
-        if(auth()->user()->user_type == 'admin' || auth()->user()->user_type == 'staff')
-        {
+        if((auth()->user()->user_type == 'admin' || auth()->user()->user_type == 'staff') && auth()->user()->verified == 1){
             return redirect()->route('admin.dashboard');
-        }
-        elseif(session('link') != null){
+        }else if(session('link') != null){
             return redirect(session('link'));
-        }
-        else{
-            return redirect()->route('dashboard');
+        }else{
+            if (auth()->user()->user_type == 'customer' && auth()->user()->verified == 1) {
+                flash(__('Your logged!'))->success();
+                return redirect()->route('dashboard');
+            }
         }
     }
 
