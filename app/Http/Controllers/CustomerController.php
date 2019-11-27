@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use App\Customer;
 use App\User;
 use App\Order;
+use Mail;
+use App\Mail\AcceptUser;
+use App\Mail\RejectUser;
 
 class CustomerController extends Controller
 {
@@ -16,7 +19,7 @@ class CustomerController extends Controller
      */
     public function index()
     {
-        $customers = Customer::orderBy('created_at', 'desc')->get();
+        $customers = User::where('user_type','seller')->orWhere('user_type','customer')->orderBy('created_at', 'desc')->get();
         return view('customers.index', compact('customers'));
     }
 
@@ -49,7 +52,36 @@ class CustomerController extends Controller
      */
     public function show($id)
     {
-        //
+
+    }
+
+    public function showCustomer(Request $request)
+    {
+        $id = $request->id;
+        $customer = User::where('id',$id)->get();
+        return $customer;
+    }
+
+    public function accept(Request $request)
+    {
+        $id = $request->id;
+        $customer = User::findOrFail($id);
+        $customer->verified = 1;
+        if ($customer->save()) {
+            Mail::to($customer->email)->queue(new AcceptUser($customer));
+            return redirect()->route('customers.index');
+        }
+    }
+
+    public function reject(Request $request)
+    {
+        $id = $request->id;
+        $customer = User::findOrFail($id);
+        $customer->verified = 0;
+        if ($customer->save()) {
+            Mail::to($customer->email)->queue(new RejectUser($customer));
+            return redirect()->route('customers.index');
+        }
     }
 
     /**
@@ -93,4 +125,5 @@ class CustomerController extends Controller
         flash(__('Something went wrong'))->error();
         return back();
     }
+
 }

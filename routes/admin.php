@@ -44,8 +44,10 @@ Route::group(['prefix' =>'admin', 'middleware' => ['auth', 'admin']], function()
 	Route::get('/seller/payments/show/{id}', 'PaymentController@show')->name('sellers.payment_history');
 
 	Route::resource('customers','CustomerController');
+	Route::post('/customer/show_customer', 'CustomerController@showCustomer')->name('customer.show_customer');
+	Route::post('/customer/accept', 'CustomerController@accept')->name('customer.accept');
+	Route::post('/customer/reject', 'CustomerController@reject')->name('customer.reject');
 	Route::get('/customers/destroy/{id}', 'CustomerController@destroy')->name('customers.destroy');
-
 	Route::get('/newsletter', 'NewsletterController@index')->name('newsletters.index');
 	Route::post('/newsletter/send', 'NewsletterController@send')->name('newsletters.send');
 

@@ -25,7 +25,9 @@ class HomeController extends Controller
     public function login()
     {
         if(Auth::check()){
-            return redirect()->route('home');
+            if (Auth::user()->verified == 1) {
+                return redirect()->route('home');
+            }
         }
         return view('frontend.user_login');
     }
@@ -33,7 +35,9 @@ class HomeController extends Controller
     public function registration()
     {
         if(Auth::check()){
-            return redirect()->route('home');
+            if (Auth::user()->verified == 1) {
+                return redirect()->route('home');
+            }
         }
         return view('frontend.user_registration');
     }
@@ -79,7 +83,7 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-        //$this->middleware('auth');
+        // $this->middleware('auth');
     }
 
     /**

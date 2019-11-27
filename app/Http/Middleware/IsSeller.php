@@ -16,7 +16,7 @@ class IsSeller
      */
     public function handle($request, Closure $next)
     {
-        if (Auth::check() && Auth::user()->user_type == 'seller') {
+        if (Auth::check() && Auth::user()->user_type == 'seller' && Auth::user()->verified == 1) {
             return $next($request);
         }
         else{

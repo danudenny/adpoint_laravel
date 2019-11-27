@@ -11,6 +11,11 @@
                                 <h3 class="heading heading-4 strong-500">
                                     {{__('Login to your account.')}}
                                 </h3>
+                                @if (Session::has('message'))
+                                    <div class="alert alert-danger" style="border-radius: 0;">
+                                        <strong>Error!</strong> {!! session('message') !!}
+                                    </div>
+                                @endif
                             </div>
                             <div class="px-5 py-3 py-lg-5">
                                 <div class="row align-items-center">
