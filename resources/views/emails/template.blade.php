@@ -7,13 +7,11 @@
     <title>Adpoint</title>
     <style type="text/css" rel="stylesheet" media="all">
         /* Base ------------------------------ */
-        
         *:not(br):not(tr):not(html) {
             font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;
             -webkit-box-sizing: border-box;
             box-sizing: border-box;
         }
-        
         body {
             width: 100% !important;
             height: 100%;
@@ -101,6 +99,10 @@
         
         .content-cell {
             padding: 35px;
+        }
+
+        .content-cell p {
+            color: #333;
         }
         
         .align-right {
@@ -190,11 +192,25 @@
             .email-footer {
                 width: 100% !important;
             }
+            p.sub {
+                font-size: 10px;
+            }
+            .content-cell p {
+                color: #333;
+                font-size: 12px;
+            }
         }
         
         @media only screen and (max-width: 500px) {
             .button {
                 width: 100% !important;
+            }
+            p.sub {
+                font-size: 10px;
+            }
+            .content-cell p {
+                color: #333;
+                font-size: 12px;
             }
         }
     </style>
@@ -208,48 +224,18 @@
                     <!-- Logo -->
                     <tr style="background-color: #0f355a;">
                         <td class="email-masthead">
-                            <a class="email-masthead_name">Adpoint</a>
+                        <a class="email-masthead_name"><img width="200" src="{{ $message->embed(public_path() . '/img/email/logo.png') }}"></a>
                         </td>
                     </tr>
                     <!-- Email Body -->
-                    <tr>
-                        <td class="email-body" width="100%">
-                            <table class="email-body_inner" align="center" width="570" cellpadding="0" cellspacing="0">
-                                <!-- Body content -->
-                                <tr>
-                                    <td class="content-cell">
-                                        <h1>Selamat!</h1>
-                                        <p>Akun anda telah disetujui.</p>
-                                        <!-- Action -->
-                                        <table class="body-action" width="100%" cellpadding="0" cellspacing="0">
-                                            <tr>
-                                                <td>Name</td>
-                                                <td>:</td>
-                                                <td style="text-align: left;">{{ $user['name'] }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Email</td>
-                                                <td>:</td>
-                                                <td style="text-align: left;">{{ $user['email'] }}</td>
-                                            </tr>
-                                        </table>
-                                        <p>Regards,<br>Adpoint</p>
-                                        <div class="center">
-                                            <a href="{{ route('user.login') }}" class="button button--blue">Silahkan Login</a>
-                                        </div>
-                                    </td>
-
-                                </tr>
-                            </table>
-                        </td>
-                    </tr>
-
-                    <tr style="background-color: #0f355a; color: white;">
+                    @yield('content')
+                    
+                    <tr style="background-color: #0f355a;">
                         <td>
                             <table class="email-footer" align="center" width="570" cellpadding="0" cellspacing="0">
                                 <tr>
                                     <td class="content-cell">
-                                        <p class="sub center">
+                                        <p class="sub center" style="color: #EAEAEA; font-size: 9px;">
                                             &copy; 2018. PT. Adpoint Media Online allright reserved.
                                             <br>Semua content di lindungi oleh undang undang hak cipta. Dilarang mencopy atau mencontoh tanpa seizin adpoint indonesia.
                                         </p>

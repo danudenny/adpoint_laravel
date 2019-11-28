@@ -16,6 +16,11 @@
                                         <strong>Error!</strong> {!! session('message') !!}
                                     </div>
                                 @endif
+                                @if (Session::has('success'))
+                                <div class="alert alert-success" style="border-radius: 0;">
+                                    <strong>Berhasil!</strong> {!! session('success') !!}
+                                </div>
+                                @endif
                             </div>
                             <div class="px-5 py-3 py-lg-5">
                                 <div class="row align-items-center">
@@ -24,28 +29,28 @@
                                             @csrf
                                             <div class="row">
                                                 <div class="col-12">
-                                                    <div class="form-group">
-                                                        <!-- <label>{{ __('email') }}</label> -->
+                                                    <div class="form-group{{ $errors->has('email') ? 'has-error' : ''}}">
                                                         <div class="input-group input-group--style-1">
-                                                            <input type="email" class="form-control form-control-sm {{ $errors->has('email') ? ' is-invalid' : '' }}" value="{{ old('email') }}" placeholder="{{__('Email')}}" name="email" id="email">
+                                                            <input type="email" class="form-control form-control-sm" value="{{ old('email') }}" placeholder="{{__('Email')}}" name="email" id="email">
                                                             <span class="input-group-addon">
                                                                 <i class="text-md la la-user"></i>
                                                             </span>
                                                         </div>
+                                                        <strong class="text-danger mt-1">{!! $errors->first('email', '<p class="help-block">:message</p>') !!}</strong>
                                                     </div>
                                                 </div>
                                             </div>
 
                                             <div class="row">
                                                 <div class="col-12">
-                                                    <div class="form-group">
-                                                        <!-- <label>{{ __('password') }}</label> -->
+                                                    <div class="form-group{{ $errors->has('password') ? 'has-error' : ''}}">
                                                         <div class="input-group input-group--style-1">
-                                                            <input type="password" class="form-control {{ $errors->has('password') ? ' is-invalid' : '' }}" placeholder="{{__('Password')}}" name="password" id="password">
+                                                            <input type="password" class="form-control" placeholder="{{__('Password')}}" name="password" id="password">
                                                             <span class="input-group-addon">
                                                                 <i class="text-md la la-lock"></i>
                                                             </span>
                                                         </div>
+                                                        <strong class="text-danger mt-1">{!! $errors->first('password', '<p class="help-block">:message</p>') !!}</strong>
                                                     </div>
                                                 </div>
                                             </div>
@@ -61,11 +66,12 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                @if(env('MAIL_USERNAME') != null && env('MAIL_PASSWORD') != null)
-                                                    <div class="col-6 text-right">
-                                                        <a href="{{ route('password.request') }}" class="link link-xs link--style-3">{{__('Forgot password?')}}</a>
-                                                    </div>
-                                                @endif
+                                                {{-- <div class="col-6 text-right">
+                                                    <a href="{{ route('password.request') }}" class="link link-xs link--style-3">{{__('Forgot password?')}}</a>
+                                                </div> --}}
+                                                <div class="col-6 text-right">
+                                                    <a href="{{ route('reset.password') }}" class="link link-xs link--style-3">{{__('Forgot password?')}}</a>
+                                                </div>
                                             </div>
 
                                             <div class="row">

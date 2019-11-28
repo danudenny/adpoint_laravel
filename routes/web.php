@@ -23,6 +23,12 @@ Route::get('/users/registration', 'HomeController@registration')->name('user.reg
 //Route::post('/users/login', 'HomeController@user_login')->name('user.login.submit');
 Route::post('/users/login/cart', 'HomeController@cart_login')->name('cart.login.submit');
 
+// reset password
+Route::get('/users/reset-password', 'HomeController@resetPassword')->name('reset.password');
+Route::post('/users/reset-password', 'PasswordResetController@sendEmailReset')->name('send.email.reset');
+Route::get('/users/change-password', 'PasswordResetController@formResetPassword')->name('form.reset');
+Route::post('/users/set-password', 'PasswordResetController@setPassword')->name('set.password');
+
 Route::post('/subcategories/get_subcategories_by_category', 'SubCategoryController@get_subcategories_by_category')->name('subcategories.get_subcategories_by_category');
 Route::post('/subsubcategories/get_subsubcategories_by_subcategory', 'SubSubCategoryController@get_subsubcategories_by_subcategory')->name('subsubcategories.get_subsubcategories_by_subcategory');
 Route::post('/subsubcategories/get_brands_by_subsubcategory', 'SubSubCategoryController@get_brands_by_subsubcategory')->name('subsubcategories.get_brands_by_subsubcategory');

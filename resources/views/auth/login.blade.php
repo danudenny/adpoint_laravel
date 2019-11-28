@@ -2,6 +2,7 @@
 
 @section('content')
 
+
 @php
     $generalsetting = \App\GeneralSetting::first();
 @endphp
@@ -28,25 +29,22 @@
             <br>
             <br>
             <br>
+            @if (Session::has('message'))
+                <div class="alert alert-danger" style="border-radius: 0;">
+                    <strong>Error!</strong> {!! session('message') !!}
+                </div>
+            @endif
 
         </div>
             <form class="pad-hor" method="POST" role="form" action="{{ route('login') }}">
                 @csrf
-                <div class="form-group">
-                    <input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" required autofocus placeholder="Email">
-                    @if ($errors->has('email'))
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $errors->first('email') }}</strong>
-                        </span>
-                    @endif
+                <div class="form-group{{ $errors->has('email') ? 'has-error' : ''}}">
+                    <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" placeholder="Email">
+                    <strong class="text-danger mt-1">{!! $errors->first('email', '<p class="help-block">:message</p>') !!}</strong>
                 </div>
-                <div class="form-group">
-                    <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" required placeholder="Password">
-                    @if ($errors->has('password'))
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $errors->first('password') }}</strong>
-                        </span>
-                    @endif
+                <div class="form-group{{ $errors->has('password') ? 'has-error' : ''}}">
+                    <input id="password" type="password" class="form-control" name="password" placeholder="Password">
+                    <strong class="text-danger mt-1">{!! $errors->first('email', '<p class="help-block">:message</p>') !!}</strong>
                 </div>
                 <div class="row">
                     <div class="col-sm-6">
@@ -57,45 +55,18 @@
                             </label>
                         </div>
                     </div>
-                    @if(env('MAIL_USERNAME') != null && env('MAIL_PASSWORD') != null)
-                        <div class="col-sm-6">
-                            <div class="checkbox pad-btm text-right">
-                                <a href="{{ route('password.request') }}" class="btn-link">{{__('Forgot password')}} ?</a>
-                            </div>
+                    <div class="col-sm-6">
+                        <div class="checkbox pad-btm text-right">
+                            <a href="{{ route('password.request') }}" class="btn-link">{{__('Forgot password')}} ?</a>
                         </div>
-                    @endif
+                    </div>
                 </div>
                 <button type="submit" class="btn btn-primary btn-lg btn-block">
                     {{ __('Login') }}
                 </button>
             </form>
-            {{-- <div class="col-sm-6">
-                <div class="cls-content-sm panel" style="width: 100% !important;">
-                    <div class="pad-all">
-                        <table class="table table-responsive table-bordered">
-                            <tbody>
-                                <tr>
-                                    <td>admin@example.com</td>
-                                    <td>123456</td>
-                                    <td><button class="btn btn-info btn-xs" onclick="autoFill()">copy</button></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div> --}}
         </div>
     </div>
 </div>
 
-
-@endsection
-
-@section('script')
-    <script type="text/javascript">
-        function autoFill(){
-            $('#email').val('admin@example.com');
-            $('#password').val('123456');
-        }
-    </script>
 @endsection

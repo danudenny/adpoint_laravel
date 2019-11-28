@@ -5,11 +5,21 @@
 <div class="cls-content-sm panel">
     <div class="panel-body">
         <h1 class="h3">{{ __('Reset Password') }}</h1>
+        @if (Session::has('success'))
+            <div class="alert alert-success" style="border-radius: 0;">
+                <strong>Berhasil!</strong> {!! session('success') !!}
+            </div>
+        @endif
+        @if (Session::has('error'))
+            <div class="alert alert-danger" style="border-radius: 0;">
+                <strong>Error!</strong> {!! session('error') !!}
+            </div>
+        @endif
         <p class="pad-btm">{{__('Enter your email address to recover your password.')}} </p>
-        <form method="POST" action="{{ route('password.email') }}">
+        <form method="POST" action="{{ route('send.email.reset') }}">
             @csrf
             <div class="form-group">
-                <input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" required placeholder="Email">
+                <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" placeholder="Email">
 
                 @if ($errors->has('email'))
                     <span class="invalid-feedback" role="alert">
@@ -28,6 +38,4 @@
         </div>
     </div>
 </div>
-
-
 @endsection

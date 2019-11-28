@@ -42,6 +42,11 @@ class HomeController extends Controller
         return view('frontend.user_registration');
     }
 
+    public function resetPassword()
+    {
+        return view('frontend.user_reset_password');
+    }
+
     // public function user_login(Request $request)
     // {
     //     $user = User::whereIn('user_type', ['customer', 'seller'])->where('email', $request->email)->first();

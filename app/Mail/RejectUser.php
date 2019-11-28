@@ -10,27 +10,17 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 class RejectUser extends Mailable
 {
     use Queueable, SerializesModels;
+    
     public $user;
-    /**
-     * Create a new message instance.
-     *
-     * @return void
-     */
+    
     public function __construct($user)
     {
-        //
         $this->user = $user;
     }
 
-    /**
-     * Build the message.
-     *
-     * @return $this
-     */
     public function build()
     {
-        return $this->view('emails.reject')
-            ->from('dontreply@adpoint.id')
+        return $this->view('emails.user_reject')
             ->subject('Akun anda tidak disetujui');
     }
 }
