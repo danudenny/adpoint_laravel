@@ -14,7 +14,9 @@ class PasswordResetController extends Controller
     {
         
         $user = User::where('email', $request->email)->where('verified', 1)->first();
-        // dd($user);
+        $request->validate([
+            'email' => 'required'
+        ]);
         if ($user) {
             $token = base64_encode(random_bytes(32));
             $user_token = [

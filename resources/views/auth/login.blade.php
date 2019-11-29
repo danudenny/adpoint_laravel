@@ -57,7 +57,7 @@
                     </div>
                     <div class="col-sm-6">
                         <div class="checkbox pad-btm text-right">
-                            <a href="{{ route('password.request') }}" class="btn-link">{{__('Forgot password')}} ?</a>
+                            <a href="{{ route('reset.password') }}" class="btn-link">{{__('Forgot password')}} ?</a>
                         </div>
                     </div>
                 </div>

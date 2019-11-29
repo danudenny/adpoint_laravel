@@ -62,12 +62,37 @@
             </div>
         </div>
     </div>
-
+    @foreach ($products as $key => $product)
+        <input type="hidden" id="prov" value="{{ $product->provinsi }}">
+    @endforeach
 
     <section class="gry-bg py-4">
         <div class="container">
             <div class="row">
                 <div class="col-xl-3 d-none d-xl-block">
+
+                    {{-- seacrh by location --}}
+                    {{-- <div class="bg-white sidebar-box mb-3">
+                        <div class="box-title text-center">
+                            {{__('Location')}}
+                        </div>
+                        <div class="box-content">
+                            <div class="category-accordion">
+                                <label>Sort by location:</label>
+                                
+                                <select class="form-control sortSelect" data-placeholder="{{__('All State')}}" name="location" onchange="locations(this.value)">
+                                    <option value="">{{__('All State')}}</option>
+                                    @foreach (\App\State::all() as $key => $state)
+                                        @if ($states == $state->name)
+                                            <option id="stateSelect" value="{{ $state->name }}" selected>{{ $state->name }}</option>
+                                        @else
+                                            <option value="{{ $state->name }}">{{ $state->name }}</option>
+                                        @endif
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                    </div> --}}
 
                     <div class="bg-white sidebar-box mb-3">
                         <div class="box-title text-center">
@@ -108,7 +133,6 @@
                             <div class="range-slider-wrapper mt-3">
                                 <!-- Range slider container -->
                                 <div id="input-slider-range" data-range-value-min="{{ filter_products(\App\Product::all())->min('unit_price') }}" data-range-value-max="{{ filter_products(\App\Product::all())->max('unit_price') }}"></div>
-
                                 <!-- Range slider values -->
                                 <div class="row">
                                     <div class="col-6">
@@ -211,8 +235,15 @@
                             @isset($subsubcategory_id)
                                 <input type="hidden" name="subsubcategory" value="{{ \App\SubSubCategory::find($subsubcategory_id)->slug }}">
                             @endisset
-
                             <div class="sort-by-bar row no-gutters bg-white mb-3 px-3">
+                                <div class="col-md-12">
+                                    <select class="form-control sortSelect" data-placeholder="{{__('All State')}}" name="location" onchange="filter()">
+                                        <option value="">{{__('All State')}}</option>
+                                        @foreach (\App\State::all() as $key => $state)
+                                            <option value="{{ urlencode($state->name) }}" @isset($states) @if ($states == $state->name) selected @endif @endisset>{{ $state->name }} ( {{ App\Product::where(['provinsi' => $state->name])->count() }} )</option>
+                                        @endforeach
+                                    </select>
+                                </div>
                                 <div class="col-lg-4 col-md-5">
                                     <div class="sort-by-box">
                                         <div class="form-group">
@@ -381,5 +412,12 @@
             $('input[name=max_price]').val(arg[1]);
             filter();
         }
+
+        function locations(e){
+            console.log(e);
+            $('#location').val(encodeURI(e));
+            filter();
+        }
+        
     </script>
 @endsection

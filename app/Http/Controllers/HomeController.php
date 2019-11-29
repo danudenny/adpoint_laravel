@@ -16,6 +16,7 @@ use App\Seller;
 use App\Shop;
 use App\Color;
 use App\Order;
+use App\State;
 use App\BusinessSetting;
 use App\Http\Controllers\SearchController;
 use ImageOptimizer;
@@ -327,6 +328,8 @@ class HomeController extends Controller
 
     public function search(Request $request)
     {
+        // dd($request);
+        
         $query = $request->q;
         $brand_id = (Brand::where('slug', $request->brand)->first() != null) ? Brand::where('slug', $request->brand)->first()->id : null;
         $sort_by = $request->sort_by;
@@ -336,6 +339,9 @@ class HomeController extends Controller
         $min_price = $request->min_price;
         $max_price = $request->max_price;
         $seller_id = $request->seller_id;
+        $states = urldecode($request->location);
+        // dd($states);
+        
 
         $conditions = ['published' => 1];
 
@@ -348,6 +354,9 @@ class HomeController extends Controller
         if($subcategory_id != null){
             $conditions = array_merge($conditions, ['subcategory_id' => $subcategory_id]);
         }
+        if ($states != null) {
+            $conditions = array_merge($conditions, ['provinsi' => $states]);
+        }
         // if($subsubcategory_id != null){
         //     $conditions = array_merge($conditions, ['subsubcategory_id' => $subsubcategory_id]);
         // }
@@ -355,7 +364,9 @@ class HomeController extends Controller
             $conditions = array_merge($conditions, ['user_id' => Seller::findOrFail($seller_id)->user->id]);
         }
 
-        $products = Product::where($conditions);
+        // dd($conditions);
+
+        $products = Product::where($conditions);  
 
         if($min_price != null && $max_price != null){
             $products = $products->where('unit_price', '>=', $min_price)->where('unit_price', '<=', $max_price);
@@ -389,7 +400,7 @@ class HomeController extends Controller
 
         $products = filter_products($products)->paginate(12)->appends(request()->query());
 
-        return view('frontend.product_listing', compact('products', 'query', 'category_id', 'subcategory_id', 'brand_id', 'sort_by', 'seller_id','min_price', 'max_price'));
+        return view('frontend.product_listing', compact('products', 'states', 'query', 'category_id', 'subcategory_id', 'brand_id', 'sort_by', 'seller_id','min_price', 'max_price'));
     }
 
     public function product_content(Request $request){
