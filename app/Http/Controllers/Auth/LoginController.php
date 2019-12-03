@@ -104,16 +104,21 @@ class LoginController extends Controller
      */
     public function authenticated()
     {
-        if((auth()->user()->user_type == 'admin' || auth()->user()->user_type == 'staff') && auth()->user()->verified == 1){
-            return redirect()->route('admin.dashboard');
-        }else if(session('link') != null){
-            return redirect(session('link'));
-        }else{
-            if (auth()->user()->user_type == 'customer' && auth()->user()->verified == 1) {
-                flash(__('Your logged!'))->success();
-                return redirect()->route('dashboard');
+        if (auth()->user() != null) {
+            if((auth()->user()->user_type == 'admin' || auth()->user()->user_type == 'staff') && auth()->user()->verified == 1){
+                return redirect()->route('admin.dashboard');
+            }else if(session('link') != null){
+                return redirect(session('link'));
+            }else{
+                if (auth()->user()->user_type == 'customer' && auth()->user()->verified == 1) {
+                    flash(__('Your logged!'))->success();
+                    return redirect()->route('dashboard');
+                }
             }
+        }else{
+            return back();
         }
+        
     }
 
     /**

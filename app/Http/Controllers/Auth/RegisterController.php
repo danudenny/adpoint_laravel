@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Http\Request;
 use Mail;
-use App\Mail\UsersMail;
+use App\Mail\RegistUser;
 
 
 class RegisterController extends Controller
@@ -56,11 +56,12 @@ class RegisterController extends Controller
     {
         return Validator::make($data, [
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
+            'email' => 'required|email|unique:users,email',
             'password' => 'required|string|min:6|confirmed',
+            'ktp' => 'required',
+            'npwp' => 'required',
         ]);
     }
-
     /**
      * Create a new user instance after a valid registration.
      *
@@ -70,18 +71,18 @@ class RegisterController extends Controller
     protected function create(array $data)
     {
         $user = User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
-            'ktp' => $data['ktp']->store('uploads/users'),
-            'npwp' => $data['npwp']->store('uploads/users')
+            'name'      => $data['name'],
+            'email'     => $data['email'],
+            'password'  => Hash::make($data['password']),
+            'ktp'       => $data['ktp']->store('uploads/users'),
+            'npwp'      => $data['npwp']->store('uploads/users')
         ]);
 
         if(BusinessSetting::where('type', 'email_verification')->first()->value != 1){
             $user->email_verified_at = date('Y-m-d H:m:s');
             $user->ktp = $data['ktp']->store('uploads/users');
             $user->npwp = $data['npwp']->store('uploads/users');
-            $user->verified = 0;
+            $user->verified = 2;
             $user->save();
             flash(__('Registration successfull. Please check your email.'))->success();
         }
@@ -89,9 +90,9 @@ class RegisterController extends Controller
             $user->email_verified_at = date('Y-m-d H:m:s');
             $user->ktp = $data['ktp']->store('uploads/users');
             $user->npwp = $data['npwp']->store('uploads/users');
-            $user->verified = 0;
+            $user->verified = 2;
             $user->save();
-            Mail::to($user->email)->send(new UsersMail($user));
+            Mail::to($user->email)->send(new RegistUser($user));
             flash(__('Registration successfull. Please check your email.'))->success();
         }
 

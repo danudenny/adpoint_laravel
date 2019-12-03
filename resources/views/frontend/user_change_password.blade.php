@@ -5,33 +5,29 @@
         <div class="panel-body">
             <h1 class="h3">{{ __('Reset Password') }}</h1>
             <p class="pad-btm">{{__('Enter your email address and new password and confirm password.')}} </p>
-            <form method="POST" action="{{ route('password.update') }}">
+            <form method="POST" action="{{ route('set.password') }}">
                 @csrf
-
-                <input type="hidden" name="token" value="{{ $token }}">
-
                 <div class="form-group">
-                    <input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ $email ?? old('email') }}" placeholder="Email" required autofocus>
-
+                    <input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ $user->email }}" placeholder="Email" required autofocus>
                     @if ($errors->has('email'))
                         <span class="invalid-feedback" role="alert">
-                            <strong>{{ $errors->first('email') }}</strong>
+                            <strong class="text-danger">{{ $errors->first('email') }}</strong>
                         </span>
                     @endif
                 </div>
 
                 <div class="form-group">
-                    <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" placeholder="New Password" required>
+                    <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" placeholder="New Password">
 
                     @if ($errors->has('password'))
                         <span class="invalid-feedback" role="alert">
-                            <strong>{{ $errors->first('password') }}</strong>
+                            <strong class="text-danger">{{ $errors->first('password') }}</strong>
                         </span>
                     @endif
                 </div>
 
                 <div class="form-group">
-                    <input id="password-confirm" type="password" class="form-control" name="password_confirmation" placeholder="Confirm Password" required>
+                    <input id="password-confirm" type="password" class="form-control" name="password_confirmation" placeholder="Confirm Password">
                 </div>
 
                 <div class="form-group text-right">

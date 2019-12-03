@@ -7,12 +7,12 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class AcceptUser extends Mailable
+class ResetUser extends Mailable
 {
     use Queueable, SerializesModels;
-    
+
     public $user;
-    
+
     public function __construct($user)
     {
         $this->user = $user;
@@ -20,7 +20,7 @@ class AcceptUser extends Mailable
 
     public function build()
     {
-        return $this->view('emails.user_accept')
-            ->subject('Akun anda telah disetujui');
+        return $this->view('emails.user_reset')
+            ->subject('Reset Password');
     }
 }

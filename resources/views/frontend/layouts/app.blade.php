@@ -115,6 +115,7 @@
 
 <!-- jQuery -->
 <script src="{{ asset('frontend/js/vendor/jquery.min.js') }}"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
 @if (\App\BusinessSetting::where('type', 'google_analytics')->first()->value == 1)
     <!-- Global site tag (gtag.js) - Google Analytics -->
