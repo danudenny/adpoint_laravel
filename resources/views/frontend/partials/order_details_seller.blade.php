@@ -32,7 +32,7 @@
         </ul>
     </div>
     <div class="row mt-5">
-        <div class="offset-lg-2 col-lg-4 col-sm-6">
+        {{-- <div class="offset-lg-2 col-lg-4 col-sm-6">
             <div class="form-inline">
                 <select class="form-control selectpicker form-control-sm"  data-minimum-results-for-search="Infinity" id="update_payment_status">
                     <option value="unpaid" @if ($payment_status == 'unpaid') selected @endif>{{__('Unpaid')}}</option>
@@ -40,8 +40,8 @@
                 </select>
                 <label class="my-2" >{{__('Payment Status')}}</label>
             </div>
-        </div>
-        <div class="col-lg-4 col-sm-6">
+        </div> --}}
+        {{-- <div class="col-lg-4 col-sm-6">
             <div class="form-inline">
                 <select class="form-control selectpicker form-control-sm"  data-minimum-results-for-search="Infinity" id="update_delivery_status">
                     <option value="pending" @if ($status == 'pending') selected @endif>{{__('Pending')}}</option>
@@ -51,7 +51,7 @@
                 </select>
                 <label class="my-2" >{{__('Media Order Status')}}</label>
             </div>
-        </div>
+        </div> --}}
     </div>
     <div class="card mt-3">
         <div class="card-header py-2 px-3 ">
@@ -139,6 +139,12 @@
                             @endforeach
                         </tbody>
                     </table>
+                </div>
+            </div>
+            <div class="row mt-1">
+                <div class="col-md-6">
+                    <a href="{{ route('approve.by.seller', encrypt($order->id)) }}" class="btn btn-success"><i class="fa fa-check-circle"></i> Approve</a>
+                    <a href="{{ route('disapprove.by.seller', encrypt($order->id)) }}" class="btn btn-danger"><i class="fa fa-times-circle"></i> Disapprove</a>
                 </div>
             </div>
         </div>

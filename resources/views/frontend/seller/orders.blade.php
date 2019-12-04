@@ -31,29 +31,29 @@
                             </div>
                         </div>
 
-                        @if (count($orders) > 0)
-                            <!-- Order history table -->
-                            <div class="card no-border mt-4">
-                                <div>
-                                    <table class="table table-sm table-hover table-responsive-md">
-                                        <thead>
-                                            <tr>
-                                                <th>#</th>
-                                                <th>{{__('Order Number')}}</th>
-                                                <th>{{__('Num. of Media')}}</th>
-                                                <th>{{__('Customer')}}</th>
-                                                <th>{{__('Amount')}}</th>
-                                                <th>{{__('Order Status')}}</th>
-                                                <th>{{__('Payment Status')}}</th>
-                                                <th>{{__('Options')}}</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
+                        <!-- Order history table -->
+                        <div class="card no-border mt-4">
+                            <div>
+                                <table class="table table-sm table-hover table-responsive-md">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>{{__('Order Number')}}</th>
+                                            <th>{{__('Num. of Media')}}</th>
+                                            <th>{{__('Customer')}}</th>
+                                            <th>{{__('Amount')}}</th>
+                                            <th>{{__('Order Status')}}</th>
+                                            <th>{{__('Payment Status')}}</th>
+                                            <th>{{__('Options')}}</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @if (count($orders) > 0)
                                             @foreach ($orders as $key => $order_id)
                                                 @php
                                                     $order = \App\Order::find($order_id->id);
                                                 @endphp
-                                                @if($order != null)
+                                                @if($order != null && $order->approved != 0)
                                                     <tr>
                                                         <td>
                                                             {{ $key+1 }}
@@ -104,12 +104,13 @@
                                                     </tr>
                                                 @endif
                                             @endforeach
-                                        </tbody>
-                                    </table>
-                                </div>
+                                        @endif
+                                        
+                                    </tbody>
+                                </table>
                             </div>
-                        @endif
-
+                        </div>
+                    
                         <div class="pagination-wrapper py-4">
                             <ul class="pagination justify-content-end">
                                 {{ $orders->links() }}

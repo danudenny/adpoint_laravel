@@ -7,14 +7,15 @@
     <title>Adpoint</title>
     <style type="text/css" rel="stylesheet" media="all">
         /* Base ------------------------------ */
+        
         *:not(br):not(tr):not(html) {
             font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;
             -webkit-box-sizing: border-box;
             box-sizing: border-box;
         }
+        
         body {
             width: 100% !important;
-            height: 100%;
             margin: 0;
             line-height: 1.4;
             background-color: #F5F7F9;
@@ -68,7 +69,7 @@
         }
         
         .email-body_inner {
-            width: 570px;
+            width: 800px;
             margin: 0 auto;
             padding: 0;
         }
@@ -100,7 +101,7 @@
         .content-cell {
             padding: 35px;
         }
-
+        
         .content-cell p {
             color: #333;
         }
@@ -165,6 +166,24 @@
             mso-hide: all;
         }
         
+        .invoice-box {
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #eee;
+            box-shadow: 0 0 10px rgba(0, 0, 0, .15);
+            font-size: 13px;
+            line-height: 24px;
+            font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+            color: #555;
+        }
+        
+        .invoice-box table {
+            width: 100%;
+            line-height: inherit;
+            text-align: left;
+        }
+        
         .button--green {
             background-color: #28DB67;
         }
@@ -185,6 +204,12 @@
         .center a {
             color: white;
         }
+        
+        .heading {
+            background: #eee;
+            border-bottom: 1px solid #ddd;
+            font-size: 13px;
+        }
         /*Media Queries ------------------------------ */
         
         @media only screen and (max-width: 600px) {
@@ -199,6 +224,17 @@
                 color: #333;
                 font-size: 12px;
             }
+            .invoice-box {
+                max-width: auto;
+                margin: auto;
+                padding: 5px;
+                border: 1px solid #eee;
+                box-shadow: 0 0 10px rgba(0, 0, 0, .15);
+                font-size: 12px;
+                line-height: 24px;
+                font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+                color: #555;
+            }
         }
         
         @media only screen and (max-width: 500px) {
@@ -211,6 +247,17 @@
             .content-cell p {
                 color: #333;
                 font-size: 12px;
+            }
+            .invoice-box {
+                max-width: auto;
+                margin: auto;
+                padding: 5px;
+                border: 1px solid #eee;
+                box-shadow: 0 0 10px rgba(0, 0, 0, .15);
+                font-size: 12px;
+                line-height: 24px;
+                font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+                color: #555;
             }
         }
     </style>

@@ -29,7 +29,6 @@ class CheckoutController extends Controller
     {
         $orderController = new OrderController;
         $orderController->store($request);
-
         $request->session()->put('payment_type', 'cart_payment');
 
         if($request->session()->get('order_id') != null){

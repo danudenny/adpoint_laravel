@@ -114,6 +114,7 @@
                 <div class="heading-4 strong-700 mb-4">
                     @php
                         $orderDetails = \App\OrderDetail::where('seller_id', Auth::user()->id)->where('created_at', '>=', date('-30d'))->get();
+                        
                         $total = 0;
                         foreach ($orderDetails as $key => $orderDetail) {
                             if($orderDetail->order->payment_status == 'paid'){

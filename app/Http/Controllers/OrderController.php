@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Order;
+use App\User;
 use App\Product;
 use App\Color;
 use App\OrderDetail;
@@ -13,7 +14,10 @@ use Session;
 use DB;
 use PDF;
 use Mail;
-use App\Mail\InvoiceEmailManager;
+use App\Mail\Order\OrderComplete;
+use App\Mail\Order\OrderReviewed;
+use App\Mail\Order\OrderSold;
+use App\Mail\Order\OrderApproved;
 
 class OrderController extends Controller
 {
@@ -28,11 +32,136 @@ class OrderController extends Controller
                     ->orderBy('code', 'desc')
                     ->join('order_details', 'orders.id', '=', 'order_details.order_id')
                     ->where('order_details.seller_id', Auth::user()->id)
-                    ->select('orders.id')
+                    ->select('orders.id','approved')
                     ->distinct()
                     ->paginate(9);
 
         return view('frontend.seller.orders', compact('orders'));
+    }
+
+    public function list_orders(Request $request)
+    {
+        $orders = Order::orderBy('code', 'desc')->get();
+        return view('orders.list_orders', compact('orders'));
+    }
+
+    public function approve_by_admin($id)
+    {
+        $order = Order::findOrFail(decrypt($id));
+       
+        $user = User::findOrFail($order->user_id);
+        $users['name'] = $user->name;
+        $users['email'] = $user->email;
+        $users['code'] = $order->code;
+
+        $seller = DB::table('orders')
+                ->join('order_details', 'orders.id', '=', 'order_details.order_id')
+                ->join('users', 'order_details.seller_id', '=', 'users.id')
+                ->select('users.*')
+                ->where('orders.id','=',decrypt($id))
+                ->first();
+        $sellers['name'] = $seller->name;
+        $sellers['email'] = $seller->email;
+        $sellers['code'] = $order->code;
+        if($order != null){
+            $order->approved = 1;
+            $order->updated_at = time();
+            $order->save();
+            Mail::to($user->email)->send(new OrderReviewed($users));
+            Mail::to($seller->email)->send(new OrderSold($sellers));
+            flash('Order approved')->success();
+        }
+        else{
+            flash('Something went wrong')->error();
+        }
+        return back();
+    }
+
+    public function approve_by_seller($id)
+    {
+        $query = DB::table('orders as o')
+            ->join('order_details as od', 'o.id', '=', 'od.order_id')
+            ->join('users as b', 'o.user_id', '=', 'b.id')
+            ->join('users as s', 'od.seller_id', '=', 's.id')
+            ->join('products as p', 'od.product_id', '=', 'p.id')
+            ->select(
+                [
+                    'p.name as product_name',
+                    'o.code',
+                    'o.shipping_address',
+                    'o.grand_total',
+                    'o.payment_type',
+                    'o.created_at',
+                    'b.name as buyer_name',
+                    'b.email as buyer_email',
+                    's.name as seller_name',
+                    's.email as seller_email',
+                    'od.variation',
+                    'od.price',
+                    'od.tax',
+                    'od.quantity',
+                    'od.payment_status',
+                    'od.delivery_status',
+                    'od.start_date',
+                    'od.end_date'
+
+                ]
+            )
+            ->where('o.id','=',decrypt($id))
+            ->get();
+        $product = [];
+        foreach ($query as $key => $q) {
+            array_push($product, [
+                'name' => $q->product_name, 
+                'price' => $q->price,
+                'start_date' => $q->start_date,
+                'end_date' => $q->end_date,
+                'periode' => $q->variation,
+                'qty' => $q->quantity
+            ]);
+            $users['code'] = $q->code;
+            $users['shipping_address'] = $q->shipping_address;
+            $users['tax'] = $q->tax;
+            $users['grand_total'] = $q->grand_total; 
+            $users['payment_type'] = $q->payment_type; 
+            $users['created_at'] = $q->created_at; 
+            $users['buyer_name'] = $q->buyer_name; 
+            $users['buyer_email'] = $q->buyer_email; 
+            $users['seller_name'] = $q->seller_name; 
+            $users['seller_email'] = $q->seller_email; 
+            $users['payment_status'] = $q->payment_status; 
+            $users['delivery_status'] = $q->delivery_status;
+        }
+        $users['product'] = $product;
+        dd($users);
+        $order = Order::findOrFail(decrypt($id));
+        if($order != null){
+            $order->approved = 2;
+            $order->updated_at = time();
+            $order->save();
+            Mail::to($users['buyer_email'])->send(new OrderApproved($users));
+            flash('Order approved')->success();
+        }
+        else{
+            flash('Something went wrong')->error();
+        }
+        return back();
+    }
+
+    public function disapprove_by_seller($id)
+    {
+        $order = Order::findOrFail(decrypt($id));
+        if($order != null){
+            $order->approved = 0;
+            $order->updated_at = time();
+            $order->save();
+            // Mail::to($user->email)->send(new OrderReviewed($users));
+            flash('Order disapproved')->success();
+        }
+        else{
+            flash('Something went wrong')->error();
+        }
+        return back();
     }
 
     /**
@@ -129,13 +258,13 @@ class OrderController extends Controller
                     }
                 }
 
+
                 if($product_variation != null){
                     $variations = json_decode($product->variations);
                     $variations->$product_variation->qty -= $cartItem['quantity'];
                     $product->variations = json_encode($variations);
                     $product->save();
                 }
-
                 
                 $order_detail = new OrderDetail;
                 if ($product_variation == 'Harian') {
@@ -186,30 +315,31 @@ class OrderController extends Controller
                 $coupon_usage->coupon_id = Session::get('coupon_id');
                 $coupon_usage->save();
             }
-
+            $send_to = $request->session()->get('shipping_info')['email'];
+            $user = $request->session()->get('shipping_info');
             $order->save();
-
+            Mail::to($send_to)->send(new OrderComplete($user));
             //stores the pdf for invoice
-            $pdf = PDF::setOptions([
-                            'isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true,
-                            'logOutputFile' => storage_path('logs/log.htm'),
-                            'tempDir' => storage_path('logs/')
-                        ])->loadView('invoices.customer_invoice', compact('order'));
-            $output = $pdf->output();
-    		file_put_contents('public/invoices/'.'Order#'.$order->code.'.pdf', $output);
+            // $pdf = PDF::setOptions([
+            //                 'isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true,
+            //                 'logOutputFile' => storage_path('logs/log.htm'),
+            //                 'tempDir' => storage_path('logs/')
+            //             ])->loadView('invoices.customer_invoice', compact('order'));
+            // $output = $pdf->output();
+    		// file_put_contents('public/invoices/'.'Order#'.$order->code.'.pdf', $output);
 
-            $array['view'] = 'emails.invoice';
-            $array['subject'] = 'Order Placed - '.$order->code;
-            $array['from'] = env('MAIL_USERNAME');
-            $array['content'] = 'Hi. Your order has been placed';
-            $array['file'] = 'public/invoices/Order#'.$order->code.'.pdf';
-            $array['file_name'] = 'Order#'.$order->code.'.pdf';
+            // $array['view'] = 'emails.invoice';
+            // $array['subject'] = 'Order Placed - '.$order->code;
+            // $array['from'] = env('MAIL_USERNAME');
+            // $array['content'] = 'Hi. Your order has been placed';
+            // $array['file'] = 'public/invoices/Order#'.$order->code.'.pdf';
+            // $array['file_name'] = 'Order#'.$order->code.'.pdf';
 
             //sends email to customer with the invoice pdf attached
-            if(env('MAIL_USERNAME') != null && env('MAIL_PASSWORD') != null){
-                Mail::to($request->session()->get('shipping_info')['email'])->queue(new InvoiceEmailManager($array));
-            }
-            unlink($array['file']);
+            // if(env('MAIL_USERNAME') != null && env('MAIL_PASSWORD') != null){
+            //     Mail::to($request->session()->get('shipping_info')['email'])->queue(new InvoiceEmailManager($array));
+            // }
+            // unlink($array['file']);
 
             $request->session()->put('order_id', $order->id);
         }
