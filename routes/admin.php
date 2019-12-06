@@ -123,6 +123,7 @@ Route::group(['prefix' =>'admin', 'middleware' => ['auth', 'admin']], function()
 	Route::get('/orders', 'OrderController@admin_orders')->name('orders.index.admin');
 	Route::get('/orders/list', 'OrderController@list_orders')->name('orders.list.orders');
 	Route::get('/orders/approve_by_admin/{id}', 'OrderController@approve_by_admin')->name('approve.by.admin');
+	Route::get('/orders/disapprove_by_admin', 'OrderController@disapprove_by_admin')->name('disapprove.by.admin');
 	Route::get('/orders/{id}/show', 'OrderController@show')->name('orders.show');
 	Route::get('/sales/{id}/show', 'OrderController@sales_show')->name('sales.show');
 	Route::get('/orders/destroy/{id}', 'OrderController@destroy')->name('orders.destroy');

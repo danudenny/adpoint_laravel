@@ -79,13 +79,40 @@
                                 </button>
                                 <ul class="dropdown-menu dropdown-menu-right">
                                     @if ($order->approved != 1)
-                                        <li><a href="{{ route('approve.by.admin', encrypt($order->id)) }}">{{__('Approved')}}</a></li>
+                                        <li><a href="{{ route('approve.by.admin', encrypt($order->id)) }}">{{__('Approve')}}</a></li>
+                                        <li><a style="cursor: pointer;" onclick="disapprove_by_admin({{$order->id}})">{{__('Disapprove')}}</a></li>
                                     @endif
-                                    <li><a onclick="confirm_modal('{{route('orders.destroy', $order->id)}}');">{{__('Delete')}}</a></li>
+                                    <li><a style="cursor: pointer;" onclick="confirm_modal('{{route('orders.destroy', $order->id)}}');">{{__('Delete')}}</a></li>
                                 </ul>
                             </div>
                         </td>
                     </tr>
+                <div class="modal fade" id="disapprove{{$order->id}}" tabindex="-1" role="dialog" aria-labelledby="disapproveTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Disapprove</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form action="{{ route('disapprove.by.admin') }}" method="get">
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                <input type="hidden" name="order_id" value="{{$order->id}}">
+                                <label>Alasan</label>
+                                <textarea name="alasan" class="form-control" placeholder="Tuliskan alasan" cols="20" rows="5"></textarea>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+                    </form>
+                    </div>
+                </div>
+                </div>
                 @endforeach
             </tbody>
         </table>
@@ -98,6 +125,8 @@
 
 @section('script')
     <script type="text/javascript">
-
+        function disapprove_by_admin(id){
+            $('#disapprove'+id).modal('show');
+        }
     </script>
 @endsection

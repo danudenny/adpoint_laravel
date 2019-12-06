@@ -7,7 +7,7 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class OrderSold extends Mailable
+class OrderApprovedAdmin extends Mailable
 {
     use Queueable, SerializesModels;
     public $user;
@@ -28,7 +28,7 @@ class OrderSold extends Mailable
      */
     public function build()
     {
-        return $this->view('emails.orders.order_sold')
-            ->subject('Product di order#'.$this->user['code']);
+        return $this->view('emails.orders.order_approved_admin')
+            ->subject('Selamat. Order telah direview'.$this->user['code']);
     }
 }

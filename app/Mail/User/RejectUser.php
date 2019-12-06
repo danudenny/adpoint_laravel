@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Mail;
+namespace App\Mail\User;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
@@ -10,7 +10,6 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 class RejectUser extends Mailable
 {
     use Queueable, SerializesModels;
-    
     public $user;
     
     public function __construct($user)
@@ -20,7 +19,7 @@ class RejectUser extends Mailable
 
     public function build()
     {
-        return $this->view('emails.user_reject')
+        return $this->view('emails.users.user_reject')
             ->subject('Akun anda tidak disetujui');
     }
 }

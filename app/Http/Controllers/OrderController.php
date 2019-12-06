@@ -14,10 +14,16 @@ use Session;
 use DB;
 use PDF;
 use Mail;
-use App\Mail\Order\OrderComplete;
-use App\Mail\Order\OrderReviewed;
+// use App\Mail\Order\OrderComplete;
+
+
+use App\Mail\Order\OrderStart;
+use App\Mail\Order\OrderApprovedAdmin;
 use App\Mail\Order\OrderSold;
-use App\Mail\Order\OrderApproved;
+use App\Mail\Order\OrderDisapprovedAdmin;
+use App\Mail\Order\OrderApprovedSeller;
+use App\Mail\Order\OrderDisapprovedSeller;
+
 
 class OrderController extends Controller
 {
@@ -67,9 +73,30 @@ class OrderController extends Controller
             $order->approved = 1;
             $order->updated_at = time();
             $order->save();
-            Mail::to($user->email)->send(new OrderReviewed($users));
+            Mail::to($user->email)->send(new OrderApprovedAdmin($users));
             Mail::to($seller->email)->send(new OrderSold($sellers));
             flash('Order approved')->success();
+        }
+        else{
+            flash('Something went wrong')->error();
+        }
+        return back();
+    }
+
+    public function disapprove_by_admin(Request $request)
+    {
+        $order = Order::findOrFail($request->order_id);
+        $user = User::findOrFail($order->user_id);
+        $users['name'] = $user->name;
+        $users['email'] = $user->email;
+        $users['code'] = $order->code;
+        $users['alasan'] = $request->alasan;
+        if($order != null){
+            $order->approved = 0;
+            $order->updated_at = time();
+            $order->save();
+            Mail::to($user->email)->send(new OrderDisapprovedAdmin($users));
+            flash('Order disapproved')->success();
         }
         else{
             flash('Something went wrong')->error();
@@ -133,13 +160,12 @@ class OrderController extends Controller
             $users['delivery_status'] = $q->delivery_status;
         }
         $users['product'] = $product;
-        dd($users);
         $order = Order::findOrFail(decrypt($id));
         if($order != null){
             $order->approved = 2;
             $order->updated_at = time();
             $order->save();
-            Mail::to($users['buyer_email'])->send(new OrderApproved($users));
+            Mail::to($users['buyer_email'])->send(new OrderApprovedSeller($users));
             flash('Order approved')->success();
         }
         else{
@@ -151,11 +177,15 @@ class OrderController extends Controller
     public function disapprove_by_seller($id)
     {
         $order = Order::findOrFail(decrypt($id));
+        $user = User::findOrFail($order->user_id);
+        $users['name'] = $user->name;
+        $users['email'] = $user->email;
+        $users['code'] = $order->code;
         if($order != null){
             $order->approved = 0;
             $order->updated_at = time();
             $order->save();
-            // Mail::to($user->email)->send(new OrderReviewed($users));
+            Mail::to($user->email)->send(new OrderDisapprovedSeller($users));
             flash('Order disapproved')->success();
         }
         else{
@@ -222,128 +252,115 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
-        $order = new Order;
-        if(Auth::check()){
-            $order->user_id = Auth::user()->id;
+
+        $cart = [];
+        $data = [];
+        foreach (Session::get('cart') as $sc) {
+            array_push($cart, $sc);
+        }     
+        foreach ($cart as $c) {
+            $data[$c['user_id']][] = $c;
         }
-        else{
-            $order->guest_id = mt_rand(100000, 999999);
-        }
 
-        $order->shipping_address = json_encode($request->session()->get('shipping_info'));
-        $order->payment_type = $request->payment_option;
-        $order->code = date('Ymd-his');
-        $order->date = strtotime('now');
-
-        if($order->save()){
-            $subtotal = 0;
-            $tax = 0;
-            $shipping = 0;
-            foreach (Session::get('cart') as $key => $cartItem){
-                $product = Product::find($cartItem['id']);
-                $subtotal += $cartItem['price']*$cartItem['quantity'];
-                $tax += $cartItem['tax']*$cartItem['quantity'];
-                $shipping += $cartItem['shipping']*$cartItem['quantity'];
-                $product_variation = null;
-                if(isset($cartItem['color'])){
-                    $product_variation .= Color::where('code', $cartItem['color'])->first()->name;
-                }
-                foreach (json_decode($product->choice_options) as $choice){
-                    $str = $choice->title; // example $str =  choice_0
-                    if ($product_variation != null) {
-                        $product_variation .= $cartItem[$str];
+        foreach ($data as $key => $d) {
+            $order = new Order;
+            if(Auth::check()){
+                $order->user_id = Auth::user()->id;
+            }else{
+                $order->guest_id = mt_rand(100000, 999999);
+            }
+            $order->shipping_address = json_encode($request->session()->get('shipping_info'));
+            $order->payment_type = $request->payment_option;
+            $order->code = date('Ymd-his');
+            $order->date = strtotime('now');
+            if ($order->save()) {
+                $subtotal = 0;
+                $tax = 0;
+                $shipping = 0;
+                foreach ($d as $value) {
+                    $product = Product::find($value['id']);
+                    $subtotal += $value['price']*$value['quantity'];
+                    $tax += $value['tax']*$value['quantity'];
+                    $shipping += $value['shipping']*$value['quantity'];
+                    $product_variation = null;
+                    if(isset($value['color'])){
+                        $product_variation .= Color::where('code', $value['color'])->first()->name;
                     }
-                    else {
-                        $product_variation .= $cartItem[$str];
+                    
+                    foreach (json_decode($product->choice_options) as $choice){
+                        $str = $choice->title;
+                        if ($product_variation != null) {
+                            $product_variation .= $value[$str];
+                        }
+                        else {
+                            $product_variation .= $value[$str];
+                        }
                     }
-                }
 
+                    if($product_variation != null){
+                        $variations = json_decode($product->variations);
+                        $variations->$product_variation->qty -= $value['quantity'];
+                        $product->variations = json_encode($variations);
+                        $product->save();
+                    }
 
-                if($product_variation != null){
-                    $variations = json_decode($product->variations);
-                    $variations->$product_variation->qty -= $cartItem['quantity'];
-                    $product->variations = json_encode($variations);
+                    $order_detail = new OrderDetail;
+                    if ($product_variation == 'Harian') {
+                        $order_detail->start_date = date('Y-m-d', strtotime($value['start_date']));
+                        $order_detail->end_date = date('Y-m-d', strtotime($value['end_date']));
+                    }
+                    if ($product_variation == 'Mingguan') {
+                        $order_detail->start_date = date('Y-m-d', strtotime($value['start_date']));
+                        $order_detail->end_date = date('Y-m-d', strtotime($value['end_date']));
+                    }
+                    if ($product_variation == 'Bulanan') {
+                        $order_detail->start_date = date('Y-m-d', strtotime($value['start_date']));
+                        $order_detail->end_date = date('Y-m-d', strtotime($value['end_date']));
+                    }
+                    if ($product_variation == 'TigaBulan') {
+                        $order_detail->start_date = date('Y-m-d', strtotime($value['start_date']));
+                        $order_detail->end_date = date('Y-m-d', strtotime($value['end_date']));
+                    }
+                    if ($product_variation == 'EnamBulan') {
+                        $order_detail->start_date = date('Y-m-d', strtotime($value['start_date']));
+                        $order_detail->end_date = date('Y-m-d', strtotime($value['end_date']));
+                    }
+                    if ($product_variation == 'Tahunan') {
+                        $order_detail->start_date = date('Y-m-d', strtotime($value['start_date']));
+                        $order_detail->end_date = date('Y-m-d', strtotime($value['end_date']));
+                    }
+                    $order_detail->order_id  = $order->id;
+                    $order_detail->seller_id = $value['user_id'];
+                    $order_detail->product_id = $value['id'];
+                    $order_detail->variation = $product_variation;
+                    $order_detail->price = $value['price'] * $value['quantity'];
+                    $order_detail->tax = $value['tax'] * $value['quantity'];
+                    $order_detail->shipping_cost = $value['shipping']*$value['quantity'];
+                    $order_detail->quantity = $value['quantity'];
+                    $order_detail->save();
+
+                    $product->num_of_sale++;
                     $product->save();
                 }
-                
-                $order_detail = new OrderDetail;
-                if ($product_variation == 'Harian') {
-                    $order_detail->start_date = date('Y-m-d', strtotime($cartItem['start_date']));
-                    $order_detail->end_date = date('Y-m-d', strtotime($cartItem['end_date']));
+                $order->grand_total = $subtotal + $tax + $shipping;
+                if(Session::has('coupon_discount')){
+                    $order->grand_total -= Session::get('coupon_discount');
+                    $order->coupon_discount = Session::get('coupon_discount');
+                    $coupon_usage = new CouponUsage;
+                    $coupon_usage->user_id = Auth::user()->id;
+                    $coupon_usage->coupon_id = Session::get('coupon_id');
+                    $coupon_usage->save();
                 }
-                if ($product_variation == 'Mingguan') {
-                    $order_detail->start_date = date('Y-m-d', strtotime($cartItem['start_date']));
-                    $order_detail->end_date = date('Y-m-d', strtotime($cartItem['end_date']));
-                }
-                if ($product_variation == 'Bulanan') {
-                    $order_detail->start_date = date('Y-m-d', strtotime($cartItem['start_date']));
-                    $order_detail->end_date = date('Y-m-d', strtotime($cartItem['end_date']));
-                }
-                if ($product_variation == 'TigaBulan') {
-                    $order_detail->start_date = date('Y-m-d', strtotime($cartItem['start_date']));
-                    $order_detail->end_date = date('Y-m-d', strtotime($cartItem['end_date']));
-                }
-                if ($product_variation == 'EnamBulan') {
-                    $order_detail->start_date = date('Y-m-d', strtotime($cartItem['start_date']));
-                    $order_detail->end_date = date('Y-m-d', strtotime($cartItem['end_date']));
-                }
-                if ($product_variation == 'Tahunan') {
-                    $order_detail->start_date = date('Y-m-d', strtotime($cartItem['start_date']));
-                    $order_detail->end_date = date('Y-m-d', strtotime($cartItem['end_date']));
-                }
-                $order_detail->order_id  =$order->id;
-                $order_detail->seller_id = $product->user_id;
-                $order_detail->product_id = $product->id;
-                $order_detail->variation = $product_variation;
-                $order_detail->price = $cartItem['price'] * $cartItem['quantity'];
-                $order_detail->tax = $cartItem['tax'] * $cartItem['quantity'];
-                $order_detail->shipping_cost = $cartItem['shipping']*$cartItem['quantity'];
-                $order_detail->quantity = $cartItem['quantity'];
-                $order_detail->save();
-
-                $product->num_of_sale++;
-                $product->save();
+                $send_to = $request->session()->get('shipping_info')['email'];
+                $user = $request->session()->get('shipping_info');
+                $order->save();
+                Mail::to($send_to)->send(new OrderStart($user));
+                $request->session()->put('order_id', $order->id);
             }
-            
-            $order->grand_total = $subtotal + $tax + $shipping;
-            if(Session::has('coupon_discount')){
-                $order->grand_total -= Session::get('coupon_discount');
-                $order->coupon_discount = Session::get('coupon_discount');
-
-                $coupon_usage = new CouponUsage;
-                $coupon_usage->user_id = Auth::user()->id;
-                $coupon_usage->coupon_id = Session::get('coupon_id');
-                $coupon_usage->save();
-            }
-            $send_to = $request->session()->get('shipping_info')['email'];
-            $user = $request->session()->get('shipping_info');
-            $order->save();
-            Mail::to($send_to)->send(new OrderComplete($user));
-            //stores the pdf for invoice
-            // $pdf = PDF::setOptions([
-            //                 'isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true,
-            //                 'logOutputFile' => storage_path('logs/log.htm'),
-            //                 'tempDir' => storage_path('logs/')
-            //             ])->loadView('invoices.customer_invoice', compact('order'));
-            // $output = $pdf->output();
-    		// file_put_contents('public/invoices/'.'Order#'.$order->code.'.pdf', $output);
-
-            // $array['view'] = 'emails.invoice';
-            // $array['subject'] = 'Order Placed - '.$order->code;
-            // $array['from'] = env('MAIL_USERNAME');
-            // $array['content'] = 'Hi. Your order has been placed';
-            // $array['file'] = 'public/invoices/Order#'.$order->code.'.pdf';
-            // $array['file_name'] = 'Order#'.$order->code.'.pdf';
-
-            //sends email to customer with the invoice pdf attached
-            // if(env('MAIL_USERNAME') != null && env('MAIL_PASSWORD') != null){
-            //     Mail::to($request->session()->get('shipping_info')['email'])->queue(new InvoiceEmailManager($array));
-            // }
-            // unlink($array['file']);
-
-            $request->session()->put('order_id', $order->id);
         }
     }
+
+
 
     /**
      * Display the specified resource.

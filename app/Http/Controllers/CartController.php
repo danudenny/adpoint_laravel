@@ -34,6 +34,7 @@ class CartController extends Controller
         $product = Product::find($request->id);
         $data = array();
         $data['id'] = $product->id;
+        $data['user_id'] = $product->user_id;
         $str = '';
         $tax = 0;
 
