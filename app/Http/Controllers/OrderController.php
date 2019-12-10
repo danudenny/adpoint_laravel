@@ -9,14 +9,13 @@ use App\Product;
 use App\Color;
 use App\OrderDetail;
 use App\CouponUsage;
+use App\ConfirmPayment;
 use Auth;
 use Session;
 use DB;
 use PDF;
 use Mail;
 // use App\Mail\Order\OrderComplete;
-
-
 use App\Mail\Order\OrderStart;
 use App\Mail\Order\OrderApprovedAdmin;
 use App\Mail\Order\OrderSold;
@@ -38,7 +37,7 @@ class OrderController extends Controller
                     ->orderBy('code', 'desc')
                     ->join('order_details', 'orders.id', '=', 'order_details.order_id')
                     ->where('order_details.seller_id', Auth::user()->id)
-                    ->select('orders.id','approved')
+                    ->select('orders.id','status_order')
                     ->distinct()
                     ->paginate(9);
 
@@ -70,7 +69,7 @@ class OrderController extends Controller
         $sellers['email'] = $seller->email;
         $sellers['code'] = $order->code;
         if($order != null){
-            $order->approved = 1;
+            $order->status_order = 1;
             $order->updated_at = time();
             $order->save();
             Mail::to($user->email)->send(new OrderApprovedAdmin($users));
@@ -92,7 +91,7 @@ class OrderController extends Controller
         $users['code'] = $order->code;
         $users['alasan'] = $request->alasan;
         if($order != null){
-            $order->approved = 0;
+            $order->status_order = 0;
             $order->updated_at = time();
             $order->save();
             Mail::to($user->email)->send(new OrderDisapprovedAdmin($users));
@@ -146,6 +145,7 @@ class OrderController extends Controller
                 'periode' => $q->variation,
                 'qty' => $q->quantity
             ]);
+            $users['id'] = decrypt($id);
             $users['code'] = $q->code;
             $users['shipping_address'] = $q->shipping_address;
             $users['tax'] = $q->tax;
@@ -162,7 +162,7 @@ class OrderController extends Controller
         $users['product'] = $product;
         $order = Order::findOrFail(decrypt($id));
         if($order != null){
-            $order->approved = 2;
+            $order->status_order = 2;
             $order->updated_at = time();
             $order->save();
             Mail::to($users['buyer_email'])->send(new OrderApprovedSeller($users));
@@ -182,7 +182,7 @@ class OrderController extends Controller
         $users['email'] = $user->email;
         $users['code'] = $order->code;
         if($order != null){
-            $order->approved = 0;
+            $order->status_order = 3;
             $order->updated_at = time();
             $order->save();
             Mail::to($user->email)->send(new OrderDisapprovedSeller($users));
@@ -223,6 +223,78 @@ class OrderController extends Controller
         return view('sales.index', compact('orders'));
     }
 
+
+    public function confirm_payment($id)
+    {
+        $order_id = decrypt($id);
+        $order = DB::table('orders as o')
+                    ->join('order_details as od', 'o.id', '=', 'od.order_id')
+                    ->join('users as u', 'o.user_id', '=', 'u.id')
+                    ->join('products as p', 'od.product_id', '=', 'p.id')
+                    ->select([
+                        'o.code',
+                        'o.status_order',
+                        'o.status_confirm',
+                        'u.name as buyer_name',
+                        'od.variation',
+                        'od.quantity',
+                        'od.price',
+                        'od.start_date',
+                        'od.end_date',
+                        'p.name'
+                    ])
+                    ->where('o.id',$order_id)->get();
+        return view('frontend.confirm_payment', compact('order_id', 'order'));
+    }
+
+    public function insert_confirm_payment(Request $request)
+    {
+        $order = Order::where('id', $request->order_id)->first();
+        if ($order != null) {
+            $order->status_confirm = 1;
+            $order->updated_at = time();
+            $order->save();
+        }
+        $confirm_payment = New ConfirmPayment;
+        if ($request->all() != null) {
+            $confirm_payment->order_id = $request->order_id;
+            $confirm_payment->no_order = $request->no_order;
+            $confirm_payment->nama = $request->nama;
+            $confirm_payment->nama_bank = $request->nama_bank;
+            $confirm_payment->no_rek = $request->no_rek;
+            $confirm_payment->bukti = $request->bukti->store('uploads/bukti_transfer');
+            $confirm_payment->read = 0;
+            $confirm_payment->save();
+            flash('Order confirmed')->success();
+        }else{
+            flash('Something went wrong')->error();
+        }
+        return redirect('purchase_history');
+    }
+
+    public function show_payment($id)
+    {
+        $cp = ConfirmPayment::where('order_id', decrypt($id))->first();
+        if ($cp != null) {
+            $cp->read = 1;
+            $cp->updated_at = time();
+            $cp->save();
+        }
+        $query = DB::table('confirm_payments as cp')
+                    ->join('orders as o', 'o.id', '=', 'cp.order_id')
+                    ->where('cp.order_id',decrypt($id))
+                    ->select([
+                        'cp.no_order',
+                        'cp.nama',
+                        'cp.nama_bank',
+                        'cp.no_rek',
+                        'cp.bukti',
+                        'o.grand_total'
+                    ])->get();
+        
+        return view('confirm_payment.show_payment', compact('query'));
+    }
+
     /**
      * Display a single sale to admin.
      *
@@ -252,7 +324,6 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
-
         $cart = [];
         $data = [];
         foreach (Session::get('cart') as $sc) {

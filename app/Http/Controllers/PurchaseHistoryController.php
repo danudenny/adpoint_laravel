@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Order;
 use App\OrderDetail;
 use Auth;
+use DB;
 
 class PurchaseHistoryController extends Controller
 {
@@ -24,6 +25,27 @@ class PurchaseHistoryController extends Controller
     {
         $order = Order::findOrFail($request->order_id);
         return view('frontend.partials.order_details_customer', compact('order'));
+    }
+
+    public function my_order($id)
+    {
+        $order_id = decrypt($id);
+        $order = DB::table('orders as o')
+                    ->join('order_details as od', 'o.id', '=', 'od.order_id')
+                    ->join('products as p', 'od.product_id', '=', 'p.id')
+                    ->select([
+                        'o.code',
+                        'o.status_order',
+                        'od.variation',
+                        'od.quantity',
+                        'od.price',
+                        'od.start_date',
+                        'od.end_date',
+                        'p.name'
+                    ])
+                    ->where('o.id',$order_id)->get();
+        // dd($order);
+        return view('frontend.my_order_customer', compact('order_id', 'order'));
     }
 
     /**

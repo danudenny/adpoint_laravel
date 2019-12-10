@@ -53,7 +53,7 @@
                                                 @php
                                                     $order = \App\Order::find($order_id->id);
                                                 @endphp
-                                                @if($order != null && $order->approved != 0)
+                                                @if($order != null && $order->status_order != 0)
                                                     <tr>
                                                         <td>
                                                             {{ $key+1 }}
@@ -75,10 +75,19 @@
                                                             {{ single_price($order->orderDetails->where('seller_id', Auth::user()->id)->sum('price')) }}
                                                         </td>
                                                         <td>
-                                                            @php
-                                                                $status = $order->orderDetails->first()->delivery_status;
-                                                            @endphp
-                                                            {{ ucfirst(str_replace('_', ' ', $status)) }}
+                                                            @if ($order->status_order == 0)
+                                                                <span class="badge badge-warning">Disapproved</span>
+                                                            @elseif ($order->status_order == 1)
+                                                                <span class="badge badge-secondary">Reviewed</span>
+                                                            @elseif ($order->status_order == 2)
+                                                                <span class="badge badge-primary">Approved</span>
+                                                            @elseif ($order->status_order == 3)
+                                                                <span class="badge badge-warning">Disapproved</span>
+                                                            @elseif ($order->status_order == 4)
+                                                                <span class="badge badge-success">Complete</span>
+                                                            @elseif ($order->status_order == 5)
+                                                                <span class="badge badge-danger">Cancelled</span>
+                                                            @endif
                                                         </td>
                                                         <td>
                                                             <span class="badge badge--2 mr-4">
@@ -96,8 +105,11 @@
                                                                 </button>
 
                                                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="">
+                                                                    @if ($order->status_order == 1)
+                                                                        <a href="{{ route('approve.by.seller', encrypt($order->id)) }}" class="dropdown-item">Approve</a>
+                                                                        <a href="{{ route('disapprove.by.seller', encrypt($order->id)) }}" class="dropdown-item">Disapprove</a>
+                                                                    @endif
                                                                     <button onclick="show_order_details({{ $order->id }})" class="dropdown-item">{{__('Order Details')}}</button>
-                                                                    <a href="{{ route('seller.invoice.download', $order->id) }}" class="dropdown-item">{{__('Download Invoice')}}</a>
                                                                 </div>
                                                             </div>
                                                         </td>

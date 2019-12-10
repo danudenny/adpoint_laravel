@@ -7,7 +7,7 @@
             <tr>
                 <td class="content-cell">
                     <div class="invoice-box">
-                        <p>Dear {{$user['buyer_name']}},<br> Kami sedang mereview Order Anda dengan rincian sebagai berikut. Jika order ini telah disetujui makan kami akan mengirimkan email untuk intruksi transfer. Terimakasih</p>
+                        <p>Dear {{$user['buyer_name']}},<br> Terima kasih untuk order anda dengan rincian sebagai berikut. Mohon segera melakukan pembayaran.</p>
                         <table cellpadding="0" cellspacing="0">
                             <tr>
                                 <td colspan="4">
@@ -74,6 +74,10 @@
                         <p>
                             Mandiri<br> Cabang Ampera<br> PT. Adpoint Media Online<br> 585-530-8301
                         </p>
+                        <p>Jika sudah melakukan pembayaran, segera lakukan konfirmasi pembayaran</p>
+                        <div class="center">
+                            <a href="{{ route('confirm.payment', encrypt($user['id'])) }}" class="button button--blue">Konfirmasi Pembayaran</a>
+                        </div>
                         <p>Terimakasih</p>
                         <p>Regards,<br>Adpoint</p>
                     </div>

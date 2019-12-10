@@ -66,10 +66,18 @@
                             </span>
                         </td>
                         <td>
-                            @if ($order->approved == 0)
-                                <span class="badge badge-danger">Pending</span>
-                            @else 
-                                <span class="badge badge-success">Complete</span>
+                            @if ($order->status_order == 0)
+                                <span class="badge badge-warning">Disapproved</span>
+                            @elseif($order->status_order == 1)
+                                <span class="badge badge-secondary">Reviewed</span>
+                            @elseif($order->status_order == 2)
+                                <span class="badge badge-primary">Approved</span>
+                            @elseif($order->status_order == 3)
+                                <span class="badge badge-warning">Disapproved</span>
+                            @elseif($order->status_order == 4)
+                                <span class="badge badge-success">Completed</span>
+                            @elseif($order->status_order == 4)
+                                <span class="badge badge-danger">Completed</span>
                             @endif
                         </td>
                         <td>
@@ -78,9 +86,11 @@
                                     {{__('Actions')}} <i class="dropdown-caret"></i>
                                 </button>
                                 <ul class="dropdown-menu dropdown-menu-right">
-                                    @if ($order->approved != 1)
+                                    @if ($order->status_order == 0)
                                         <li><a href="{{ route('approve.by.admin', encrypt($order->id)) }}">{{__('Approve')}}</a></li>
                                         <li><a style="cursor: pointer;" onclick="disapprove_by_admin({{$order->id}})">{{__('Disapprove')}}</a></li>
+                                    @elseif($order->status_order == 2)
+                                        <li><a href="{{ route('show.payment', encrypt($order->id)) }}">{{__('Show Payment')}}</a></li>
                                     @endif
                                     <li><a style="cursor: pointer;" onclick="confirm_modal('{{route('orders.destroy', $order->id)}}');">{{__('Delete')}}</a></li>
                                 </ul>
