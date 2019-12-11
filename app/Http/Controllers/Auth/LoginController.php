@@ -110,7 +110,7 @@ class LoginController extends Controller
             }else if(session('link') != null){
                 return redirect(session('link'));
             }else{
-                if (auth()->user()->user_type == 'customer' && auth()->user()->verified == 1) {
+                if ((auth()->user()->user_type == 'customer' || auth()->user()->user_type == 'seller') && auth()->user()->verified == 1) {
                     flash(__('Your logged!'))->success();
                     return redirect()->route('dashboard');
                 }

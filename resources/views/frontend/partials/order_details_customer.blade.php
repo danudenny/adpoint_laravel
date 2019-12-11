@@ -12,19 +12,19 @@
 <div class="modal-body gry-bg px-3 pt-0">
     <div class="pt-4">
         <ul class="process-steps clearfix">
-            <li @if($status == 'pending') class="active" @else class="done" @endif>
+            <li @if($order->status_order == 0) class="active" @else class="done" @endif>
                 <div class="icon">1</div>
                 <div class="title">{{__('Order placed')}}</div>
             </li>
-            <li @if($status == 'on_review') class="active" @elseif($status == 'on_delivery' || $status == 'delivered') class="done" @endif>
+            <li @if($order->status_order == 1) class="active" @elseif($order->status_order == 2 || $order->status_order == 4) class="done" @endif>
                 <div class="icon">2</div>
                 <div class="title">{{__('On review')}}</div>
             </li>
-            <li @if($status == 'on_delivery') class="active" @elseif($status == 'delivered') class="done" @endif>
+            <li @if($order->status_order == 2) class="active" @elseif($order->status_order == 4) class="done" @endif>
                 <div class="icon">3</div>
-                <div class="title">{{__('Aired')}}</div>
+                <div class="title">{{__('Approved')}}</div>
             </li>
-            <li @if($status == 'delivered') class="done" @endif>
+            <li @if($order->status_order == 4) class="done" @endif>
                 <div class="icon">4</div>
                 <div class="title">{{__('Completed')}}</div>
             </li>
@@ -66,7 +66,21 @@
                         </tr>
                         <tr>
                             <td class="w-50 strong-600">{{__('Order status')}}:</td>
-                            <td>{{ ucfirst(str_replace('_', ' ', $status)) }}</td>
+                            <td>
+                                @if ($order->status_order == 0)
+                                    <span class="badge badge-warning">Disapproved</span>
+                                @elseif($order->status_order == 1)
+                                    <span class="badge badge-secondary">Reviewed</span>
+                                @elseif($order->status_order == 2)
+                                    <span class="badge badge-primary">Approved</span>
+                                @elseif($order->status_order == 3)
+                                    <span class="badge badge-warning">Disapproved</span>
+                                @elseif($order->status_order == 4)
+                                    <span class="badge badge-success">Completed</span>
+                                @elseif($order->status_order == 4)
+                                    <span class="badge badge-danger">Completed</span>
+                                @endif
+                            </td>
                         </tr>
                         <tr>
                             <td class="w-50 strong-600">{{__('Total order amount')}}:</td>

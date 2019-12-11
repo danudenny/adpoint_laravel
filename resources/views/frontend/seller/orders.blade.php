@@ -31,29 +31,29 @@
                             </div>
                         </div>
 
-                        @if (count($orders) > 0)
-                            <!-- Order history table -->
-                            <div class="card no-border mt-4">
-                                <div>
-                                    <table class="table table-sm table-hover table-responsive-md">
-                                        <thead>
-                                            <tr>
-                                                <th>#</th>
-                                                <th>{{__('Order Number')}}</th>
-                                                <th>{{__('Num. of Media')}}</th>
-                                                <th>{{__('Customer')}}</th>
-                                                <th>{{__('Amount')}}</th>
-                                                <th>{{__('Order Status')}}</th>
-                                                <th>{{__('Payment Status')}}</th>
-                                                <th>{{__('Options')}}</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
+                        <!-- Order history table -->
+                        <div class="card no-border mt-4">
+                            <div>
+                                <table class="table table-sm table-hover table-responsive-md">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>{{__('Order Number')}}</th>
+                                            <th>{{__('Num. of Media')}}</th>
+                                            <th>{{__('Customer')}}</th>
+                                            <th>{{__('Amount')}}</th>
+                                            <th>{{__('Order Status')}}</th>
+                                            <th>{{__('Payment Status')}}</th>
+                                            <th>{{__('Options')}}</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @if (count($orders) > 0)
                                             @foreach ($orders as $key => $order_id)
                                                 @php
                                                     $order = \App\Order::find($order_id->id);
                                                 @endphp
-                                                @if($order != null)
+                                                @if($order != null && $order->status_order != 0)
                                                     <tr>
                                                         <td>
                                                             {{ $key+1 }}
@@ -75,10 +75,19 @@
                                                             {{ single_price($order->orderDetails->where('seller_id', Auth::user()->id)->sum('price')) }}
                                                         </td>
                                                         <td>
-                                                            @php
-                                                                $status = $order->orderDetails->first()->delivery_status;
-                                                            @endphp
-                                                            {{ ucfirst(str_replace('_', ' ', $status)) }}
+                                                            @if ($order->status_order == 0)
+                                                                <span class="badge badge-warning">Disapproved</span>
+                                                            @elseif ($order->status_order == 1)
+                                                                <span class="badge badge-secondary">Reviewed</span>
+                                                            @elseif ($order->status_order == 2)
+                                                                <span class="badge badge-primary">Approved</span>
+                                                            @elseif ($order->status_order == 3)
+                                                                <span class="badge badge-warning">Disapproved</span>
+                                                            @elseif ($order->status_order == 4)
+                                                                <span class="badge badge-success">Complete</span>
+                                                            @elseif ($order->status_order == 5)
+                                                                <span class="badge badge-danger">Cancelled</span>
+                                                            @endif
                                                         </td>
                                                         <td>
                                                             <span class="badge badge--2 mr-4">
@@ -96,20 +105,24 @@
                                                                 </button>
 
                                                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="">
+                                                                    @if ($order->status_order == 1)
+                                                                        <a href="{{ route('approve.by.seller', encrypt($order->id)) }}" class="dropdown-item">Approve</a>
+                                                                        <a href="{{ route('disapprove.by.seller', encrypt($order->id)) }}" class="dropdown-item">Disapprove</a>
+                                                                    @endif
                                                                     <button onclick="show_order_details({{ $order->id }})" class="dropdown-item">{{__('Order Details')}}</button>
-                                                                    <a href="{{ route('seller.invoice.download', $order->id) }}" class="dropdown-item">{{__('Download Invoice')}}</a>
                                                                 </div>
                                                             </div>
                                                         </td>
                                                     </tr>
                                                 @endif
                                             @endforeach
-                                        </tbody>
-                                    </table>
-                                </div>
+                                        @endif
+                                        
+                                    </tbody>
+                                </table>
                             </div>
-                        @endif
-
+                        </div>
+                    
                         <div class="pagination-wrapper py-4">
                             <ul class="pagination justify-content-end">
                                 {{ $orders->links() }}

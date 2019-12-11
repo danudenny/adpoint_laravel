@@ -67,6 +67,10 @@
                                 ->select('orders.id')
                                 ->distinct()
                                 ->count();
+                    $confirm_payment = DB::table('confirm_payments')
+                                ->where('read', 0)
+                                ->get();
+                    // dd($confirm_payment);
                     $sellers = \App\Seller::where('verification_status', 0)->where('verification_info', '!=', null)->count();
                 @endphp
 
@@ -95,8 +99,8 @@
                 <li class="dropdown">
                     <a href="#" data-toggle="dropdown" class="dropdown-toggle" aria-expanded="true">
                         <i class="demo-pli-bell"></i>
-                        @if($orders > 0 || $sellers > 0)
-                            <span class="badge badge-header badge-danger"></span>
+                        @if($orders > 0 || $sellers > 0 || count($confirm_payment) > 0)
+                            <span class="badge badge-header badge-danger">{{ count($confirm_payment) }}</span>
                         @endif
                     </a>
 
@@ -123,6 +127,17 @@
                                                 </div>
                                             </a>
                                         </li>
+                                    @endif
+                                    @if (count($confirm_payment) > 0)
+                                        @foreach ($confirm_payment as $cp)
+                                            <li>
+                                                <a class="media" href="{{ route('show.payment', encrypt($cp->order_id)) }}">
+                                                    <div class="media-body">
+                                                        <p class="mar-no text-nowrap text-main text-semibold">New payment {{ $cp->no_order }}</p>
+                                                    </div>
+                                                </a>
+                                            </li>
+                                        @endforeach
                                     @endif
                                 </ul>
                             </div>

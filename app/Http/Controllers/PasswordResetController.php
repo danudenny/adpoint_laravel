@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\User;
-use App\Mail\ResetUser;
+use App\Mail\User\ResetUser;
 use Illuminate\Support\Facades\Hash;
 use Mail;
 

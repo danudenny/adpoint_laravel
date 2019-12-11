@@ -13,45 +13,23 @@
 <div class="modal-body gry-bg px-5 pt-0">
     <div class="pt-4">
         <ul class="process-steps clearfix">
-            <li @if($status == 'pending') class="active" @else class="done" @endif>
+            <li @if($order->status_order == 0) class="active" @else class="done" @endif>
                 <div class="icon">1</div>
                 <div class="title">{{__('Order placed')}}</div>
             </li>
-            <li @if($status == 'on_review') class="active" @elseif($status == 'on_delivery' || $status == 'delivered') class="done" @endif>
+            <li @if($order->status_order == 1) class="active" @elseif($order->status_order == 2 || $order->status_order == 4) class="done" @endif>
                 <div class="icon">2</div>
                 <div class="title">{{__('On review')}}</div>
             </li>
-            <li @if($status == 'on_delivery') class="active" @elseif($status == 'delivered') class="done" @endif>
+            <li @if($order->status_order == 2) class="active" @elseif($order->status_order == 4) class="done" @endif>
                 <div class="icon">3</div>
-                <div class="title">{{__('Aired')}}</div>
+                <div class="title">{{__('Active')}}</div>
             </li>
-            <li @if($status == 'delivered') class="done" @endif>
+            <li @if($order->status_order == 4) class="done" @endif>
                 <div class="icon">4</div>
                 <div class="title">{{__('Completed')}}</div>
             </li>
         </ul>
-    </div>
-    <div class="row mt-5">
-        <div class="offset-lg-2 col-lg-4 col-sm-6">
-            <div class="form-inline">
-                <select class="form-control selectpicker form-control-sm"  data-minimum-results-for-search="Infinity" id="update_payment_status">
-                    <option value="unpaid" @if ($payment_status == 'unpaid') selected @endif>{{__('Unpaid')}}</option>
-                    <option value="paid" @if ($payment_status == 'paid') selected @endif>{{__('Paid')}}</option>
-                </select>
-                <label class="my-2" >{{__('Payment Status')}}</label>
-            </div>
-        </div>
-        <div class="col-lg-4 col-sm-6">
-            <div class="form-inline">
-                <select class="form-control selectpicker form-control-sm"  data-minimum-results-for-search="Infinity" id="update_delivery_status">
-                    <option value="pending" @if ($status == 'pending') selected @endif>{{__('Pending')}}</option>
-                    <option value="on_review" @if ($status == 'on_review') selected @endif>{{__('On review')}}</option>
-                    <option value="on_delivery" @if ($status == 'on_delivery') selected @endif>{{__('Aired')}}</option>
-                    <option value="delivered" @if ($status == 'delivered') selected @endif>{{__('Completed')}}</option>
-                </select>
-                <label class="my-2" >{{__('Media Order Status')}}</label>
-            </div>
-        </div>
     </div>
     <div class="card mt-3">
         <div class="card-header py-2 px-3 ">
@@ -89,7 +67,21 @@
                         </tr>
                         <tr>
                             <td class="w-50 strong-600">{{__('Order status')}}:</td>
-                            <td><span class="label label-success">{{ $status }}</span></td>
+                            <td>
+                                @if ($order->status_order == 0)
+                                    <span class="badge badge-warning">Disapproved</span>
+                                @elseif($order->status_order == 1)
+                                    <span class="badge badge-secondary">Reviewed</span>
+                                @elseif($order->status_order == 2)
+                                    <span class="badge badge-primary">Approved</span>
+                                @elseif($order->status_order == 3)
+                                    <span class="badge badge-warning">Disapproved</span>
+                                @elseif($order->status_order == 4)
+                                    <span class="badge badge-success">Completed</span>
+                                @elseif($order->status_order == 4)
+                                    <span class="badge badge-danger">Completed</span>
+                                @endif
+                            </td>
                         </tr>
                         <tr>
                             <td class="w-50 strong-600">{{__('Total order amount')}}:</td>

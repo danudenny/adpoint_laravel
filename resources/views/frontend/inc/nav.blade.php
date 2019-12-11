@@ -26,7 +26,7 @@
                             </ul>
                         </li>
 
-                        <li class="dropdown" id="currency-change">
+                        {{-- <li class="dropdown" id="currency-change">
                             @php
                                 if(Session::has('currency_code')){
                                     $currency_code = Session::get('currency_code', $code);
@@ -45,7 +45,7 @@
                                     </li>
                                 @endforeach
                             </ul>
-                        </li>
+                        </li> --}}
                     </ul>
                 </div>
 

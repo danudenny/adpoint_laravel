@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Mail;
+namespace App\Mail\User;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class RejectUser extends Mailable
+class AcceptUser extends Mailable
 {
     use Queueable, SerializesModels;
     
@@ -20,7 +20,7 @@ class RejectUser extends Mailable
 
     public function build()
     {
-        return $this->view('emails.user_reject')
-            ->subject('Akun anda tidak disetujui');
+        return $this->view('emails.users.user_accept')
+            ->subject('Akun anda telah disetujui');
     }
 }

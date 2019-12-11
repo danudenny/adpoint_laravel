@@ -159,11 +159,20 @@
                         @endif --}}
 
                         @if(Auth::user()->user_type == 'admin' || in_array('4', json_decode(Auth::user()->staff->role->permissions)))
-                        <li class="{{ areActiveRoutes(['sales.index', 'sales.show'])}}">
-                            <a class="nav-link" href="{{ route('sales.index') }}">
-                                <i class="fa fa-money"></i>
-                                <span class="menu-title">{{__('Total sales')}}</span>
+                        <li>
+                            <a href="#">
+                                <i class="fa fa-shopping-basket"></i>
+                                <span class="menu-title">{{__('Orders')}}</span>
+                                <i class="arrow"></i>
                             </a>
+                            <ul class="collapse">
+                                <li class="{{ areActiveRoutes(['orders.list.orders'])}}">
+                                    <a class="nav-link" href="{{ route('orders.list.orders') }}">{{__('Order List')}}</a>
+                                </li>
+                                <li class="{{ areActiveRoutes(['sales.index', 'sales.show'])}}">
+                                    <a class="nav-link" href="{{ route('sales.index') }}">{{__('Total sales')}}</a>
+                                </li>
+                            </ul>
                         </li>
                         @endif
 

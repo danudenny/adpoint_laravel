@@ -7,8 +7,8 @@ use App\Customer;
 use App\User;
 use App\Order;
 use Mail;
-use App\Mail\AcceptUser;
-use App\Mail\RejectUser;
+use App\Mail\User\AcceptUser;
+use App\Mail\User\RejectUser;
 
 class CustomerController extends Controller
 {

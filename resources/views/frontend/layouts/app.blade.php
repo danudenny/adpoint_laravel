@@ -54,6 +54,10 @@
 <link rel="stylesheet" href="{{ asset('frontend/css/bootstrap.min.css') }}" type="text/css">
 <link type="text/css" href="{{ asset('frontend/css/select2.min.css') }}" rel="stylesheet">
 <link type="text/css" href="{{ asset('frontend/css/jquery.desoslide.min.css') }}" rel="stylesheet">
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="{{ asset('frontend/css/bootstrap-select.min.css') }}">
+
+
 
 <!-- Icons -->
 <link rel="stylesheet" href="{{ asset('frontend/css/font-awesome.min.css') }}" type="text/css">
@@ -103,8 +107,8 @@
 <link type="text/css" href="{{ asset('frontend/css/custom-style.css') }}" rel="stylesheet">
 
 @if(\App\Language::where('code', Session::get('locale', Config::get('app.locale')))->first()->rtl == 1)
-     <!-- RTL -->
-    <link type="text/css" href="{{ asset('frontend/css/active.rtl.css') }}" rel="stylesheet">
+<!-- RTL -->
+<link type="text/css" href="{{ asset('frontend/css/active.rtl.css') }}" rel="stylesheet">
 @endif
 
 <!-- Facebook Chat style -->
@@ -116,12 +120,13 @@
 <!-- jQuery -->
 <script src="{{ asset('frontend/js/vendor/jquery.min.js') }}"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script src="{{ asset('frontend/js/bootstrap-select.min.js') }}"></script>
 
 @if (\App\BusinessSetting::where('type', 'google_analytics')->first()->value == 1)
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-133955404-1"></script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-133955404-1"></script>
 
-    <script>
+<script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
@@ -130,26 +135,27 @@
 @endif
 {{-- Datepicker css --}}
 <link href="{{ asset('frontend/css/gijgo.min.css')}}" rel="stylesheet">
+<!-- Latest compiled and minified JavaScript -->
 
 </head>
 <body>
-
-
-<!-- MAIN WRAPPER -->
-<div class="body-wrap shop-default shop-cards shop-tech gry-bg">
-
-    <!-- Header -->
-    @include('frontend.inc.nav')
-
-    @yield('content')
-
-    @include('frontend.inc.footer')
-
-    @include('frontend.partials.modal')
-
-    <div class="modal fade" id="addToCart" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-zoom product-modal" id="modal-size" role="document">
-            <div class="modal-content position-relative">
+    
+    
+    <!-- MAIN WRAPPER -->
+    <div class="body-wrap shop-default shop-cards shop-tech gry-bg">
+        
+        <!-- Header -->
+        @include('frontend.inc.nav')
+        
+        @yield('content')
+        
+        @include('frontend.inc.footer')
+        
+        @include('frontend.partials.modal')
+        
+        <div class="modal fade" id="addToCart" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-zoom product-modal" id="modal-size" role="document">
+                <div class="modal-content position-relative">
                 <div class="c-preloader">
                     <i class="fa fa-spin fa-spinner"></i>
                 </div>

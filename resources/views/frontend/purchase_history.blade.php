@@ -45,7 +45,7 @@
                                                 <th>{{__('Order No.')}}</th>
                                                 <th>{{__('Date')}}</th>
                                                 <th>{{__('Amount')}}</th>
-                                                <th>{{__('Delivery Status')}}</th>
+                                                <th>{{__('Order Status')}}</th>
                                                 <th>{{__('Payment Status')}}</th>
                                                 <th>{{__('Options')}}</th>
                                             </tr>
@@ -55,16 +55,26 @@
                                                 <tr>
                                                     <td>
                                                         <a href="#{{ $order->code }}" onclick="show_purchase_history_details({{ $order->id }})">{{ $order->code }}</a>
+                                                        {{-- <a href="{{ route('my.order', encrypt($order->id)) }}">{{ $order->code }}</a> --}}
                                                     </td>
-                                                    <td>{{ date('d-m-Y', $order->date) }}</td>
+                                                    <td>{{ date('d M Y', $order->date) }}</td>
                                                     <td>
                                                         {{ single_price($order->grand_total) }}
                                                     </td>
                                                     <td>
-                                                        @php
-                                                            $status = $order->orderDetails->first()->delivery_status;
-                                                        @endphp
-                                                        {{ ucfirst(str_replace('_', ' ', $status)) }}
+                                                        @if ($order->status_order == 0)
+                                                            <span class="badge badge-warning">Disapproved</span>
+                                                        @elseif ($order->status_order == 1)
+                                                            <span class="badge badge-secondary">Reviewed</span>
+                                                        @elseif ($order->status_order == 2)
+                                                            <span class="badge badge-primary">Approved</span>
+                                                        @elseif ($order->status_order == 3)
+                                                            <span class="badge badge-warning">Disapproved</span>
+                                                        @elseif ($order->status_order == 4)
+                                                            <span class="badge badge-success">Complete</span>
+                                                        @elseif ($order->status_order == 5)
+                                                            <span class="badge badge-danger">Cancelled</span>
+                                                        @endif
                                                     </td>
                                                     <td>
                                                         <span class="badge badge--2 mr-4">
@@ -83,7 +93,6 @@
 
                                                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="">
                                                                 <button onclick="show_purchase_history_details({{ $order->id }})" class="dropdown-item">{{__('Order Details')}}</button>
-                                                                <a href="{{ route('customer.invoice.download', $order->id) }}" class="dropdown-item">{{__('Download Invoice')}}</a>
                                                             </div>
                                                         </div>
                                                     </td>
