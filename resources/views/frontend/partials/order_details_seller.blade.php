@@ -84,13 +84,19 @@
                             </td>
                         </tr>
                         <tr>
+                            <td class="w-50 strong-600">{{__('Payment status')}}:</td>
+                            <td>
+                                @if ($order->payment_status == 'unpaid')
+                                    <span class="badge badge-danger">Unpaid</span>
+                                @else 
+                                    <span class="badge badge-success">Paid</span>
+                                @endif
+                            </td>
+                        </tr>
+                        <tr>
                             <td class="w-50 strong-600">{{__('Total order amount')}}:</td>
                             <td>Rp {{ number_format($order->orderDetails->where('seller_id', Auth::user()->id)->sum('price') + $order->orderDetails->where('seller_id', Auth::user()->id)->sum('tax')) }}</td>
                         </tr>
-                        <!-- <tr>
-                            <td class="w-50 strong-600">{{__('Shipping method')}}:</td>
-                            <td>{{__('Flat shipping rate')}}</td>
-                        </tr> -->
                         <tr>
                             <td class="w-50 strong-600">{{__('Payment method')}}:</td>
                             <td>{{ ucfirst(str_replace('_', ' ', $order->payment_type)) }}</td>

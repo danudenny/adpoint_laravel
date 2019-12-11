@@ -22,7 +22,7 @@
             </li>
             <li @if($order->status_order == 2) class="active" @elseif($order->status_order == 4) class="done" @endif>
                 <div class="icon">3</div>
-                <div class="title">{{__('Approved')}}</div>
+                <div class="title">{{__('Active')}}</div>
             </li>
             <li @if($order->status_order == 4) class="done" @endif>
                 <div class="icon">4</div>
@@ -79,6 +79,16 @@
                                     <span class="badge badge-success">Completed</span>
                                 @elseif($order->status_order == 4)
                                     <span class="badge badge-danger">Completed</span>
+                                @endif
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="w-50 strong-600">{{__('Payment status')}}:</td>
+                            <td>
+                                @if ($order->payment_status == 'unpaid')
+                                    <span class="badge badge-danger">Unpaid</span>
+                                @else 
+                                    <span class="badge badge-success">Paid</span>
                                 @endif
                             </td>
                         </tr>

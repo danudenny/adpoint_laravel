@@ -17,7 +17,6 @@
                     <th>Num. of Products</th>
                     <th>Customer</th>
                     <th>Amount</th>
-                    <th>Delivery Status</th>
                     <th>Payment Status</th>
                     <th>Order Status</th>
                     <th width="10%">{{__('options')}}</th>
@@ -44,17 +43,6 @@
                         </td>
                         <td>
                             {{ single_price($order->grand_total) }}
-                        </td>
-                        <td>
-                            @php
-                                $status = 'Delivered';
-                                foreach ($order->orderDetails as $key => $orderDetail) {
-                                    if($orderDetail->delivery_status != 'delivered'){
-                                        $status = 'Pending';
-                                    }
-                                }
-                            @endphp
-                            {{ $status }}
                         </td>
                         <td>
                             <span class="badge badge--2 mr-4">

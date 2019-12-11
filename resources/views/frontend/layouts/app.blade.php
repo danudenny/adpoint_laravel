@@ -57,8 +57,6 @@
 <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet" href="{{ asset('frontend/css/bootstrap-select.min.css') }}">
 
-
-
 <!-- Icons -->
 <link rel="stylesheet" href="{{ asset('frontend/css/font-awesome.min.css') }}" type="text/css">
 <link rel="stylesheet" href="{{ asset('frontend/css/line-awesome.min.css') }}" type="text/css">
@@ -71,6 +69,7 @@
 <link type="text/css" href="{{ asset('frontend/css/jquery.share.css') }}" rel="stylesheet">
 <link rel="stylesheet" href="//cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css">
 <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap.min.css">
+
 
 <style>
     .map {

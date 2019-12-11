@@ -10,11 +10,13 @@ use App\Color;
 use App\OrderDetail;
 use App\CouponUsage;
 use App\ConfirmPayment;
+use App\Evidence;
 use Auth;
 use Session;
 use DB;
 use PDF;
 use Mail;
+use File;
 // use App\Mail\Order\OrderComplete;
 use App\Mail\Order\OrderStart;
 use App\Mail\Order\OrderApprovedAdmin;
@@ -22,6 +24,8 @@ use App\Mail\Order\OrderSold;
 use App\Mail\Order\OrderDisapprovedAdmin;
 use App\Mail\Order\OrderApprovedSeller;
 use App\Mail\Order\OrderDisapprovedSeller;
+use App\Mail\Order\OrderNotifPaymentBuyer;
+use App\Mail\Order\OrderNotifPaymentSeller;
 
 
 class OrderController extends Controller
@@ -289,12 +293,103 @@ class OrderController extends Controller
                         'cp.nama_bank',
                         'cp.no_rek',
                         'cp.bukti',
-                        'o.grand_total'
+                        'o.grand_total',
+                        'o.payment_status'
                     ])->get();
-        
-        return view('confirm_payment.show_payment', compact('query'));
+        $order_id = decrypt($id);
+        return view('confirm_payment.show_payment', compact('query', 'order_id'));
     }
 
+    public function change_to_paid($id)
+    {
+        $order = Order::where('id',decrypt($id))->first();
+        $query = DB::table('orders as o')
+            ->join('order_details as od', 'o.id', '=', 'od.order_id')
+            ->join('users as b', 'o.user_id', '=', 'b.id')
+            ->join('users as s', 'od.seller_id', '=', 's.id')
+            ->select(
+                [
+                    'o.code',
+                    'o.grand_total',
+                    'b.name as buyer_name',
+                    'b.email as buyer_email',
+                    's.name as seller_name',
+                    's.email as seller_email',
+                ]
+            )
+            ->where('o.id','=',decrypt($id))
+            ->first();
+        $users = [];
+        $users['order_id'] = decrypt($id);
+        $users['code'] = $query->code;
+        $users['grand_total'] = $query->grand_total;
+        $users['buyer_name'] = $query->buyer_name;
+        $users['buyer_email'] = $query->buyer_email;
+        $users['seller_name'] = $query->seller_name;
+        $users['seller_email'] = $query->seller_email;
+
+        if ($order != null) {
+            $order->payment_status = 'paid';
+            $order->updated_at = time();
+            $order->save();
+            Mail::to($users['buyer_email'])->send(new OrderNotifPaymentBuyer($users));
+            Mail::to($users['seller_email'])->send(new OrderNotifPaymentSeller($users));
+            flash('Order Paid')->success();
+        }else{
+            flash('Something went wrong')->error();
+        }
+        return back();
+    }
+
+    public function bukti_tayang($id)
+    {
+        $query = DB::table('orders as o')
+            ->join('order_details as od', 'o.id', '=', 'od.order_id')
+            ->join('products as p', 'od.product_id', '=', 'p.id')
+            ->select(
+                [
+                    'o.id',
+                    'o.code',
+                    'p.name',
+                    'od.product_id'
+                ]
+            )
+            ->where('o.id','=',decrypt($id))
+            ->get();
+        $order_id = decrypt($id);
+        return view('frontend.seller.bukti_tayang', compact('order_id','query'));
+    }
+
+    public function upload_bukti_tayang(Request $request)
+    {
+        $photos = [];
+        $path = public_path().'/uploads/bukti_tayang/' . $request->no_bukti;
+        if (!is_dir($path)) {
+            File::makeDirectory($path, $mode = 0777, true, true);
+        }
+        if($request->hasFile('photos')){
+            foreach ($request->photos as $key => $photo) {
+                $path = $photo->store('uploads/bukti_tayang/'.$request->no_bukti);
+                array_push($photos, $path);
+            }
+        }
+        
+        $evidence = New Evidence;
+        if ($evidence) {
+            $evidence->order_id = $request->order_id;
+            $evidence->no_bukti = $request->no_bukti;
+            $evidence->no_order = $request->no_order;
+            $evidence->img = json_encode($photos);
+            $evidence->status = 1;
+            $evidence->save();
+            flash('Evidences success')->success();
+        }else{
+            flash('Someting Wrong!')->error();
+        }
+
+        return back();
+        
+    }
     /**
      * Display a single sale to admin.
      *
@@ -344,6 +439,7 @@ class OrderController extends Controller
             $order->payment_type = $request->payment_option;
             $order->code = date('Ymd-his');
             $order->date = strtotime('now');
+            $order->status_confirm = 0;
             if ($order->save()) {
                 $subtotal = 0;
                 $tax = 0;
