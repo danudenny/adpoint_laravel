@@ -40,58 +40,76 @@
                                     {{__('General')}}
                                 </div>
                                 <div class="form-box-content p-3">
-                                    <div class="row">
-                                        <div class="col-md-2">
-                                            <label>{{__('Media Category')}} <span class="required-star">*</span></label>
-                                        </div>
-                                        <div class="col-md-10">
-                                            <div class="form-control mb-3 c-pointer" data-toggle="modal" data-target="#categorySelectModal" id="product_category">{{__('Select a category')}}</div>
-                                            <input type="hidden" name="category_id" id="category_id" value="" required>
-                                            <input type="hidden" name="subcategory_id" id="subcategory_id" value="" required>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-2">
-                                            <label>{{__('Media Name')}} <span class="required-star">*</span></label>
-                                        </div>
-                                        <div class="col-md-10">
-                                            <input type="text" id="product_name" class="form-control mb-3" name="name" placeholder="{{__('Product Name')}}" required>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-2">
-                                            <label>{{__('Media Partner')}} <span class="required-star">*</span></label>
-                                        </div>
-                                        <div class="col-md-10">
-                                            <div class="mb-3">
-                                                <select class="form-control mb-3 selectpicker" data-placeholder="Select a media partner" id="brands" name="brand_id" required>
-
-                                                </select>
+                                    <div class="{{ $errors->has('category_id') ? 'has-error' : ''}}">
+                                        <div class="row">
+                                            <div class="col-md-2">
+                                                <label>{{__('Media Category')}} <span class="required-star">*</span></label>
+                                            </div>
+                                            <div class="col-md-10">
+                                                <div class="form-control mb-3 c-pointer" data-toggle="modal" data-target="#categorySelectModal"  id="product_category">{{__('Select a category')}}</div>
+                                                <input type="hidden" name="category_id" id="category_id" value="">
+                                                <input type="hidden" name="subcategory_id" id="subcategory_id" value="">
+                                                <strong class="text-danger">{!! $errors->first('category_id', '<p class="help-block">:message</p>') !!}</strong>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row">
-                                        <div class="col-md-2">
-                                            <label>{{__('Media Tag')}}</label>
-                                        </div>
-                                        <div class="col-md-10">
-                                            <input type="text" class="form-control mb-3 tagsInput" name="tags[]" placeholder="Type & hit enter" data-role="tagsinput">
+                                    <div class="{{ $errors->has('name') ? 'has-error' : ''}}">
+                                        <div class="row">
+                                            <div class="col-md-2">
+                                                <label>{{__('Media Name')}} <span class="required-star">*</span></label>
+                                            </div>
+                                            <div class="col-md-10">
+                                                <input type="text" id="product_name" class="form-control mb-3" value="{{ old('name') }}" name="name" placeholder="{{__('Product Name')}}">
+                                                <strong class="text-danger">{!! $errors->first('name', '<p class="help-block">:message</p>') !!}</strong>
+                                            </div>
                                         </div>
                                     </div>
+                                    
+                                    <div class="{{ $errors->has('brand_id') ? 'has-error' : ''}}">
+                                        <div class="row">
+                                            <div class="col-md-2">
+                                                <label>{{__('Media Partner')}} <span class="required-star">*</span></label>
+                                            </div>
+                                            <div class="col-md-10">
+                                                <div class="mb-3">
+                                                    <select class="form-control mb-3 selectpicker" data-placeholder="Select a media partner" id="brands" name="brand_id">
+    
+                                                    </select>
+                                                </div>
+                                                <strong class="text-danger">{!! $errors->first('brand_id', '<p class="help-block">:message</p>') !!}</strong>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="{{ $errors->has('tags[]') ? 'has-error' : ''}}">
+                                        <div class="row">
+                                            <div class="col-md-2">
+                                                <label>{{__('Media Tag')}}</label>
+                                            </div>
+                                            <div class="col-md-10">
+                                                <input type="text" class="form-control mb-3 tagsInput" name="tags[]" value="{{ old('tags[]') }}" placeholder="Type & hit enter" data-role="tagsinput">
+                                                <strong class="text-danger">{!! $errors->first('tags[]', '<p class="help-block">:message</p>') !!}</strong>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                 </div>
                             </div>
                             <div class="form-box bg-white mt-4">
-                                <div class="form-box-title px-3 py-2">
-                                    {{__('Description')}}
-                                </div>
-                                <div class="form-box-content p-3">
-                                    <div class="row">
-                                        <div class="col-md-2">
-                                            <label>{{__('Description')}}</label>
-                                        </div>
-                                        <div class="col-md-10">
-                                            <div class="mb-3">
-                                                <textarea class="editor" name="description"></textarea>
+                                <div class="{{ $errors->has('description') ? 'has-error' : ''}}">
+                                    <div class="form-box-title px-3 py-2">
+                                        {{__('Description')}}
+                                    </div>
+                                    <div class="form-box-content p-3">
+                                        <div class="row">
+                                            <div class="col-md-2">
+                                                <label>{{__('Description')}}</label>
+                                            </div>
+                                            <div class="col-md-10">
+                                                <div class="mb-3">
+                                                    <textarea class="editor" value="{{ old('description') }}" name="description"></textarea>
+                                                    <strong class="text-danger">{!! $errors->first('description', '<p class="help-block">:message</p>') !!}</strong>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -103,7 +121,7 @@
                                         </div>
                                         <div class="col-md-10">
                                             <div class="mb-3">
-                                                <textarea class="form-control mb-3" name="termin_pembayaran" cols="20" rows="5"></textarea>
+                                                <textarea class="form-control mb-3" value="{{ old('termin_pembayaran') }}" name="termin_pembayaran" cols="20" rows="5"></textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -115,70 +133,85 @@
                                 </div>
                                 <div class="form-box-content p-3">
                                     <div id="product-images">
-                                        <div class="row">
-                                            <div class="col-md-2">
-                                                <label>{{__('Main Images')}} <span class="required-star">*</span></label>
-                                            </div>
-                                            <div class="col-md-10">
-                                                <input type="file" name="photos[]" id="photos-1" class="custom-input-file custom-input-file--4" data-multiple-caption="{count} files selected" accept="image/*" />
-                                                <label for="photos-1" class="mw-100 mb-3">
-                                                    <span></span>
-                                                    <strong>
-                                                        <i class="fa fa-upload"></i>
-                                                        {{__('Choose image')}}
-                                                    </strong>
-                                                </label>
+                                        <div class="{{ $errors->has('photos') ? 'has-error' : ''}}">
+                                            <div class="row">
+                                                <div class="col-md-2">
+                                                    <label>{{__('Main Images')}} <span class="required-star">*</span></label>
+                                                </div>
+                                                <div class="col-md-10">
+                                                    <input type="file" name="photos[]" id="photos-1" class="custom-input-file custom-input-file--4" data-multiple-caption="{count} files selected" accept="image/*" />
+                                                    <label for="photos-1" class="mw-100 mb-3">
+                                                        <span></span>
+                                                        <strong>
+                                                            <i class="fa fa-upload"></i>
+                                                            {{__('Choose image')}}
+                                                        </strong>
+                                                    </label>
+                                                    <strong class="text-danger">{!! $errors->first('photos', '<p class="help-block">:message</p>') !!}</strong>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="text-right">
                                         <button type="button" class="btn btn-info mb-3" onclick="add_more_slider_image()">{{ __('Add More') }}</button>
                                     </div>
-                                    <div class="row">
-                                        <div class="col-md-2">
-                                            <label>{{__('Thumbnail Image')}} <small>(290x300)</small> <span class="required-star">*</span></label>
-                                        </div>
-                                        <div class="col-md-10">
-                                            <input type="file" name="thumbnail_img" id="file-2" class="custom-input-file custom-input-file--4" data-multiple-caption="{count} files selected" accept="image/*" />
-                                            <label for="file-2" class="mw-100 mb-3">
-                                                <span></span>
-                                                <strong>
-                                                    <i class="fa fa-upload"></i>
-                                                    {{__('Choose image')}}
-                                                </strong>
-                                            </label>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-2">
-                                            <label>{{__('Featured')}} <small>(290x300)</small></label>
-                                        </div>
-                                        <div class="col-md-10">
-                                            <input type="file" name="featured_img" id="file-3" class="custom-input-file custom-input-file--4" data-multiple-caption="{count} files selected" accept="image/*" />
-                                            <label for="file-3" class="mw-100 mb-3">
-                                                <span></span>
-                                                <strong>
-                                                    <i class="fa fa-upload"></i>
-                                                    {{__('Choose image')}}
-                                                </strong>
-                                            </label>
+                                    <div class="{{ $errors->has('thumbnail_img') ? 'has-error' : ''}}">
+                                        <div class="row">
+                                            <div class="col-md-2">
+                                                <label>{{__('Thumbnail Image')}} <small>(290x300)</small> <span class="required-star">*</span></label>
+                                            </div>
+                                            <div class="col-md-10">
+                                                <input type="file" name="thumbnail_img" id="file-2" class="custom-input-file custom-input-file--4" data-multiple-caption="{count} files selected" accept="image/*" />
+                                                <label for="file-2" class="mw-100 mb-3">
+                                                    <span></span>
+                                                    <strong>
+                                                        <i class="fa fa-upload"></i>
+                                                        {{__('Choose image')}}
+                                                    </strong>
+                                                </label>
+                                                <strong class="text-danger">{!! $errors->first('thumbnail_img', '<p class="help-block">:message</p>') !!}</strong>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="row">
-                                        <div class="col-md-2">
-                                            <label>{{__('Flash Deal')}} <small>(290x300)</small></label>
-                                        </div>
-                                        <div class="col-md-10">
-                                            <input type="file" name="flash_deal_img" id="file-4" class="custom-input-file custom-input-file--4" data-multiple-caption="{count} files selected" accept="image/*" />
-                                            <label for="file-4" class="mw-100 mb-3">
-                                                <span></span>
-                                                <strong>
-                                                    <i class="fa fa-upload"></i>
-                                                    {{__('Choose image')}}
-                                                </strong>
-                                            </label>
+                                    
+                                    <div class="{{ $errors->has('featured_img') ? 'has-error' : ''}}">
+                                        <div class="row">
+                                            <div class="col-md-2">
+                                                <label>{{__('Featured')}} <small>(290x300)</small></label>
+                                            </div>
+                                            <div class="col-md-10">
+                                                <input type="file" name="featured_img" id="file-3" class="custom-input-file custom-input-file--4" data-multiple-caption="{count} files selected" accept="image/*" />
+                                                <label for="file-3" class="mw-100 mb-3">
+                                                    <span></span>
+                                                    <strong>
+                                                        <i class="fa fa-upload"></i>
+                                                        {{__('Choose image')}}
+                                                    </strong>
+                                                </label>
+                                                <strong class="text-danger">{!! $errors->first('featured_img', '<p class="help-block">:message</p>') !!}</strong>
+                                            </div>
                                         </div>
                                     </div>
+
+                                    <div class="{{ $errors->has('flash_deal_img') ? 'has-error' : ''}}">
+                                        <div class="row">
+                                            <div class="col-md-2">
+                                                <label>{{__('Flash Deal')}} <small>(290x300)</small></label>
+                                            </div>
+                                            <div class="col-md-10">
+                                                <input type="file" name="flash_deal_img" id="file-4" class="custom-input-file custom-input-file--4" data-multiple-caption="{count} files selected" accept="image/*" />
+                                                <label for="file-4" class="mw-100 mb-3">
+                                                    <span></span>
+                                                    <strong>
+                                                        <i class="fa fa-upload"></i>
+                                                        {{__('Choose image')}}
+                                                    </strong>
+                                                </label>
+                                                <strong class="text-danger">{!! $errors->first('flash_deal_img', '<p class="help-block">:message</p>') !!}</strong>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
                                 </div>
                             </div>
                             <div class="form-box bg-white mt-4" hidden>
@@ -208,42 +241,55 @@
                                     </div>
                                 </div>
                             </div>
+                            
                             <div class="form-box bg-white mt-4">
                                     <div class="form-box-title px-3 py-2">
                                         {{__('Meta Tags')}}
                                     </div>
                                     <div class="form-box-content p-3">
-                                        <div class="row">
-                                            <div class="col-md-2">
-                                                <label>{{__('Meta Title')}}</label>
-                                            </div>
-                                            <div class="col-md-10">
-                                                <input type="text" class="form-control mb-3" name="meta_title" placeholder="{{__('Meta Title')}}">
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-2">
-                                                <label>{{__('Description')}}</label>
-                                            </div>
-                                            <div class="col-md-10">
-                                                <textarea name="meta_description" rows="8" class="form-control mb-3" placeholder="{{__('Meta Description')}}"></textarea>
+                                        <div class="{{ $errors->has('meta_title') ? 'has-error' : ''}}">
+                                            <div class="row">
+                                                <div class="col-md-2">
+                                                    <label>{{__('Meta Title')}}</label>
+                                                </div>
+                                                <div class="col-md-10">
+                                                    <input type="text" class="form-control mb-3" name="meta_title" placeholder="{{__('Meta Title')}}">
+                                                    <strong class="text-danger">{!! $errors->first('meta_title', '<p class="help-block">:message</p>') !!}</strong>
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="row">
-                                            <div class="col-md-2">
-                                                <label>{{__('Meta Image')}}</label>
-                                            </div>
-                                            <div class="col-md-10">
-                                                <input type="file" name="meta_img" id="file-5" class="custom-input-file custom-input-file--4" data-multiple-caption="{count} files selected" accept="image/*" />
-                                                <label for="file-5" class="mw-100 mb-3">
-                                                    <span></span>
-                                                    <strong>
-                                                        <i class="fa fa-upload"></i>
-                                                        {{__('Choose image')}}
-                                                    </strong>
-                                                </label>
+                                        
+                                        <div class="{{ $errors->has('meta_description') ? 'has-error' : ''}}">
+                                            <div class="row">
+                                                <div class="col-md-2">
+                                                    <label>{{__('Description')}}</label>
+                                                </div>
+                                                <div class="col-md-10">
+                                                    <textarea name="meta_description" rows="8" class="form-control mb-3" placeholder="{{__('Meta Description')}}"></textarea>
+                                                    <strong class="text-danger">{!! $errors->first('meta_description', '<p class="help-block">:message</p>') !!}</strong>
+                                                </div>
                                             </div>
                                         </div>
+
+                                        <div class="{{ $errors->has('meta_img') ? 'has-error' : ''}}">
+                                            <div class="row">
+                                                <div class="col-md-2">
+                                                    <label>{{__('Meta Image')}}</label>
+                                                </div>
+                                                <div class="col-md-10">
+                                                    <input type="file" name="meta_img" id="file-5" class="custom-input-file custom-input-file--4" data-multiple-caption="{count} files selected" accept="image/*" />
+                                                    <label for="file-5" class="mw-100 mb-3">
+                                                        <span></span>
+                                                        <strong>
+                                                            <i class="fa fa-upload"></i>
+                                                            {{__('Choose image')}}
+                                                        </strong>
+                                                    </label>
+                                                    <strong class="text-danger">{!! $errors->first('meta_img', '<p class="help-block">:message</p>') !!}</strong>
+                                                </div>
+                                            </div>
+                                        </div>
+
                                     </div>
                                 </div>
                             <div class="form-box bg-white mt-4">
@@ -251,24 +297,23 @@
                                     {{__('Periode')}}
                                 </div>
                                 <div class="form-box-content p-3">
-                                    <span>
-                                        <i style="color: red">Tambahkan Periode menggunakan kategori periode seperti <b>"Harian, Bulanan, atau Tahunan"</b>. Tekan enter untuk menambah kategori periode.</i>
-                                    </span>
-                                    <hr>
-                                    <div class="row mb-3">
-                                        <div class="col-8 col-md-3 order-1 order-md-0">
-                                            <input type="hidden" id="choice_options" name="choice_options">
-                                            <input type="text" class="form-control" value="Periode" disabled>
-                                        </div>
-                                        <div class="col-12 col-md-7 col-xl-8 order-3 order-md-0 mt-2 mt-md-0">
-                                            <select class="js-example-basic-multiple" name="" id="selectOption" multiple="multiple">
-                                                <option value="Harian">Harian</option>
-                                                <option value="Mingguan">Mingguan</option>
-                                                <option value="Bulanan">Bulanan</option>
-                                                <option value="TigaBulan">TigaBulan</option>
-                                                <option value="EnamBulan">EnamBulan</option>
-                                                <option value="Tahunan">Tahunan</option>
-                                            </select>
+                                    <div class="{{ $errors->has('periode') ? 'has-error' : ''}}">
+                                        <div class="row mb-3">
+                                            <div class="col-8 col-md-3 order-1 order-md-0">
+                                                <input type="hidden" id="choice_options" name="choice_options">
+                                                <input type="text" class="form-control" value="Periode" disabled>
+                                            </div>
+                                            <div class="col-12 col-md-7 col-xl-8 order-3 order-md-0 mt-2 mt-md-0">
+                                                <select class="js-example-basic-multiple" name="periode" id="selectOption" multiple="multiple">
+                                                    <option value="Harian">Harian</option>
+                                                    <option value="Mingguan">Mingguan</option>
+                                                    <option value="Bulanan">Bulanan</option>
+                                                    <option value="TigaBulan">TigaBulan</option>
+                                                    <option value="EnamBulan">EnamBulan</option>
+                                                    <option value="Tahunan">Tahunan</option>
+                                                </select>
+                                                <strong class="text-danger">{!! $errors->first('periode', '<p class="help-block">:message</p>') !!}</strong>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -397,84 +442,118 @@
                                     <input id="pac-input" style="cursor:pointer;" class="controls" type="text" placeholder="Search Box">
                                     <div id="addProductMap" class="map mb-3"></div>
                                     <input type="hidden" class="form-control mb-3" name="latlong" id="latlong">
-                                    <div class="row">
-                                        <div class="col-md-2">
-                                            <label>{{__('Alamat')}}</label>
-                                        </div>
-                                        <div class="col-md-10">
-                                            <textarea name="alamat" class="form-control mb-3" id="alamat" cols="20" rows="5" autocomplete="off"></textarea>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-2">
-                                            <label>{{__('Provinsi')}}</label>
-                                        </div>
-                                        <div class="col-md-10">
-                                            <select name="provinsi" id="prov" class="form-control mb-3">
-                                                <option selected disabled>--- SELECT PROVINSI ---</option>
-                                            </select>
+
+                                    <div class="{{ $errors->has('alamat') ? 'has-error' : ''}}">
+                                        <div class="row">
+                                            <div class="col-md-2">
+                                                <label>{{__('Alamat')}}</label>
+                                            </div>
+                                            <div class="col-md-10">
+                                                <textarea name="alamat" class="form-control mb-3" id="alamat" cols="20" rows="5" autocomplete="off">{{ old('name') }}"</textarea>
+                                                <strong class="text-danger">{!! $errors->first('alamat', '<p class="help-block">:message</p>') !!}</strong>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="row">
-                                        <div class="col-md-2">
-                                            <label>{{__('Kota / Kabupaten')}}</label>
-                                        </div>
-                                        <div class="col-md-10">
-                                            <select name="kota" id="kab" class="form-control mb-3">
-                                                
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-2">
-                                            <label>{{__('Kecamatan')}}</label>
-                                        </div>
-                                        <div class="col-md-10">
-                                            <select name="kecamatan" id="kec" class="form-control mb-3">
-                                                
-                                            </select>
+                                    
+                                    <div class="{{ $errors->has('provinsi') ? 'has-error' : ''}}">
+                                        <div class="row">
+                                            <div class="col-md-2">
+                                                <label>{{__('Provinsi')}}</label>
+                                            </div>
+                                            <div class="col-md-10">
+                                                <select name="provinsi" id="prov" class="form-control mb-3">
+                                                    <option selected disabled>--- SELECT PROVINSI ---</option>
+                                                </select>
+                                                <strong class="text-danger">{!! $errors->first('provinsi', '<p class="help-block">:message</p>') !!}</strong>
+                                            </div>
                                         </div>
                                     </div>
+                                    
+                                    <div class="{{ $errors->has('kota') ? 'has-error' : ''}}">
+                                        <div class="row">
+                                            <div class="col-md-2">
+                                                <label>{{__('Kota / Kabupaten')}}</label>
+                                            </div>
+                                            <div class="col-md-10">
+                                                <select name="kota" id="kab" class="form-control mb-3">
+                                                    
+                                                </select>
+                                                <strong class="text-danger">{!! $errors->first('kota', '<p class="help-block">:message</p>') !!}</strong>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="{{ $errors->has('kecamatan') ? 'has-error' : ''}}">
+                                        <div class="row">
+                                            <div class="col-md-2">
+                                                <label>{{__('Kecamatan')}}</label>
+                                            </div>
+                                            <div class="col-md-10">
+                                                <select name="kecamatan" id="kec" class="form-control mb-3">
+                                                    
+                                                </select>
+                                                <strong class="text-danger">{!! $errors->first('kecamatan', '<p class="help-block">:message</p>') !!}</strong>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
                                 </div>
                             </div>
-
+                            
                             <div class="form-box bg-white mt-4">
                                 <div class="form-box-title px-3 py-2">
                                     {{__('Demografi Wilayah')}}
                                 </div>
                                 <div class="form-box-content p-3">
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                            <label>{{__('Audien Target')}}</label>
-                                        </div>
-                                        <div class="col-md-8">
-                                            <input type="text" class="form-control mb-3" name="audien_target" >
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                            <label>{{__('Statistik / Keadaan Masyarakat')}}</label>
-                                        </div>
-                                        <div class="col-md-8">
-                                            <input type="text" class="form-control mb-3" name="statistik_masyarakat" >
+                                    
+                                    <div class="{{ $errors->has('audien_target') ? 'has-error' : ''}}">
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <label>{{__('Audien Target')}}</label>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <input type="text" value="{{ old('audien_target') }}" class="form-control mb-3" name="audien_target" >
+                                                <strong class="text-danger">{!! $errors->first('audien_target', '<p class="help-block">:message</p>') !!}</strong>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                            <label>{{__('Jumlah Audien / Kendaraan / Pendengar (Radio)')}}</label>
-                                        </div>
-                                        <div class="col-md-8">
-                                            <input type="text" class="form-control mb-3" name="jumlah_pendengarradio" >
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                            <label>{{__('Target Audien / Pendengar (Radio)')}}</label>
-                                        </div>
-                                        <div class="col-md-8">
-                                            <input type="text" class="form-control mb-3" name="target_pendengarradio" >
+                                    
+                                    <div class="{{ $errors->has('statistik_masyarakat') ? 'has-error' : ''}}">
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <label>{{__('Statistik / Keadaan Masyarakat')}}</label>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <input type="text" value="{{ old('statistik_masyarakat') }}" class="form-control mb-3" name="statistik_masyarakat" >
+                                                <strong class="text-danger">{!! $errors->first('statistik_masyarakat', '<p class="help-block">:message</p>') !!}</strong>
+                                            </div>
                                         </div>
                                     </div>
+
+                                    <div class="{{ $errors->has('jumlah_pendengarradio') ? 'has-error' : ''}}">
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <label>{{__('Jumlah Audien / Kendaraan / Pendengar (Radio)')}}</label>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <input type="text" value="{{ old('jumlah_pendengarradio') }}"  class="form-control mb-3" name="jumlah_pendengarradio" >
+                                                <strong class="text-danger">{!! $errors->first('jumlah_pendengarradio', '<p class="help-block">:message</p>') !!}</strong>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="{{ $errors->has('target_pendengarradio') ? 'has-error' : ''}}">
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <label>{{__('Target Audien / Pendengar (Radio)')}}</label>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <input type="text" value="{{ old('target_pendengarradio') }}" class="form-control mb-3" name="target_pendengarradio" >
+                                                <strong class="text-danger">{!! $errors->first('target_pendengarradio', '<p class="help-block">:message</p>') !!}</strong>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                 </div>
                             </div>
                             
@@ -483,19 +562,22 @@
                                     {{__('PDF Specification')}}
                                 </div>
                                 <div class="form-box-content p-3">
-                                    <div class="row">
-                                        <div class="col-md-2">
-                                            <label>{{__('PDF')}}</label>
-                                        </div>
-                                        <div class="col-md-10">
-                                            <input type="file" name="pdf" id="file-6" class="custom-input-file custom-input-file--4" data-multiple-caption="{count} files selected" accept="pdf/*" />
-                                            <label for="file-6" class="mw-100 mb-3">
-                                                <span></span>
-                                                <strong>
-                                                    <i class="fa fa-upload"></i>
-                                                    {{__('Choose PDF')}}
-                                                </strong>
-                                            </label>
+                                    <div class="{{ $errors->has('pdf') ? 'has-error' : ''}}">
+                                        <div class="row">
+                                            <div class="col-md-2">
+                                                <label>{{__('PDF')}}</label>
+                                            </div>
+                                            <div class="col-md-10">
+                                                <input type="file" name="pdf" id="file-6" class="custom-input-file custom-input-file--4" data-multiple-caption="{count} files selected" accept="pdf/*" />
+                                                <label for="file-6" class="mw-100 mb-3">
+                                                    <span></span>
+                                                    <strong>
+                                                        <i class="fa fa-upload"></i>
+                                                        {{__('Choose PDF')}}
+                                                    </strong>
+                                                </label>
+                                                <strong class="text-danger">{!! $errors->first('pdf', '<p class="help-block">:message</p>') !!}</strong>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

@@ -122,7 +122,6 @@ class EvidenceController extends Controller
             $filezip['zip'] = null;
         }
         $result = array_merge($filegambar, $filevideo, $filezip);
-        
         $evidence = New Evidence;
         if ($evidence) {
             $evidence->order_id = $request->order_id;

@@ -253,6 +253,10 @@ class OrderController extends Controller
 
     public function insert_confirm_payment(Request $request)
     {
+        $request->validate([
+            'no_rek' => 'required',
+            'bukti' => 'required'
+        ]);
         $order = Order::where('id', $request->order_id)->first();
         if ($order != null) {
             $order->status_confirm = 1;

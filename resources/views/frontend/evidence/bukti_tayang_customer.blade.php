@@ -37,7 +37,7 @@
                     <div class="card no-border mt-4">
                         <div class="card-body">
                             <div class="col-md-12">
-                                <div class="row">
+                                {{-- <div class="row">
                                     <div class="col-lg-4 col-md-5">
                                         <div class="sort-by-box">
                                             <div class="form-group">
@@ -78,7 +78,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </div> --}}
                                 <div class="row mt-5">
                                     @foreach ($orderDetail as $key => $od)
                                         <div class="col-md-4">
