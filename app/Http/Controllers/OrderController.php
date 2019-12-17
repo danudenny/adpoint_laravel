@@ -10,11 +10,13 @@ use App\Color;
 use App\OrderDetail;
 use App\CouponUsage;
 use App\ConfirmPayment;
+use App\Evidence;
 use Auth;
 use Session;
 use DB;
 use PDF;
 use Mail;
+use File;
 // use App\Mail\Order\OrderComplete;
 use App\Mail\Order\OrderStart;
 use App\Mail\Order\OrderApprovedAdmin;
@@ -22,6 +24,8 @@ use App\Mail\Order\OrderSold;
 use App\Mail\Order\OrderDisapprovedAdmin;
 use App\Mail\Order\OrderApprovedSeller;
 use App\Mail\Order\OrderDisapprovedSeller;
+use App\Mail\Order\OrderNotifPaymentBuyer;
+use App\Mail\Order\OrderNotifPaymentSeller;
 
 
 class OrderController extends Controller
@@ -40,7 +44,6 @@ class OrderController extends Controller
                     ->select('orders.id','status_order')
                     ->distinct()
                     ->paginate(9);
-
         return view('frontend.seller.orders', compact('orders'));
     }
 
@@ -160,6 +163,7 @@ class OrderController extends Controller
             $users['delivery_status'] = $q->delivery_status;
         }
         $users['product'] = $product;
+        // dd($users);
         $order = Order::findOrFail(decrypt($id));
         if($order != null){
             $order->status_order = 2;
@@ -249,6 +253,10 @@ class OrderController extends Controller
 
     public function insert_confirm_payment(Request $request)
     {
+        $request->validate([
+            'no_rek' => 'required',
+            'bukti' => 'required'
+        ]);
         $order = Order::where('id', $request->order_id)->first();
         if ($order != null) {
             $order->status_confirm = 1;
@@ -289,10 +297,77 @@ class OrderController extends Controller
                         'cp.nama_bank',
                         'cp.no_rek',
                         'cp.bukti',
-                        'o.grand_total'
+                        'o.grand_total',
+                        'o.payment_status'
                     ])->get();
-        
-        return view('confirm_payment.show_payment', compact('query'));
+        $order_id = decrypt($id);
+        return view('confirm_payment.show_payment', compact('query', 'order_id'));
+    }
+
+    public function change_to_paid($id)
+    {
+        $order = Order::where('id',decrypt($id))->first();
+        $query = DB::table('orders as o')
+            ->join('order_details as od', 'o.id', '=', 'od.order_id')
+            ->join('users as b', 'o.user_id', '=', 'b.id')
+            ->join('users as s', 'od.seller_id', '=', 's.id')
+            ->select(
+                [
+                    'o.code',
+                    'o.grand_total',
+                    'b.name as buyer_name',
+                    'b.email as buyer_email',
+                    's.name as seller_name',
+                    's.email as seller_email',
+                ]
+            )
+            ->where('o.id','=',decrypt($id))
+            ->first();
+        $users = [];
+        $users['order_id'] = decrypt($id);
+        $users['code'] = $query->code;
+        $users['grand_total'] = $query->grand_total;
+        $users['buyer_name'] = $query->buyer_name;
+        $users['buyer_email'] = $query->buyer_email;
+        $users['seller_name'] = $query->seller_name;
+        $users['seller_email'] = $query->seller_email;
+
+        if ($order != null) {
+            $order->payment_status = 'paid';
+            $order->updated_at = time();
+            $order->save();
+            Mail::to($users['buyer_email'])->send(new OrderNotifPaymentBuyer($users));
+            Mail::to($users['seller_email'])->send(new OrderNotifPaymentSeller($users));
+            flash('Order Paid')->success();
+        }else{
+            flash('Something went wrong')->error();
+        }
+        return back();
+    }
+
+    public function order_complete($order_detail_id)
+    {
+        $od_id = decrypt($order_detail_id);
+        $orderDetail = OrderDetail::where('id', $od_id)->first();
+        if ($orderDetail) {
+            $orderDetail->complete = 1;
+            $orderDetail->updated_at = time();
+            $orderDetail->save();
+            flash('Order Paid')->success();
+            $order_detail = OrderDetail::where(['order_id' => $orderDetail->order_id])->count();
+            $order_detail_complete = OrderDetail::where(['order_id' => $orderDetail->order_id, 'complete' => 1])->count();
+            if ($order_detail == $order_detail_complete) {
+                $order = Order::where('id', $orderDetail->order_id)->first();
+                if ($order != null) {
+                    $order->status_order = 5;
+                    $order->updated_at = time();
+                    $order->save();
+                }
+            }
+        }else{
+            flash('Something went wrong')->error();
+        }
+        return back();
     }
 
     /**
@@ -344,6 +419,11 @@ class OrderController extends Controller
             $order->payment_type = $request->payment_option;
             $order->code = date('Ymd-his');
             $order->date = strtotime('now');
+            $order->status_confirm = 0;
+            if ($request->hasFile('file_ads')) {
+                $order->file_advertising = $request->file_ads->store('uploads/materi_advertising');
+                $order->desc_advertising = $request->desc_ads;
+            }
             if ($order->save()) {
                 $subtotal = 0;
                 $tax = 0;
@@ -402,6 +482,8 @@ class OrderController extends Controller
                     }
                     $order_detail->order_id  = $order->id;
                     $order_detail->seller_id = $value['user_id'];
+                    $order_detail->status_tayang = 0;
+                    $order_detail->complete = 0;
                     $order_detail->product_id = $value['id'];
                     $order_detail->variation = $product_variation;
                     $order_detail->price = $value['price'] * $value['quantity'];

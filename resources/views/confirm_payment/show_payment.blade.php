@@ -36,8 +36,11 @@
                                     <td><a target="_blank" href="{{ url($query[0]->bukti) }}"><span class="badge badge-success">Lihat</span></a></td>
                                 </tr>
                             </table>
-                            <button class="btn btn-primary"><i class="fa fa-check"></i> Confirm To Paid</button>
-                            <button class="btn btn-danger"><i class="fa fa-times"></i> Reject</button>
+                            @if ($query[0]->payment_status == 'paid')
+                                <div class="alert alert-success">Paid</div>
+                            @else 
+                                <a href="{{ route('change.to.paid', encrypt($order_id)) }}" class="btn btn-primary"><i class="fa fa-check"></i> Confirm To Paid</a>
+                            @endif
                         </div>
                     </div>
                 </div>

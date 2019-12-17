@@ -291,7 +291,7 @@ class HomeController extends Controller
 
     public function seller_product_list(Request $request)
     {
-        $products = Product::where('user_id', Auth::user()->id)->orderBy('created_at', 'desc')->paginate(10);
+        $products = Product::where('user_id', Auth::user()->id)->orderBy('created_at', 'desc')->get();
         return view('frontend.seller.products', compact('products'));
     }
 

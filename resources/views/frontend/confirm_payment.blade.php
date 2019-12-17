@@ -60,13 +60,15 @@
                                                             @endforeach
                                                         </select>
                                                     </div>
-                                                    <div class="form-group">
+                                                    <div class="form-group{{ $errors->has('no_rek') ? 'has-error' : ''}}">
                                                         <label>No Rekening</label>
                                                         <input type="number" class="form-control" name="no_rek">
+                                                        <strong class="text-danger mt-1">{!! $errors->first('no_rek', '<p class="help-block">:message</p>') !!}</strong>
                                                     </div>
-                                                    <div class="form-group">
+                                                    <div class="form-group{{ $errors->has('bukti') ? 'has-error' : ''}}">
                                                         <label>Bukti Transfer</label>
                                                         <input type="file" class="form-control" name="bukti">
+                                                        <strong class="text-danger mt-1">{!! $errors->first('bukti', '<p class="help-block">:message</p>') !!}</strong>
                                                     </div>
                                                     <button type="submit" class="btn btn-success btn-block">Submit</button>
                                                 </div>

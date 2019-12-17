@@ -20,7 +20,6 @@
 <meta name="author" content="{{ $seosetting->author }}">
 <meta name="sitemap_link" content="{{ $seosetting->sitemap_link }}">
 @yield('meta')
-
 <!-- Schema.org markup for Google+ -->
 <meta itemprop="name" content="{{ config('app.name', 'Laravel') }}">
 <meta itemprop="description" content="{{ $seosetting->description }}">
@@ -53,11 +52,10 @@
 <!-- Bootstrap -->
 <link rel="stylesheet" href="{{ asset('frontend/css/bootstrap.min.css') }}" type="text/css">
 <link type="text/css" href="{{ asset('frontend/css/select2.min.css') }}" rel="stylesheet">
+<link type="text/css" href="{{ asset('frontend/css/cards-gallery.css') }}" rel="stylesheet">
 <link type="text/css" href="{{ asset('frontend/css/jquery.desoslide.min.css') }}" rel="stylesheet">
-<!-- Latest compiled and minified CSS -->
 <link rel="stylesheet" href="{{ asset('frontend/css/bootstrap-select.min.css') }}">
-
-
+<!-- Latest compiled and minified CSS -->
 
 <!-- Icons -->
 <link rel="stylesheet" href="{{ asset('frontend/css/font-awesome.min.css') }}" type="text/css">
@@ -69,8 +67,7 @@
 <link type="text/css" href="{{ asset('frontend/css/slick.css') }}" rel="stylesheet">
 <link type="text/css" href="{{ asset('frontend/css/xzoom.css') }}" rel="stylesheet">
 <link type="text/css" href="{{ asset('frontend/css/jquery.share.css') }}" rel="stylesheet">
-<link rel="stylesheet" href="//cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css">
-<link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap.min.css">
+
 
 <style>
     .map {
@@ -99,10 +96,8 @@
 
 <!-- Global style (main) -->
 <link type="text/css" href="{{ asset('frontend/css/active-shop.css') }}" rel="stylesheet" media="screen">
-
 <!--Spectrum Stylesheet [ REQUIRED ]-->
 <link href="{{ asset('css/spectrum.css')}}" rel="stylesheet">
-
 <!-- Custom style -->
 <link type="text/css" href="{{ asset('frontend/css/custom-style.css') }}" rel="stylesheet">
 
@@ -118,8 +113,12 @@
 <link href="{{ asset('frontend/css/colors/'.\App\GeneralSetting::first()->frontend_color.'.css')}}" rel="stylesheet">
 
 <!-- jQuery -->
-<script src="{{ asset('frontend/js/vendor/jquery.min.js') }}"></script>
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script src="{{ asset('frontend/js/vendor/jquery-3.3.1.js') }}"></script>
+<script src="{{ asset('frontend/js/ekko-lightbox.js') }}"></script>
+<script src="{{ asset('frontend/js/baguetteBox.min.js') }}"></script>
+<script src="{{ asset('frontend/js/jquery.dataTables.min.js') }}"></script>
+<script src="{{ asset('frontend/js/dataTables.bootstrap4.min.js') }}"></script>
+<script src="{{ asset('frontend/js/jquery-ui.js') }}"></script>
 <script src="{{ asset('frontend/js/bootstrap-select.min.js') }}"></script>
 
 @if (\App\BusinessSetting::where('type', 'google_analytics')->first()->value == 1)
@@ -205,6 +204,7 @@
 <!-- Core -->
 <script src="{{ asset('frontend/js/vendor/popper.min.js') }}"></script>
 <script src="{{ asset('frontend/js/vendor/bootstrap.min.js') }}"></script>
+<link rel="stylesheet" href="{{ asset('frontend/css/baguetteBox.min.css') }}" />
 
 <!-- Plugins: Sorted A-Z -->
 <script src="{{ asset('frontend/js/jquery.countdown.min.js') }}"></script>
@@ -572,6 +572,19 @@
         @endif
     }
 
+    function showGaleriModal(order_detail_id){
+        if(!$('#modal-size').hasClass('modal-lg')){
+            $('#modal-size').addClass('modal-lg');
+        }
+        $('#addToCart-modal-body').html(null);
+        $('#addToCart').modal();
+        $('.c-preloader').show();
+        $.post('{{ route('broadcast.details') }}', {_token:'{{ csrf_token() }}', order_detail_id:order_detail_id}, function(data){
+            $('.c-preloader').hide();
+            $('#addToCart-modal-body').html(data);
+        });
+    }
+
     function showAddToCartModal(id){
         if(!$('#modal-size').hasClass('modal-lg')){
             $('#modal-size').addClass('modal-lg');
@@ -822,9 +835,6 @@
 <script src="{{ asset('frontend/js/main.js') }}"></script>
 <script src="{{ asset('frontend/js/fb-script.js') }}"></script>
 <script src="{{ asset('frontend/js/moment.min.js') }}"></script>
-<script src="//cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
-{{-- <script src="{{ asset('frontend/js/bootstrap-datetimepicker.min.js') }}"></script> --}}
-{{-- <script src="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.0.1/build/ol.js"></script> --}}
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBsVHufr4pDssMKPVCFZO6yXe58oalrtHs&libraries=places"></script>
 @yield('script')
 
@@ -1268,9 +1278,13 @@
         $('#btn_close').hide();
     }
     // end whatsapp
+
+    
+    $('#table').DataTable();
+    $('.dataTables_filter').addClass('pull-right');
+    $('#table_paginate').addClass('pull-right');
     
 </script>
-
 
 </body>
 </html>

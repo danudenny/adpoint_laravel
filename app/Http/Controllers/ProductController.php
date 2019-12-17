@@ -56,7 +56,29 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request->all());
+        $request->validate([
+            'name' => 'required',
+            'category_id' => 'required',
+            'brand_id' => 'required',
+            'description' => 'required',
+            'photos' => 'required',
+            'thumbnail_img' => 'required',
+            'featured_img' => 'required',
+            'flash_deal_img' => 'required',
+            'meta_title' => 'required',
+            'meta_description' => 'required',
+            'meta_img' => 'required',
+            'alamat' => 'required',
+            'provinsi' => 'required',
+            'kota' => 'required',
+            'kecamatan' => 'required',
+            'audien_target' => 'required',
+            'statistik_masyarakat' => 'required',
+            'jumlah_pendengarradio' => 'required',
+            'target_pendengarradio' => 'required',
+            'pdf' => 'required',
+            'periode' => 'required'
+        ]);
         $product = new Product;
         $product->name = $request->name;
         $product->added_by = $request->added_by;

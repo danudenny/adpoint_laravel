@@ -17,7 +17,6 @@
                     <th>Num. of Products</th>
                     <th>Customer</th>
                     <th>Amount</th>
-                    <th>Delivery Status</th>
                     <th>Payment Status</th>
                     <th>Order Status</th>
                     <th width="10%">{{__('options')}}</th>
@@ -46,17 +45,6 @@
                             {{ single_price($order->grand_total) }}
                         </td>
                         <td>
-                            @php
-                                $status = 'Delivered';
-                                foreach ($order->orderDetails as $key => $orderDetail) {
-                                    if($orderDetail->delivery_status != 'delivered'){
-                                        $status = 'Pending';
-                                    }
-                                }
-                            @endphp
-                            {{ $status }}
-                        </td>
-                        <td>
                             <span class="badge badge--2 mr-4">
                                 @if ($order->payment_status == 'paid')
                                     <i class="bg-green"></i> Paid
@@ -68,16 +56,18 @@
                         <td>
                             @if ($order->status_order == 0)
                                 <span class="badge badge-warning">Disapproved</span>
-                            @elseif($order->status_order == 1)
+                            @elseif ($order->status_order == 1)
                                 <span class="badge badge-secondary">Reviewed</span>
-                            @elseif($order->status_order == 2)
+                            @elseif ($order->status_order == 2)
                                 <span class="badge badge-primary">Approved</span>
-                            @elseif($order->status_order == 3)
+                            @elseif ($order->status_order == 3)
                                 <span class="badge badge-warning">Disapproved</span>
-                            @elseif($order->status_order == 4)
-                                <span class="badge badge-success">Completed</span>
-                            @elseif($order->status_order == 4)
-                                <span class="badge badge-danger">Completed</span>
+                            @elseif ($order->status_order == 4)
+                                <span class="badge badge-info">Aired</span>
+                            @elseif ($order->status_order == 5)
+                                <span class="badge badge-success">Complete</span>
+                            @elseif ($order->status_order == 6)
+                                <span class="badge badge-danger">Cancelled</span>
                             @endif
                         </td>
                         <td>

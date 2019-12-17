@@ -12,20 +12,24 @@
 
 <div class="modal-body gry-bg px-5 pt-0">
     <div class="pt-4">
+        @php
+            $order_detail = \App\OrderDetail::where('order_id', $order->id)->count();
+            $order_detail_complete = \App\OrderDetail::where(['order_id' => $order->id, 'complete' => 1])->count();
+        @endphp
         <ul class="process-steps clearfix">
             <li @if($order->status_order == 0) class="active" @else class="done" @endif>
                 <div class="icon">1</div>
                 <div class="title">{{__('Order placed')}}</div>
             </li>
-            <li @if($order->status_order == 1) class="active" @elseif($order->status_order == 2 || $order->status_order == 4) class="done" @endif>
+            <li @if($order->status_order == 1) class="active" @elseif($order->status_order == 2 || $order->status_order == 4 || ($order->status_order == 5 && $order_detail == $order_detail_complete)) class="done" @endif>
                 <div class="icon">2</div>
                 <div class="title">{{__('On review')}}</div>
             </li>
-            <li @if($order->status_order == 2) class="active" @elseif($order->status_order == 4) class="done" @endif>
+            <li @if($order->status_order == 2) class="active" @elseif($order->status_order == 4 || ($order->status_order == 5 && $order_detail == $order_detail_complete)) class="done" @endif>
                 <div class="icon">3</div>
                 <div class="title">{{__('Active')}}</div>
             </li>
-            <li @if($order->status_order == 4) class="done" @endif>
+            <li @if($order->status_order == 5 && $order_detail == $order_detail_complete) class="done" @endif>
                 <div class="icon">4</div>
                 <div class="title">{{__('Completed')}}</div>
             </li>
@@ -76,10 +80,22 @@
                                     <span class="badge badge-primary">Approved</span>
                                 @elseif($order->status_order == 3)
                                     <span class="badge badge-warning">Disapproved</span>
-                                @elseif($order->status_order == 4)
-                                    <span class="badge badge-success">Completed</span>
-                                @elseif($order->status_order == 4)
-                                    <span class="badge badge-danger">Completed</span>
+                                @elseif ($order->status_order == 4)
+                                    <span class="badge badge-info">Aired</span>
+                                @elseif ($order->status_order == 5)
+                                    <span class="badge badge-success">Complete</span>
+                                @elseif ($order->status_order == 6)
+                                    <span class="badge badge-danger">Cancelled</span>
+                                @endif
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="w-50 strong-600">{{__('Payment status')}}:</td>
+                            <td>
+                                @if ($order->payment_status == 'unpaid')
+                                    <span class="badge badge-danger">Unpaid</span>
+                                @else 
+                                    <span class="badge badge-success">Paid</span>
                                 @endif
                             </td>
                         </tr>
@@ -87,13 +103,17 @@
                             <td class="w-50 strong-600">{{__('Total order amount')}}:</td>
                             <td>Rp {{ number_format($order->orderDetails->where('seller_id', Auth::user()->id)->sum('price') + $order->orderDetails->where('seller_id', Auth::user()->id)->sum('tax')) }}</td>
                         </tr>
-                        <!-- <tr>
-                            <td class="w-50 strong-600">{{__('Shipping method')}}:</td>
-                            <td>{{__('Flat shipping rate')}}</td>
-                        </tr> -->
                         <tr>
                             <td class="w-50 strong-600">{{__('Payment method')}}:</td>
                             <td>{{ ucfirst(str_replace('_', ' ', $order->payment_type)) }}</td>
+                        </tr>
+                        <tr>
+                            <td class="w-50 strong-600">{{__('Materi Advertising')}}</td>
+                            <td>
+                                @if ($order->file_advertising != null)
+                                    <a href="{{ url($order->file_advertising) }}">Download File</a>
+                                @endif
+                            </td>
                         </tr>
                     </table>
                 </div>
@@ -113,6 +133,7 @@
                                 <th style="text-align:center;">{{__('Periode')}}</th>
                                 <th style="text-align:center;">{{__('Quantity')}}</th>
                                 <th style="text-align:center;">{{__('Price')}}</th>
+                                <th style="text-align:center;">{{__('Option')}}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -121,12 +142,31 @@
                                     <td style="text-align:center;">{{ $key+1 }}</td>
                                     <td style="text-align:center;"><a href="{{ route('product', $orderDetail->product->slug) }}" target="_blank">{{ $orderDetail->product->name }}</a></td>
                                     <td style="text-align:center;">
-                                        {{ $orderDetail->variation }}
+                                        <div class="badge badge-primary" style="cursor: pointer" data-toggle="tooltip" data-placement="bottom" title="{{ date('d M Y', strtotime($orderDetail->start_date)).' s/d '.date('d M Y', strtotime($orderDetail->end_date)) }}">
+                                            {{ $orderDetail->variation }}
+                                        </div>
                                     </td>
                                     <td style="text-align:center;">
                                         {{ $orderDetail->quantity }}
                                     </td>
                                     <td style="text-align:center;">Rp {{ number_format($orderDetail->price) }}</td>
+                                    <td>
+                                        @php
+                                            $end_date = strtotime($orderDetail->end_date);
+                                            $end = date('d M Y', $end_date);
+                                            $current_date = strtotime('now');
+                                            $current = date('d M Y', $current_date);
+                                        @endphp
+                                        @if ($end <= $current)
+                                            @if ($orderDetail->complete == 1)
+                                                <div class="badge badge-success">Done</div>
+                                            @else 
+                                                <a href="{{ route('order.complete', encrypt($orderDetail->id)) }}" class="btn btn-primary btn-sm">Complete</a>
+                                            @endif
+                                        @else 
+                                            <button class="btn btn-default btn-sm" style="cursor: not-allowed" disabled>Complete</button>
+                                        @endif
+                                    </td>
                                 </tr>
                             @endforeach
                         </tbody>
