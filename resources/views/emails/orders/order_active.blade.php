@@ -6,14 +6,11 @@
             <!-- Body content -->
             <tr>
                 <td class="content-cell">
-                    <p>Dear {{ $user['seller_name'] }},</p>
+                    <p>Dear {{ $user['name'] }},</p>
                     
                     <p>Selamat.<br>
-                        Orderan anda telah terbayar. Segera aktifkan product
+                        Orderan anda telah di tayangkan
                     </p>
-                    <div class="center">
-                        <a href="{{ route('broadcast_proof.index') }}" class="button button--blue">Aktifkan Product</a>
-                    </div>
                     
                     <p>Terimakasih</p>
                     <p>Regards,<br>Adpoint</p>

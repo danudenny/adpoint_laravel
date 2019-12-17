@@ -152,14 +152,22 @@ Route::group(['middleware' => ['auth']], function(){
 	Route::resource('orders','OrderController');
 	Route::get('/orders/approve_by_seller/{id}', 'OrderController@approve_by_seller')->name('approve.by.seller');
 	Route::get('/orders/disapprove_by_seller/{id}', 'OrderController@disapprove_by_seller')->name('disapprove.by.seller');
-	Route::get('/orders/bukti_tayang/{id}', 'OrderController@bukti_tayang')->name('bukti.tayang');
-	Route::post('/orders/upload_bukti_tayang', 'OrderController@upload_bukti_tayang')->name('upload.bukti.tayang');
+	
 	Route::get('/orders/destroy/{id}', 'OrderController@destroy')->name('orders.destroy');
 	Route::post('/orders/details', 'OrderController@order_details')->name('orders.details');
 	Route::post('/orders/update_delivery_status', 'OrderController@update_delivery_status')->name('orders.update_delivery_status');
 	Route::post('/orders/update_payment_status', 'OrderController@update_payment_status')->name('orders.update_payment_status');
 	Route::get('/confirm_payment/{id}', 'OrderController@confirm_payment')->name('confirm.payment');
 	Route::post('/confirm_payment/insert', 'OrderController@insert_confirm_payment')->name('insert.confirm.payment');
+	Route::get('/order_complete/{id}', 'OrderController@order_complete')->name('order.complete');
+
+	Route::resource('broadcast_proof', 'EvidenceController');
+	Route::get('/broadcast_proof/aktifkan/{id}', 'EvidenceController@aktifkan')->name('aktifkan');
+	Route::get('/broadcast_proof/bukti_tayang/{id}', 'EvidenceController@bukti_tayang')->name('bukti.tayang');
+	Route::post('/broadcast_proof/upload_bukti_tayang', 'EvidenceController@upload_bukti_tayang')->name('upload.bukti.tayang');
+	Route::get('/broadcast_proof/complete/{id}', 'EvidenceController@complete')->name('complete');
+	Route::get('/broadcast', 'EvidenceController@broadcast_customer')->name('broadcast.index');
+	Route::post('/broadcast/details', 'EvidenceController@broadcast_details')->name('broadcast.details');
 
 	Route::resource('/reviews', 'ReviewController');
 });

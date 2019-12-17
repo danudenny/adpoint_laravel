@@ -71,8 +71,10 @@
                                                         @elseif ($order->status_order == 3)
                                                             <span class="badge badge-warning">Disapproved</span>
                                                         @elseif ($order->status_order == 4)
-                                                            <span class="badge badge-success">Complete</span>
+                                                            <span class="badge badge-info">Aired</span>
                                                         @elseif ($order->status_order == 5)
+                                                            <span class="badge badge-success">Complete</span>
+                                                        @elseif ($order->status_order == 6)
                                                             <span class="badge badge-danger">Cancelled</span>
                                                         @endif
                                                     </td>

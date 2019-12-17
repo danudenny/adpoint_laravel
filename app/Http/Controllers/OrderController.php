@@ -44,7 +44,6 @@ class OrderController extends Controller
                     ->select('orders.id','status_order')
                     ->distinct()
                     ->paginate(9);
-
         return view('frontend.seller.orders', compact('orders'));
     }
 
@@ -164,6 +163,7 @@ class OrderController extends Controller
             $users['delivery_status'] = $q->delivery_status;
         }
         $users['product'] = $product;
+        // dd($users);
         $order = Order::findOrFail(decrypt($id));
         if($order != null){
             $order->status_order = 2;
@@ -341,55 +341,31 @@ class OrderController extends Controller
         return back();
     }
 
-    public function bukti_tayang($id)
+    public function order_complete($order_detail_id)
     {
-        $query = DB::table('orders as o')
-            ->join('order_details as od', 'o.id', '=', 'od.order_id')
-            ->join('products as p', 'od.product_id', '=', 'p.id')
-            ->select(
-                [
-                    'o.id',
-                    'o.code',
-                    'p.name',
-                    'od.product_id'
-                ]
-            )
-            ->where('o.id','=',decrypt($id))
-            ->get();
-        $order_id = decrypt($id);
-        return view('frontend.seller.bukti_tayang', compact('order_id','query'));
-    }
-
-    public function upload_bukti_tayang(Request $request)
-    {
-        $photos = [];
-        $path = public_path().'/uploads/bukti_tayang/' . $request->no_bukti;
-        if (!is_dir($path)) {
-            File::makeDirectory($path, $mode = 0777, true, true);
-        }
-        if($request->hasFile('photos')){
-            foreach ($request->photos as $key => $photo) {
-                $path = $photo->store('uploads/bukti_tayang/'.$request->no_bukti);
-                array_push($photos, $path);
+        $od_id = decrypt($order_detail_id);
+        $orderDetail = OrderDetail::where('id', $od_id)->first();
+        if ($orderDetail) {
+            $orderDetail->complete = 1;
+            $orderDetail->updated_at = time();
+            $orderDetail->save();
+            flash('Order Paid')->success();
+            $order_detail = OrderDetail::where(['order_id' => $orderDetail->order_id])->count();
+            $order_detail_complete = OrderDetail::where(['order_id' => $orderDetail->order_id, 'complete' => 1])->count();
+            if ($order_detail == $order_detail_complete) {
+                $order = Order::where('id', $orderDetail->order_id)->first();
+                if ($order != null) {
+                    $order->status_order = 5;
+                    $order->updated_at = time();
+                    $order->save();
+                }
             }
-        }
-        
-        $evidence = New Evidence;
-        if ($evidence) {
-            $evidence->order_id = $request->order_id;
-            $evidence->no_bukti = $request->no_bukti;
-            $evidence->no_order = $request->no_order;
-            $evidence->img = json_encode($photos);
-            $evidence->status = 1;
-            $evidence->save();
-            flash('Evidences success')->success();
         }else{
-            flash('Someting Wrong!')->error();
+            flash('Something went wrong')->error();
         }
-
         return back();
-        
     }
+
     /**
      * Display a single sale to admin.
      *
@@ -440,6 +416,10 @@ class OrderController extends Controller
             $order->code = date('Ymd-his');
             $order->date = strtotime('now');
             $order->status_confirm = 0;
+            if ($request->hasFile('file_ads')) {
+                $order->file_advertising = $request->file_ads->store('uploads/materi_advertising');
+                $order->desc_advertising = $request->desc_ads;
+            }
             if ($order->save()) {
                 $subtotal = 0;
                 $tax = 0;
@@ -498,6 +478,8 @@ class OrderController extends Controller
                     }
                     $order_detail->order_id  = $order->id;
                     $order_detail->seller_id = $value['user_id'];
+                    $order_detail->status_tayang = 0;
+                    $order_detail->complete = 0;
                     $order_detail->product_id = $value['id'];
                     $order_detail->variation = $product_variation;
                     $order_detail->price = $value['price'] * $value['quantity'];

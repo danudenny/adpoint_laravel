@@ -33,93 +33,101 @@
 
                         <!-- Order history table -->
                         <div class="card no-border mt-4">
-                            <div>
-                                <table class="table table-sm table-hover table-responsive-md">
-                                    <thead>
-                                        <tr>
-                                            <th>#</th>
-                                            <th>{{__('Order Number')}}</th>
-                                            <th>{{__('Num. of Media')}}</th>
-                                            <th>{{__('Customer')}}</th>
-                                            <th>{{__('Amount')}}</th>
-                                            <th>{{__('Order Status')}}</th>
-                                            <th>{{__('Payment Status')}}</th>
-                                            <th>{{__('Options')}}</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @if (count($orders) > 0)
-                                            @foreach ($orders as $key => $order_id)
-                                                @php
-                                                    $order = \App\Order::find($order_id->id);
-                                                @endphp
-                                                @if($order != null && $order->status_order != 0)
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div>
+                                            <table class="table table-sm table-hover" id="table">
+                                                <thead>
                                                     <tr>
-                                                        <td>
-                                                            {{ $key+1 }}
-                                                        </td>
-                                                        <td>
-                                                            <a href="#{{ $order->code }}" onclick="show_order_details({{ $order->id }})">{{ $order->code }}</a>
-                                                        </td>
-                                                        <td>
-                                                            {{ count($order->orderDetails->where('seller_id', Auth::user()->id)) }}
-                                                        </td>
-                                                        <td>
-                                                            @if ($order->user_id != null)
-                                                                {{ $order->user->name }}
-                                                            @else
-                                                                Guest ({{ $order->guest_id }})
-                                                            @endif
-                                                        </td>
-                                                        <td>
-                                                            {{ single_price($order->orderDetails->where('seller_id', Auth::user()->id)->sum('price')) }}
-                                                        </td>
-                                                        <td>
-                                                            @if ($order->status_order == 0)
-                                                                <span class="badge badge-warning">Disapproved</span>
-                                                            @elseif ($order->status_order == 1)
-                                                                <span class="badge badge-secondary">Reviewed</span>
-                                                            @elseif ($order->status_order == 2)
-                                                                <span class="badge badge-primary">Approved</span>
-                                                            @elseif ($order->status_order == 3)
-                                                                <span class="badge badge-warning">Disapproved</span>
-                                                            @elseif ($order->status_order == 4)
-                                                                <span class="badge badge-success">Complete</span>
-                                                            @elseif ($order->status_order == 5)
-                                                                <span class="badge badge-danger">Cancelled</span>
-                                                            @endif
-                                                        </td>
-                                                        <td>
-                                                            <span class="badge badge--2 mr-4">
-                                                                @if ($order->payment_status == 'paid')
-                                                                    <i class="bg-green"></i> {{__('Paid')}}
-                                                                @else
-                                                                    <i class="bg-red"></i> {{__('Unpaid')}}
-                                                                @endif
-                                                            </span>
-                                                        </td>
-                                                        <td>
-                                                            <div class="dropdown">
-                                                                <button class="btn" type="button" id="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                                    <i class="fa fa-ellipsis-v"></i>
-                                                                </button>
-
-                                                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="">
-                                                                    @if ($order->status_order == 1)
-                                                                        <a href="{{ route('approve.by.seller', encrypt($order->id)) }}" class="dropdown-item">Approve</a>
-                                                                        <a href="{{ route('disapprove.by.seller', encrypt($order->id)) }}" class="dropdown-item">Disapprove</a>
-                                                                    @endif
-                                                                    <button onclick="show_order_details({{ $order->id }})" class="dropdown-item">{{__('Order Details')}}</button>
-                                                                </div>
-                                                            </div>
-                                                        </td>
+                                                        <th>#</th>
+                                                        <th>{{__('Order Number')}}</th>
+                                                        <th>{{__('Num. of Media')}}</th>
+                                                        <th>{{__('Customer')}}</th>
+                                                        <th>{{__('Amount')}}</th>
+                                                        <th>{{__('Order Status')}}</th>
+                                                        <th>{{__('Payment Status')}}</th>
+                                                        <th>{{__('Options')}}</th>
                                                     </tr>
-                                                @endif
-                                            @endforeach
-                                        @endif
-                                        
-                                    </tbody>
-                                </table>
+                                                </thead>
+                                                <tbody>
+                                                    @if (count($orders) > 0)
+                                                        @foreach ($orders as $key => $order_id)
+                                                            @php
+                                                                $order = \App\Order::find($order_id->id);
+                                                            @endphp
+                                                            @if($order != null && $order->status_order != 0)
+                                                                <tr>
+                                                                    <td>
+                                                                        {{ $key+1 }}
+                                                                    </td>
+                                                                    <td>
+                                                                        <a href="#{{ $order->code }}" onclick="show_order_details({{ $order->id }})">{{ $order->code }}</a>
+                                                                    </td>
+                                                                    <td>
+                                                                        {{ count($order->orderDetails->where('seller_id', Auth::user()->id)) }}
+                                                                    </td>
+                                                                    <td>
+                                                                        @if ($order->user_id != null)
+                                                                            {{ $order->user->name }}
+                                                                        @else
+                                                                            Guest ({{ $order->guest_id }})
+                                                                        @endif
+                                                                    </td>
+                                                                    <td>
+                                                                        {{ single_price($order->orderDetails->where('seller_id', Auth::user()->id)->sum('price')) }}
+                                                                    </td>
+                                                                    <td>
+                                                                        @if ($order->status_order == 0)
+                                                                            <span class="badge badge-warning">Disapproved</span>
+                                                                        @elseif ($order->status_order == 1)
+                                                                            <span class="badge badge-secondary">Reviewed</span>
+                                                                        @elseif ($order->status_order == 2)
+                                                                            <span class="badge badge-primary">Approved</span>
+                                                                        @elseif ($order->status_order == 3)
+                                                                            <span class="badge badge-warning">Disapproved</span>
+                                                                        @elseif ($order->status_order == 4)
+                                                                            <span class="badge badge-info">Aired</span>
+                                                                        @elseif ($order->status_order == 5)
+                                                                            <span class="badge badge-success">Complete</span>
+                                                                        @elseif ($order->status_order == 6)
+                                                                            <span class="badge badge-danger">Cancelled</span>
+                                                                        @endif
+                                                                    </td>
+                                                                    <td>
+                                                                        <span class="badge badge--2 mr-4">
+                                                                            @if ($order->payment_status == 'paid')
+                                                                                <i class="bg-green"></i> {{__('Paid')}}
+                                                                            @else
+                                                                                <i class="bg-red"></i> {{__('Unpaid')}}
+                                                                            @endif
+                                                                        </span>
+                                                                    </td>
+                                                                    <td>
+                                                                        <div class="dropdown">
+                                                                            <button class="btn" type="button" id="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                                <i class="fa fa-ellipsis-v"></i>
+                                                                            </button>
+            
+                                                                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="">
+                                                                                @if ($order->status_order == 1)
+                                                                                    <a href="{{ route('approve.by.seller', encrypt($order->id)) }}" class="dropdown-item">Approve</a>
+                                                                                    <a href="{{ route('disapprove.by.seller', encrypt($order->id)) }}" class="dropdown-item">Disapprove</a>
+                                                                                @endif
+                                                                                <button onclick="show_order_details({{ $order->id }})" class="dropdown-item">{{__('Order Details')}}</button>
+                                                                            </div>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                            @endif
+                                                        @endforeach
+                                                    @endif
+                                                    
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     

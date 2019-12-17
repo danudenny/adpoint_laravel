@@ -335,12 +335,16 @@
                                                     {{ renderStarRating($product->rating) }}
                                                 </div>
                                                 <div class="clearfix">
-                                                    <div class="price-box float-left">
-                                                        @if(home_base_price($product->id) != home_discounted_base_price($product->id))
-                                                            <del class="old-product-price strong-400">{{ home_base_price($product->id) }}</del>
-                                                        @endif
-                                                        <span class="product-price strong-600">{{ home_discounted_base_price($product->id) }}</span>
-                                                    </div>
+                                                    @if (Auth::user() != null)
+                                                        <div class="price-box float-left">
+                                                            @if(home_base_price($product->id) != home_discounted_base_price($product->id))
+                                                                <del class="old-product-price strong-400">{{ home_base_price($product->id) }}</del>
+                                                            @endif
+                                                            <span class="product-price strong-600">{{ home_discounted_base_price($product->id) }}</span>
+                                                        </div>
+                                                    @else 
+                                                        <span class="product-price strong-600">xxx</span>
+                                                    @endif
                                                 </div>
                                             </div>
                                         </div>

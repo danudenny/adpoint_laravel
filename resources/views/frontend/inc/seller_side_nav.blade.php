@@ -9,7 +9,7 @@
             @endif
         </div>
         <div class="sidebar-widget-title py-3">
-            <span>{{__('Menu')}}</span>
+            <span>{{__('Buyer Menu')}}</span>
         </div>
         <div class="widget-profile-menu py-3">
             <ul class="categories categories--style-3">
@@ -30,6 +30,14 @@
                     </a>
                 </li>
                 <li>
+                    <a href="{{ route('broadcast.index') }}" class="{{ areActiveRoutesHome(['broadcast.index'])}}">
+                        <i class="la la-image"></i>
+                        <span class="category-name">
+                            {{__('Broadcast Proof')}}
+                        </span>
+                    </a>
+                </li>
+                <li>
                     <a href="{{ route('wishlists.index') }}" class="{{ areActiveRoutesHome(['wishlists.index'])}}">
                         <i class="la la-heart-o"></i>
                         <span class="category-name">
@@ -37,6 +45,29 @@
                         </span>
                     </a>
                 </li>
+                <li>
+                    <a href="{{ route('profile') }}" class="{{ areActiveRoutesHome(['profile'])}}">
+                        <i class="la la-user"></i>
+                        <span class="category-name">
+                            {{__('Manage Profile')}}
+                        </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('support_ticket.index') }}" class="{{ areActiveRoutesHome(['support_ticket.index', 'support_ticket.show'])}}">
+                        <i class="la la-support"></i>
+                        <span class="category-name">
+                            {{__('Support Ticket')}}
+                        </span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="sidebar-widget-title py-3">
+            <span>{{__('Seller Menu')}}</span>
+        </div>
+        <div class="widget-profile-menu py3">
+            <ul class="categories categories--style-3">
                 <li>
                     <a href="{{ route('seller.products') }}" class="{{ areActiveRoutesHome(['seller.products', 'seller.products.upload', 'seller.products.edit'])}}">
                         <i class="la la-diamond"></i>
@@ -50,6 +81,14 @@
                         <i class="la la-file-text"></i>
                         <span class="category-name">
                             {{__('Orders')}}
+                        </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('broadcast_proof.index') }}" class="{{ areActiveRoutesHome(['broadcast_proof.index'])}}">
+                        <i class="la la-image"></i>
+                        <span class="category-name">
+                            {{__('Bukti Tayang')}}
                         </span>
                     </a>
                 </li>
@@ -77,14 +116,6 @@
                         </span>
                     </a>
                 </li>
-                <li>
-                    <a href="{{ route('profile') }}" class="{{ areActiveRoutesHome(['profile'])}}">
-                        <i class="la la-user"></i>
-                        <span class="category-name">
-                            {{__('Manage Profile')}}
-                        </span>
-                    </a>
-                </li>
                 @if (\App\BusinessSetting::where('type', 'wallet_system')->first()->value == 1)
                     <li>
                         <a href="{{ route('wallet.index') }}" class="{{ areActiveRoutesHome(['wallet.index'])}}">
@@ -95,16 +126,9 @@
                         </a>
                     </li>
                 @endif
-                <li>
-                    <a href="{{ route('support_ticket.index') }}" class="{{ areActiveRoutesHome(['support_ticket.index', 'support_ticket.show'])}}">
-                        <i class="la la-support"></i>
-                        <span class="category-name">
-                            {{__('Support Ticket')}}
-                        </span>
-                    </a>
-                </li>
             </ul>
         </div>
+        
 
         <div class="sidebar-widget-title py-3">
             <span>{{__('Earnings')}}</span>

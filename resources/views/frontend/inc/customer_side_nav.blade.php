@@ -26,6 +26,14 @@
                     </a>
                 </li>
                 <li>
+                    <a href="{{ route('broadcast.index') }}" class="{{ areActiveRoutesHome(['broadcast.index'])}}">
+                        <i class="la la-image"></i>
+                        <span class="category-name">
+                            {{__('Broadcast Proof')}}
+                        </span>
+                    </a>
+                </li>
+                <li>
                     <a href="{{ route('wishlists.index') }}" class="{{ areActiveRoutesHome(['wishlists.index'])}}">
                         <i class="la la-heart-o"></i>
                         <span class="category-name">

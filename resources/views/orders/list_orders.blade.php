@@ -56,16 +56,18 @@
                         <td>
                             @if ($order->status_order == 0)
                                 <span class="badge badge-warning">Disapproved</span>
-                            @elseif($order->status_order == 1)
+                            @elseif ($order->status_order == 1)
                                 <span class="badge badge-secondary">Reviewed</span>
-                            @elseif($order->status_order == 2)
+                            @elseif ($order->status_order == 2)
                                 <span class="badge badge-primary">Approved</span>
-                            @elseif($order->status_order == 3)
+                            @elseif ($order->status_order == 3)
                                 <span class="badge badge-warning">Disapproved</span>
-                            @elseif($order->status_order == 4)
-                                <span class="badge badge-success">Completed</span>
-                            @elseif($order->status_order == 4)
-                                <span class="badge badge-danger">Completed</span>
+                            @elseif ($order->status_order == 4)
+                                <span class="badge badge-info">Aired</span>
+                            @elseif ($order->status_order == 5)
+                                <span class="badge badge-success">Complete</span>
+                            @elseif ($order->status_order == 6)
+                                <span class="badge badge-danger">Cancelled</span>
                             @endif
                         </td>
                         <td>
