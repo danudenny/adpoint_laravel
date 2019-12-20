@@ -13,22 +13,25 @@
         <form class="form-horizontal" action="{{ route('staffs.store') }}" method="POST" enctype="multipart/form-data">
         	@csrf
             <div class="panel-body">
-                <div class="form-group">
+                <div class="form-group{{ $errors->has('name') ? 'has-error' : ''}}">
                     <label class="col-sm-3 control-label" for="name">{{__('Name')}}</label>
                     <div class="col-sm-9">
-                        <input type="text" placeholder="{{__('Name')}}" id="name" name="name" class="form-control" required>
+                        <input type="text" placeholder="{{__('Name')}}" id="name" name="name" class="form-control">
+                        <strong class="text-danger">{!! $errors->first('name', '<p class="help-block">:message</p>') !!}</strong>
                     </div>
                 </div>
-                <div class="form-group">
+                <div class="form-group{{ $errors->has('email') ? 'has-error' : ''}}">
                     <label class="col-sm-3 control-label" for="email">{{__('Email')}}</label>
                     <div class="col-sm-9">
                         <input type="text" placeholder="{{__('Email')}}" id="email" name="email" class="form-control" required>
+                        <strong class="text-danger">{!! $errors->first('email', '<p class="help-block">:message</p>') !!}</strong>
                     </div>
                 </div>
-                <div class="form-group">
+                <div class="form-group{{ $errors->has('password') ? 'has-error' : ''}}">
                     <label class="col-sm-3 control-label" for="password">{{__('Password')}}</label>
                     <div class="col-sm-9">
                         <input type="password" placeholder="{{__('Password')}}" id="password" name="password" class="form-control" required>
+                        <strong class="text-danger">{!! $errors->first('password', '<p class="help-block">:message</p>') !!}</strong>
                     </div>
                 </div>
                 <div class="form-group">

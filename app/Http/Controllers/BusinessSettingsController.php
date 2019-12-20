@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Currency;
 use App\BusinessSetting;
+use App\User;
+use App\Seller;
+use DB;
 
 class BusinessSettingsController extends Controller
 {
@@ -172,6 +175,7 @@ class BusinessSettingsController extends Controller
                     $type.'="'.env($type).'"', $type.'='.$val, file_get_contents($path)
                 ));
             }
+
             else{
                 file_put_contents($path, file_get_contents($path).$type.'='.$val);
             }
@@ -231,7 +235,6 @@ class BusinessSettingsController extends Controller
 
     public function updateActivationSettings(Request $request)
     {
-        dd($request->type);
         $business_settings = BusinessSetting::where('type', $request->type)->first();
         if($business_settings!=null){
             $business_settings->value = $request->value;
@@ -249,16 +252,22 @@ class BusinessSettingsController extends Controller
     public function vendor_commission(Request $request)
     {
         $business_settings = BusinessSetting::where('type', 'vendor_commission')->first();
-        return view('business_settings.vendor_commission', compact('business_settings'));
+        $sellers = DB::table('users as u')
+                        ->join('sellers as s', 's.user_id', '=', 'u.id')
+                        ->select([
+                            's.user_id',
+                            's.commission',
+                            'u.name'
+                        ])->get();
+        return view('business_settings.vendor_commission', compact('business_settings','sellers'));
     }
 
     public function vendor_commission_update(Request $request){
-        $business_settings = BusinessSetting::where('type', $request->type)->first();
-        $business_settings->type = $request->type;
-        $business_settings->value = $request->value;
-        $business_settings->save();
-
-        flash('Seller Commission updated successfully')->success();
-        return back();
+        $seller = Seller::where('user_id', $request->user_id)->first();
+        if ($seller != null) {
+            $seller->commission = $request->commission;
+            $seller->updated_at = time();
+            $seller->save();
+        }
     }
 }

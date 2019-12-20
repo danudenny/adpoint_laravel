@@ -105,6 +105,9 @@
                     @endauth
                 </div>
                 <div class="side-menu-list px-3">
+                    <div class="sidebar-widget-title py-0 mt-2">
+                        <span>{{__('Buyer Menu')}}</span>
+                    </div>
                     <ul class="side-user-menu">
                         <li>
                             <a href="{{ route('home') }}">
@@ -124,6 +127,56 @@
                             <a href="{{ route('purchase_history.index') }}">
                                 <i class="la la-file-text"></i>
                                 <span>{{__('Purchase History')}}</span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="{{ route('broadcast.index') }}">
+                                <i class="la la-image"></i>
+                                <span>{{__('Broadcast Proof')}}</span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="{{ route('wishlists.index') }}">
+                                <i class="la la-heart-o"></i>
+                                <span>{{__('Wishlist')}}</span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="{{ route('profile') }}">
+                                <i class="la la-user"></i>
+                                <span>{{__('Manage Profile')}}</span>
+                            </a>
+                        </li>
+                        
+
+                        @if (\App\BusinessSetting::where('type', 'wallet_system')->first()->value == 1)
+                            <li>
+                                <a href="{{ route('wallet.index') }}">
+                                    <i class="la la-dollar"></i>
+                                    <span>{{__('My Wallet')}}</span>
+                                </a>
+                            </li>
+                        @endif
+
+                        @if (\App\BusinessSetting::where('type', 'wallet_system')->first()->value == 1)
+                            <li>
+                                <a href="{{ route('wallet.index') }}" class="{{ areActiveRoutesHome(['wallet.index'])}}">
+                                    <i class="la la-dollar"></i>
+                                    <span class="category-name">
+                                        {{__('My Wallet')}}
+                                    </span>
+                                </a>
+                            </li>
+                        @endif
+                        <li>
+                            <a href="{{ route('support_ticket.index') }}" class="{{ areActiveRoutesHome(['support_ticket.index', 'support_ticket.show'])}}">
+                                <i class="la la-support"></i>
+                                <span class="category-name">
+                                    {{__('Support Ticket')}}
+                                </span>
                             </a>
                         </li>
 
@@ -149,52 +202,11 @@
                                 @endif
                             </a>
                         </li>
-                        <li>
-                            <a href="{{ route('wishlists.index') }}">
-                                <i class="la la-heart-o"></i>
-                                <span>{{__('Wishlist')}}</span>
-                            </a>
-                        </li>
-
-                        @if (\App\BusinessSetting::where('type', 'wallet_system')->first()->value == 1)
-                            <li>
-                                <a href="{{ route('wallet.index') }}">
-                                    <i class="la la-dollar"></i>
-                                    <span>{{__('My Wallet')}}</span>
-                                </a>
-                            </li>
-                        @endif
-
-                        <li>
-                            <a href="{{ route('profile') }}">
-                                <i class="la la-user"></i>
-                                <span>{{__('Manage Profile')}}</span>
-                            </a>
-                        </li>
-
-                        @if (\App\BusinessSetting::where('type', 'wallet_system')->first()->value == 1)
-                            <li>
-                                <a href="{{ route('wallet.index') }}" class="{{ areActiveRoutesHome(['wallet.index'])}}">
-                                    <i class="la la-dollar"></i>
-                                    <span class="category-name">
-                                        {{__('My Wallet')}}
-                                    </span>
-                                </a>
-                            </li>
-                        @endif
-                        <li>
-                            <a href="{{ route('support_ticket.index') }}" class="{{ areActiveRoutesHome(['support_ticket.index', 'support_ticket.show'])}}">
-                                <i class="la la-support"></i>
-                                <span class="category-name">
-                                    {{__('Support Ticket')}}
-                                </span>
-                            </a>
-                        </li>
 
                     </ul>
                     @if (Auth::check() && Auth::user()->user_type == 'seller')
                         <div class="sidebar-widget-title py-0">
-                            <span>{{__('Shop Options')}}</span>
+                            <span>{{__('Seller Menu')}}</span>
                         </div>
                         <ul class="side-seller-menu">
                             <li>
@@ -208,6 +220,20 @@
                                 <a href="{{ route('orders.index') }}">
                                     <i class="la la-file-text"></i>
                                     <span>{{__('Orders')}}</span>
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="{{ route('broadcast_proof.index') }}">
+                                    <i class="la la-image"></i>
+                                    <span>{{__('Bukti Tayang')}}</span>
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="{{ route('reviews.seller') }}">
+                                    <i class="la la-star-o"></i>
+                                    <span>{{__('Product Reviews')}}</span>
                                 </a>
                             </li>
 

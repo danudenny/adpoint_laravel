@@ -77,6 +77,7 @@
             else{
                 var value = 0;
             }
+            console.log(value);
             $.post('{{ route('business_settings.update.activation') }}', {_token:'{{ csrf_token() }}', type:type, value:value}, function(data){
                 if(data == '1'){
                     showAlert('success', 'Settings updated successfully');
