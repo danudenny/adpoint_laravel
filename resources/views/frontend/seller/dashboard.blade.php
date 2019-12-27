@@ -35,7 +35,7 @@
                                 <div class="dashboard-widget text-center green-widget mt-4 c-pointer">
                                     <a href="javascript:;" class="d-block">
                                         <i class="fa fa-upload"></i>
-                                        <span class="d-block title heading-3 strong-400">{{ count(\App\Product::where('user_id', Auth::user()->id)->get()) }}</span>
+                                        <span class="d-block title heading-6 strong-400">{{ count(\App\Product::where('user_id', Auth::user()->id)->get()) }}</span>
                                         <span class="d-block sub-title">{{__('Products')}}</span>
                                     </a>
                                 </div>
@@ -44,7 +44,7 @@
                                 <div class="dashboard-widget text-center red-widget mt-4 c-pointer">
                                     <a href="javascript:;" class="d-block">
                                         <i class="fa fa-cart-plus"></i>
-                                        <span class="d-block title heading-3 strong-400">{{ count(\App\OrderDetail::where('seller_id', Auth::user()->id)->where('delivery_status', 'delivered')->get()) }}</span>
+                                        <span class="d-block title heading-6 strong-400">{{ count(\App\OrderDetail::where('seller_id', Auth::user()->id)->where('delivery_status', 'delivered')->get()) }}</span>
                                         <span class="d-block sub-title">{{__('Total sale')}}</span>
                                     </a>
                                 </div>
@@ -62,7 +62,7 @@
                                                 }
                                             }
                                         @endphp
-                                        <span class="d-block title heading-3 strong-400">{{ single_price($total) }}</span>
+                                        <span class="d-block title heading-6 strong-400">{{ single_price($total) }}</span>
                                         <span class="d-block sub-title">{{__('Total earnings')}}</span>
                                     </a>
                                 </div>
@@ -71,7 +71,7 @@
                                 <div class="dashboard-widget text-center yellow-widget mt-4 c-pointer">
                                     <a href="javascript:;" class="d-block">
                                         <i class="fa fa-check-square-o"></i>
-                                        <span class="d-block title heading-3 strong-400">{{ count(\App\OrderDetail::where('seller_id', Auth::user()->id)->where('delivery_status', 'delivered')->get()) }}</span>
+                                        <span class="d-block title heading-6 strong-400">{{ count(\App\OrderDetail::where('seller_id', Auth::user()->id)->where('delivery_status', 'delivered')->get()) }}</span>
                                         <span class="d-block sub-title">{{__('Successful orders')}}</span>
                                     </a>
                                 </div>

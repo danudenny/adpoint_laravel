@@ -54,7 +54,7 @@
                                                     </div>
                                                     <div class="form-group">
                                                         <label>Nama Bank</label>
-                                                        <select class="form-control selectpicker" name="nama_bank" ata-show-subtext="true" data-live-search="true">
+                                                        <select class="form-control selectpicker" name="nama_bank" data-show-subtext="true" data-live-search="true">
                                                             @foreach (App\Bank::all() as $key => $b)
                                                                 <option data-subtext="{{$b->name}}" value="{{ $b->name }}">{{ $b->name }}</option>
                                                             @endforeach
