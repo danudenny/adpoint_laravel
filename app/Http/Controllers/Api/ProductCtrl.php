@@ -178,25 +178,180 @@ class ProductCtrl extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @OA\Put(
+     *      path="/product/edit/{id}",
+     *      operationId="Edit product",
+     *      tags={"Products"},
+     *      summary="Edit of the product by id",
+     *      security={{"bearerAuth":{}}},
+     *      @OA\Parameter(
+     *          description="ID of edit product",
+     *          in="path",
+     *          name="id",
+     *          required=true,
+     *          @OA\Schema(
+     *              type="integer",
+     *              format="int64"
+     *          )
+     *      ),
+     *      @OA\RequestBody(
+     *          @OA\JsonContent(ref="#/components/schemas/ProductSchema")
+     *      ),
+     *      @OA\Response(response="200",description="ok"),
+     *      @OA\Response(response="401",description="unauthorized")
+     * )
      */
     public function update(Request $request, $id)
     {
-        //
+        $product = Product::where('id', $id)->first();
+        if ($product != null) {
+            $product->name = $request->name;
+            $product->added_by = $request->added_by;
+            $product->user_id = $request->user_id;
+            $product->category_id = $request->category_id;
+            $product->subcategory_id = $request->subcategory_id;
+            $product->brand_id = $request->brand_id;
+
+            // edit photos
+            $photos = json_decode($product->photos);            
+            if ($photos != null) {
+                foreach ($photos as $key => $p) {
+                    $this->delete_file($p);
+                }
+            }
+            $product->photos = json_encode($request->photos);
+            // end edit photos
+
+            if ($product->thumbnail_img != null) {
+                $this->delete_file($product->thumbnail_img);
+                $product->thumbnail_img = $request->thumbnail_img;
+            }
+
+            if ($product->featured_img != null) {
+                $this->delete_file($product->featured_img);
+                $product->featured_img = $request->featured_img;
+            }
+
+            if ($product->flash_deal_img != null) {
+                $this->delete_file($product->flash_deal_img);
+                $product->flash_deal_img = $request->flash_deal_img;
+            }
+
+            $colors = [];
+            $product->colors = json_encode($colors);
+            $product->tags = $request->tags;
+            $product->description = $request->description;
+            $product->video_provider = $request->video_provider;
+            $product->video_link = $request->video_link;
+            $product->unit_price = $request->unit_price;
+            $product->choice_options = json_encode($request->choice_options);
+            $product->variations = json_encode($request->variations);
+            $product->tax = $request->tax;
+            $product->tax_type = $request->tax_type;
+            $product->discount = $request->discount;
+            $product->discount_type = $request->discount_type;
+            $product->meta_title = $request->meta_title;
+            $product->meta_description = $request->meta_description;
+            
+            if ($product->meta_img != null) {
+                $this->delete_file($product->meta_img);
+                $product->meta_img = $request->meta_img;
+            }
+
+            if ($product->pdf != null) {
+                $this->delete_file($product->pdf);
+                $product->pdf = $request->pdf;
+            }
+
+            $product->slug = preg_replace('/[^A-Za-z0-9\-]/', '', str_replace(' ', '-', $request->name)).'-'.str_random(5);
+            $product->latlong = $request->latlong;
+            $product->alamat = $request->alamat;
+            $product->provinsi = $request->provinsi;
+            $product->kota = $request->kota;
+            $product->kecamatan = $request->kecamatan;
+            $product->audien_target = $request->audien_target;
+            $product->statistik_masyarakat = $request->statistik_masyarakat;
+            $product->jumlah_pendengarradio = $request->jumlah_pendengarradio;
+            $product->target_pendengarradio = $request->target_pendengarradio;
+            if ($product->save()) {
+                return response()->json([
+                    'data' => $product,
+                    'success' => true,
+                    'message' => 'Data berhasil diedit'
+                ], 200);
+            }
+        }else{
+            return response()->json([
+                'success' => false,
+                'message' => 'Data tidak ada'
+            ], 401);
+        }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+    private function delete_file($filename)
+    {
+        $path = public_path().'/'.$filename;
+        if (file_exists($path)) {
+            unlink($path);    
+        }
+    }
+
+     /**
+     * @OA\Delete(
+     *     path="/product/{id}",
+     *     operationId="Delete product by id",
+     *     tags={"Products"},
+     *     summary="Delete product by id",
+     *     security={{"bearerAuth":{}}},
+     *     @OA\Parameter(
+     *         description="brand id",
+     *         in="path",
+     *         name="id",
+     *         @OA\Schema(
+     *           type="integer",
+     *           format="int64"
+     *         )
+     *     ),
+     *     @OA\Response(response="200",description="ok"),
+     *     @OA\Response(response="401",description="unauthorized")
+     * )
+    */
     public function destroy($id)
     {
-        //
+        $product = Product::where('id',$id)->first();
+        if ($product != null) {
+            if (Product::destroy($id)) {
+                $photos = json_decode($product->photos);            
+                if ($photos != null) {
+                    foreach ($photos as $key => $p) {
+                        $this->delete_file($p);
+                    }
+                }
+                if ($product->thumbnail_img != null) {
+                    $this->delete_file($product->thumbnail_img);
+                }
+                if ($product->featured_img != null) {
+                    $this->delete_file($product->featured_img);
+                }
+                if ($product->flash_deal_img != null) {
+                    $this->delete_file($product->flash_deal_img);
+                }
+                if ($product->meta_img != null) {
+                    $this->delete_file($product->meta_img);
+                }
+                if ($product->pdf != null) {
+                    $this->delete_file($product->pdf);
+                }
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Data berhasil dihapus'
+                ], 200);
+            }
+        }else{
+            return response()->json([
+                'success' => false,
+                'message' => 'Data tidak ada'
+            ], 401);
+        }
     }
 }
