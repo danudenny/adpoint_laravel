@@ -1,0 +1,1218 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Laravel Adpoint API",
+        "contact": {
+            "email": "alkhamilnaz@gmail.com"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://127.0.0.1:8000/api",
+            "description": "Laravel Adpoint API"
+        },
+        {
+            "url": "https://127.0.0.1:8000/api",
+            "description": "Laravel Adpoint API"
+        }
+    ],
+    "paths": {
+        "/brands": {
+            "get": {
+                "tags": [
+                    "Brands"
+                ],
+                "summary": "Display a listing of the brands",
+                "operationId": "list brands",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page number",
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/brand/add": {
+            "post": {
+                "tags": [
+                    "Brands"
+                ],
+                "summary": "Add Brand",
+                "operationId": "Add Brand",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/BrandSchema"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/brand/{id}": {
+            "get": {
+                "tags": [
+                    "Brands"
+                ],
+                "summary": "Display a listing of the brand by id",
+                "operationId": "list brand by id",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of brand to return",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Brands"
+                ],
+                "summary": "Delete brand by id",
+                "operationId": "Delete brand by id",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "brand id",
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/brand/edit/{id}": {
+            "put": {
+                "tags": [
+                    "Brands"
+                ],
+                "summary": "Edit of the brand by id",
+                "operationId": "Edit brand",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of edit brand",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/BrandSchema"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/categories": {
+            "get": {
+                "tags": [
+                    "Categories"
+                ],
+                "summary": "Display a listing of the categories",
+                "operationId": "list categories",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page number",
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/category/add": {
+            "post": {
+                "tags": [
+                    "Categories"
+                ],
+                "summary": "Add Category",
+                "operationId": "Add Category",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CategorySchema"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/category/{id}": {
+            "get": {
+                "tags": [
+                    "Categories"
+                ],
+                "summary": "Display a listing of the category by id",
+                "operationId": "list category by id",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of category to return",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Categories"
+                ],
+                "summary": "Delete category by id",
+                "operationId": "Delete category by id",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "category id",
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/category/edit/{id}": {
+            "put": {
+                "tags": [
+                    "Categories"
+                ],
+                "summary": "Edit of the category by id",
+                "operationId": "Edit category",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of edit category",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CategorySchema"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/login": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Login user",
+                "operationId": "Login user",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object",
+                                "example": {
+                                    "email": "nazmudin@imaniprima.com",
+                                    "password": "nazmudin"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    }
+                }
+            }
+        },
+        "/products": {
+            "get": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Display a listing of the products",
+                "operationId": "list products",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page number",
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/product/add": {
+            "post": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Add Product",
+                "operationId": "Add Product",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ProductSchema"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/product/{id}": {
+            "get": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Display a listing of the product by id",
+                "operationId": "list product by id",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of product to return",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/register": {
+            "post": {
+                "tags": [
+                    "Registrasi"
+                ],
+                "summary": "Register user",
+                "operationId": "Registration user",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string"
+                                    },
+                                    "password_confirmation": {
+                                        "type": "string"
+                                    },
+                                    "ktp": {
+                                        "type": "string"
+                                    },
+                                    "npwp": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    }
+                }
+            }
+        },
+        "/subcategories": {
+            "get": {
+                "tags": [
+                    "Sub Categories"
+                ],
+                "summary": "Display a listing of the subcategories",
+                "operationId": "list subcategories",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page number",
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/subcategory/add": {
+            "post": {
+                "tags": [
+                    "Sub Categories"
+                ],
+                "summary": "Add Subcategory",
+                "operationId": "Add Subcategory",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SubCategorySchema"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/subcategory/{id}": {
+            "get": {
+                "tags": [
+                    "Sub Categories"
+                ],
+                "summary": "Display a listing of the subcategory by id",
+                "operationId": "list subcategory by id",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of subcategory to return",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Sub Categories"
+                ],
+                "summary": "Delete subcategory by id",
+                "operationId": "Delete subcategory by id",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "subcategory id",
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/subcategory/edit/{id}": {
+            "put": {
+                "tags": [
+                    "Sub Categories"
+                ],
+                "summary": "Edit of the subcategory by id",
+                "operationId": "Edit subcategory",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of edit subcategory",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SubCategorySchema"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/upload": {
+            "post": {
+                "tags": [
+                    "Upload Media"
+                ],
+                "summary": "Upload image and file",
+                "operationId": "Upload image and file",
+                "parameters": [
+                    {
+                        "name": "parent",
+                        "in": "query",
+                        "description": "directory parent ( users/brands/categories/products )",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "child",
+                        "in": "query",
+                        "description": "directory child ( users:ktp/npwp | brands:logo | categories:banner/icon | products:photos/thumbnail/featured/flashdeal/meta/pdf  )",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "file"
+                                ],
+                                "properties": {
+                                    "file": {
+                                        "type": "file",
+                                        "items": {
+                                            "type": "string",
+                                            "format": "binary"
+                                        }
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/users": {
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Display a listing of the user",
+                "operationId": "list user",
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/user/{id}": {
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Display a listing of the user by id",
+                "operationId": "list user by id",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of user to return",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "BrandSchema": {
+                "title": "Brand",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 0
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "MCM Media"
+                    },
+                    "logo": {
+                        "type": "string",
+                        "example": "uploads/logo.jpg"
+                    },
+                    "slug": {
+                        "type": "string",
+                        "example": "MCM Media"
+                    },
+                    "meta_title": {
+                        "type": "string",
+                        "example": "MCM Media"
+                    },
+                    "meta_description": {
+                        "type": "string",
+                        "example": "MCM Media"
+                    }
+                },
+                "type": "object"
+            },
+            "CategorySchema": {
+                "title": "Category",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 0
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "Videotron"
+                    },
+                    "banner": {
+                        "type": "string",
+                        "example": "uploads/icon.jpg"
+                    },
+                    "icon": {
+                        "type": "string",
+                        "example": "uploads/banner.jpg"
+                    },
+                    "slug": {
+                        "type": "string",
+                        "example": "Videotron"
+                    },
+                    "meta_title": {
+                        "type": "string",
+                        "example": "Videotron"
+                    },
+                    "meta_description": {
+                        "type": "string",
+                        "example": "Videotron"
+                    }
+                },
+                "type": "object"
+            },
+            "ProductSchema": {
+                "title": "Products",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 0
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "Billboard Cilandak"
+                    },
+                    "added_by": {
+                        "type": "string",
+                        "example": "seller"
+                    },
+                    "user_id": {
+                        "type": "string",
+                        "example": "20"
+                    },
+                    "category_id": {
+                        "type": "string",
+                        "example": "5"
+                    },
+                    "subcategory_id": {
+                        "type": "string",
+                        "example": "2"
+                    },
+                    "brand_id": {
+                        "type": "string",
+                        "example": "7"
+                    },
+                    "photos": {
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "example": "uploads/foto1.jpg"
+                        },
+                        "collectionFormat": "multi",
+                        "enum": [
+                            "uploads\\/products\\/photos\\/img1.png",
+                            "uploads\\/products\\/photos\\/img2.png"
+                        ]
+                    },
+                    "thumbnail_img": {
+                        "type": "string",
+                        "example": "uploads/thumbnail_img.png"
+                    },
+                    "featured_img": {
+                        "type": "string",
+                        "example": "uploads/featured_img.png"
+                    },
+                    "flash_deal_img": {
+                        "type": "string",
+                        "example": "uploads/flash_deal_img.png"
+                    },
+                    "tags": {
+                        "type": "string",
+                        "example": "billboard,baleho,cilandak"
+                    },
+                    "description": {
+                        "type": "text",
+                        "example": "<p>description</p>"
+                    },
+                    "video_provider": {
+                        "type": "string",
+                        "example": "youtobe"
+                    },
+                    "video_link": {
+                        "type": "string",
+                        "example": "https://www.youtube.com/watch?v=qn8HDW68cIk&t=979s"
+                    },
+                    "unit_price": {
+                        "type": "string",
+                        "example": "30000000"
+                    },
+                    "choice_options": {
+                        "type": "array",
+                        "items": {
+                            "properties": {
+                                "title": {
+                                    "type": "string",
+                                    "example": "Periode"
+                                },
+                                "options": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string",
+                                        "example": "Bulanan"
+                                    },
+                                    "collectionFormat": "multi",
+                                    "enum": [
+                                        "Bulanan",
+                                        "Tahunan"
+                                    ]
+                                }
+                            },
+                            "type": "object"
+                        }
+                    },
+                    "variations": {
+                        "properties": {
+                            "Harian": {
+                                "properties": {
+                                    "price": {
+                                        "type": "string",
+                                        "example": "1000"
+                                    },
+                                    "sku": {
+                                        "type": "string",
+                                        "example": "BH-Harian"
+                                    },
+                                    "qty": {
+                                        "type": "string",
+                                        "example": "1000"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        },
+                        "type": "object"
+                    },
+                    "tax": {
+                        "type": "string",
+                        "example": "10"
+                    },
+                    "tax_type": {
+                        "type": "string",
+                        "example": "amount"
+                    },
+                    "discount": {
+                        "type": "string",
+                        "example": null
+                    },
+                    "discount_type": {
+                        "type": "string",
+                        "example": null
+                    },
+                    "meta_title": {
+                        "type": "string",
+                        "example": "Billboard Cilandak"
+                    },
+                    "meta_description": {
+                        "type": "string",
+                        "example": "Billboard Cilandak"
+                    },
+                    "meta_img": {
+                        "type": "string",
+                        "example": "uploads/meta_img.png"
+                    },
+                    "pdf": {
+                        "type": "string",
+                        "example": "uploads/document.pdf"
+                    },
+                    "slug": {
+                        "type": "string",
+                        "example": "Billboard-Cilandak"
+                    },
+                    "latlong": {
+                        "type": "string",
+                        "example": "-6.881291,107.58345299999996"
+                    },
+                    "alamat": {
+                        "type": "text",
+                        "example": "Komplek Setra Sari Mall Blok C3 No. 35"
+                    },
+                    "provinsi": {
+                        "type": "string",
+                        "example": "Jawa Barat"
+                    },
+                    "kota": {
+                        "type": "string",
+                        "example": "Bogor"
+                    },
+                    "kecamatan": {
+                        "type": "string",
+                        "example": "Leuwiliang"
+                    },
+                    "audien_target": {
+                        "type": "text",
+                        "example": "pengguna jalan"
+                    },
+                    "statistik_masyarakat": {
+                        "type": "text",
+                        "example": "Wirausaha:orang|Swasta:orang"
+                    },
+                    "jumlah_pendengarradio": {
+                        "type": "string",
+                        "example": "20"
+                    },
+                    "target_pendengarradio": {
+                        "type": "string",
+                        "example": "Wirausaha:orang|Swasta:orang"
+                    }
+                },
+                "type": "object"
+            },
+            "SubCategorySchema": {
+                "title": "Sub Category",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 0
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "Horizontal"
+                    },
+                    "category_id": {
+                        "type": "integer",
+                        "example": "1"
+                    },
+                    "slug": {
+                        "type": "string",
+                        "example": "Videotron"
+                    },
+                    "brands": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "collectionFormat": "multi",
+                        "enum": [
+                            "7",
+                            "4",
+                            "3"
+                        ]
+                    },
+                    "meta_title": {
+                        "type": "string",
+                        "example": "Videotron"
+                    },
+                    "meta_description": {
+                        "type": "string",
+                        "example": "Videotron"
+                    }
+                },
+                "type": "object"
+            },
+            "UserSchema": {
+                "title": "User",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 0
+                    },
+                    "user_type": {
+                        "type": "collection",
+                        "enum": [
+                            "customer",
+                            "seller",
+                            "admin"
+                        ]
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "adpoint"
+                    },
+                    "email": {
+                        "type": "string",
+                        "example": "adpoint@gmail.com"
+                    },
+                    "password": {
+                        "type": "string",
+                        "example": "password"
+                    },
+                    "avatar_original": {
+                        "type": "string",
+                        "example": "uploads/avatar.png"
+                    },
+                    "address": {
+                        "type": "string",
+                        "example": "Jalan Gotong Royong I No 10"
+                    },
+                    "country": {
+                        "type": "string",
+                        "example": "ID"
+                    },
+                    "city": {
+                        "type": "string",
+                        "example": "Jakarta Selatan"
+                    },
+                    "postal_code": {
+                        "type": "string",
+                        "example": "12560"
+                    },
+                    "phone": {
+                        "type": "string",
+                        "example": "628128999009"
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "responses": {
+            "200": {
+                "description": "ok"
+            },
+            "401": {
+                "description": "bad"
+            }
+        },
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "scheme": "bearer"
+            }
+        }
+    }
+}
