@@ -23,10 +23,15 @@ Route::group(['middleware' => ['auth.jwt','jsonify']], function () {
     Route::get('users', 'Api\UserCtrl@index');
     Route::get('user/{id}', 'Api\UserCtrl@show');
 
+    // Upload Services
+    Route::post('upload', 'Api\UploadCtrl@single_upload');
+
     // Product
     Route::get('products', 'Api\ProductCtrl@index');
     Route::get('product/{id}', 'Api\ProductCtrl@show');
     Route::post('product/add', 'Api\ProductCtrl@store');
+    Route::put('product/edit/{id}', 'Api\ProductCtrl@update');
+    Route::delete('product/{id}', 'Api\ProductCtrl@destroy');
     
     // Brands
     Route::get('brands', 'Api\BrandCtrl@index');
@@ -49,7 +54,18 @@ Route::group(['middleware' => ['auth.jwt','jsonify']], function () {
     Route::put('subcategory/edit/{id}', 'Api\SubCategoryCtrl@update');
     Route::delete('subcategory/{id}', 'Api\SubCategoryCtrl@destroy');
 
-    // Upload Services
-    Route::post('upload', 'Api\UploadCtrl@single_upload');
+    // Flashdeal
+    Route::get('flashdeals', 'Api\FlashDealCtrl@index');
+    Route::get('flashdeal/{id}', 'Api\FlashDealCtrl@show');
+    Route::get('flashdeal_products', 'Api\FlashDealCtrl@get_all_flashdeal_product');
+    Route::get('flashdeal_product/{id}', 'Api\FlashDealCtrl@get_flashdeal_prouduct_by_id');
+    Route::post('flashdeal/add', 'Api\FlashDealCtrl@store');
+    Route::put('flashdeal/edit/{id}', 'Api\FlashDealCtrl@update');
+    Route::delete('flashdeal/{id}', 'Api\FlashDealCtrl@destroy');
+
+    // Order
+    Route::get('orders', 'Api\OrderCtrl@index');
+
+
 
 });

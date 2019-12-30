@@ -366,6 +366,245 @@
                 ]
             }
         },
+        "/flashdeals": {
+            "get": {
+                "tags": [
+                    "Flash Deals"
+                ],
+                "summary": "Display a listing of the flashdeal",
+                "operationId": "list flashdeal",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page number",
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/flashdeal/add": {
+            "post": {
+                "tags": [
+                    "Flash Deals"
+                ],
+                "summary": "Add Flashdeal",
+                "operationId": "Add Flashdeal",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/FlashDealSchema"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/flashdeal/{id}": {
+            "get": {
+                "tags": [
+                    "Flash Deals"
+                ],
+                "summary": "Display a listing of the flashdeal by id",
+                "operationId": "list flashdeal by id",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of flashdeal to return",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Flash Deals"
+                ],
+                "summary": "Delete flashdeal by id",
+                "operationId": "Delete flashdeal by id",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "flashdeal id",
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/flashdeal_products": {
+            "get": {
+                "tags": [
+                    "Flash Deals"
+                ],
+                "summary": "Display a listing of the flashdeal products",
+                "operationId": "list flashdeal products",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page number",
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/flashdeal_product/{id}": {
+            "get": {
+                "tags": [
+                    "Flash Deals"
+                ],
+                "summary": "Display a listing of the flashdeal product by id",
+                "operationId": "list flashdeal product by id",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of flashdeal product to return",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/flashdeal/edit/{id}": {
+            "put": {
+                "tags": [
+                    "Flash Deals"
+                ],
+                "summary": "Edit of the flashdeal by id",
+                "operationId": "Edit flashdeal",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of edit brand",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/FlashDealSchema"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/login": {
             "post": {
                 "tags": [
@@ -402,6 +641,39 @@
                         "description": "unauthorized"
                     }
                 }
+            }
+        },
+        "/orders": {
+            "get": {
+                "tags": [
+                    "Orders"
+                ],
+                "summary": "Display a listing of the orders",
+                "operationId": "list orders",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page number",
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/products": {
@@ -487,6 +759,80 @@
                         }
                     }
                 ],
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Delete product by id",
+                "operationId": "Delete product by id",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "brand id",
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/product/edit/{id}": {
+            "put": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Edit of the product by id",
+                "operationId": "Edit product",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of edit product",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ProductSchema"
+                            }
+                        }
+                    }
+                },
                 "responses": {
                     "200": {
                         "description": "ok"
@@ -903,6 +1249,78 @@
                     "meta_description": {
                         "type": "string",
                         "example": "Videotron"
+                    }
+                },
+                "type": "object"
+            },
+            "FlashDealSchema": {
+                "title": "Flash Deal",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 0
+                    },
+                    "title": {
+                        "type": "string",
+                        "example": "flashdeal"
+                    },
+                    "start_date": {
+                        "type": "string",
+                        "example": "20 Dec 2019"
+                    },
+                    "end_date": {
+                        "type": "string",
+                        "example": "26 Dec 2019"
+                    },
+                    "products": {
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "example": "4"
+                        },
+                        "collectionFormat": "multi",
+                        "enum": [
+                            "4",
+                            "3"
+                        ]
+                    },
+                    "discount": {
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "example": "10"
+                        },
+                        "collectionFormat": "multi",
+                        "enum": [
+                            "10",
+                            "20"
+                        ]
+                    },
+                    "discount_type": {
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "example": "percent"
+                        },
+                        "collectionFormat": "multi",
+                        "enum": [
+                            "percent",
+                            "dollar"
+                        ]
+                    },
+                    "status": {
+                        "type": "string",
+                        "example": "0"
+                    }
+                },
+                "type": "object"
+            },
+            "OrderSchema": {
+                "title": "Order",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 0
                     }
                 },
                 "type": "object"
