@@ -836,6 +836,8 @@
 <script src="{{ asset('frontend/js/fb-script.js') }}"></script>
 <script src="{{ asset('frontend/js/moment.min.js') }}"></script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBsVHufr4pDssMKPVCFZO6yXe58oalrtHs&libraries=places"></script>
+<script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js">
+</script>
 @yield('script')
 
 
@@ -1096,7 +1098,7 @@
         }else if(idMap === 'dashboardMap'){
             map = new google.maps.Map(document.getElementById('dashboardMap'), {
                 center: {lat: -2.6000285, lng: 118.015776},
-                zoom: 10,
+                zoom: 15,
                 gestureHandling: 'greedy'
             });
 
@@ -1119,56 +1121,56 @@
                 var detail = '{{ url("/product/") }}';
                 var template = `<div class="card" style="width: 18rem; border: none">
                                 <div class="card-body pt-1 pb-1 pr-1 pl-1">
-                                    <a href="`+detail+ '/' + data.slug +`" target="_blank">
-                                        <strong class="text-primary text-uppercase">`+name+`</strong>
-                                        <br>
-                                        <br>
-                                        <img src="`+poto+`" class="card-img-top">
-                                    </a>
+                                    <strong class="text-primary text-uppercase">`+name+`</strong>
+                                    <br>
+                                    <br>
+                                    <img src="`+poto+`" class="card-img-top">
                                     <i class="fa fa-map-marker"></i>
                                     <small class="text-primary">`+alamat+`</small>
                                 </div>
                                 </div>`;
                 
                 var infowindow = new google.maps.InfoWindow({
-                    content: template
+                    content: template,
+                    disableAutoPan: true,
                 });
+
                 var lat = Number(latlong[0]);
                 var lng = Number(latlong[1]);
                 var posisi = {lat: lat, lng: lng};
+                
+
+                function markerByCategory(category_id){
+                    var icon = {
+                        url: base_url + '/marker/'+category_id+'.png',
+                        scaledSize: new google.maps.Size(40, 40),
+                        origin: new google.maps.Point(0,0), 
+                        anchor: new google.maps.Point(0,0)
+                    };
+                    return icon;
+                }
                 var marker = new google.maps.Marker({
                     position: posisi,
                     map: map,
-                    title: name
+                    icon: markerByCategory(data.category_id),
+                    title: name,
+                    url: detail+ '/' + data.slug,
+                    animation:google.maps.Animation.DROP
                 });
 
-                
-               
-                google.maps.event.addListener(marker, 'mouseover', (function(marker, template){
-                    return function(){
-                        infowindow.setContent(template);
-                        infowindow.open(map,marker);
-                    }
-                })(marker, template, infowindow));
+                // var markerCluster = new MarkerClusterer(map, marker,{imagePath: 'https://github.com/googlearchive/js-marker-clusterer/blob/gh-pages/images/m4.png'});
 
-                google.maps.event.addListener(marker, 'click', (function(marker, template){
-                    return function(){
-                        infowindow.setContent(template);
-                        infowindow.open(map,marker);
-                    }
-                })(marker, template, infowindow));
+                marker.addListener('mouseover', function() {
+                    infowindow.open(map, marker);
+                });
 
-                google.maps.event.addListener(marker, 'mouseout', (function(marker, template){
-                    return function(){
-                        setTimeout(function(){
-                            infowindow.close();
-                        }, 2000);
-                    }
-                })(marker, template, infowindow));
+                marker.addListener('mouseout', function() {
+                    infowindow.close();
+                });
 
-                markers.push(marker);
-
-                
+                marker.addListener('click', function() {
+                    window.open(marker.url);
+                })    
 
             });
             
