@@ -403,10 +403,10 @@ class OrderController extends Controller
         $data = [];
         foreach (Session::get('cart') as $sc) {
             array_push($cart, $sc);
-        }     
+        }
         foreach ($cart as $c) {
             $data[$c['user_id']][] = $c;
-        }
+        }    
 
         foreach ($data as $key => $d) {
             $order = new Order;

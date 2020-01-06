@@ -11,43 +11,48 @@ class UserSchema{
      */
     public $id;
     /**
-     * @OA\Property(property="user_type",type="collection",enum={"customer", "seller", "admin"})
+     * @OA\Property(
+     *      property="user_type",
+     *      type="array",
+     *      enum={"customer", "seller", "admin"},
+     *      @OA\Items(type="string", example="string")
+     * )
      */
     public $user_type;
      /**
-     * @OA\Property(property="name",type="string",example="adpoint")
+     * @OA\Property(property="name",type="string",example="string")
      */
     public $name;
      /**
-     * @OA\Property(property="email",type="string",example="adpoint@gmail.com")
+     * @OA\Property(property="email",type="string",example="string")
      */
     public $email;
      /**
-     * @OA\Property(property="password",type="string",example="password")
+     * @OA\Property(property="password",type="string",example="string")
      */
     public $password;
     /**
-     * @OA\Property(property="avatar_original",type="string",example="uploads/avatar.png")
+     * @OA\Property(property="avatar_original",type="string",example="string")
      */
     public $avatar_original;
     /**
-     * @OA\Property(property="address",type="string",example="Jalan Gotong Royong I No 10")
+     * @OA\Property(property="address",type="string",example="string")
      */
     public $address;
     /**
-     * @OA\Property(property="country",type="string",example="ID")
+     * @OA\Property(property="country",type="string",example="string")
      */
     public $country;
     /**
-     * @OA\Property(property="city",type="string",example="Jakarta Selatan")
+     * @OA\Property(property="city",type="string",example="string")
      */
     public $city;
      /**
-     * @OA\Property(property="postal_code",type="string",example="12560")
+     * @OA\Property(property="postal_code",type="string",example="string")
      */
     public $postal_code;
      /**
-     * @OA\Property(property="phone",type="string",example="628128999009")
+     * @OA\Property(property="phone",type="string",example="string")
      */
     public $phone;
 

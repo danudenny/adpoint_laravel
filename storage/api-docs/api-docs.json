@@ -151,6 +151,39 @@
                 ]
             }
         },
+        "/search_brand": {
+            "get": {
+                "tags": [
+                    "Brands"
+                ],
+                "summary": "Search brand by name",
+                "operationId": "Search brand by name",
+                "parameters": [
+                    {
+                        "name": "query",
+                        "in": "query",
+                        "description": "name of brand to return",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/brand/edit/{id}": {
             "put": {
                 "tags": [
@@ -655,6 +688,71 @@
                         "name": "page",
                         "in": "query",
                         "description": "Page number",
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/order/add": {
+            "post": {
+                "tags": [
+                    "Orders"
+                ],
+                "summary": "Add Brand",
+                "operationId": "Add Order",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/OrderSchema"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/order/{id}": {
+            "get": {
+                "tags": [
+                    "Orders"
+                ],
+                "summary": "Display a listing of the order by id",
+                "operationId": "list order by id",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of order to return",
+                        "required": true,
                         "schema": {
                             "type": "integer",
                             "format": "int64"
@@ -1198,23 +1296,23 @@
                     },
                     "name": {
                         "type": "string",
-                        "example": "MCM Media"
+                        "example": "string"
                     },
                     "logo": {
                         "type": "string",
-                        "example": "uploads/logo.jpg"
+                        "example": "string"
                     },
                     "slug": {
                         "type": "string",
-                        "example": "MCM Media"
+                        "example": "string"
                     },
                     "meta_title": {
                         "type": "string",
-                        "example": "MCM Media"
+                        "example": "string"
                     },
                     "meta_description": {
                         "type": "string",
-                        "example": "MCM Media"
+                        "example": "string"
                     }
                 },
                 "type": "object"
@@ -1228,27 +1326,27 @@
                     },
                     "name": {
                         "type": "string",
-                        "example": "Videotron"
+                        "example": "string"
                     },
                     "banner": {
                         "type": "string",
-                        "example": "uploads/icon.jpg"
+                        "example": "string"
                     },
                     "icon": {
                         "type": "string",
-                        "example": "uploads/banner.jpg"
+                        "example": "string"
                     },
                     "slug": {
                         "type": "string",
-                        "example": "Videotron"
+                        "example": "string"
                     },
                     "meta_title": {
                         "type": "string",
-                        "example": "Videotron"
+                        "example": "string"
                     },
                     "meta_description": {
                         "type": "string",
-                        "example": "Videotron"
+                        "example": "string"
                     }
                 },
                 "type": "object"
@@ -1262,21 +1360,21 @@
                     },
                     "title": {
                         "type": "string",
-                        "example": "flashdeal"
+                        "example": "string"
                     },
                     "start_date": {
                         "type": "string",
-                        "example": "20 Dec 2019"
+                        "example": "string"
                     },
                     "end_date": {
                         "type": "string",
-                        "example": "26 Dec 2019"
+                        "example": "string"
                     },
                     "products": {
                         "type": "array",
                         "items": {
                             "type": "string",
-                            "example": "4"
+                            "example": "string"
                         },
                         "collectionFormat": "multi",
                         "enum": [
@@ -1288,7 +1386,7 @@
                         "type": "array",
                         "items": {
                             "type": "string",
-                            "example": "10"
+                            "example": "string"
                         },
                         "collectionFormat": "multi",
                         "enum": [
@@ -1300,7 +1398,7 @@
                         "type": "array",
                         "items": {
                             "type": "string",
-                            "example": "percent"
+                            "example": "string"
                         },
                         "collectionFormat": "multi",
                         "enum": [
@@ -1310,7 +1408,7 @@
                     },
                     "status": {
                         "type": "string",
-                        "example": "0"
+                        "example": "string"
                     }
                 },
                 "type": "object"
@@ -1321,6 +1419,119 @@
                     "id": {
                         "type": "integer",
                         "example": 0
+                    },
+                    "user_id": {
+                        "type": "string",
+                        "example": "string"
+                    },
+                    "shipping_address": {
+                        "properties": {
+                            "name": {
+                                "type": "string",
+                                "example": "string"
+                            },
+                            "email": {
+                                "type": "string",
+                                "example": "string"
+                            },
+                            "address": {
+                                "type": "text",
+                                "example": "string"
+                            },
+                            "country": {
+                                "type": "string",
+                                "example": "string"
+                            },
+                            "city": {
+                                "type": "string",
+                                "example": "string"
+                            },
+                            "postal_code": {
+                                "type": "string",
+                                "example": "string"
+                            },
+                            "phone": {
+                                "type": "string",
+                                "example": "string"
+                            },
+                            "checkout_type": {
+                                "type": "string",
+                                "example": "string"
+                            }
+                        },
+                        "type": "object"
+                    },
+                    "payment_type": {
+                        "type": "string",
+                        "example": "string"
+                    },
+                    "file_advertising": {
+                        "type": "string",
+                        "example": "string"
+                    },
+                    "desc_advertising": {
+                        "type": "string",
+                        "example": "string"
+                    },
+                    "order_details": {
+                        "type": "array",
+                        "items": {
+                            "properties": {
+                                "seller_id": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "product_id": {
+                                                "type": "string",
+                                                "example": "string"
+                                            },
+                                            "user_id": {
+                                                "type": "string",
+                                                "example": "seller_id"
+                                            },
+                                            "periode": {
+                                                "type": "string",
+                                                "example": "string"
+                                            },
+                                            "quantity": {
+                                                "type": "integer",
+                                                "example": 0
+                                            },
+                                            "price": {
+                                                "type": "integer",
+                                                "example": 0
+                                            },
+                                            "tax": {
+                                                "type": "string",
+                                                "example": "string"
+                                            },
+                                            "shipping_type": {
+                                                "type": "string",
+                                                "example": "string"
+                                            },
+                                            "start_date": {
+                                                "type": "string",
+                                                "example": "string"
+                                            },
+                                            "end_date": {
+                                                "type": "string",
+                                                "example": "string"
+                                            },
+                                            "shipping": {
+                                                "type": "integer",
+                                                "example": 0
+                                            }
+                                        },
+                                        "type": "object"
+                                    },
+                                    "collectionFormat": "multi",
+                                    "enum": [
+                                        "{}"
+                                    ]
+                                }
+                            },
+                            "type": "object"
+                        }
                     }
                 },
                 "type": "object"
@@ -1334,71 +1545,71 @@
                     },
                     "name": {
                         "type": "string",
-                        "example": "Billboard Cilandak"
+                        "example": "string"
                     },
                     "added_by": {
                         "type": "string",
-                        "example": "seller"
+                        "example": "string"
                     },
                     "user_id": {
                         "type": "string",
-                        "example": "20"
+                        "example": "string"
                     },
                     "category_id": {
                         "type": "string",
-                        "example": "5"
+                        "example": "string"
                     },
                     "subcategory_id": {
                         "type": "string",
-                        "example": "2"
+                        "example": "string"
                     },
                     "brand_id": {
                         "type": "string",
-                        "example": "7"
+                        "example": "string"
                     },
                     "photos": {
                         "type": "array",
                         "items": {
                             "type": "string",
-                            "example": "uploads/foto1.jpg"
+                            "example": "string"
                         },
                         "collectionFormat": "multi",
                         "enum": [
-                            "uploads\\/products\\/photos\\/img1.png",
-                            "uploads\\/products\\/photos\\/img2.png"
+                            "uploads/products/photos/img1.png",
+                            "uploads/products/photos/img2.png"
                         ]
                     },
                     "thumbnail_img": {
                         "type": "string",
-                        "example": "uploads/thumbnail_img.png"
+                        "example": "string"
                     },
                     "featured_img": {
                         "type": "string",
-                        "example": "uploads/featured_img.png"
+                        "example": "string"
                     },
                     "flash_deal_img": {
                         "type": "string",
-                        "example": "uploads/flash_deal_img.png"
+                        "example": "string"
                     },
                     "tags": {
                         "type": "string",
-                        "example": "billboard,baleho,cilandak"
+                        "example": "string"
                     },
                     "description": {
                         "type": "text",
-                        "example": "<p>description</p>"
+                        "example": "string"
                     },
                     "video_provider": {
                         "type": "string",
-                        "example": "youtobe"
+                        "example": "string"
                     },
                     "video_link": {
                         "type": "string",
-                        "example": "https://www.youtube.com/watch?v=qn8HDW68cIk&t=979s"
+                        "example": "string"
                     },
                     "unit_price": {
                         "type": "string",
-                        "example": "30000000"
+                        "example": "string"
                     },
                     "choice_options": {
                         "type": "array",
@@ -1406,13 +1617,13 @@
                             "properties": {
                                 "title": {
                                     "type": "string",
-                                    "example": "Periode"
+                                    "example": "string"
                                 },
                                 "options": {
                                     "type": "array",
                                     "items": {
                                         "type": "string",
-                                        "example": "Bulanan"
+                                        "example": "string"
                                     },
                                     "collectionFormat": "multi",
                                     "enum": [
@@ -1426,19 +1637,19 @@
                     },
                     "variations": {
                         "properties": {
-                            "Harian": {
+                            "periode": {
                                 "properties": {
                                     "price": {
                                         "type": "string",
-                                        "example": "1000"
+                                        "example": "string"
                                     },
                                     "sku": {
                                         "type": "string",
-                                        "example": "BH-Harian"
+                                        "example": "string"
                                     },
                                     "qty": {
                                         "type": "string",
-                                        "example": "1000"
+                                        "example": "string"
                                     }
                                 },
                                 "type": "object"
@@ -1448,75 +1659,75 @@
                     },
                     "tax": {
                         "type": "string",
-                        "example": "10"
+                        "example": "string"
                     },
                     "tax_type": {
                         "type": "string",
-                        "example": "amount"
+                        "example": "string"
                     },
                     "discount": {
                         "type": "string",
-                        "example": null
+                        "example": "string"
                     },
                     "discount_type": {
                         "type": "string",
-                        "example": null
+                        "example": "string"
                     },
                     "meta_title": {
                         "type": "string",
-                        "example": "Billboard Cilandak"
+                        "example": "string"
                     },
                     "meta_description": {
                         "type": "string",
-                        "example": "Billboard Cilandak"
+                        "example": "string"
                     },
                     "meta_img": {
                         "type": "string",
-                        "example": "uploads/meta_img.png"
+                        "example": "string"
                     },
                     "pdf": {
                         "type": "string",
-                        "example": "uploads/document.pdf"
+                        "example": "string"
                     },
                     "slug": {
                         "type": "string",
-                        "example": "Billboard-Cilandak"
+                        "example": "string"
                     },
                     "latlong": {
                         "type": "string",
-                        "example": "-6.881291,107.58345299999996"
+                        "example": "string"
                     },
                     "alamat": {
-                        "type": "text",
-                        "example": "Komplek Setra Sari Mall Blok C3 No. 35"
+                        "type": "string",
+                        "example": "string"
                     },
                     "provinsi": {
                         "type": "string",
-                        "example": "Jawa Barat"
+                        "example": "string"
                     },
                     "kota": {
                         "type": "string",
-                        "example": "Bogor"
+                        "example": "string"
                     },
                     "kecamatan": {
                         "type": "string",
-                        "example": "Leuwiliang"
+                        "example": "string"
                     },
                     "audien_target": {
                         "type": "text",
-                        "example": "pengguna jalan"
+                        "example": "string"
                     },
                     "statistik_masyarakat": {
                         "type": "text",
-                        "example": "Wirausaha:orang|Swasta:orang"
+                        "example": "string"
                     },
                     "jumlah_pendengarradio": {
                         "type": "string",
-                        "example": "20"
+                        "example": "string"
                     },
                     "target_pendengarradio": {
                         "type": "string",
-                        "example": "Wirausaha:orang|Swasta:orang"
+                        "example": "string"
                     }
                 },
                 "type": "object"
@@ -1530,20 +1741,21 @@
                     },
                     "name": {
                         "type": "string",
-                        "example": "Horizontal"
+                        "example": "string"
                     },
                     "category_id": {
                         "type": "integer",
-                        "example": "1"
+                        "example": "string"
                     },
                     "slug": {
                         "type": "string",
-                        "example": "Videotron"
+                        "example": "string"
                     },
                     "brands": {
                         "type": "array",
                         "items": {
-                            "type": "string"
+                            "type": "string",
+                            "example": "string"
                         },
                         "collectionFormat": "multi",
                         "enum": [
@@ -1554,11 +1766,11 @@
                     },
                     "meta_title": {
                         "type": "string",
-                        "example": "Videotron"
+                        "example": "string"
                     },
                     "meta_description": {
                         "type": "string",
-                        "example": "Videotron"
+                        "example": "string"
                     }
                 },
                 "type": "object"
@@ -1571,7 +1783,11 @@
                         "example": 0
                     },
                     "user_type": {
-                        "type": "collection",
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "example": "string"
+                        },
                         "enum": [
                             "customer",
                             "seller",
@@ -1580,39 +1796,39 @@
                     },
                     "name": {
                         "type": "string",
-                        "example": "adpoint"
+                        "example": "string"
                     },
                     "email": {
                         "type": "string",
-                        "example": "adpoint@gmail.com"
+                        "example": "string"
                     },
                     "password": {
                         "type": "string",
-                        "example": "password"
+                        "example": "string"
                     },
                     "avatar_original": {
                         "type": "string",
-                        "example": "uploads/avatar.png"
+                        "example": "string"
                     },
                     "address": {
                         "type": "string",
-                        "example": "Jalan Gotong Royong I No 10"
+                        "example": "string"
                     },
                     "country": {
                         "type": "string",
-                        "example": "ID"
+                        "example": "string"
                     },
                     "city": {
                         "type": "string",
-                        "example": "Jakarta Selatan"
+                        "example": "string"
                     },
                     "postal_code": {
                         "type": "string",
-                        "example": "12560"
+                        "example": "string"
                     },
                     "phone": {
                         "type": "string",
-                        "example": "628128999009"
+                        "example": "string"
                     }
                 },
                 "type": "object"
