@@ -36,6 +36,7 @@ Route::group(['middleware' => ['auth.jwt','jsonify']], function () {
     // Brands
     Route::get('brands', 'Api\BrandCtrl@index');
     Route::get('brand/{id}', 'Api\BrandCtrl@show');
+    Route::get('search_brand', 'Api\BrandCtrl@search');
     Route::post('brand/add', 'Api\BrandCtrl@store');
     Route::put('brand/edit/{id}', 'Api\BrandCtrl@update');
     Route::delete('brand/{id}', 'Api\BrandCtrl@destroy');
@@ -65,7 +66,7 @@ Route::group(['middleware' => ['auth.jwt','jsonify']], function () {
 
     // Order
     Route::get('orders', 'Api\OrderCtrl@index');
-
-
+    Route::get('order/{id}', 'Api\OrderCtrl@show');
+    Route::post('order/add', 'Api\OrderCtrl@store');
 
 });

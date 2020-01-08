@@ -11,15 +11,15 @@ class FlashDealSchema{
      */
     public $id;
     /**
-     * @OA\Property(property="title",type="string",example="flashdeal")
+     * @OA\Property(property="title",type="string",example="string")
      */
     public $title;
     /**
-     * @OA\Property(property="start_date",type="string",example="20 Dec 2019")
+     * @OA\Property(property="start_date",type="string",example="string")
      */
     public $start_date;
     /**
-     * @OA\Property(property="end_date",type="string",example="26 Dec 2019")
+     * @OA\Property(property="end_date",type="string",example="string")
      */
     public $end_date;
     /**
@@ -28,7 +28,7 @@ class FlashDealSchema{
      *      type="array", 
      *      collectionFormat="multi", 
      *      enum={"4","3"}, 
-     *      @OA\Items(type="string", example="4")
+     *      @OA\Items(type="string", example="string")
      * )
      */
     public $products;
@@ -39,7 +39,7 @@ class FlashDealSchema{
      *      type="array", 
      *      collectionFormat="multi", 
      *      enum={"10","20"}, 
-     *      @OA\Items(type="string", example="10")
+     *      @OA\Items(type="string", example="string")
      * )
      */
     public $discount;
@@ -49,12 +49,12 @@ class FlashDealSchema{
      *      type="array", 
      *      collectionFormat="multi", 
      *      enum={"percent","dollar"}, 
-     *      @OA\Items(type="string", example="percent")
+     *      @OA\Items(type="string", example="string")
      * )
      */
     public $discount_type;
     /**
-     * @OA\Property(property="status",type="string",example="0")
+     * @OA\Property(property="status",type="string",example="string")
      */
     public $status;
 }

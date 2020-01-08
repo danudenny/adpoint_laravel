@@ -226,6 +226,8 @@ class HomeController extends Controller
             $order = Order::where('code', $request->order_code)->first();
             if($order != null){
                 return view('frontend.track_order', compact('order'));
+            }else {
+                flash(__('No order not found!'))->error();
             }
         }
         return view('frontend.track_order');

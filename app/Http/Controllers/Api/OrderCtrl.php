@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Api;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Order;
+use App\OrderDetail;
+use App\Product;
 
 class OrderCtrl extends Controller
 {
@@ -45,25 +47,139 @@ class OrderCtrl extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @OA\Post(
+     *     path="/order/add",
+     *     operationId="Add Order",
+     *     tags={"Orders"},
+     *     summary="Add Brand",
+     *     security={{"bearerAuth":{}}},
+     *     @OA\RequestBody(
+     *         @OA\JsonContent(ref="#/components/schemas/OrderSchema")
+     *     ),
+     *     @OA\Response(response="200",description="ok"),
+     *     @OA\Response(response="401",description="unauthorized")
+     * )
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->order_details[0];
+        dd($request->all());
+        foreach ($data as $key => $d) {
+            $order = new Order;
+            $order->user_id = $request->user_id;
+            $order->shipping_address = json_encode($request->shipping_address);
+            $order->payment_type = $request->payment_option;
+            $order->code = date('Ymd-his');
+            $order->date = strtotime('now');
+            $order->file_advertising = $request->file_advertising;
+            $order->desc_advertising = $request->desc_advertising;
+            if ($order->save()) {
+                $subtotal = 0;
+                $tax = 0;
+                $shipping = 0;
+                foreach ($d as $value) {
+                    $product = Product::find($value['product_id']);
+                    $subtotal += (int)$value['price']*(int)$value['quantity'];
+                    $tax += (int)$value['tax']*(int)$value['quantity'];
+                    $shipping += (int)$value['shipping']*(int)$value['quantity'];
+                    $product_variation = null;
+                    foreach (json_decode($product->choice_options) as $choice){
+                        $str = $choice->title;
+                        if ($product_variation != null) {
+                            $product_variation .= $value[$str];
+                        }
+                        else {
+                            $product_variation .= $value[$str];
+                        }
+                    }
+                    if($product_variation != null){
+                        $variations = json_decode($product->variations);
+                        $variations->$product_variation->qty -= (int)$value['quantity'];
+                        $product->variations = json_encode($variations);
+                        $product->save();
+                    }
+                    $order_detail = new OrderDetail;
+                    if ($product_variation == 'Harian') {
+                        $order_detail->start_date = date('Y-m-d', strtotime($value['start_date']));
+                        $order_detail->end_date = date('Y-m-d', strtotime($value['end_date']));
+                    }
+                    if ($product_variation == 'Mingguan') {
+                        $order_detail->start_date = date('Y-m-d', strtotime($value['start_date']));
+                        $order_detail->end_date = date('Y-m-d', strtotime($value['end_date']));
+                    }
+                    if ($product_variation == 'Bulanan') {
+                        $order_detail->start_date = date('Y-m-d', strtotime($value['start_date']));
+                        $order_detail->end_date = date('Y-m-d', strtotime($value['end_date']));
+                    }
+                    if ($product_variation == 'TigaBulan') {
+                        $order_detail->start_date = date('Y-m-d', strtotime($value['start_date']));
+                        $order_detail->end_date = date('Y-m-d', strtotime($value['end_date']));
+                    }
+                    if ($product_variation == 'EnamBulan') {
+                        $order_detail->start_date = date('Y-m-d', strtotime($value['start_date']));
+                        $order_detail->end_date = date('Y-m-d', strtotime($value['end_date']));
+                    }
+                    if ($product_variation == 'Tahunan') {
+                        $order_detail->start_date = date('Y-m-d', strtotime($value['start_date']));
+                        $order_detail->end_date = date('Y-m-d', strtotime($value['end_date']));
+                    }
+                    $order_detail->order_id  = $order->id;
+                    $order_detail->seller_id = $value['user_id'];
+                    $order_detail->status_tayang = 0;
+                    $order_detail->complete = 0;
+                    $order_detail->product_id = $value['product_id'];
+                    $order_detail->variation = $product_variation;
+                    $order_detail->price = (int)$value['price'] * (int)$value['quantity'];
+                    $order_detail->tax = (int)$value['tax'] * (int)$value['quantity'];
+                    $order_detail->shipping_cost = (int)$value['shipping']*(int)$value['quantity'];
+                    $order_detail->quantity = $value['quantity'];
+                    $order_detail->save();
+
+                    $product->num_of_sale++;
+                    $product->save();
+                }
+                $order->grand_total = $subtotal + $tax + $shipping;
+                return response()->json([
+                    'data' => $order,
+                    'success' => true,
+                    'message' => 'Berhasil order'
+                ], 200);
+            }
+        }
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+    * @OA\Get(
+    *     path="/order/{id}",
+    *     operationId="list order by id",
+    *     tags={"Orders"},
+    *     summary="Display a listing of the order by id",
+    *     security={{"bearerAuth":{}}},
+    *     @OA\Parameter(
+    *         description="ID of order to return",
+    *         in="path",
+    *         name="id",
+    *         required=true,
+    *         @OA\Schema(
+    *           type="integer",
+    *           format="int64"
+    *         )
+    *     ),
+    *     @OA\Response(response="200",description="ok"),
+    *     @OA\Response(response="401",description="unauthorized")
+    * )
+    */
     public function show($id)
     {
-        //
+        $order = Order::where('id', $id)->first();
+        if ($order != null) {
+            return response()->json($order, 200);
+        }else{
+            return response()->json([
+                'success' => false,
+                'message' => 'Data tidak ditemukan'
+            ], 401);
+        }
     }
 
     /**

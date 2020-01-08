@@ -80,7 +80,7 @@
                                                                 {{-- <a href="{{ route('bukti.tayang', encrypt($o->id)) }}" class="btn btn-info btn-sm"><i class="fa fa-upload"></i> Bukti Tayang</a> --}}
                                                             @elseif ($o->status_order == 5)
                                                                 <button class="btn btn-sm btn-success clickable" style="cursor: pointer" data-toggle="collapse" data-target="#group-of-rows-{{$key}}" aria-expanded="false" aria-controls="group-of-rows-{{$key}}">Selesai</button>
-                                                            @elseif ($o->status_order == 2)
+                                                            @elseif ($o->status_order == 2 && $o->payment_status == 'paid')
                                                                 <a href="{{ route('aktifkan', encrypt($o->id)) }}" class="btn btn-info btn-sm text-white"  data-toggle="tooltip" data-placement="bottom" title="Aktifkan Untuk Upload Bukti Tayang"><i class="fa fa-check"></i> Aktifkan</a>
                                                             @endif
                                                         </td>

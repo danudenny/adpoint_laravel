@@ -11,27 +11,27 @@ class ProductSchema{
      */
     public $id;
     /**
-     * @OA\Property(property="name",type="string",example="Billboard Cilandak")
+     * @OA\Property(property="name",type="string",example="string")
      */
     public $name;
     /**
-     * @OA\Property(property="added_by",type="string",example="seller")
+     * @OA\Property(property="added_by",type="string",example="string")
      */
     public $added_by;
     /**
-     * @OA\Property(property="user_id",type="string",example="20")
+     * @OA\Property(property="user_id",type="string",example="string")
      */
     public $user_id;
     /**
-     * @OA\Property(property="category_id",type="string",example="5")
+     * @OA\Property(property="category_id",type="string",example="string")
      */
     public $category_id;
     /**
-     * @OA\Property(property="subcategory_id",type="string",example="2")
+     * @OA\Property(property="subcategory_id",type="string",example="string")
      */
     public $subcategory_id;
     /**
-     * @OA\Property(property="brand_id",type="string",example="7")
+     * @OA\Property(property="brand_id",type="string",example="string")
      */
     public $brand_id;
     /**
@@ -39,41 +39,41 @@ class ProductSchema{
      *      property="photos", 
      *      type="array", 
      *      collectionFormat="multi", 
-     *      enum={"uploads\/products\/photos\/img1.png", "uploads\/products\/photos\/img2.png"}, 
-     *      @OA\Items(type="string", example="uploads/foto1.jpg")
+     *      enum={"uploads/products/photos/img1.png", "uploads/products/photos/img2.png"}, 
+     *      @OA\Items(type="string", example="string")
      * )
      */
     public $photos;
     /**
-     * @OA\Property(property="thumbnail_img",type="string",example="uploads/thumbnail_img.png")
+     * @OA\Property(property="thumbnail_img",type="string",example="string")
      */
     public $thumbnail_img;
     /**
-     * @OA\Property(property="featured_img",type="string",example="uploads/featured_img.png")
+     * @OA\Property(property="featured_img",type="string",example="string")
      */
     public $featured_img;
      /**
-     * @OA\Property(property="flash_deal_img",type="string",example="uploads/flash_deal_img.png")
+     * @OA\Property(property="flash_deal_img",type="string",example="string")
      */
     public $flash_deal_img;
     /**
-     * @OA\Property(property="tags",type="string",example="billboard,baleho,cilandak")
+     * @OA\Property(property="tags",type="string",example="string")
      */
     public $tags;
     /**
-     * @OA\Property(property="description",type="text",example="<p>description</p>")
+     * @OA\Property(property="description",type="text",example="string")
      */
     public $description;
     /**
-     * @OA\Property(property="video_provider",type="string",example="youtobe")
+     * @OA\Property(property="video_provider",type="string",example="string")
      */
     public $video_provider;
     /**
-     * @OA\Property(property="video_link",type="string",example="https://www.youtube.com/watch?v=qn8HDW68cIk&t=979s")
+     * @OA\Property(property="video_link",type="string",example="string")
      */
     public $video_link;
     /**
-     * @OA\Property(property="unit_price",type="string",example="30000000")
+     * @OA\Property(property="unit_price",type="string",example="string")
      */
     public $unit_price;
     /**
@@ -82,13 +82,13 @@ class ProductSchema{
      *     type="array",
      *     @OA\Items(
      *          type="object",
-     *          @OA\Property(property="title", type="string",example="Periode"),
+     *          @OA\Property(property="title", type="string",example="string"),
      *          @OA\Property(
      *              property="options", 
      *              type="array",
      *              collectionFormat="multi",
      *              enum={"Bulanan", "Tahunan"},
-     *              @OA\Items(type="string",example="Bulanan")
+     *              @OA\Items(type="string",example="string")
      *          )
      *     )
      * )
@@ -99,85 +99,85 @@ class ProductSchema{
      *      property="variations",
      *      type="object",
      *      @OA\Property(
-     *          property="Harian",
+     *          property="periode",
      *          type="object",
-     *          @OA\Property(property="price",type="string",example="1000"),
-     *          @OA\Property(property="sku",type="string",example="BH-Harian"),
-     *          @OA\Property(property="qty",type="string",example="1000"),
+     *          @OA\Property(property="price",type="string",example="string"),
+     *          @OA\Property(property="sku",type="string",example="string"),
+     *          @OA\Property(property="qty",type="string",example="string"),
      *      )
      * )
      */
     public $variations;
     /**
-     * @OA\Property(property="tax",type="string",example="10")
+     * @OA\Property(property="tax",type="string",example="string")
      */
     public $tax;
     /**
-     * @OA\Property(property="tax_type",type="string",example="amount")
+     * @OA\Property(property="tax_type",type="string",example="string")
      */
     public $tax_type;
     /**
-     * @OA\Property(property="discount",type="string",example=null)
+     * @OA\Property(property="discount",type="string",example="string")
      */
     public $discount;
     /**
-     * @OA\Property(property="discount_type",type="string",example=null)
+     * @OA\Property(property="discount_type",type="string",example="string")
      */
     public $discount_type;
     /**
-     * @OA\Property(property="meta_title",type="string",example="Billboard Cilandak")
+     * @OA\Property(property="meta_title",type="string",example="string")
      */
     public $meta_title;
     /**
-     * @OA\Property(property="meta_description",type="string",example="Billboard Cilandak")
+     * @OA\Property(property="meta_description",type="string",example="string")
      */
     public $meta_description;
     /**
-     * @OA\Property(property="meta_img",type="string",example="uploads/meta_img.png")
+     * @OA\Property(property="meta_img",type="string",example="string")
      */
     public $meta_img;
     /**
-     * @OA\Property(property="pdf",type="string",example="uploads/document.pdf")
+     * @OA\Property(property="pdf",type="string",example="string")
      */
     public $pdf;
     /**
-     * @OA\Property(property="slug",type="string",example="Billboard-Cilandak")
+     * @OA\Property(property="slug",type="string",example="string")
      */
     public $slug;
     /**
-     * @OA\Property(property="latlong",type="string",example="-6.881291,107.58345299999996")
+     * @OA\Property(property="latlong",type="string",example="string")
      */
     public $latlong;
     /**
-     * @OA\Property(property="alamat",type="text",example="Komplek Setra Sari Mall Blok C3 No. 35")
+     * @OA\Property(property="alamat",type="string",example="string")
      */
     public $alamat;
     /**
-     * @OA\Property(property="provinsi",type="string",example="Jawa Barat")
+     * @OA\Property(property="provinsi",type="string",example="string")
      */
     public $provinsi;
     /**
-     * @OA\Property(property="kota",type="string",example="Bogor")
+     * @OA\Property(property="kota",type="string",example="string")
      */
     public $kota;
     /**
-     * @OA\Property(property="kecamatan",type="string",example="Leuwiliang")
+     * @OA\Property(property="kecamatan",type="string",example="string")
      */
     public $kecamatan;
     /**
-     * @OA\Property(property="audien_target",type="text",example="pengguna jalan")
+     * @OA\Property(property="audien_target",type="text",example="string")
      */
     public $audien_target;
     /**
-     * @OA\Property(property="statistik_masyarakat",type="text",example="Wirausaha:orang|Swasta:orang")
+     * @OA\Property(property="statistik_masyarakat",type="text",example="string")
      */
     public $statistik_masyarakat;
     /**
-     * @OA\Property(property="jumlah_pendengarradio",type="string",example="20")
+     * @OA\Property(property="jumlah_pendengarradio",type="string",example="string")
      */
     public $jumlah_pendengarradio;
     /**
-     * @OA\Property(property="target_pendengarradio",type="string",example="Wirausaha:orang|Swasta:orang")
+     * @OA\Property(property="target_pendengarradio",type="string",example="string")
      */
     public $target_pendengarradio;
 }

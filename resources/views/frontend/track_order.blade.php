@@ -98,25 +98,27 @@
                 @foreach ($order->orderDetails as $key => $orderDetail)
                     @php
                         $status = $orderDetail->delivery_status;
+                        $order_detail = \App\OrderDetail::where('order_id', $order->id)->count();
+                        $order_detail_complete = \App\OrderDetail::where(['order_id' => $order->id, 'complete' => 1])->count();
                     @endphp
                     <div class="card mt-4">
                         <div class="card-header py-2 px-3 heading-6 strong-600 clearfix">
                             <ul class="process-steps clearfix">
-                                <li @if($status == 'pending') class="active" @else class="done" @endif>
+                                <li @if($order->status_order == 0) class="active" @else class="done" @endif>
                                     <div class="icon">1</div>
                                     <div class="title">{{__('Order placed')}}</div>
                                 </li>
-                                <li @if($status == 'on_review') class="active" @elseif($status == 'on_delivery' || $status == 'delivered') class="done" @endif>
+                                <li @if($order->status_order == 1) class="active" @elseif($order->status_order == 2 || $order->status_order == 4 || ($order->status_order == 5 && $order_detail == $order_detail_complete)) class="done" @endif>
                                     <div class="icon">2</div>
                                     <div class="title">{{__('On review')}}</div>
                                 </li>
-                                <li @if($status == 'on_delivery') class="active" @elseif($status == 'delivered') class="done" @endif>
+                                <li @if($order->status_order == 2) class="active" @elseif($order->status_order == 4 || ($order->status_order == 5 && $order_detail == $order_detail_complete)) class="done" @endif>
                                     <div class="icon">3</div>
-                                    <div class="title">{{__('On delivery')}}</div>
+                                    <div class="title">{{__('Active')}}</div>
                                 </li>
-                                <li @if($status == 'delivered') class="done" @endif>
+                                <li @if($order->status_order == 5 && $order_detail == $order_detail_complete) class="done" @endif>
                                     <div class="icon">4</div>
-                                    <div class="title">{{__('Delivered')}}</div>
+                                    <div class="title">{{__('Completed')}}</div>
                                 </li>
                             </ul>
                         </div>

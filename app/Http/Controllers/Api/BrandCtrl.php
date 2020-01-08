@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Brand;
 use App\Product;
+use DB;
 
 class BrandCtrl extends Controller
 {
@@ -31,7 +32,7 @@ class BrandCtrl extends Controller
     */
     public function index()
     {
-        $brands = Brand::paginate(10);
+        $brands = Brand::orderBy('id', 'desc')->paginate(10);
         return response()->json($brands, 200);
     }
 
@@ -119,6 +120,44 @@ class BrandCtrl extends Controller
                 'message' => 'Data tidak ditemukan'
             ], 401);
         }
+    }
+
+    /**
+    * @OA\Get(
+    *     path="/search_brand",
+    *     operationId="Search brand by name",
+    *     tags={"Brands"},
+    *     summary="Search brand by name",
+    *     security={{"bearerAuth":{}}},
+    *     @OA\Parameter(
+    *         description="name of brand to return",
+    *         in="query",
+    *         name="query",
+    *         required=true,
+    *         @OA\Schema(
+    *           type="string",
+    *         )
+    *     ),
+    *     @OA\Response(response="200",description="ok"),
+    *     @OA\Response(response="401",description="unauthorized")
+    * )
+    */
+    public function search(Request $request)
+    {
+        $q = $request->query;
+        $value = null;
+        foreach ($q as $key => $v) {
+            $value = $v;
+        }
+        $brand = Brand::where('name', 'like', '%'.$value.'%')->get();
+        if ($brand != null) {
+            return response()->json($brand, 200);
+        }else{
+            return response()->json([
+                'success' => false,
+                'message' => 'Data tidak ditemukan'
+            ], 401);
+        }           
     }
 
     /**
