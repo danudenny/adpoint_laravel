@@ -271,7 +271,9 @@
                     <!-- Logo -->
                     <tr style="background-color: #0f355a;">
                         <td class="email-masthead">
-                        <a class="email-masthead_name"><img width="200" src="{{ $message->embed(public_path() . '/img/email/logo.png') }}"></a>
+                        <a class="email-masthead_name">
+                            <img width="200" src="{{ $message->embed(public_path() . '/img/email/logo.png') }}">
+                        </a>
                         </td>
                     </tr>
                     <!-- Email Body -->

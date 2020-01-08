@@ -170,7 +170,7 @@
 
     <div class="form-popup" id="myForm">
         <div class="form-container">
-            <h5 class="text-center">Customer Services</h5>
+            <p class="text-center text-bold">Customer Services</p>
             <hr>
             <span id="_cs" hidden>{{ \App\BusinessSetting::where('type', 'whatsapp_settings')->first()->value }}</span>
             <div class="cs">
@@ -180,11 +180,12 @@
             </div>
         </div>
     </div>
-    <button id="btn_open" onclick="openForm()" class="open-button">
-        <i class="fa fa-whatsapp my-float"></i> Contact us
-    </button>
+    
     <button id="btn_close" onclick="closeForm()" class="open-button" style="display: none;">
-        <i class="fa fa-close"></i> Close
+        <i class="fa fa-whatsapp my-float"></i>
+    </button>
+    <button id="btn_open" onclick="openForm()" class="open-button">
+        <i class="fa fa-whatsapp my-float"></i>
     </button>
 
     @if (\App\BusinessSetting::where('type', 'facebook_chat')->first()->value == 1)
@@ -1269,15 +1270,17 @@
 
     function openForm() {
         $('#myForm').attr('style','display:block');
+        $('#myForm').effect('bounce', {times:1}, 500);
         $("#btn_open").hide();
         $('#btn_close').show();
-        
+        $('.triangle-left').show();
     }
 
     function closeForm() {
         $('#myForm').attr('style','display:none');
         $('#btn_open').show();
         $('#btn_close').hide();
+        $('.triangle-left').hide();
     }
     // end whatsapp
 
