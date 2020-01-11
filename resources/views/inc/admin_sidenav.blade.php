@@ -172,6 +172,9 @@
                                 <li class="{{ areActiveRoutes(['sales.index', 'sales.show'])}}">
                                     <a class="nav-link" href="{{ route('sales.index') }}">{{__('Total sales')}}</a>
                                 </li>
+                                <li class="{{ areActiveRoutes(['transaction.index']) }}">
+                                    <a class="nav-link" href="{{ route('transaction.index') }}">{{__('Transaction')}}</a>
+                                </li>
                             </ul>
                         </li>
                         @endif

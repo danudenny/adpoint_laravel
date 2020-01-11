@@ -19,7 +19,9 @@ Route::post('/currency', 'CurrencyController@changeCurrency')->name('currency.ch
 Route::get('/social-login/redirect/{provider}', 'Auth\LoginController@redirectToProvider')->name('social.login');
 Route::get('/social-login/{provider}/callback', 'Auth\LoginController@handleProviderCallback')->name('social.callback');
 Route::get('/users/login', 'HomeController@login')->name('user.login');
+Route::post('/users/login', 'HomeController@login_proses')->name('login.user');
 Route::get('/users/registration', 'HomeController@registration')->name('user.registration');
+Route::post('/users/registration', 'HomeController@registration_proses')->name('register.user');
 //Route::post('/users/login', 'HomeController@user_login')->name('user.login.submit');
 Route::post('/users/login/cart', 'HomeController@cart_login')->name('cart.login.submit');
 
@@ -61,6 +63,7 @@ Route::post('/cart/updateQuantity', 'CartController@updateQuantity')->name('cart
 Route::post('/checkout/payment', 'CheckoutController@checkout')->name('payment.checkout');
 Route::get('/checkout', 'CheckoutController@get_shipping_info')->name('checkout.shipping_info');
 Route::post('/checkout/payment_select', 'CheckoutController@store_shipping_info')->name('checkout.store_shipping_infostore');
+Route::post('/checkout/upload_advertising', 'CheckoutController@upload_advertising')->name('checkout.upload_advertising');
 Route::get('/checkout/payment_select', 'CheckoutController@get_payment_info')->name('checkout.payment_info');
 Route::post('/checkout/apply_coupon_code', 'CheckoutController@apply_coupon_code')->name('checkout.apply_coupon_code');
 Route::post('/checkout/remove_coupon_code', 'CheckoutController@remove_coupon_code')->name('checkout.remove_coupon_code');

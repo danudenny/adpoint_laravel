@@ -69,9 +69,8 @@ class CheckoutController extends Controller
 
                 $request->session()->put('cart', collect([]));
                 $request->session()->forget('order_id');
-
                 flash("Your order has been placed successfully")->success();
-            	return redirect()->route('home');
+                return redirect()->route('home');
             }
             elseif ($request->payment_option == 'wallet') {
                 $user = Auth::user();
@@ -122,7 +121,66 @@ class CheckoutController extends Controller
 
     public function store_shipping_info(Request $request)
     {
-        // dd($request);
+        $shipping_info = $request->session()->get('shipping_info');
+
+        if ($request->hasFile('filegambar')) {
+            $filegambar = [];
+            $arr = [];
+            foreach ($request->filegambar as $key => $g) {
+                $path = $g->store('uploads/materi_advertising/gambar');
+                array_push($arr, $path);
+                $filegambar['gambar'] = $arr;
+            }
+        }else {
+            $filegambar['gambar'] = null;
+        }
+        if ($request->hasFile('filevideo')) {
+            $filevideo = [];
+            $arr = [];
+            foreach ($request->filevideo as $key => $g) {
+                $path = $g->store('uploads/materi_advertising/video');
+                array_push($arr, $path);
+                $filevideo['video'] = $arr;
+            }
+        }else {
+            $filevideo['video'] = null;
+        }
+        if ($request->hasFile('filezip')) {
+            $filezip = [];
+            $arr = [];
+            foreach ($request->filezip as $key => $g) {
+                $path = $g->store('uploads/materi_advertising/zip');
+                array_push($arr, $path);
+                $filezip['zip'] = $arr;
+            }
+        }else {
+            $filezip['zip'] = null;
+        }
+        $result = array_merge($filegambar, $filevideo, $filezip);
+        $file_ads = json_encode($result);
+        $desc_ads = $request->desc_ads;
+
+        
+        $subtotal = 0;
+        $tax = 0;
+        $shipping = 0;
+        foreach (Session::get('cart') as $key => $cartItem){
+            $subtotal += $cartItem['price']*$cartItem['quantity'];
+            $tax += $cartItem['tax']*$cartItem['quantity'];
+            $shipping += $cartItem['shipping']*$cartItem['quantity'];
+        }
+        
+        $total = $subtotal + $tax + $shipping;
+        
+        if(Session::has('coupon_discount')){
+            $total -= Session::get('coupon_discount');
+        }
+
+        return view('frontend.payment_select', compact('total','file_ads','desc_ads'));
+    }
+
+    public function upload_advertising(Request $request)
+    {   
         $data['name'] = $request->name;
         $data['email'] = $request->email;
         $data['address'] = $request->address;
@@ -147,13 +205,12 @@ class CheckoutController extends Controller
 
         
         $total = $subtotal + $tax + $shipping;
-        // dd($total);
         
         if(Session::has('coupon_discount')){
             $total -= Session::get('coupon_discount');
         }
 
-        return view('frontend.payment_select', compact('total'));
+        return view('frontend.upload_advertising', compact('total'));
     }
 
     public function get_payment_info(Request $request)

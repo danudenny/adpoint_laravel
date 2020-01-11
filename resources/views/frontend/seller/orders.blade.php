@@ -46,7 +46,6 @@
                                                         <th>{{__('Customer')}}</th>
                                                         <th>{{__('Amount')}}</th>
                                                         <th>{{__('Order Status')}}</th>
-                                                        <th>{{__('Payment Status')}}</th>
                                                         <th>{{__('Options')}}</th>
                                                     </tr>
                                                 </thead>
@@ -79,13 +78,13 @@
                                                                     </td>
                                                                     <td>
                                                                         @if ($order->status_order == 0)
-                                                                            <span class="badge badge-warning">Disapproved</span>
+                                                                            <span class="badge badge-warning">Disapproved by admin</span>
                                                                         @elseif ($order->status_order == 1)
                                                                             <span class="badge badge-secondary">Reviewed</span>
                                                                         @elseif ($order->status_order == 2)
                                                                             <span class="badge badge-primary">Approved</span>
                                                                         @elseif ($order->status_order == 3)
-                                                                            <span class="badge badge-warning">Disapproved</span>
+                                                                            <span class="badge badge-warning">Disapproved by seller</span>
                                                                         @elseif ($order->status_order == 4)
                                                                             <span class="badge badge-info">Aired</span>
                                                                         @elseif ($order->status_order == 5)
@@ -93,15 +92,6 @@
                                                                         @elseif ($order->status_order == 6)
                                                                             <span class="badge badge-danger">Cancelled</span>
                                                                         @endif
-                                                                    </td>
-                                                                    <td>
-                                                                        <span class="badge badge--2 mr-4">
-                                                                            @if ($order->payment_status == 'paid')
-                                                                                <i class="bg-green"></i> {{__('Paid')}}
-                                                                            @else
-                                                                                <i class="bg-red"></i> {{__('Unpaid')}}
-                                                                            @endif
-                                                                        </span>
                                                                     </td>
                                                                     <td>
                                                                         <div class="dropdown">

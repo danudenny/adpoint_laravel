@@ -31,7 +31,7 @@
                     <div class="col-3">
                         <div class="icon-block icon-block--style-1-v5 text-center">
                             <div class="block-icon c-gray-light mb-0">
-                                <i class="la la-cloud-upload"></i>
+                                <i class="la la-cloud-upload" style="color: #ff9400"></i>
                             </div>
                             <div class="block-content d-none d-md-block">
                                 <h3 class="heading heading-sm strong-300 c-gray-light text-capitalize">3. {{__('Upload Advertising')}}</h3>
@@ -42,13 +42,14 @@
                     <div class="col-3">
                         <div class="icon-block icon-block--style-1-v5 text-center">
                             <div class="block-icon mb-0">
-                                <i class="la la-credit-card" style="color: #ff9400"></i>
+                                <i class="la la-credit-card" style="color: #6c757d"></i>
                             </div>
                             <div class="block-content d-none d-md-block">
                                 <h3 class="heading heading-sm strong-300 c-gray-light text-capitalize">4. {{__('Payment')}}</h3>
                             </div>
                         </div>
                     </div>
+
                 </div>
             </div>
         </section>
@@ -60,47 +61,45 @@
             <div class="container">
                 <div class="row cols-xs-space cols-sm-space cols-md-space">
                     <div class="col-lg-8">
-                        <form action="{{ route('payment.checkout') }}" enctype="multipart/form-data" class="form-default" data-toggle="validator" role="form" method="POST" id="checkout-form">
+                        <form action="{{ route('checkout.store_shipping_infostore') }}" enctype="multipart/form-data" method="POST">
                             @csrf
                             <div class="card">
                                 <div class="card-title px-4 py-3">
                                     <h3 class="heading heading-5 strong-500">
-                                        {{__('Select a payment option')}}
+                                        {{__('Upload advertising')}}
                                     </h3>
                                 </div>
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="row">
-                                                @if(\App\BusinessSetting::where('type', 'cash_payment')->first()->value == 1)
-                                                    <div class="col-md-6">
-                                                        <label class="payment_option mb-4" data-toggle="tooltip" data-title="Bank Mandiri">
-                                                            <input type="radio" id="mandiri" name="payment_option" value="cash_on_delivery">
-                                                            <span style="width: 150px;">
-                                                                <img src="{{ asset('frontend/images/icons/cards/mandiri.png')}}" class="img-fluid">
-                                                            </span>
-                                                        </label>
-                                                        <label class="payment_option mb-4" data-toggle="tooltip" data-title="Bank BCA">
-                                                            <input type="radio" id="bca" name="payment_option" value="cash_on_delivery">
-                                                            <span style="width: 150px;">
-                                                                <img src="{{ asset('frontend/images/icons/cards/bca.png')}}" class="img-fluid">
-                                                            </span>
-                                                        </label>
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label>Type File</label>
+                                                        <select class="js-example-basic-multiple" id="type-file" multiple="multiple" required>
+                                                            <option value="gambar">Gambar</option>
+                                                            <option value="video">Video</option>
+                                                            <option value="zip">Zip</option>
+                                                        </select>
                                                     </div>
-                                                    <div class="col-md-6">
-                                                        <div id="detailbank">
+                                                    <div class="form-group">
+                                                        <table class="table">
                                                             
-                                                        </div>
+                                                            <tbody id="body-type-file">
+                                                                
+                                                            </tbody>
+                                                        </table>
                                                     </div>
-                                                    <input type="hidden" name="file_ads" value="{{$file_ads}}">
-                                                    <input type="hidden" name="desc_ads" value="{{$desc_ads}}">
-                                                @endif
+                                                    <div class="form-group">
+                                                        <label>Description <span class="text-danger">*</span></label>
+                                                        <textarea name="desc_ads" class="form-control" cols="10" rows="5" placeholder="Masukan informasi tambahan ke seller" required></textarea>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-
                             <div class="row align-items-center pt-4">
                                 <div class="col-6">
                                     <a href="{{ route('home') }}" class="link link--style-3">
@@ -109,7 +108,7 @@
                                     </a>
                                 </div>
                                 <div class="col-6 text-right">
-                                    <button type="submit" id="complete" style="cursor: not-allowed" class="btn btn-styled btn-base-1" disabled>{{__('Complete Order')}}</button>
+                                    <button type="submit" class="btn btn-styled btn-base-1">{{__('Continue To Payment')}}</button>
                                 </div>
                             </div>
                         </form>
@@ -118,6 +117,7 @@
                     <div class="col-lg-4 ml-lg-auto">
                         @include('frontend.partials.cart_summary')
                     </div>
+                    
                 </div>
             </div>
         </section>
@@ -126,37 +126,42 @@
 
 @section('script')
     <script type="text/javascript">
+
+        function capitalize(string) {
+            return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+        }
+
+
+        $('#type-file').select2({
+            placeholder: 'Gambar / Video / Zip',
+        });
+
+        $('#type-file').on('select2:selecting', function(e){
+            var selected = e.params.args.data.id; 
+            date = new Date();
+                    
+            var row = `<tr id="row_`+selected+`">
+                        <td><label>`+ capitalize(selected) +`</label></td>
+                        <td><input type="file" name="file`+selected+`[]" class="form-control form-control-sm"></td>
+                        <td><span id="addfile_`+selected+`" class="btn btn-sm btn-info"><i class="fa fa-plus"></i></span></td>
+                        </tr>`;
+            $('#body-type-file').append(row);
+
+            $('#addfile_'+selected).on('click', function(){
+                var id_row = '#row_'+selected;
+                $(id_row+' td:nth-child(2)').append(`<input type="file" name="file`+selected+`[]" class="form-control form-control-sm mt-2">`);
+            })
+        })
+
+        $('#type-file').on('select2:unselecting', function(e){
+            var unselected = e.params.args.data.id;
+            var id_row = '#row_'+unselected;
+            $(id_row).remove();
+        })
+
         function use_wallet(){
             $('input[name=payment_option]').val('wallet');
             $('#checkout-form').submit();
         }
-
-        function enabledbutton(){
-            $('#complete').prop('disabled', false);
-            $('#complete').removeAttr('style');
-        }
-
-        $('#mandiri').on('click', function(){
-            enabledbutton();
-            var body = `<div class="card border-dark mb-3" style="max-width: 18rem;">
-                            <div class="card-body text-dark">
-                                <h5 class="card-title">Bank Mandiri</h5>
-                                <h5 class="card-title">13300290929</h5>
-                                <p class="card-text">PT. Adpoint Media Online</p>
-                            </div>
-                        </div>`
-            $('#detailbank').html(body);
-        })
-        $('#bca').on('click', function(){
-            enabledbutton();
-            var body = `<div class="card border-dark mb-3" style="max-width: 18rem;">
-                            <div class="card-body text-dark">
-                                <h5 class="card-title">Bank BCA</h5>
-                                <h5 class="card-title">14090279782</h5>
-                                <p class="card-text">PT. Adpoint Media Online</p>
-                            </div>
-                        </div>`
-            $('#detailbank').html(body);
-        })
     </script>
 @endsection

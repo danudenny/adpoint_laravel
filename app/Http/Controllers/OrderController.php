@@ -12,6 +12,7 @@ use App\OrderDetail;
 use App\CouponUsage;
 use App\ConfirmPayment;
 use App\Evidence;
+use App\Transaction;
 use Auth;
 use Session;
 use DB;
@@ -397,6 +398,11 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request);
+        $trx = new Transaction;
+        $trx->no_transaction = 'TRX-'.time();
+        $trx->payment_status = 0;
+
         $cart = [];
         $data = [];
         foreach (Session::get('cart') as $sc) {
@@ -406,111 +412,111 @@ class OrderController extends Controller
             $data[$c['user_id']][] = $c;
         }
 
-        foreach ($data as $key => $d) {
-            $order = new Order;
-            if (Auth::check()) {
-                $order->user_id = Auth::user()->id;
-            } else {
-                $order->guest_id = mt_rand(100000, 999999);
-            }
-            $order->shipping_address = json_encode($request->session()->get('shipping_info'));
-            $order->payment_type = $request->payment_option;
-            $order->code = date('Ymd-his');
-            $order->date = strtotime('now');
-            $order->status_confirm = 0;
-            if ($request->hasFile('file_ads')) {
-                $order->file_advertising = $request->file_ads->store('uploads/materi_advertising');
+        if ($trx->save()) {
+            $trx->payment_status = 0;
+            foreach ($data as $key => $d) {
+                $order = new Order;
+                if (Auth::check()) {
+                    $order->user_id = Auth::user()->id;
+                } else {
+                    $order->guest_id = mt_rand(100000, 999999);
+                }
+                $order->shipping_address = json_encode($request->session()->get('shipping_info'));
+                $order->payment_type = $request->payment_option;
+                $order->code = date('Ymd-his');
+                $order->date = strtotime('now');
+                $order->status_confirm = 0;
+                $order->file_advertising = $request->file_ads;
                 $order->desc_advertising = $request->desc_ads;
-            }
-            if ($order->save()) {
-                $subtotal = 0;
-                $tax = 0;
-                $shipping = 0;
-                foreach ($d as $value) {
-                    $product = Product::find($value['id']);
-                    $subtotal += $value['price'] * $value['quantity'];
-                    $tax += $value['tax'] * $value['quantity'];
-                    $shipping += $value['shipping'] * $value['quantity'];
-                    $product_variation = null;
-                    if (isset($value['color'])) {
-                        $product_variation .= Color::where('code', $value['color'])->first()->name;
-                    }
-
-                    foreach (json_decode($product->choice_options) as $choice) {
-                        $str = $choice->title;
-                        if ($product_variation != null) {
-                            $product_variation .= $value[$str];
-                        } else {
-                            $product_variation .= $value[$str];
+                $order->trx_id = $trx->id;
+                if ($order->save()) {
+                    $subtotal = 0;
+                    $tax = 0;
+                    $shipping = 0;
+                    foreach ($d as $value) {
+                        $product = Product::find($value['id']);
+                        $subtotal += $value['price'] * $value['quantity'];
+                        $tax += $value['tax'] * $value['quantity'];
+                        $shipping += $value['shipping'] * $value['quantity'];
+                        $product_variation = null;
+                        if (isset($value['color'])) {
+                            $product_variation .= Color::where('code', $value['color'])->first()->name;
                         }
-                    }
-
-                    if ($product_variation != null) {
-                        $variations = json_decode($product->variations);
-                        $variations->$product_variation->qty -= $value['quantity'];
-                        $product->variations = json_encode($variations);
+    
+                        foreach (json_decode($product->choice_options) as $choice) {
+                            $str = $choice->title;
+                            if ($product_variation != null) {
+                                $product_variation .= $value[$str];
+                            } else {
+                                $product_variation .= $value[$str];
+                            }
+                        }
+    
+                        if ($product_variation != null) {
+                            $variations = json_decode($product->variations);
+                            $variations->$product_variation->qty -= $value['quantity'];
+                            $product->variations = json_encode($variations);
+                            $product->save();
+                        }
+    
+                        $order_detail = new OrderDetail;
+                        if ($product_variation == 'Harian') {
+                            $order_detail->start_date = date('Y-m-d', strtotime($value['start_date']));
+                            $order_detail->end_date = date('Y-m-d', strtotime($value['end_date']));
+                        }
+                        if ($product_variation == 'Mingguan') {
+                            $order_detail->start_date = date('Y-m-d', strtotime($value['start_date']));
+                            $order_detail->end_date = date('Y-m-d', strtotime($value['end_date']));
+                        }
+                        if ($product_variation == 'Bulanan') {
+                            $order_detail->start_date = date('Y-m-d', strtotime($value['start_date']));
+                            $order_detail->end_date = date('Y-m-d', strtotime($value['end_date']));
+                        }
+                        if ($product_variation == 'TigaBulan') {
+                            $order_detail->start_date = date('Y-m-d', strtotime($value['start_date']));
+                            $order_detail->end_date = date('Y-m-d', strtotime($value['end_date']));
+                        }
+                        if ($product_variation == 'EnamBulan') {
+                            $order_detail->start_date = date('Y-m-d', strtotime($value['start_date']));
+                            $order_detail->end_date = date('Y-m-d', strtotime($value['end_date']));
+                        }
+                        if ($product_variation == 'Tahunan') {
+                            $order_detail->start_date = date('Y-m-d', strtotime($value['start_date']));
+                            $order_detail->end_date = date('Y-m-d', strtotime($value['end_date']));
+                        }
+                        $order_detail->order_id  = $order->id;
+                        $order_detail->seller_id = $value['user_id'];
+                        $order_detail->status_tayang = 0;
+                        $order_detail->complete = 0;
+                        $order_detail->product_id = $value['id'];
+                        $order_detail->variation = $product_variation;
+                        $order_detail->price = $value['price'] * $value['quantity'];
+                        $order_detail->tax = $value['tax'] * $value['quantity'];
+                        $order_detail->shipping_cost = $value['shipping'] * $value['quantity'];
+                        $order_detail->quantity = $value['quantity'];
+                        $order_detail->save();
+    
+                        $product->num_of_sale++;
                         $product->save();
                     }
-
-                    $order_detail = new OrderDetail;
-                    if ($product_variation == 'Harian') {
-                        $order_detail->start_date = date('Y-m-d', strtotime($value['start_date']));
-                        $order_detail->end_date = date('Y-m-d', strtotime($value['end_date']));
+                    $order->grand_total = $subtotal + $tax + $shipping;
+                    if (Session::has('coupon_discount')) {
+                        $order->grand_total -= Session::get('coupon_discount');
+                        $order->coupon_discount = Session::get('coupon_discount');
+                        $coupon_usage = new CouponUsage;
+                        $coupon_usage->user_id = Auth::user()->id;
+                        $coupon_usage->coupon_id = Session::get('coupon_id');
+                        $coupon_usage->save();
                     }
-                    if ($product_variation == 'Mingguan') {
-                        $order_detail->start_date = date('Y-m-d', strtotime($value['start_date']));
-                        $order_detail->end_date = date('Y-m-d', strtotime($value['end_date']));
-                    }
-                    if ($product_variation == 'Bulanan') {
-                        $order_detail->start_date = date('Y-m-d', strtotime($value['start_date']));
-                        $order_detail->end_date = date('Y-m-d', strtotime($value['end_date']));
-                    }
-                    if ($product_variation == 'TigaBulan') {
-                        $order_detail->start_date = date('Y-m-d', strtotime($value['start_date']));
-                        $order_detail->end_date = date('Y-m-d', strtotime($value['end_date']));
-                    }
-                    if ($product_variation == 'EnamBulan') {
-                        $order_detail->start_date = date('Y-m-d', strtotime($value['start_date']));
-                        $order_detail->end_date = date('Y-m-d', strtotime($value['end_date']));
-                    }
-                    if ($product_variation == 'Tahunan') {
-                        $order_detail->start_date = date('Y-m-d', strtotime($value['start_date']));
-                        $order_detail->end_date = date('Y-m-d', strtotime($value['end_date']));
-                    }
-                    $order_detail->order_id  = $order->id;
-                    $order_detail->seller_id = $value['user_id'];
-                    $order_detail->status_tayang = 0;
-                    $order_detail->complete = 0;
-                    $order_detail->product_id = $value['id'];
-                    $order_detail->variation = $product_variation;
-                    $order_detail->price = $value['price'] * $value['quantity'];
-                    $order_detail->tax = $value['tax'] * $value['quantity'];
-                    $order_detail->shipping_cost = $value['shipping'] * $value['quantity'];
-                    $order_detail->quantity = $value['quantity'];
-                    $order_detail->save();
-
-                    $product->num_of_sale++;
-                    $product->save();
+                    $send_to = $request->session()->get('shipping_info')['email'];
+                    $user = $request->session()->get('shipping_info');
+                    $order->save();
+                    Mail::to($send_to)->send(new OrderStart($user));
+                    $request->session()->put('order_id', $order->id);
                 }
-                $order->grand_total = $subtotal + $tax + $shipping;
-                if (Session::has('coupon_discount')) {
-                    $order->grand_total -= Session::get('coupon_discount');
-                    $order->coupon_discount = Session::get('coupon_discount');
-                    $coupon_usage = new CouponUsage;
-                    $coupon_usage->user_id = Auth::user()->id;
-                    $coupon_usage->coupon_id = Session::get('coupon_id');
-                    $coupon_usage->save();
-                }
-                $send_to = $request->session()->get('shipping_info')['email'];
-                $user = $request->session()->get('shipping_info');
-                $order->save();
-                Mail::to($send_to)->send(new OrderStart($user));
-                $request->session()->put('order_id', $order->id);
             }
         }
     }
-
-
 
     /**
      * Display the specified resource.

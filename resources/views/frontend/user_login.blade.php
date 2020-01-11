@@ -6,26 +6,28 @@
             <div class="container">
                 <div class="row">
                     <div class="col-xl-4 offset-xl-4">
+                        <div>
+                            @if (Session::has('message'))
+                                <div class="alert alert-danger">
+                                    {!! session('message') !!}
+                                </div>
+                            @endif
+                            @if (Session::has('success'))
+                                <div class="alert alert-success" style="border-radius: 0;">
+                                    <strong>Berhasil!</strong> {!! session('success') !!}
+                                </div>
+                            @endif
+                        </div>
                         <div class="card">
                             <div class="text-center px-35 pt-5">
                                 <h3 class="heading heading-4 strong-500">
                                     {{__('Login to your account.')}}
                                 </h3>
-                                @if (Session::has('message'))
-                                    <div class="alert alert-danger" style="border-radius: 0;">
-                                        <strong>Error!</strong> {!! session('message') !!}
-                                    </div>
-                                @endif
-                                @if (Session::has('success'))
-                                <div class="alert alert-success" style="border-radius: 0;">
-                                    <strong>Berhasil!</strong> {!! session('success') !!}
-                                </div>
-                                @endif
                             </div>
                             <div class="px-5 py-3 py-lg-5">
                                 <div class="row align-items-center">
                                     <div class="col-12 col-lg">
-                                        <form class="form-default" role="form" action="{{ route('login') }}" method="POST">
+                                        <form class="form-default" role="form" action="{{ route('login.user') }}" method="POST">
                                             @csrf
                                             <div class="row">
                                                 <div class="col-12">
@@ -66,9 +68,6 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                {{-- <div class="col-6 text-right">
-                                                    <a href="{{ route('password.request') }}" class="link link-xs link--style-3">{{__('Forgot password?')}}</a>
-                                                </div> --}}
                                                 <div class="col-6 text-right">
                                                     <a href="{{ route('reset.password') }}" class="link link-xs link--style-3">{{__('Forgot password?')}}</a>
                                                 </div>

@@ -6,25 +6,23 @@
             <div class="container">
                 <div class="row">
                     <div class="col-md-6 mx-auto">
+                        <div>
+                            @if (Session::has('message'))
+                                <div class="alert alert-info">
+                                    {!! session('message') !!}
+                                </div>
+                            @endif
+                        </div>
                         <div class="card">
                             <div class="text-center px-35 pt-5">
                                 <h3 class="heading heading-4 strong-500">
                                     {{__('Create an account.')}}
                                 </h3>
                             </div>
-                            {{-- @if (count($errors) > 0)
-                            <div class="alert alert-danger">
-                                <ul>
-                                    @foreach ($errors->all() as $error)
-                                        <li>{{ $error }}</li>
-                                    @endforeach
-                                </ul>
-                            </div>
-                            @endif --}}
                             <div class="px-5 py-3 py-lg-5">
                                 <div class="row align-items-center">
                                     <div class="col-12 col-lg">
-                                        <form class="form-default" role="form" action="{{ route('register') }}" method="POST" enctype="multipart/form-data">
+                                        <form class="form-default" role="form" action="{{ route('register.user') }}" method="POST" enctype="multipart/form-data">
                                             @csrf
                                             <div class="row">
                                                 <div class="col-12">

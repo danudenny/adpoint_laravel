@@ -13,7 +13,7 @@ class PasswordResetController extends Controller
     public function sendEmailReset(Request $request)
     {
         
-        $user = User::where('email', $request->email)->where('verified', 1)->first();
+        $user = User::where('email', $request->email)->first();
         $request->validate([
             'email' => 'required'
         ]);
@@ -45,7 +45,7 @@ class PasswordResetController extends Controller
         $request->validate([
             'password' => 'required|min:6|confirmed'
         ]);
-        $reset_user = User::where('email', $request->email)->where('verified', 1)->first();
+        $reset_user = User::where('email', $request->email)->first();
         if ($reset_user) {
             $reset_user->password = Hash::make($request->password);
             $reset_user->save();

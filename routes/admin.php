@@ -17,6 +17,9 @@ Route::group(['prefix' =>'admin', 'middleware' => ['auth', 'admin']], function()
 	Route::get('/categories/destroy/{id}', 'CategoryController@destroy')->name('categories.destroy');
 	Route::post('/categories/featured', 'CategoryController@updateFeatured')->name('categories.featured');
 
+	Route::resource('transaction', 'TransactionController');
+	Route::post('/transaction/details', 'TransactionController@transaction_details')->name('transaction.details');
+
 	Route::resource('subcategories','SubCategoryController');
 	Route::get('/subcategories/destroy/{id}', 'SubCategoryController@destroy')->name('subcategories.destroy');
 

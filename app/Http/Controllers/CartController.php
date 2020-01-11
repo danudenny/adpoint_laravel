@@ -140,11 +140,10 @@ class CartController extends Controller
     //updated the quantity for a cart item
     public function updateQuantity(Request $request)
     {   
-
         $cart = $request->session()->get('cart', collect([]));
-        
+        // dd($cart);
         $cart = $cart->map(function ($object, $key) use ($request) {
-            if((string)$key === $request->key){
+            if((string)$object['id'] === $request->key){   
                 if ($object['Periode'] === 'Harian') {
                     $object['quantity'] = $request->quantity;
                     $object['start_date'] = $request->start_date;
@@ -182,7 +181,6 @@ class CartController extends Controller
             }
             return $object;
         });
-
         $request->session()->put('cart', $cart);
         return view('frontend.partials.cart_details');
     }
