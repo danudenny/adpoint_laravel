@@ -25,7 +25,15 @@
                     <a href="{{ route('purchase_history.index') }}" class="{{ areActiveRoutesHome(['purchase_history.index'])}}">
                         <i class="la la-file-text"></i>
                         <span class="category-name">
-                            {{__('Purchase History')}}
+                            {{__('My Order')}}
+                        </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('trx.page.buyer') }}" class="{{ areActiveRoutesHome(['trx.page.buyer'])}}">
+                        <i class="la la-file-text"></i>
+                        <span class="category-name">
+                            {{__('My Transaction')}}
                         </span>
                     </a>
                 </li>

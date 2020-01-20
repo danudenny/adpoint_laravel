@@ -50,12 +50,7 @@
                                 @php
                                     $product = \App\Product::find($cartItem['id']);
                                     $subtotal += $cartItem['price']*$cartItem['quantity'];
-                                    $tax += $cartItem['tax']*$cartItem['quantity'];
-                                    $shipping += $cartItem['shipping']*$cartItem['quantity'];
                                     $product_name_with_choice = $product->name;
-                                    if(isset($cartItem['color'])){
-                                        $product_name_with_choice .= ' - '.\App\Color::where('code', $cartItem['color'])->first()->name;
-                                    }
                                     foreach (json_decode($product->choice_options) as $choice){
                                         $str = $choice->title;
                                         $product_name_with_choice .= ' - '.$cartItem[$str];
@@ -89,8 +84,7 @@
             </div>
             @php
                 array_push($total_kes, $subtotal);
-               
-                @endphp
+            @endphp
         @endforeach
         @php
             $total_keseluruhan = array_sum($total_kes);
@@ -100,7 +94,7 @@
                 <table class="table-cart table-cart-review">
                     <tfoot>
                         @php
-                            $pajak = $total_keseluruhan*0.01;
+                            $pajak = 0;
                         @endphp
                         <tr class="cart-shipping">
                             <th class="text-white">{{__('Tax 10%')}}</th>

@@ -32,15 +32,22 @@
     					<td class="text-main text-bold">
     						{{__('Order Status')}}
     					</td>
-                        @php
-                            $status = $order->orderDetails->first()->delivery_status;
-                        @endphp
     					<td class="text-right">
-                            @if($status == 'delivered')
-                                <span class="badge badge-success">{{ ucfirst(str_replace('_', ' ', $status)) }}</span>
-                            @else
-                                <span class="badge badge-info">{{ ucfirst(str_replace('_', ' ', $status)) }}</span>
-                            @endif
+                            @if ($order->status_order == 0)
+								<span class="badge badge-warning">Disapproved</span>
+							@elseif ($order->status_order == 1)
+								<span class="badge badge-secondary">Reviewed</span>
+							@elseif ($order->status_order == 2)
+								<span class="badge badge-primary">Approved</span>
+							@elseif ($order->status_order == 3)
+								<span class="badge badge-warning">Disapproved</span>
+							@elseif ($order->status_order == 4)
+								<span class="badge badge-info">Aired</span>
+							@elseif ($order->status_order == 5)
+								<span class="badge badge-success">Complete</span>
+							@elseif ($order->status_order == 6)
+								<span class="badge badge-danger">Cancelled</span>
+							@endif
     					</td>
     				</tr>
     				<tr>
@@ -48,7 +55,7 @@
     						{{__('Order Date')}}
     					</td>
     					<td class="text-right">
-    						{{ date('d-m-Y h:i A', $order->date) }} (UTC)
+    						{{ date('d M Y h:i:s', $order->date) }}
     					</td>
     				</tr>
                     <tr>
@@ -57,14 +64,6 @@
     					</td>
     					<td class="text-right">
     						{{ single_price($order->orderDetails->sum('price') + $order->orderDetails->sum('tax')) }}
-    					</td>
-    				</tr>
-                    <tr>
-    					<td class="text-main text-bold">
-    						{{__('Payment method')}}
-    					</td>
-    					<td class="text-right">
-    						{{ ucfirst(str_replace('_', ' ', $order->payment_type)) }}
     					</td>
     				</tr>
     				</tbody>
@@ -134,17 +133,9 @@
     					{{ single_price($order->orderDetails->sum('tax')) }}
     				</td>
     			</tr>
-                <tr>
-    				<td>
-    					<strong>{{__('Shipping')}} :</strong>
-    				</td>
-    				<td>
-    					{{ single_price($order->orderDetails->sum('shipping_cost')) }}
-    				</td>
-    			</tr>
     			<tr>
     				<td>
-    					<strong>{{__('TOTAL')}} :</strong>
+    					<strong>{{__('Total')}} :</strong>
     				</td>
     				<td class="text-bold h4">
     					{{ single_price($order->grand_total) }}
@@ -154,7 +145,7 @@
     			</table>
     		</div>
     		<div class="text-right no-print">
-    			<a href="{{ route('customer.invoice.download', $order->id) }}" class="btn btn-default"><i class="demo-pli-printer icon-lg"></i></a>
+    			<a href="#" class="btn btn-default"><i class="demo-pli-printer icon-lg"></i></a>
     		</div>
     	</div>
     </div>

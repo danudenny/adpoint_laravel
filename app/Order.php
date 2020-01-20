@@ -13,7 +13,7 @@ class Order extends Model
 
     public function transaction()
     {
-        return $this->hashMany(Transaction::class);
+        return $this->belongsTo(Transaction::class);
     }
 
     public function user()

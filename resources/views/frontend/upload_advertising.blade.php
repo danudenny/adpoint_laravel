@@ -72,6 +72,12 @@
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col-md-12">
+                                            <div class="alert alert-success" role="alert">
+                                                <h4 class="alert-heading">Well done!</h4>
+                                                <p>You are now please prepare the materials that you want to upload!</p>
+                                                <hr>
+                                                <p class="mb-0">And provide information to the seller clearly</p>
+                                            </div>
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="form-group">
@@ -92,7 +98,7 @@
                                                     </div>
                                                     <div class="form-group">
                                                         <label>Description <span class="text-danger">*</span></label>
-                                                        <textarea name="desc_ads" class="form-control" cols="10" rows="5" placeholder="Masukan informasi tambahan ke seller" required></textarea>
+                                                        <textarea name="desc_ads" class="form-control" cols="10" rows="5" placeholder="And provide information to the seller clearly" required></textarea>
                                                     </div>
                                                 </div>
                                             </div>

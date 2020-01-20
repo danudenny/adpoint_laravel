@@ -75,13 +75,13 @@
                                                 @if(\App\BusinessSetting::where('type', 'cash_payment')->first()->value == 1)
                                                     <div class="col-md-6">
                                                         <label class="payment_option mb-4" data-toggle="tooltip" data-title="Bank Mandiri">
-                                                            <input type="radio" id="mandiri" name="payment_option" value="cash_on_delivery">
+                                                            <input type="radio" id="mandiri" name="payment_option" value="Mandiri">
                                                             <span style="width: 150px;">
                                                                 <img src="{{ asset('frontend/images/icons/cards/mandiri.png')}}" class="img-fluid">
                                                             </span>
                                                         </label>
                                                         <label class="payment_option mb-4" data-toggle="tooltip" data-title="Bank BCA">
-                                                            <input type="radio" id="bca" name="payment_option" value="cash_on_delivery">
+                                                            <input type="radio" id="bca" name="payment_option" value="BCA">
                                                             <span style="width: 150px;">
                                                                 <img src="{{ asset('frontend/images/icons/cards/bca.png')}}" class="img-fluid">
                                                             </span>
@@ -92,8 +92,8 @@
                                                             
                                                         </div>
                                                     </div>
-                                                    <input type="hidden" name="file_ads" value="{{$file_ads}}">
-                                                    <input type="hidden" name="desc_ads" value="{{$desc_ads}}">
+                                                    <input type="hidden" name="file_ads" value="{{ $file_ads }}">
+                                                    <input type="hidden" name="desc_ads" value="{{ $desc_ads }}">
                                                 @endif
                                             </div>
                                         </div>
@@ -109,7 +109,7 @@
                                     </a>
                                 </div>
                                 <div class="col-6 text-right">
-                                    <button type="submit" id="complete" style="cursor: not-allowed" class="btn btn-styled btn-base-1" disabled>{{__('Complete Order')}}</button>
+                                    <button type="submit" id="complete" style="cursor: not-allowed" class="btn btn-styled btn-base-1" disabled>{{__('Place Order')}}</button>
                                 </div>
                             </div>
                         </form>

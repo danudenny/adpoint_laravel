@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Transaction;
+use Auth;
 
 class TransactionController extends Controller
 {
@@ -18,10 +19,18 @@ class TransactionController extends Controller
         return view('transactions.index', compact('transactions'));
     }
 
-    public function transaction_details(Request $request)
+    public function transaction_details($id)
     {
-        $details = Transaction::where('id', $request->transaction_id)->first();
+        $details = Transaction::where('id', decrypt($id))->first();
         return view('transactions.transaction_detail', compact('details'));
+    }
+
+    public function trx_page_buyer()
+    {
+        $trx = Transaction::orderBy('id', 'desc')
+                        ->where('user_id', Auth::user()->id)
+                        ->get();
+        return view('frontend.customer.trx_buyer', compact('trx'));
     }
 
     /**

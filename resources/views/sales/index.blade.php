@@ -18,7 +18,6 @@
                     <th>Customer</th>
                     <th>Amount</th>
                     <th>Delivery Status</th>
-                    <th>Payment Status</th>
                     <th width="10%">{{__('options')}}</th>
                 </tr>
             </thead>

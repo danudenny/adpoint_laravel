@@ -19,6 +19,16 @@ class PaymentController extends Controller
         return view('frontend.seller.payment_history', compact('payments'));
     }
 
+    public function admin_payment_index()
+    {
+        dd('payment_admin');
+    }
+
+    public function admin_payment_confirm()
+    {
+        dd('payment_confirm');
+    }
+
     /**
      * Display a listing of the resource.
      *

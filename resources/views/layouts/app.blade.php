@@ -228,6 +228,16 @@
     </div>
 
         @yield('script')
+    
+        
+@auth
+
+<script>
+    const key = "{{ config('app.vapid') }}";
+</script>
+<script src="{{ asset('js/enable-push.js') }}" defer></script>
+
+@endauth
 
 </body>
 </html>

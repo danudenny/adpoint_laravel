@@ -25,6 +25,9 @@ Route::post('/users/registration', 'HomeController@registration_proses')->name('
 //Route::post('/users/login', 'HomeController@user_login')->name('user.login.submit');
 Route::post('/users/login/cart', 'HomeController@cart_login')->name('cart.login.submit');
 
+
+
+
 // reset password
 Route::get('/users/reset-password', 'HomeController@resetPassword')->name('reset.password');
 Route::post('/users/reset-password', 'PasswordResetController@sendEmailReset')->name('send.email.reset');
@@ -40,6 +43,10 @@ Route::get('/', 'HomeController@index')->name('home');
 Route::get('/sitemap.xml', function(){
 	return base_path('sitemap.xml');
 });
+
+// push notif
+Route::post('/push','HomeController@push');
+
 Route::get('/product/{slug}', 'HomeController@product')->name('product');
 Route::get('/products', 'HomeController@listing')->name('products');
 // list product untuk di konsum jquery
@@ -115,6 +122,9 @@ Route::group(['middleware' => ['user', 'verified']], function(){
 	Route::post('/purchase_history/details', 'PurchaseHistoryController@purchase_history_details')->name('purchase_history.details');
 	Route::get('/purchase_history/my_order/{id}', 'PurchaseHistoryController@my_order')->name('my.order');
 	Route::get('/purchase_history/destroy/{id}', 'PurchaseHistoryController@destroy')->name('purchase_history.destroy');
+
+
+	Route::get('/transaction', 'TransactionController@trx_page_buyer')->name('trx.page.buyer');
 	
 	
 	Route::resource('wishlists','WishlistController');
@@ -154,13 +164,15 @@ Route::group(['middleware' => ['auth']], function(){
 
 	Route::resource('orders','OrderController');
 	Route::get('/orders/approve_by_seller/{id}', 'OrderController@approve_by_seller')->name('approve.by.seller');
-	Route::get('/orders/disapprove_by_seller/{id}', 'OrderController@disapprove_by_seller')->name('disapprove.by.seller');
+	Route::get('/orders/approve_all_by_seller', 'OrderController@approve_all_by_seller')->name('approved.all.by.seller');
+	Route::post('/orders/disapprove_by_seller', 'OrderController@disapprove_by_seller')->name('disapprove.by.seller');
 	
 	Route::get('/orders/destroy/{id}', 'OrderController@destroy')->name('orders.destroy');
 	Route::post('/orders/details', 'OrderController@order_details')->name('orders.details');
 	Route::post('/orders/update_delivery_status', 'OrderController@update_delivery_status')->name('orders.update_delivery_status');
 	Route::post('/orders/update_payment_status', 'OrderController@update_payment_status')->name('orders.update_payment_status');
-	Route::get('/confirm_payment/{id}', 'OrderController@confirm_payment')->name('confirm.payment');
+	Route::get('/confirm_payment', 'OrderController@confirm_payment')->name('confirm.payment');
+	Route::get('/confirm_payment/{id}', 'OrderController@confirm_payment_id')->name('confirm.payment.id');
 	Route::post('/confirm_payment/insert', 'OrderController@insert_confirm_payment')->name('insert.confirm.payment');
 	Route::get('/order_complete/{id}', 'OrderController@order_complete')->name('order.complete');
 

@@ -61,6 +61,11 @@
                         <form class="form-default" data-toggle="validator" action="{{ route('checkout.upload_advertising') }}" role="form" method="POST">
                             @csrf
                             <div class="card">
+                                <div class="card-title px-4 py-3">
+                                    <h3 class="heading heading-5 strong-500">
+                                        {{__('Enter your data correctly !')}}
+                                    </h3>
+                                </div>
                                 @if(Auth::check())
                                     @php
                                         $user = Auth::user();
@@ -196,7 +201,7 @@
                                     </div>
                                 @endif
                             </div>
-
+                            
                             <div class="row align-items-center pt-4">
                                 <div class="col-6">
                                     <a href="{{ route('home') }}" class="link link--style-3">

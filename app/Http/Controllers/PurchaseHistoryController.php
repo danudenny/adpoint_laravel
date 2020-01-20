@@ -17,8 +17,12 @@ class PurchaseHistoryController extends Controller
      */
     public function index()
     {
-        $orders = Order::where('user_id', Auth::user()->id)->orderBy('code', 'desc')->paginate(9);
-        return view('frontend.purchase_history', compact('orders'));
+        // $orders = Order::where('user_id', Auth::user()->id)->orderBy('code', 'desc')->paginate(9);
+        $order_details = DB::table('order_details as od')
+                            ->join('orders as o', 'o.id', '=', 'od.order_id')
+                            ->where('o.user_id', Auth::user()->id)
+                            ->get();
+        return view('frontend.purchase_history', compact('order_details'));
     }
 
     public function purchase_history_details(Request $request)

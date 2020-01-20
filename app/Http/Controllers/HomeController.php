@@ -22,7 +22,9 @@ use App\Http\Controllers\SearchController;
 use ImageOptimizer;
 
 use Mail;
+use Notification;
 use App\Mail\User\RegistUser;
+use App\Notifications\UserRegistPush;
 
 class HomeController extends Controller
 {
@@ -63,7 +65,7 @@ class HomeController extends Controller
         $register = new User;
         $register->name = $request->name;
         $register->email = $request->email;
-        $register->password = $request->password;
+        $register->password = Hash::make($request->password);
         $register->ktp = $request->file('ktp')->store('uploads/users');
         $register->npwp = $request->file('npwp')->store('uploads/users');
         $user['name'] = $register->name;
@@ -71,6 +73,7 @@ class HomeController extends Controller
         if ($register->save()) {
             $register->verified = 0;
             $request->session()->flash('message', 'Thanks for your registration, please check your email!.');
+            Notification::send(User::where('user_type','admin')->get(),new UserRegistPush);
             Mail::to($request->email)->send(new RegistUser($user));
             return back();
         }
@@ -81,7 +84,7 @@ class HomeController extends Controller
     {
         $valid = Auth::attempt(['email' => $request->email, 'password' => $request->password,'verified'=> 1]);
         $user = User::where('email', $request->email)->first();
-        if ($user !== null && $valid === true) {
+        if ($user !== null) {
             if (password_verify($request->password, $user->password)) {
                 if ($user->verified === 1) {
                     if ($user->user_type === 'customer' || $user->user_type === 'seller') {
@@ -556,6 +559,21 @@ class HomeController extends Controller
 
     public function getlistProduct(){
         return Product::all();
+    }
+
+    public function push(Request $request)
+    {
+        $this->validate($request,[
+            'endpoint'    => 'required',
+            'keys.auth'   => 'required',
+            'keys.p256dh' => 'required'
+        ]);
+        $endpoint = $request->endpoint;
+        $token = $request->keys['auth'];
+        $key = $request->keys['p256dh'];
+        $user = Auth::user();
+        $user->updatePushSubscription($endpoint, $key, $token);
+        return response()->json(['success' => true],200);
     }
 
 }

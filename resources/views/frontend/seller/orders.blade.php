@@ -32,117 +32,127 @@
                         </div>
 
                         <!-- Order history table -->
+                        
                         <div class="card no-border mt-4">
                             <div class="card-body">
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div>
-                                            <table class="table table-sm table-hover" id="table">
-                                                <thead>
-                                                    <tr>
-                                                        <th>#</th>
-                                                        <th>{{__('Order Number')}}</th>
-                                                        <th>{{__('Num. of Media')}}</th>
-                                                        <th>{{__('Customer')}}</th>
-                                                        <th>{{__('Amount')}}</th>
-                                                        <th>{{__('Order Status')}}</th>
-                                                        <th>{{__('Options')}}</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    @if (count($orders) > 0)
-                                                        @foreach ($orders as $key => $order_id)
+                               <div class="row">
+                                   <div class="accordion col-md-12" id="accordionExample">
+                                    @if (Session::has('message'))
+                                        <div class="alert alert-success">
+                                            {!! session('message') !!}
+                                        </div>
+                                    @endif
+                                    <article class="card">
+                                        @foreach ($orders as $no => $o)
+                                            @if ($o->approved == 1)
+                                                <header style="height: 50px; background: #0f355a; color: white; border-bottom: 2px solid #fd7e14" id="headingOne{{$no}}">
+                                                    <div style="line-height: 50px; margin-left: 10px">
+                                                        <div style="float: left">
+                                                            <a style="cursor: pointer;" data-toggle="collapse" data-target="#collapseOne{{$no}}" aria-expanded="true" aria-controls="collapseOne{{$no}}">
+                                                                Order ID: <b>{{ $o->code }}</b> |  <i>{{ date('d M Y h:i:s', strtotime($o->created_at)) }}</i>
+                                                            </a>
+                                                        </div>
+                                                        <div style="float: right; margin-right: 10px;">
+                                                            {{-- <a class="btn btn-success btn-sm" href="{{ route('approved.all.by.seller', encrypt($o->id)) }}">Approve All</a> --}}
+                                                        </div>
+                                                    </div>
+                                                </header>
+                                                <div id="collapseOne{{$no}}" class="collapse show" aria-labelledby="headingOne{{$no}}" data-parent="#accordionExample">
+                                                    
+                                                    <div class="table-responsive">
+                                                        <table class="table table-bordered">
                                                             @php
-                                                                $order = \App\Order::find($order_id->id);
+                                                                $order_details = \App\OrderDetail::where('order_id',$o->id)->get();
                                                             @endphp
-                                                            @if($order != null && $order->status_order != 0)
+                                                            @foreach ($order_details as $key => $od)
+                                                                @php
+                                                                    $product = \App\Product::where('id', $od->product_id)->first();
+                                                                @endphp
                                                                 <tr>
                                                                     <td>
-                                                                        {{ $key+1 }}
+                                                                        <img src="{{ url(json_decode($product->photos)[0]) }}" class="img-fluid" width="50">
                                                                     </td>
                                                                     <td>
-                                                                        <a href="#{{ $order->code }}" onclick="show_order_details({{ $order->id }})">{{ $order->code }}</a>
+                                                                        <a target="_blank" href="{{ route('product', $product->slug) }}">{{ $product->name }}</a>
+                                                                        <br>
+                                                                        {{ $od->variation }} 
+                                                                        <small class="text-info text-bold">
+                                                                            ( {{ date('d M Y', strtotime($od->start_date)) }} - {{ date('d M Y', strtotime($od->end_date)) }} )
+                                                                        </small> 
                                                                     </td>
                                                                     <td>
-                                                                        {{ count($order->orderDetails->where('seller_id', Auth::user()->id)) }}
+                                                                        Price: <br>
+                                                                        <b>{{ single_price($od->price) }}</b>
                                                                     </td>
                                                                     <td>
-                                                                        @if ($order->user_id != null)
-                                                                            {{ $order->user->name }}
-                                                                        @else
-                                                                            Guest ({{ $order->guest_id }})
+                                                                        Qty: <br>
+                                                                        <div class="badge badge-info">{{ $od->quantity }}</div>
+                                                                    </td>
+                                                                    <td>
+                                                                        Total: <br>
+                                                                        @php
+                                                                            $total = $od->price * $od->quantity;
+                                                                        @endphp
+                                                                        <b>{{ single_price($total) }}</b>
+                                                                    </td>
+                                                                    <td>
+                                                                        @if ($od->status === 1)
+                                                                            <div class="badge badge-success">Approved</div>
+                                                                        @elseif($od->status === 2)
+                                                                            <div class="badge badge-danger">Rejected</div>
+                                                                        @else 
+                                                                        <a href="{{ route('approve.by.seller', encrypt($od->id)) }}" data-toggle="tooltip" data-placement="top" title="Approve" class="btn btn-sm btn-success">
+                                                                            <i class="fa fa-check"></i>
+                                                                        </a>
+                                                                        <a data-toggle="modal" data-target="#reject{{$od->id}}" style="cursor: pointer; color: white" class="btn btn-sm btn-danger">
+                                                                            <i class="fa fa-times"></i>
+                                                                        </a>
                                                                         @endif
-                                                                    </td>
-                                                                    <td>
-                                                                        {{ single_price($order->orderDetails->where('seller_id', Auth::user()->id)->sum('price')) }}
-                                                                    </td>
-                                                                    <td>
-                                                                        @if ($order->status_order == 0)
-                                                                            <span class="badge badge-warning">Disapproved by admin</span>
-                                                                        @elseif ($order->status_order == 1)
-                                                                            <span class="badge badge-secondary">Reviewed</span>
-                                                                        @elseif ($order->status_order == 2)
-                                                                            <span class="badge badge-primary">Approved</span>
-                                                                        @elseif ($order->status_order == 3)
-                                                                            <span class="badge badge-warning">Disapproved by seller</span>
-                                                                        @elseif ($order->status_order == 4)
-                                                                            <span class="badge badge-info">Aired</span>
-                                                                        @elseif ($order->status_order == 5)
-                                                                            <span class="badge badge-success">Complete</span>
-                                                                        @elseif ($order->status_order == 6)
-                                                                            <span class="badge badge-danger">Cancelled</span>
-                                                                        @endif
-                                                                    </td>
-                                                                    <td>
-                                                                        <div class="dropdown">
-                                                                            <button class="btn" type="button" id="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                                                <i class="fa fa-ellipsis-v"></i>
-                                                                            </button>
-            
-                                                                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="">
-                                                                                @if ($order->status_order == 1)
-                                                                                    <a href="{{ route('approve.by.seller', encrypt($order->id)) }}" class="dropdown-item">Approve</a>
-                                                                                    <a href="{{ route('disapprove.by.seller', encrypt($order->id)) }}" class="dropdown-item">Disapprove</a>
-                                                                                @endif
-                                                                                <button onclick="show_order_details({{ $order->id }})" class="dropdown-item">{{__('Order Details')}}</button>
-                                                                            </div>
-                                                                        </div>
                                                                     </td>
                                                                 </tr>
-                                                            @endif
-                                                        @endforeach
-                                                    @endif
-                                                    
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
+                                                                <div class="modal fade" id="reject{{ $od->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+                                                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                                                        <div class="modal-content">
+                                                                            <div class="modal-header">
+                                                                            <h5 class="modal-title" id="exampleModalLongTitle">Reject item {{ $product->name }}</h5>
+                                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                                <span aria-hidden="true">&times;</span>
+                                                                            </button>
+                                                                        </div>
+                                                                        <form action="{{ route('disapprove.by.seller') }}" method="POST">
+                                                                            <div class="modal-body">
+                                                                                <div class="form-group">
+                                                                                    @csrf
+                                                                                    <input type="hidden" name="od_id" value="{{$od->id}}">
+                                                                                    <label>Alasan</label>
+                                                                                    <textarea name="alasan" class="form-control" placeholder="Tuliskan alasan" cols="20" rows="5"></textarea>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="modal-footer">
+                                                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                                                <button type="submit" class="btn btn-primary">Submit</button>
+                                                                            </div>
+                                                                        </form>
+                                                                    </div>
+                                                                </div>
+                                                                </div>
+                                                            @endforeach
+                                                        </table>
+                                                    </div> <!-- table-responsive .end// -->
+                                                </div>
+                                            @else
+                                                <h5 class="text-center">Nothing!</h5>
+                                            @endif
+                                        @endforeach
+                                    </article> <!-- order-group.// --> 
                                 </div>
+                               </div>
                             </div>
                         </div>
                     
-                        <div class="pagination-wrapper py-4">
-                            <ul class="pagination justify-content-end">
-                                {{ $orders->links() }}
-                            </ul>
-                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
-
-    <div class="modal fade" id="order_details" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-zoom product-modal" id="modal-size" role="document">
-            <div class="modal-content position-relative">
-                <div class="c-preloader">
-                    <i class="fa fa-spin fa-spinner"></i>
-                </div>
-                <div id="order-details-modal-body">
-
-                </div>
-            </div>
-        </div>
-    </div>
-
 @endsection

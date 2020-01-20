@@ -21,7 +21,23 @@
                     <a href="{{ route('purchase_history.index') }}" class="{{ areActiveRoutesHome(['purchase_history.index'])}}">
                         <i class="la la-file-text"></i>
                         <span class="category-name">
-                            {{__('Purchase History')}}
+                            {{__('My Order')}}
+                        </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('trx.page.buyer') }}" class="{{ areActiveRoutesHome(['trx.page.buyer'])}}">
+                        <i class="la la-file-text"></i>
+                        <span class="category-name">
+                            {{__('My Transaction')}}
+                        </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('confirm.payment') }}" class="{{ areActiveRoutesHome(['confirm.payment'])}}">
+                        <i class="la la-file-text"></i>
+                        <span class="category-name">
+                            {{__('Confirm Payment')}}
                         </span>
                     </a>
                 </li>
@@ -29,7 +45,7 @@
                     <a href="{{ route('broadcast.index') }}" class="{{ areActiveRoutesHome(['broadcast.index'])}}">
                         <i class="la la-image"></i>
                         <span class="category-name">
-                            {{__('Broadcast Proof')}}
+                            {{__('Bukti Tayang')}}
                         </span>
                     </a>
                 </li>

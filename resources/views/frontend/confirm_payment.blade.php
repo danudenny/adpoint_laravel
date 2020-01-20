@@ -28,7 +28,7 @@
                                         <ul class="breadcrumb">
                                             <li><a href="{{ route('home') }}">{{__('Home')}}</a></li>
                                             <li><a href="{{ route('dashboard') }}">{{__('Dashboard')}}</a></li>
-                                            <li class="active"><a href="{{ route('confirm.payment', encrypt($order_id)) }}">{{__('Confirm Payment')}}</a></li>
+                                            <li class="active"><a href="{{ route('confirm.payment') }}">{{__('Confirm Payment')}}</a></li>
                                         </ul>
                                     </div>
                                 </div>
@@ -36,56 +36,55 @@
                         </div>
                         <div class="row mt-4">
                             <div class="col-md-12">
-                                @if ($order[0]->status_confirm == 0)
                                 <form action="{{ route('insert.confirm.payment') }}" method="POST" enctype="multipart/form-data">
                                     <div class="card">
                                         <div class="card-body">
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    @csrf
-                                                    <input type="hidden" name="order_id" value="{{ $order_id }}">
-                                                    <div class="form-group">
-                                                        <label>No Order</label>
-                                                        <input type="text" class="form-control" name="no_order" readonly value="{{ $order[0]->code }}">
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label>Nama</label>
-                                                        <input type="text" class="form-control" name="nama" value="{{ $order[0]->buyer_name }}">
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label>Nama Bank</label>
-                                                        <select class="form-control selectpicker" name="nama_bank" data-show-subtext="true" data-live-search="true">
-                                                            @foreach (App\Bank::all() as $key => $b)
-                                                                <option data-subtext="{{$b->name}}" value="{{ $b->name }}">{{ $b->name }}</option>
-                                                            @endforeach
-                                                        </select>
-                                                    </div>
-                                                    <div class="form-group{{ $errors->has('no_rek') ? 'has-error' : ''}}">
-                                                        <label>No Rekening</label>
-                                                        <input type="number" class="form-control" name="no_rek">
-                                                        <strong class="text-danger mt-1">{!! $errors->first('no_rek', '<p class="help-block">:message</p>') !!}</strong>
-                                                    </div>
-                                                    <div class="form-group{{ $errors->has('bukti') ? 'has-error' : ''}}">
-                                                        <label>Bukti Transfer</label>
-                                                        <input type="file" class="form-control" name="bukti">
-                                                        <strong class="text-danger mt-1">{!! $errors->first('bukti', '<p class="help-block">:message</p>') !!}</strong>
-                                                    </div>
-                                                    <button type="submit" class="btn btn-success btn-block">Submit</button>
-                                                </div>
+                                            @csrf
+                                            <div class="form-group">
+                                                <label>Code Transaction</label>
+                                                <select class="form-control selectpicker" name="trx_code" data-placeholder="{{__('Chose one')}}">
+                                                    <option value="">{{__('Chose one')}}</option>
+                                                    @foreach ($transactions as $key => $trx)
+                                                        @if ($trx_id !== null)
+                                                            @php
+                                                                $trx_ = \App\Transaction::where('id', $trx_id)->first();
+                                                            @endphp
+                                                            @if ($trx->code === $trx_->code)
+                                                                <option value="{{ $trx->code }}" selected>{{ $trx->code }}</option>   
+                                                            @endif
+                                                        @else 
+                                                            <option value="{{ $trx->code }}">{{ $trx->code }}</option>   
+                                                        @endif
+                                                    @endforeach
+                                                </select>
                                             </div>
+                                            <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
+                                            <div class="form-group">
+                                                <label>Nama</label>
+                                                <input type="text" class="form-control" id="name" name="nama" value="{{ Auth::user()->name }}">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Nama Bank</label>
+                                                <select class="form-control selectpicker" name="nama_bank" data-show-subtext="true" data-live-search="true">
+                                                    @foreach (App\Bank::all() as $key => $b)
+                                                        <option data-subtext="{{$b->name}}" value="{{ $b->name }}">{{ $b->name }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                            <div class="form-group{{ $errors->has('no_rek') ? 'has-error' : ''}}">
+                                                <label>No Rekening</label>
+                                                <input type="number" class="form-control" name="no_rek">
+                                                <strong class="text-danger mt-1">{!! $errors->first('no_rek', '<p class="help-block">:message</p>') !!}</strong>
+                                            </div>
+                                            <div class="form-group{{ $errors->has('bukti') ? 'has-error' : ''}}">
+                                                <label>Bukti Transfer</label>
+                                                <input type="file" class="form-control" name="bukti">
+                                                <strong class="text-danger mt-1">{!! $errors->first('bukti', '<p class="help-block">:message</p>') !!}</strong>
+                                            </div>
+                                            <button type="submit" class="btn btn-success btn-block">Submit</button>
                                         </div>
                                     </div>
                                 </form>
-                                @else 
-                                <div class="card">
-                                    <div class="card-body">
-                                        <div class="alert alert-info">
-                                            <h5><i class="fa fa-check-circle-o"></i> Anda telah melakukan konfirmasi pembayaran. <i><a href="{{ route('home') }}">Kembali</a></i></h5>
-                                        </div>
-                                    </div>
-                                </div>
-                                @endif
-                                
                             </div>
                         </div>
                     </div>

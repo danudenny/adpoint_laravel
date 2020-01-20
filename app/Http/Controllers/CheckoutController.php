@@ -26,37 +26,13 @@ class CheckoutController extends Controller
 
     //check the selected payment gateway and redirect to that controller accordingly
     public function checkout(Request $request)
-    {
+    { 
         $orderController = new OrderController;
         $orderController->store($request);
         $request->session()->put('payment_type', 'cart_payment');
 
         if($request->session()->get('order_id') != null){
-            if($request->payment_option == 'paypal'){
-                $paypal = new PaypalController;
-                return $paypal->getCheckout();
-            }
-            elseif ($request->payment_option == 'stripe') {
-                $stripe = new StripePaymentController;
-                return $stripe->stripe();
-            }
-            elseif ($request->payment_option == 'sslcommerz') {
-                $sslcommerz = new PublicSslCommerzPaymentController;
-                return $sslcommerz->index($request);
-            }
-            elseif ($request->payment_option == 'instamojo') {
-                $instamojo = new InstamojoController;
-                return $instamojo->pay($request);
-            }
-            elseif ($request->payment_option == 'razorpay') {
-                $razorpay = new RazorpayController;
-                return $razorpay->payWithRazorpay($request);
-            }
-            elseif ($request->payment_option == 'paystack') {
-                $paystack = new PaystackController;
-                return $paystack->redirectToGateway($request);
-            }
-            elseif ($request->payment_option == 'cash_on_delivery') {
+            if ($request->payment_option == 'Mandiri' || $request->payment_option == "BCA") {
                 $order = Order::findOrFail($request->session()->get('order_id'));
                 $commission_percentage = BusinessSetting::where('type', 'vendor_commission')->first()->value;
                 foreach ($order->orderDetails as $key => $orderDetail) {
@@ -70,13 +46,8 @@ class CheckoutController extends Controller
                 $request->session()->put('cart', collect([]));
                 $request->session()->forget('order_id');
                 flash("Your order has been placed successfully")->success();
-                return redirect()->route('home');
-            }
-            elseif ($request->payment_option == 'wallet') {
-                $user = Auth::user();
-                $user->balance -= Order::findOrFail($request->session()->get('order_id'))->grand_total;
-                $user->save();
-                return $this->checkout_done($request->session()->get('order_id'), null);
+                $request->session()->flash('message', 'Thanks for your order, please check your email!');
+                return redirect('purchase_history');
             }
         }
     }
@@ -162,15 +133,11 @@ class CheckoutController extends Controller
 
         
         $subtotal = 0;
-        $tax = 0;
-        $shipping = 0;
         foreach (Session::get('cart') as $key => $cartItem){
             $subtotal += $cartItem['price']*$cartItem['quantity'];
-            $tax += $cartItem['tax']*$cartItem['quantity'];
-            $shipping += $cartItem['shipping']*$cartItem['quantity'];
         }
         
-        $total = $subtotal + $tax + $shipping;
+        $total = $subtotal;
         
         if(Session::has('coupon_discount')){
             $total -= Session::get('coupon_discount');
@@ -194,17 +161,13 @@ class CheckoutController extends Controller
         $request->session()->put('shipping_info', $shipping_info);
 
         $subtotal = 0;
-        $tax = 0;
-        $shipping = 0;
         
         foreach (Session::get('cart') as $key => $cartItem){
             $subtotal += $cartItem['price']*$cartItem['quantity'];
-            $tax += $cartItem['tax']*$cartItem['quantity'];
-            $shipping += $cartItem['shipping']*$cartItem['quantity'];
         }
 
         
-        $total = $subtotal + $tax + $shipping;
+        $total = $subtotal;
         
         if(Session::has('coupon_discount')){
             $total -= Session::get('coupon_discount');
@@ -216,15 +179,11 @@ class CheckoutController extends Controller
     public function get_payment_info(Request $request)
     {
         $subtotal = 0;
-        $tax = 0;
-        $shipping = 0;
         foreach (Session::get('cart') as $key => $cartItem){
             $subtotal += $cartItem['price']*$cartItem['quantity'];
-            $tax += $cartItem['tax']*$cartItem['quantity'];
-            $shipping += $cartItem['shipping']*$cartItem['quantity'];
         }
 
-        $total = $subtotal + $tax + $shipping;
+        $total = $subtotal;
 
         if(Session::has('coupon_discount')){
                 $total -= Session::get('coupon_discount');
@@ -234,7 +193,6 @@ class CheckoutController extends Controller
     }
 
     public function apply_coupon_code(Request $request){
-        //dd($request->all());
         $coupon = Coupon::where('code', $request->code)->first();
 
         if($coupon != null){
@@ -245,15 +203,12 @@ class CheckoutController extends Controller
                     if ($coupon->type == 'cart_base')
                     {
                         $subtotal = 0;
-                        $tax = 0;
                         $shipping = 0;
                         foreach (Session::get('cart') as $key => $cartItem)
                         {
                             $subtotal += $cartItem['price']*$cartItem['quantity'];
-                            $tax += $cartItem['tax']*$cartItem['quantity'];
-                            $shipping += $cartItem['shipping']*$cartItem['quantity'];
                         }
-                        $sum = $subtotal+$tax+$shipping;
+                        $sum = $subtotal;
 
                         if ($sum > $coupon_details->min_buy) {
                             if ($coupon->discount_type == 'percent') {

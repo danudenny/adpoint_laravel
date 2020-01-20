@@ -7,7 +7,7 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class OrderNotifPaymentBuyer extends Mailable implements ShouldQueue
+class OrderConfirmation extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
     public $user;
@@ -28,7 +28,7 @@ class OrderNotifPaymentBuyer extends Mailable implements ShouldQueue
      */
     public function build()
     {
-        return $this->view('emails.orders.order_notif_payment_buyer')
-            ->subject('Terimakasih sudah bayar');
+        return $this->view('emails.orders.order_confirmation')
+            ->subject('Selamat!.');
     }
 }

@@ -7,7 +7,7 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class OrderActive extends Mailable
+class OrderActive extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
     public $user;
