@@ -7,7 +7,7 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class ResetUser extends Mailable
+class ResetUser extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 

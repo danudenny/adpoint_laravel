@@ -6,17 +6,19 @@
             <!-- Body content -->
             <tr>
                 <td class="content-cell">
-                    <p>Dear {{ $user['name'] }},</p>
-                    
-                    <p>Selamat.<br>
-                    Proses registrasi berhasil dilakukan. Sekarang anda sudah terdaftar sebagai buyer.
-                    Silahkan tekan tombol login. 
-                    Anda juga dapat login versi mobile dengan cara menginstall aplikasi <a href="#">adpoint.id</a> di playstore.<p>
-                    
-                    <p>Terimakasih</p>
-                    <p>Regards,<br>Adpoint</p>
-                    <div class="center">
-                        <a href="{{ route('user.login') }}" class="button button--blue">Silahkan Login</a>
+                    <div class="f-fallback">
+                        <h4>Dear {{ $user['name'] }},</h4>
+                        
+                        <p>Selamat.<br>
+                        Proses registrasi berhasil dilakukan. Sekarang anda sudah terdaftar sebagai buyer.
+                        Silahkan tekan tombol login. 
+                        Anda juga dapat login versi mobile dengan cara menginstall aplikasi <a href="#">adpoint.id</a> di playstore.<p>
+                        
+                        <p>Terimakasih</p>
+                        <p>Regards,<br>Adpoint</p>
+                        <div class="center">
+                            <a href="{{ route('user.login') }}" class="button button--blue">Silahkan Login</a>
+                        </div>
                     </div>
                 </td>
             </tr>

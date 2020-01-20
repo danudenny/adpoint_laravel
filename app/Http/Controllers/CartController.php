@@ -36,13 +36,6 @@ class CartController extends Controller
         $data['id'] = $product->id;
         $data['user_id'] = $product->user_id;
         $str = '';
-        $tax = 0;
-
-        //check the color enabled or disabled for the product
-        if($request->has('color')){
-            $data['color'] = $request['color'];
-            $str = Color::where('code', $request['color'])->first()->name;
-        }
 
         //Gets all the choice values of customer choice option and generate a string like Black-S-Cotton
         foreach (json_decode(Product::find($request->id)->choice_options) as $key => $choice) {
@@ -60,9 +53,7 @@ class CartController extends Controller
             $variations = json_decode($product->variations);
             $price = $variations->$str->price;
             if($variations->$str->qty >= $request['quantity']){
-                // $variations->$str->qty -= $request['quantity'];
-                // $product->variations = json_encode($variations);
-                // $product->save();
+                
             }
             else{
                 return view('frontend.partials.outOfStockCart');
@@ -102,17 +93,8 @@ class CartController extends Controller
 
         $data['quantity'] = $request['quantity'];
         $data['price'] = $price;
-        $data['tax'] = $tax;
-        $data['shipping_type'] = $product->shipping_type;
         $data['start_date'] = $request['start_date'];
         $data['end_date'] = $request['end_date'];
-
-        if($product->shipping_type == 'free'){
-            $data['shipping'] = 0;
-        }
-        else{
-            $data['shipping'] = $product->shipping_cost;
-        }
 
         if($request->session()->has('cart')){
             $cart = $request->session()->get('cart', collect([]));
@@ -140,11 +122,10 @@ class CartController extends Controller
     //updated the quantity for a cart item
     public function updateQuantity(Request $request)
     {   
-
         $cart = $request->session()->get('cart', collect([]));
         
         $cart = $cart->map(function ($object, $key) use ($request) {
-            if((string)$key === $request->key){
+            if((string)$object['id'] === $request->key){   
                 if ($object['Periode'] === 'Harian') {
                     $object['quantity'] = $request->quantity;
                     $object['start_date'] = $request->start_date;
@@ -182,7 +163,6 @@ class CartController extends Controller
             }
             return $object;
         });
-
         $request->session()->put('cart', $cart);
         return view('frontend.partials.cart_details');
     }

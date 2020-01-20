@@ -24,6 +24,7 @@
 <meta itemprop="name" content="{{ config('app.name', 'Laravel') }}">
 <meta itemprop="description" content="{{ $seosetting->description }}">
 <meta itemprop="image" content="{{ asset(\App\GeneralSetting::first()->logo) }}">
+<meta name="csrf-token" content="{{ csrf_token() }}">
 
 <!-- Twitter Card data -->
 <meta name="twitter:card" content="product">
@@ -127,7 +128,7 @@
 
 <script>
       window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
+    function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
       gtag('config', @php env('TRACKING_ID') @endphp);
     </script>
@@ -1291,5 +1292,13 @@
     
 </script>
 
+@auth
+
+<script>
+    const key = "{{ config('app.vapid') }}";
+</script>
+<script src="{{ asset('js/enable-push.js') }}" defer></script>
+
+@endauth
 </body>
 </html>

@@ -6,7 +6,7 @@
         <section class="slice-xs sct-color-2 border-bottom">
             <div class="container container-sm">
                 <div class="row cols-delimited">
-                    <div class="col-4">
+                    <div class="col-3">
                         <div class="icon-block icon-block--style-1-v5 text-center">
                             <div class="block-icon c-gray-light mb-0">
                                 <i class="la la-shopping-cart"></i>
@@ -17,7 +17,7 @@
                         </div>
                     </div>
 
-                    <div class="col-4">
+                    <div class="col-3">
                         <div class="icon-block icon-block--style-1-v5 text-center">
                             <div class="block-icon c-gray-light mb-0">
                                 <i class="la la-truck"></i>
@@ -28,13 +28,24 @@
                         </div>
                     </div>
 
-                    <div class="col-4">
-                        <div class="icon-block icon-block--style-1-v5 text-center active">
-                            <div class="block-icon mb-0">
-                                <i class="la la-credit-card"></i>
+                    <div class="col-3">
+                        <div class="icon-block icon-block--style-1-v5 text-center">
+                            <div class="block-icon c-gray-light mb-0">
+                                <i class="la la-cloud-upload"></i>
                             </div>
                             <div class="block-content d-none d-md-block">
-                                <h3 class="heading heading-sm strong-300 c-gray-light text-capitalize">3. {{__('Payment')}}</h3>
+                                <h3 class="heading heading-sm strong-300 c-gray-light text-capitalize">3. {{__('Upload Advertising')}}</h3>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-3">
+                        <div class="icon-block icon-block--style-1-v5 text-center">
+                            <div class="block-icon mb-0">
+                                <i class="la la-credit-card" style="color: #ff9400"></i>
+                            </div>
+                            <div class="block-content d-none d-md-block">
+                                <h3 class="heading heading-sm strong-300 c-gray-light text-capitalize">4. {{__('Payment')}}</h3>
                             </div>
                         </div>
                     </div>
@@ -54,7 +65,7 @@
                             <div class="card">
                                 <div class="card-title px-4 py-3">
                                     <h3 class="heading heading-5 strong-500">
-                                        {{__('Select a payment option & upload advertising')}}
+                                        {{__('Select a payment option')}}
                                     </h3>
                                 </div>
                                 <div class="card-body">
@@ -64,13 +75,13 @@
                                                 @if(\App\BusinessSetting::where('type', 'cash_payment')->first()->value == 1)
                                                     <div class="col-md-6">
                                                         <label class="payment_option mb-4" data-toggle="tooltip" data-title="Bank Mandiri">
-                                                            <input type="radio" id="mandiri" name="payment_option" value="cash_on_delivery">
+                                                            <input type="radio" id="mandiri" name="payment_option" value="Mandiri">
                                                             <span style="width: 150px;">
                                                                 <img src="{{ asset('frontend/images/icons/cards/mandiri.png')}}" class="img-fluid">
                                                             </span>
                                                         </label>
                                                         <label class="payment_option mb-4" data-toggle="tooltip" data-title="Bank BCA">
-                                                            <input type="radio" id="bca" name="payment_option" value="cash_on_delivery">
+                                                            <input type="radio" id="bca" name="payment_option" value="BCA">
                                                             <span style="width: 150px;">
                                                                 <img src="{{ asset('frontend/images/icons/cards/bca.png')}}" class="img-fluid">
                                                             </span>
@@ -81,19 +92,9 @@
                                                             
                                                         </div>
                                                     </div>
+                                                    <input type="hidden" name="file_ads" value="{{ $file_ads }}">
+                                                    <input type="hidden" name="desc_ads" value="{{ $desc_ads }}">
                                                 @endif
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <div class="form-group">
-                                                        <label>File Zip <span class="text-danger">* <small>max 2 mb</small></span></label>
-                                                        <input type="file" name="file_ads" class="form-control">
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label>Description <span class="text-danger">*</span></label>
-                                                        <textarea name="desc_ads" class="form-control" cols="10" rows="5" placeholder="Masukan informasi tambahan ke seller"></textarea>
-                                                    </div>
-                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -108,7 +109,7 @@
                                     </a>
                                 </div>
                                 <div class="col-6 text-right">
-                                    <button type="submit" id="complete" style="cursor: not-allowed" class="btn btn-styled btn-base-1" disabled>{{__('Complete Order')}}</button>
+                                    <button type="submit" id="complete" style="cursor: not-allowed" class="btn btn-styled btn-base-1" disabled>{{__('Place Order')}}</button>
                                 </div>
                             </div>
                         </form>

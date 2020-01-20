@@ -43,7 +43,7 @@
 
 
 
-                {{-- <!--Search-->
+                <!--Search-->
                 <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
                 <li>
                     <div class="custom-search-form">
@@ -53,25 +53,28 @@
                     </div>
                 </li>
                 <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
-                <!--End Search--> --}}
+                <!--End Search-->
 
             </ul>
             <ul class="nav navbar-top-links">
 
                 @php
-                    $orders = DB::table('orders')
-                                ->orderBy('code', 'desc')
-                                ->join('order_details', 'orders.id', '=', 'order_details.order_id')
-                                ->where('order_details.seller_id', Auth::user()->id)
-                                ->where('orders.viewed', 0)
-                                ->select('orders.id')
-                                ->distinct()
-                                ->count();
+                    $trx = DB::table('transactions')
+                                ->orderBy('id', 'desc')
+                                ->where('viewed',0)
+                                ->get();
                     $confirm_payment = DB::table('confirm_payments')
                                 ->where('read', 0)
                                 ->get();
-                    // dd($confirm_payment);
-                    $sellers = \App\Seller::where('verification_status', 0)->where('verification_info', '!=', null)->count();
+                    $customer_new = DB::table('users')
+                                ->orderBy('id', 'desc')
+                                ->where('verified', 0)
+                                ->get();
+                    $sellers = DB::table('sellers')
+                                ->where('verification_status',0)
+                                ->where('verification_info', '!=', null)
+                                ->get();
+                    $jumlah = count($trx) + count($confirm_payment) + count($customer_new) + count($sellers);
                 @endphp
 
                 <li class="dropdown" id="lang-change">
@@ -99,8 +102,14 @@
                 <li class="dropdown">
                     <a href="#" data-toggle="dropdown" class="dropdown-toggle" aria-expanded="true">
                         <i class="demo-pli-bell"></i>
-                        @if($orders > 0 || $sellers > 0 || count($confirm_payment) > 0)
-                            <span class="badge badge-header badge-danger">{{ count($confirm_payment) }}</span>
+                        @if(count($trx) > 0)
+                            <span class="badge badge-header badge-danger">{{ $jumlah }}</span>
+                        @elseif(count($sellers) > 0)
+                            <span class="badge badge-header badge-danger">{{ $jumlah }}</span>
+                        @elseif(count($confirm_payment) > 0)
+                            <span class="badge badge-header badge-danger">{{ $jumlah }}</span>
+                        @elseif (count($customer_new) > 0)
+                            <span class="badge badge-header badge-danger">{{ $jumlah }}</span>
                         @endif
                     </a>
 
@@ -109,17 +118,19 @@
                         <div class="nano scrollable has-scrollbar" style="height: 265px;">
                             <div class="nano-content" tabindex="0" style="right: -17px;">
                                 <ul class="head-list">
-                                    @if($orders > 0)
-                                        <li>
-                                            <a class="media" href="{{ route('orders.index.admin') }}" style="position:relative">
-                                                <span class="badge badge-header badge-info" style="right:auto;left:3px;"></span>
-                                                <div class="media-body">
-                                                    <p class="mar-no text-nowrap text-main text-semibold">{{ $orders }} new order(s)</p>
-                                                </div>
-                                            </a>
-                                        </li>
+                                    @if(count($trx) > 0)
+                                        @foreach ($trx as $key => $trx)
+                                            <li>
+                                                <a class="media" href="{{ route('transaction.index') }}" style="position:relative">
+                                                    <span class="badge badge-header badge-info" style="right:auto;left:3px;"></span>
+                                                    <div class="media-body">
+                                                        <p class="mar-no text-nowrap text-main text-semibold">transaction {{ $trx->code }}</p>
+                                                    </div>
+                                                </a>
+                                            </li>
+                                        @endforeach
                                     @endif
-                                    @if($sellers > 0)
+                                    @if(count($sellers) > 0)
                                         <li>
                                             <a class="media" href="{{ route('sellers.index') }}">
                                                 <div class="media-body">
@@ -128,12 +139,23 @@
                                             </a>
                                         </li>
                                     @endif
-                                    @if (count($confirm_payment) > 0)
-                                        @foreach ($confirm_payment as $cp)
+                                    @if (count($confirm_payment)> 0)
+                                        @foreach ($confirm_payment as $key => $cp)
                                             <li>
-                                                <a class="media" href="{{ route('show.payment', encrypt($cp->order_id)) }}">
+                                                <a class="media" href="#">
                                                     <div class="media-body">
-                                                        <p class="mar-no text-nowrap text-main text-semibold">New payment {{ $cp->no_order }}</p>
+                                                        <p class="mar-no text-nowrap text-main text-semibold">new payment</p>
+                                                    </div>
+                                                </a>
+                                            </li>
+                                        @endforeach
+                                    @endif
+                                    @if (count($customer_new) > 0)
+                                        @foreach ($customer_new as $key => $cn)    
+                                            <li>
+                                                <a class="media" href="#">
+                                                    <div class="media-body">
+                                                        <p class="mar-no text-nowrap text-main text-semibold">new customer {{ $cn->name }}</p>
                                                     </div>
                                                 </a>
                                             </li>

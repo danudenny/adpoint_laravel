@@ -20,7 +20,7 @@
                             <div class="row align-items-center">
                                 <div class="col-md-6 col-12">
                                     <h2 class="heading heading-6 text-capitalize strong-600 mb-0">
-                                        {{__('Purchase History')}}
+                                        {{__('My Order')}}
                                     </h2>
                                 </div>
                                 <div class="col-md-6 col-12">
@@ -28,88 +28,212 @@
                                         <ul class="breadcrumb">
                                             <li><a href="{{ route('home') }}">{{__('Home')}}</a></li>
                                             <li><a href="{{ route('dashboard') }}">{{__('Dashboard')}}</a></li>
-                                            <li class="active"><a href="{{ route('purchase_history.index') }}">{{__('Purchase History')}}</a></li>
+                                            <li class="active"><a href="{{ route('purchase_history.index') }}">{{__('My Order')}}</a></li>
                                         </ul>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        @if (count($orders) > 0)
-                            <!-- Order history table -->
-                            <div class="card no-border mt-4">
-                                <div>
-                                    <table class="table table-sm table-hover table-responsive-md">
-                                        <thead>
-                                            <tr>
-                                                <th>{{__('Order No.')}}</th>
-                                                <th>{{__('Date')}}</th>
-                                                <th>{{__('Amount')}}</th>
-                                                <th>{{__('Order Status')}}</th>
-                                                <th>{{__('Payment Status')}}</th>
-                                                <th>{{__('Options')}}</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach ($orders as $key => $order)
-                                                <tr>
-                                                    <td>
-                                                        <a href="#{{ $order->code }}" onclick="show_purchase_history_details({{ $order->id }})">{{ $order->code }}</a>
-                                                        {{-- <a href="{{ route('my.order', encrypt($order->id)) }}">{{ $order->code }}</a> --}}
-                                                    </td>
-                                                    <td>{{ date('d M Y', $order->date) }}</td>
-                                                    <td>
-                                                        {{ single_price($order->grand_total) }}
-                                                    </td>
-                                                    <td>
-                                                        @if ($order->status_order == 0)
-                                                            <span class="badge badge-warning">Disapproved</span>
-                                                        @elseif ($order->status_order == 1)
-                                                            <span class="badge badge-secondary">Reviewed</span>
-                                                        @elseif ($order->status_order == 2)
-                                                            <span class="badge badge-primary">Approved</span>
-                                                        @elseif ($order->status_order == 3)
-                                                            <span class="badge badge-warning">Disapproved</span>
-                                                        @elseif ($order->status_order == 4)
-                                                            <span class="badge badge-info">Aired</span>
-                                                        @elseif ($order->status_order == 5)
-                                                            <span class="badge badge-success">Complete</span>
-                                                        @elseif ($order->status_order == 6)
-                                                            <span class="badge badge-danger">Cancelled</span>
-                                                        @endif
-                                                    </td>
-                                                    <td>
-                                                        <span class="badge badge--2 mr-4">
-                                                            @if ($order->payment_status == 'paid')
-                                                                <i class="bg-green"></i> {{__('Paid')}}
-                                                            @else
-                                                                <i class="bg-red"></i> {{__('Unpaid')}}
-                                                            @endif
-                                                        </span>
-                                                    </td>
-                                                    <td>
-                                                        <div class="dropdown">
-                                                            <button class="btn" type="button" id="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                                <i class="fa fa-ellipsis-v"></i>
-                                                            </button>
-
-                                                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="">
-                                                                <button onclick="show_purchase_history_details({{ $order->id }})" class="dropdown-item">{{__('Order Details')}}</button>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
-                                </div>
+                        @if (Session::has('message'))
+                            <div class="alert alert-success">
+                                {!! session('message') !!}
                             </div>
                         @endif
+                        
+                        <div class="card no-border mt-4">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <input type="text" class="form-control" id="startDate" placeholder="Start">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <input type="text" class="form-control" id="endDate" placeholder="End">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <select class="form-control selectpicker">
+                                            <option value="latest">Latest</option>
+                                            <option value="old">Old</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <button class="btn btn-danger">Reset Filter</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
-                        <div class="pagination-wrapper py-4">
-                            <ul class="pagination justify-content-end">
-                                {{ $orders->links() }}
-                            </ul>
+                        
+                        <div class="card no-border mt-2">
+                            <div class="card-body">
+                                <nav class="no-border" style="color: black">
+                                    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                                    <a class="nav-item nav-link active" id="nav-order-place-tab" data-toggle="tab" href="#nav-order-place" role="tab" aria-controls="nav-order-place" aria-selected="true">Order place</a>
+                                    <a class="nav-item nav-link" id="nav-onreview-tab" data-toggle="tab" href="#nav-onreview" role="tab" aria-controls="nav-onreview" aria-selected="false">On review</a>
+                                    <a class="nav-item nav-link" id="nav-active-tab" data-toggle="tab" href="#nav-active" role="tab" aria-controls="nav-active" aria-selected="false">Active</a>
+                                    <a class="nav-item nav-link" id="nav-complete-tab" data-toggle="tab" href="#nav-complete" role="tab" aria-controls="nav-complete" aria-selected="false">Complete</a>
+                                    <a class="nav-item nav-link" id="nav-cancel-tab" data-toggle="tab" href="#nav-cancel" role="tab" aria-controls="nav-cancel" aria-selected="false">Cancelled</a>
+                                    </div>
+                                </nav>
+                            </div>
+                        </div>
+
+                        <div class="card no-border mt-1">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="tab-content" id="nav-tabContent">
+                                            <div class="tab-pane fade show active" id="nav-order-place" role="tabpanel" aria-labelledby="nav-order-place-tab">
+                                                @foreach ($order_details as $key => $od)
+                                                    @if ($od->status === 0)
+                                                        <article class="card mt-3">
+                                                            <div style="height: 35px; background: #0f355a; color: white; border-bottom: 2px solid #fd7e14">
+                                                                <strong style="line-height: 35px; margin-left: 15px">{{ $od->created_at }}</strong>
+                                                            </div>
+                                                            <div class="table-responsive">
+                                                                <table class="table">
+                                                                    @php
+                                                                        $product = \App\Product::where('id', $od->product_id)->first();
+                                                                    @endphp
+                                                                    <tr>
+                                                                        <td width="80">
+                                                                            <img src="{{ url(json_decode($product->photos)[0]) }}" class="img-fluid" width="50">
+                                                                        </td>
+                                                                        <td width="250"> 
+                                                                            {{ $product->name }} <br>
+                                                                            {{ $od->variation }} 
+                                                                            <small>
+                                                                                ( {{ date('d M Y', strtotime($od->start_date)) }} - {{ date('d M Y', strtotime($od->end_date)) }} )
+                                                                            </small>
+                                                                        </td>
+                                                                        <td width="200">
+                                                                            QTY: {{ $od->quantity }} <br>
+                                                                            {{ single_price($od->price) }}
+                                                                        </td>
+                                                                        <td>
+                                                                            Status: 
+                                                                            @if ($od->status === 0)
+                                                                                <div class="badge badge-warning">
+                                                                                    Placed
+                                                                                </div>
+                                                                            @endif
+                                                                        </td>
+                                                                        <td align="right">
+                                                                            <a href="#" class="btn btn-light"><i class="fa fa-eye"></i> Details</a> 
+                                                                        </td>
+                                                                    </tr>
+                                                                </table>
+                                                            </div>
+                                                        </article>
+                                                    @endif
+                                                @endforeach
+                                            </div>
+                                            <div class="tab-pane fade" id="nav-onreview" role="tabpanel" aria-labelledby="nav-onreview-tab">
+                                                @foreach ($order_details as $key => $od)
+                                                    @if ($od->status === 1)
+                                                        <article class="card mt-3">
+                                                            <div style="height: 35px; background: #0f355a; color: white; border-bottom: 2px solid #fd7e14">
+                                                                <strong style="line-height: 35px; margin-left: 15px">{{ $od->created_at }}</strong>
+                                                            </div>
+                                                            <div class="table-responsive">
+                                                                <table class="table">
+                                                                    @php
+                                                                        $product = \App\Product::where('id', $od->product_id)->first();
+                                                                    @endphp
+                                                                    <tr>
+                                                                        <td width="80">
+                                                                            <img src="{{ url(json_decode($product->photos)[0]) }}" class="img-fluid" width="50">
+                                                                        </td>
+                                                                        <td width="250"> 
+                                                                            {{ $product->name }} <br>
+                                                                            {{ $od->variation }} 
+                                                                            <small>
+                                                                                ( {{ date('d M Y', strtotime($od->start_date)) }} - {{ date('d M Y', strtotime($od->end_date)) }} )
+                                                                            </small>
+                                                                        </td>
+                                                                        <td width="200">
+                                                                            QTY: {{ $od->quantity }} <br>
+                                                                            {{ single_price($od->price) }}
+                                                                        </td>
+                                                                        <td>
+                                                                            Status: 
+                                                                            @if ($od->status === 1)
+                                                                                <div class="badge badge-secondary">
+                                                                                    On Review
+                                                                                </div>
+                                                                            @endif
+                                                                        </td>
+                                                                        <td align="right">
+                                                                            <a href="#" class="btn btn-light"><i class="fa fa-eye"></i> Details</a> 
+                                                                        </td>
+                                                                    </tr>
+                                                                </table>
+                                                            </div>
+                                                        </article>
+                                                    @endif
+                                                @endforeach
+                                            </div>
+                                            <div class="tab-pane fade" id="nav-active" role="tabpanel" aria-labelledby="nav-active-tab">
+                                                <h1>Active</h1>
+                                            </div>
+                                            <div class="tab-pane fade" id="nav-complete" role="tabpanel" aria-labelledby="nav-complete-tab">
+                                                <h1>Active</h1>
+                                            </div>
+                                            <div class="tab-pane fade" id="nav-cancel" role="tabpanel" aria-labelledby="nav-cancel-tab">
+                                                @foreach ($order_details as $key => $od)
+                                                    @if ($od->status === 100)
+                                                        <article class="card mt-3">
+                                                            <div style="height: 35px; background: #0f355a; color: white; border-bottom: 2px solid #fd7e14">
+                                                                <strong style="line-height: 35px; margin-left: 15px">{{ $od->created_at }}</strong>
+                                                            </div>
+                                                            <div class="table-responsive">
+                                                                <table class="table">
+                                                                    @php
+                                                                        $product = \App\Product::where('id', $od->product_id)->first();
+                                                                    @endphp
+                                                                    <tr>
+                                                                        <td width="80">
+                                                                            <img src="{{ url(json_decode($product->photos)[0]) }}" class="img-fluid" width="50">
+                                                                        </td>
+                                                                        <td width="250"> 
+                                                                            {{ $product->name }} <br>
+                                                                            {{ $od->variation }} 
+                                                                            <small>
+                                                                                ( {{ date('d M Y', strtotime($od->start_date)) }} - {{ date('d M Y', strtotime($od->end_date)) }} )
+                                                                            </small>
+                                                                        </td>
+                                                                        <td width="200">
+                                                                            QTY: {{ $od->quantity }} <br>
+                                                                            {{ single_price($od->price) }}
+                                                                        </td>
+                                                                        <td>
+                                                                            Status: 
+                                                                            @if ($od->status === 100)
+                                                                                <div class="badge badge-danger">
+                                                                                    Rejected
+                                                                                </div>
+                                                                            @endif
+                                                                        </td>
+                                                                        <td align="right">
+                                                                            <a href="#" class="btn btn-light"><i class="fa fa-eye"></i> Details</a> 
+                                                                        </td>
+                                                                    </tr>
+                                                                </table>
+                                                            </div>
+                                                        </article>
+                                                    @endif
+                                                @endforeach
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -130,4 +254,27 @@
         </div>
     </div>
 
+@endsection
+
+@section('script')
+    <script>
+        var today = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
+        $('#startDate').datepicker({
+            uiLibrary: 'bootstrap4',
+            iconsLibrary: 'fontawesome',
+            minDate: today,
+            format: 'dd mmm yyyy',
+            maxDate: function () {
+                return $('#endDate').val();
+            }
+        });
+        $('#endDate').datepicker({
+            uiLibrary: 'bootstrap4',
+            iconsLibrary: 'fontawesome',
+            format: 'dd mmm yyyy',
+            minDate: function () {
+                return $('#startDate').val();
+            }
+        });
+    </script>
 @endsection

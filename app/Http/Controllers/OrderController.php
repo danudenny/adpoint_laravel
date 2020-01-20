@@ -12,6 +12,7 @@ use App\OrderDetail;
 use App\CouponUsage;
 use App\ConfirmPayment;
 use App\Evidence;
+use App\Transaction;
 use Auth;
 use Session;
 use DB;
@@ -25,9 +26,13 @@ use App\Mail\Order\OrderApprovedAdmin;
 use App\Mail\Order\OrderSold;
 use App\Mail\Order\OrderDisapprovedAdmin;
 use App\Mail\Order\OrderApprovedSeller;
+use App\Mail\Order\OrderConfirmation;
 use App\Mail\Order\OrderDisapprovedSeller;
 use App\Mail\Order\OrderNotifPaymentBuyer;
 use App\Mail\Order\OrderNotifPaymentSeller;
+
+use App\Notifications\OrderStartPush;
+use Notification;
 
 
 class OrderController extends Controller
@@ -39,13 +44,8 @@ class OrderController extends Controller
      */
     public function index()
     {
-        $orders = DB::table('orders')
-            ->orderBy('code', 'desc')
-            ->join('order_details', 'orders.id', '=', 'order_details.order_id')
-            ->where('order_details.seller_id', Auth::user()->id)
-            ->select('orders.id', 'status_order')
-            ->distinct()
-            ->paginate(9);
+        $orders = Order::where('seller_id', Auth::user()->id)
+                        ->get();
         return view('frontend.seller.orders', compact('orders'));
     }
 
@@ -55,145 +55,215 @@ class OrderController extends Controller
         return view('orders.list_orders', compact('orders'));
     }
 
-    public function approve_by_admin($id)
+    private function _cek_default_status_orders($trx_id) {
+        $query = DB::table('orders as o')
+                            ->join('transactions as t', 't.id', '=', 'o.transaction_id')
+                            ->where([
+                                't.id' => $trx_id,
+                                'o.approved' => 0,
+                            ])
+                            ->get();
+        return $query;
+    }
+
+    public function approve_by_admin(Request $request, $id)
     {
-        $order = Order::findOrFail(decrypt($id));
+        $order = Order::where('id', decrypt($id))->first();
+        $trx = Transaction::where('id', $order->transaction_id)->first();
+        $buyer = User::where('id', $order->user_id)->first();
 
-        $user = User::findOrFail($order->user_id);
-        $users['name'] = $user->name;
-        $users['email'] = $user->email;
-        $users['code'] = $order->code;
-
-        $seller = DB::table('orders')
-            ->join('order_details', 'orders.id', '=', 'order_details.order_id')
-            ->join('users', 'order_details.seller_id', '=', 'users.id')
-            ->select('users.*')
-            ->where('orders.id', '=', decrypt($id))
-            ->first();
-        $sellers['name'] = $seller->name;
-        $sellers['email'] = $seller->email;
-        $sellers['code'] = $order->code;
+        $data['code_trx']       = $trx->code;
+        $data['buyer_name']     = $buyer->name;
+        $data['buyer_email']    = $buyer->email;
+        
         if ($order != null) {
-            $order->status_order = 1;
+            $order->approved = 1; // approve admin
             $order->updated_at = time();
             $order->save();
-            Mail::to($user->email)->send(new OrderApprovedAdmin($users));
-            Mail::to($seller->email)->send(new OrderSold($sellers));
+            $default_status_o = $this->_cek_default_status_orders($order->transaction_id);
+            if (count($default_status_o) === 0) {
+                Mail::to($buyer->email)->send(new OrderApprovedAdmin($data));
+                $orders = Order::where(['transaction_id' => $order->transaction_id, 'approved' => 1])->get();
+                foreach ($orders as $key => $o) {
+                    $user = User::where('id', $o->seller_id)->first();
+                    $seller['code'] = $o->code;
+                    $seller['seller_name'] = $user->name;
+                    Mail::to($user->email)->send(new OrderSold($seller));
+                }
+            }
+            $request->session()->flash('message', 'Order ID'.' '.$order->code.' '.'Approved');
             flash('Order approved')->success();
+            return back();
         } else {
             flash('Something went wrong')->error();
+            return back();
         }
-        return back();
     }
 
     public function disapprove_by_admin(Request $request)
     {
-        $order = Order::findOrFail($request->order_id);
-        $user = User::findOrFail($order->user_id);
-        $users['name'] = $user->name;
-        $users['email'] = $user->email;
-        $users['code'] = $order->code;
-        $users['alasan'] = $request->alasan;
+        $order = Order::where('id', $request->order_id)->first();
+        $buyer = User::where('id', $order->user_id)->first();
+        $data['code']           = $order->code;
+        $data['alasan']         = $request->alasan;
+        $data['buyer_name']     = $buyer->name;
+        $data['buyer_email']    = $buyer->email;
         if ($order != null) {
-            $order->status_order = 0;
+            $order->approved = 2; // reject by admin
             $order->updated_at = time();
             $order->save();
-            Mail::to($user->email)->send(new OrderDisapprovedAdmin($users));
+            $order_details = OrderDetail::where('order_id', $order->id)->get();
+            foreach ($order_details as $key => $od) {
+                $od->status = 100;
+                $od->save();
+            }
+            $default_status_o = $this->_cek_default_status_orders($order->transaction_id);
+            if (count($default_status_o) === 0) {
+                Mail::to($buyer->email)->send(new OrderDisapprovedAdmin($data));
+                $orders = Order::where(['transaction_id' => $order->transaction_id, 'approved' => 1])->get();
+                foreach ($orders as $key => $o) {
+                    $user = User::where('id', $o->seller_id)->first();
+                    $seller['code'] = $o->code;
+                    $seller['seller_name'] = $user->name;
+                    Mail::to($user->email)->send(new OrderSold($seller));
+                }
+            }
             flash('Order disapproved')->success();
+            $request->session()->flash('message', 'Order ID'.' '.$order->code.' '.'Rejected');
+            return back();
         } else {
             flash('Something went wrong')->error();
+            return back();
         }
-        return back();
     }
 
-    public function approve_by_seller($id)
-    {
-        $query = DB::table('orders as o')
-            ->join('order_details as od', 'o.id', '=', 'od.order_id')
-            ->join('users as b', 'o.user_id', '=', 'b.id')
-            ->join('users as s', 'od.seller_id', '=', 's.id')
-            ->join('products as p', 'od.product_id', '=', 'p.id')
-            ->select(
-                [
-                    'p.name as product_name',
-                    'o.code',
-                    'o.shipping_address',
-                    'o.grand_total',
-                    'o.payment_type',
-                    'o.created_at',
-                    'b.name as buyer_name',
-                    'b.email as buyer_email',
-                    's.name as seller_name',
-                    's.email as seller_email',
-                    'od.variation',
-                    'od.price',
-                    'od.tax',
-                    'od.quantity',
-                    'od.payment_status',
-                    'od.delivery_status',
-                    'od.start_date',
-                    'od.end_date'
-
-                ]
-            )
-            ->where('o.id', '=', decrypt($id))
-            ->get();
-        $product = [];
-        foreach ($query as $key => $q) {
-            array_push($product, [
-                'name' => $q->product_name,
-                'price' => $q->price,
-                'start_date' => $q->start_date,
-                'end_date' => $q->end_date,
-                'periode' => $q->variation,
-                'qty' => $q->quantity
-            ]);
-            $users['id'] = decrypt($id);
-            $users['code'] = $q->code;
-            $users['shipping_address'] = $q->shipping_address;
-            $users['tax'] = $q->tax;
-            $users['grand_total'] = $q->grand_total;
-            $users['payment_type'] = $q->payment_type;
-            $users['created_at'] = $q->created_at;
-            $users['buyer_name'] = $q->buyer_name;
-            $users['buyer_email'] = $q->buyer_email;
-            $users['seller_name'] = $q->seller_name;
-            $users['seller_email'] = $q->seller_email;
-            $users['payment_status'] = $q->payment_status;
-            $users['delivery_status'] = $q->delivery_status;
-        }
-        $users['product'] = $product;
-        // dd($users);
-        $order = Order::findOrFail(decrypt($id));
-        if ($order != null) {
-            $order->status_order = 2;
-            $order->updated_at = time();
-            $order->save();
-            Mail::to($users['buyer_email'])->send(new OrderApprovedSeller($users));
-            flash('Order approved')->success();
-        } else {
-            flash('Something went wrong')->error();
-        }
-        return back();
+    private function _cek_default_status_order_details($trx_id) {
+        $query = DB::table('order_details as od')
+                            ->join('orders as o', 'o.id', '=', 'od.order_id')
+                            ->join('transactions as t', 't.id', '=', 'o.transaction_id')
+                            ->where([
+                                't.id' => $trx_id,
+                                'o.approved' => 1,
+                                'od.status' => 0
+                            ])
+                            ->get();
+        return $query;
     }
 
-    public function disapprove_by_seller($id)
-    {
-        $order = Order::findOrFail(decrypt($id));
-        $user = User::findOrFail($order->user_id);
-        $users['name'] = $user->name;
-        $users['email'] = $user->email;
-        $users['code'] = $order->code;
-        if ($order != null) {
-            $order->status_order = 3;
-            $order->updated_at = time();
-            $order->save();
-            Mail::to($user->email)->send(new OrderDisapprovedSeller($users));
-            flash('Order disapproved')->success();
-        } else {
-            flash('Something went wrong')->error();
+    private function _generate_invoice($trx_id) {
+        $data = array();
+        $trx = Transaction::where('id', $trx_id)->first();
+        $buyer = User::where('id', $trx->user_id)->first();
+        $data['trx_id'] = $trx->id;
+        $data['code_trx']   = $trx->code;
+        $data['created_at'] = $trx->created_at;
+        $data['buyer_name'] = $buyer->name;
+        $data['buyer_email'] = $buyer->email;
+        $code_order = array();
+        foreach ($trx->orders as $key => $order) {
+            if ($order->approved == 1) {
+                $order_details = OrderDetail::where('order_id', $order->id)->get();
+                $items = array();
+                $item = array();
+                foreach ($order_details as $key => $od) {
+                    $items['seller_id'] = $od->seller_id;
+                    $items['product_id'] = $od->product_id;
+                    $items['variation'] = $od->variation;
+                    $items['price'] = $od->price;
+                    $items['quantity'] = $od->quantity;
+                    $items['start_date'] = $od->start_date;
+                    $items['end_date'] = $od->end_date;
+                    $items['status'] = $od->status;
+                    array_push($item, $items);
+                }
+                $code_order[$order->code] = $item;
+                array_push($code_order);
+            }
+            
         }
-        return back();
+        $data['code_order'] = $code_order;
+        return $data;
+    }
+
+    public function approve_by_seller(Request $request, $id)
+    {
+        $order_detail = OrderDetail::where('id', decrypt($id))->first();
+        if ($order_detail != null) {
+            $order_detail->status = 1; // approve item by seller
+            $order_detail->updated_at = time();
+            $product = Product::where('id', $order_detail->product_id)->first();
+            if ($order_detail->save()) {
+                $order = Order::where('id', $order_detail->order_id)->first();
+                $default_status_od = $this->_cek_default_status_order_details($order->transaction_id);
+                if (count($default_status_od) === 0) {
+                    $trx = Transaction::where('id', $order->transaction_id)->first();
+                    $trx->status = "ready";
+                    $trx->save();
+                }
+                flash('Order disapproved')->success();
+                $request->session()->flash('message', 'Items'.' '.$product->name.' '.'Approved');
+                return back();
+            }
+        }else {
+            flash('Something went wrong')->error();
+            return back();
+        }
+    }
+
+    public function approve_all_by_seller(Request $request)
+    {
+        dd('hai');
+    }
+
+    public function disapprove_by_seller(Request $request)
+    {
+        $order_detail = OrderDetail::where('id', $request->od_id)->first();
+        if ($order_detail != null) {
+            $order_detail->status = 2;
+            $order_detail->rejected = $request->alasan;
+            $order_detail->updated_at = time();
+            $product = Product::where('id', $order_detail->product_id)->first();
+            if ($order_detail->save()) {
+                $order = Order::where('id', $order_detail->order_id)->first();
+                $default_status_od = $this->_cek_default_status_order_details($order->transaction_id);
+                if (count($default_status_od) === 0) {
+                    $trx = Transaction::where('id', $order->transaction_id)->first();
+                    $trx->status = "ready";
+                    $trx->save();
+                }
+                flash('Order rejected')->success();
+                $request->session()->flash('message', 'Items'.' '.$product->name.' '.'Rejected');
+                return back();
+            }
+        }else {
+            flash('Something went wrong')->error();
+            return back();
+        }
+    }
+
+    public function confirm_to_buyer(Request $request)
+    {
+        $invoice = $this->_generate_invoice($request->trx_id);
+        return view('frontend.partials.confirm_to_buyer', compact('invoice'));
+    }
+
+    public function proses_confirm_to_buyer(Request $request)
+    {
+        $invoice = $this->_generate_invoice($request->trx_id);
+        $trx = Transaction::where('id', $request->trx_id)->first();
+        if ($trx != null && $trx->status == "ready") {
+            $trx->status = "confirmed";
+            $trx->save();
+        }
+        if ($invoice != null) {
+            Mail::to($invoice['buyer_email'])->send(new OrderConfirmation($invoice));
+            flash('Order confirmed')->success();
+            $request->session()->flash('message', 'CODE: '.' '.$invoice['code_trx'].' '.'Confirmed');
+            return back();
+        }else {
+            flash('Something went wrong')->error();
+            return back();
+        }
     }
 
     /**
@@ -226,56 +296,58 @@ class OrderController extends Controller
     }
 
 
-    public function confirm_payment($id)
+    public function confirm_payment(Request $request)
     {
-        $order_id = decrypt($id);
-        $order = DB::table('orders as o')
-            ->join('order_details as od', 'o.id', '=', 'od.order_id')
-            ->join('users as u', 'o.user_id', '=', 'u.id')
-            ->join('products as p', 'od.product_id', '=', 'p.id')
-            ->select([
-                'o.code',
-                'o.status_order',
-                'o.status_confirm',
-                'u.name as buyer_name',
-                'od.variation',
-                'od.quantity',
-                'od.price',
-                'od.start_date',
-                'od.end_date',
-                'p.name'
-            ])
-            ->where('o.id', $order_id)->get();
-        return view('frontend.confirm_payment', compact('order_id', 'order'));
+        $transactions = Transaction::where(['user_id'=>Auth::user()->id,'status'=>'confirmed'])->get();
+        $trx_id = null;
+        return view('frontend.confirm_payment', compact('transactions', 'trx_id'));
+    }
+
+    public function confirm_payment_id(Request $request, $trx_id)
+    {
+        $transactions = Transaction::where(['user_id'=>Auth::user()->id,'status'=>'confirmed','id'=>$trx_id])->get();
+        $condition = Transaction::where(['id' => $trx_id, 'payment_status' => 0])->first();
+        if ($condition != null) {
+            return view('frontend.confirm_payment', compact('transactions','trx_id'));
+        }else {
+            $request->session()->flash('message', 'You have confirmed');
+            return redirect('transaction');
+        }
+        
     }
 
     public function insert_confirm_payment(Request $request)
     {
+        // dd($request->all());
         $request->validate([
+            'trx_code' => 'required',
             'no_rek' => 'required',
             'bukti' => 'required'
         ]);
-        $order = Order::where('id', $request->order_id)->first();
-        if ($order != null) {
-            $order->status_confirm = 1;
-            $order->updated_at = time();
-            $order->save();
-        }
         $confirm_payment = new ConfirmPayment;
         if ($request->all() != null) {
-            $confirm_payment->order_id = $request->order_id;
-            $confirm_payment->no_order = $request->no_order;
+            $confirm_payment->code_trx = $request->trx_code;
+            $trx = Transaction::where('code',  $request->trx_code)->first();
+            if ($trx != null) {
+                $trx->status = "paid";
+                $trx->save();
+            }
+            $confirm_payment->user_id = $request->user_id;
             $confirm_payment->nama = $request->nama;
             $confirm_payment->nama_bank = $request->nama_bank;
             $confirm_payment->no_rek = $request->no_rek;
             $confirm_payment->bukti = $request->bukti->store('uploads/bukti_transfer');
             $confirm_payment->read = 0;
             $confirm_payment->save();
+            $trx = Transaction::where('id', $request->trx_id)->first();
             flash('Order confirmed')->success();
+            $request->session()->flash('message', 'Transaction paid!');
+            return redirect('purchase_history');
         } else {
             flash('Something went wrong')->error();
+            return back();
         }
-        return redirect('purchase_history');
+        
     }
 
     public function show_payment($id)
@@ -397,6 +469,7 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
+
         $cart = [];
         $data = [];
         foreach (Session::get('cart') as $sc) {
@@ -406,111 +479,118 @@ class OrderController extends Controller
             $data[$c['user_id']][] = $c;
         }
 
-        foreach ($data as $key => $d) {
-            $order = new Order;
-            if (Auth::check()) {
-                $order->user_id = Auth::user()->id;
-            } else {
-                $order->guest_id = mt_rand(100000, 999999);
-            }
-            $order->shipping_address = json_encode($request->session()->get('shipping_info'));
-            $order->payment_type = $request->payment_option;
-            $order->code = date('Ymd-his');
-            $order->date = strtotime('now');
-            $order->status_confirm = 0;
-            if ($request->hasFile('file_ads')) {
-                $order->file_advertising = $request->file_ads->store('uploads/materi_advertising');
-                $order->desc_advertising = $request->desc_ads;
-            }
-            if ($order->save()) {
-                $subtotal = 0;
-                $tax = 0;
-                $shipping = 0;
-                foreach ($d as $value) {
-                    $product = Product::find($value['id']);
-                    $subtotal += $value['price'] * $value['quantity'];
-                    $tax += $value['tax'] * $value['quantity'];
-                    $shipping += $value['shipping'] * $value['quantity'];
-                    $product_variation = null;
-                    if (isset($value['color'])) {
-                        $product_variation .= Color::where('code', $value['color'])->first()->name;
-                    }
+        $trx = new Transaction;
+        $trx->code = 'TRX-'.time();
+        $trx->payment_status = 0;
+        $trx->payment_type = $request->payment_option;
+        $trx->user_id = Auth::user()->id;
+        $trx->file_advertising = $request->file_ads;
+        $trx->description = $request->desc_ads;
+        $cart = [];
+        $data = [];
+        foreach (Session::get('cart') as $sc) {
+            array_push($cart, $sc);
+        }
+        foreach ($cart as $c) {
+            $data[$c['user_id']][] = $c;
+        }
 
-                    foreach (json_decode($product->choice_options) as $choice) {
-                        $str = $choice->title;
-                        if ($product_variation != null) {
-                            $product_variation .= $value[$str];
-                        } else {
-                            $product_variation .= $value[$str];
+        if ($trx->save()) {
+            foreach ($data as $key => $d) {
+                $order = new Order;
+                if (Auth::check()) {
+                    $order->user_id = Auth::user()->id;
+                }
+                $order->address = json_encode($request->session()->get('shipping_info'));               
+                $order->code = 'ODR/'.time().''.$key;
+                $order->transaction_id = $trx->id;
+                $order->tax = 0;
+                $order->seller_id = $key;
+                $order->approved = 0;
+                if ($order->save()) {
+                    $subtotal = 0;
+                    foreach ($d as $value) {
+                        $product = Product::find($value['id']);
+                        $subtotal += $value['price'] * $value['quantity'];
+                        $product_variation = null;
+    
+                        foreach (json_decode($product->choice_options) as $choice) {
+                            $str = $choice->title;
+                            if ($product_variation != null) {
+                                $product_variation .= $value[$str];
+                            } else {
+                                $product_variation .= $value[$str];
+                            }
                         }
-                    }
+    
+                        if ($product_variation != null) {
+                            $variations = json_decode($product->variations);
+                            $variations->$product_variation->qty -= $value['quantity'];
+                            $product->variations = json_encode($variations);
+                            $product->save();
+                        }
+    
+                        $order_detail = new OrderDetail;
+                        
+                        $order_detail->order_id  = $order->id;
+                        $order_detail->seller_id = $value['user_id'];
+                        $order_detail->product_id = $value['id'];
+                        $order_detail->variation = $product_variation;
+                        $order_detail->price = $value['price'] * $value['quantity'];
+                        $order_detail->quantity = $value['quantity'];
+                        $order_detail->status = 0;
 
-                    if ($product_variation != null) {
-                        $variations = json_decode($product->variations);
-                        $variations->$product_variation->qty -= $value['quantity'];
-                        $product->variations = json_encode($variations);
+                        if ($product_variation == 'Harian') {
+                            $order_detail->start_date = date('Y-m-d', strtotime($value['start_date']));
+                            $order_detail->end_date = date('Y-m-d', strtotime($value['end_date']));
+                        }
+                        if ($product_variation == 'Mingguan') {
+                            $order_detail->start_date = date('Y-m-d', strtotime($value['start_date']));
+                            $order_detail->end_date = date('Y-m-d', strtotime($value['end_date']));
+                        }
+                        if ($product_variation == 'Bulanan') {
+                            $order_detail->start_date = date('Y-m-d', strtotime($value['start_date']));
+                            $order_detail->end_date = date('Y-m-d', strtotime($value['end_date']));
+                        }
+                        if ($product_variation == 'TigaBulan') {
+                            $order_detail->start_date = date('Y-m-d', strtotime($value['start_date']));
+                            $order_detail->end_date = date('Y-m-d', strtotime($value['end_date']));
+                        }
+                        if ($product_variation == 'EnamBulan') {
+                            $order_detail->start_date = date('Y-m-d', strtotime($value['start_date']));
+                            $order_detail->end_date = date('Y-m-d', strtotime($value['end_date']));
+                        }
+                        if ($product_variation == 'Tahunan') {
+                            $order_detail->start_date = date('Y-m-d', strtotime($value['start_date']));
+                            $order_detail->end_date = date('Y-m-d', strtotime($value['end_date']));
+                        }
+
+                        $order_detail->save();
+    
+                        $product->num_of_sale++;
                         $product->save();
                     }
+                    $order->grand_total = $subtotal;
 
-                    $order_detail = new OrderDetail;
-                    if ($product_variation == 'Harian') {
-                        $order_detail->start_date = date('Y-m-d', strtotime($value['start_date']));
-                        $order_detail->end_date = date('Y-m-d', strtotime($value['end_date']));
+                    if (Session::has('coupon_discount')) {
+                        $order->grand_total -= Session::get('coupon_discount');
+                        $order->coupon_discount = Session::get('coupon_discount');
+                        $coupon_usage = new CouponUsage;
+                        $coupon_usage->user_id = Auth::user()->id;
+                        $coupon_usage->coupon_id = Session::get('coupon_id');
+                        $coupon_usage->save();
                     }
-                    if ($product_variation == 'Mingguan') {
-                        $order_detail->start_date = date('Y-m-d', strtotime($value['start_date']));
-                        $order_detail->end_date = date('Y-m-d', strtotime($value['end_date']));
-                    }
-                    if ($product_variation == 'Bulanan') {
-                        $order_detail->start_date = date('Y-m-d', strtotime($value['start_date']));
-                        $order_detail->end_date = date('Y-m-d', strtotime($value['end_date']));
-                    }
-                    if ($product_variation == 'TigaBulan') {
-                        $order_detail->start_date = date('Y-m-d', strtotime($value['start_date']));
-                        $order_detail->end_date = date('Y-m-d', strtotime($value['end_date']));
-                    }
-                    if ($product_variation == 'EnamBulan') {
-                        $order_detail->start_date = date('Y-m-d', strtotime($value['start_date']));
-                        $order_detail->end_date = date('Y-m-d', strtotime($value['end_date']));
-                    }
-                    if ($product_variation == 'Tahunan') {
-                        $order_detail->start_date = date('Y-m-d', strtotime($value['start_date']));
-                        $order_detail->end_date = date('Y-m-d', strtotime($value['end_date']));
-                    }
-                    $order_detail->order_id  = $order->id;
-                    $order_detail->seller_id = $value['user_id'];
-                    $order_detail->status_tayang = 0;
-                    $order_detail->complete = 0;
-                    $order_detail->product_id = $value['id'];
-                    $order_detail->variation = $product_variation;
-                    $order_detail->price = $value['price'] * $value['quantity'];
-                    $order_detail->tax = $value['tax'] * $value['quantity'];
-                    $order_detail->shipping_cost = $value['shipping'] * $value['quantity'];
-                    $order_detail->quantity = $value['quantity'];
-                    $order_detail->save();
 
-                    $product->num_of_sale++;
-                    $product->save();
+                    $send_to = $request->session()->get('shipping_info')['email'];
+                    $user = $request->session()->get('shipping_info');
+                    $order->save();
+                    Notification::send(User::where('user_type','admin')->get(),new OrderStartPush);
+                    Mail::to($send_to)->send(new OrderStart($user));
+                    $request->session()->put('order_id', $order->id);
                 }
-                $order->grand_total = $subtotal + $tax + $shipping;
-                if (Session::has('coupon_discount')) {
-                    $order->grand_total -= Session::get('coupon_discount');
-                    $order->coupon_discount = Session::get('coupon_discount');
-                    $coupon_usage = new CouponUsage;
-                    $coupon_usage->user_id = Auth::user()->id;
-                    $coupon_usage->coupon_id = Session::get('coupon_id');
-                    $coupon_usage->save();
-                }
-                $send_to = $request->session()->get('shipping_info')['email'];
-                $user = $request->session()->get('shipping_info');
-                $order->save();
-                Mail::to($send_to)->send(new OrderStart($user));
-                $request->session()->put('order_id', $order->id);
             }
         }
     }
-
-
 
     /**
      * Display the specified resource.

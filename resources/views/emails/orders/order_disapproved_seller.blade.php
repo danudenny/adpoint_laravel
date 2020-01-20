@@ -6,14 +6,16 @@
             <!-- Body content -->
             <tr>
                 <td class="content-cell">
-                    <p>Dear {{ $user['name'] }},</p>
-                    
-                    <p>Mohon maaf.<br>
-                        Sayaangnya orderan anda kami tolak.
-                    </p>
-                    
-                    <p>Terimakasih</p>
-                    <p>Regards,<br>Adpoint</p>
+                    <div class="f-fallback">
+                        <h4>Dear {{ $user['name'] }},</h4>
+                        
+                        <p>Mohon maaf.<br>
+                            Sayaang nya orderan anda kami tolak.
+                        </p>
+                        
+                        <p>Terimakasih</p>
+                        <p>Regards,<br>Adpoint</p>
+                    </div>
                 </td>
             </tr>
         </table>

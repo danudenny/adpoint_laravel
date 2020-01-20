@@ -17,6 +17,12 @@ Route::group(['prefix' =>'admin', 'middleware' => ['auth', 'admin']], function()
 	Route::get('/categories/destroy/{id}', 'CategoryController@destroy')->name('categories.destroy');
 	Route::post('/categories/featured', 'CategoryController@updateFeatured')->name('categories.featured');
 
+	Route::resource('transaction', 'TransactionController');
+	Route::get('/transaction/details/{id}', 'TransactionController@transaction_details')->name('transaction.details');
+
+	Route::get('/payment/admin', 'PaymentController@admin_payment_index')->name('admin.payment.index');
+	Route::get('/payment/confirm', 'PaymentController@admin_payment_confirm')->name('admin.payment.confirm');
+
 	Route::resource('subcategories','SubCategoryController');
 	Route::get('/subcategories/destroy/{id}', 'SubCategoryController@destroy')->name('subcategories.destroy');
 
@@ -125,6 +131,8 @@ Route::group(['prefix' =>'admin', 'middleware' => ['auth', 'admin']], function()
 	Route::get('/orders/show_payment/{id}', 'OrderController@show_payment')->name('show.payment');
 	Route::get('/orders/change_to_paid/{id}', 'OrderController@change_to_paid')->name('change.to.paid');
 	Route::get('/orders/approve_by_admin/{id}', 'OrderController@approve_by_admin')->name('approve.by.admin');
+	Route::post('/orders/confirm_to_buyer', 'OrderController@confirm_to_buyer')->name('confirm.to.buyer');
+	Route::post('/orders/proses_confirm_to_buyer', 'OrderController@proses_confirm_to_buyer')->name('proses.confirm.to.buyer');
 	Route::get('/orders/disapprove_by_admin', 'OrderController@disapprove_by_admin')->name('disapprove.by.admin');
 	Route::get('/orders/{id}/show', 'OrderController@show')->name('orders.show');
 	Route::get('/sales/{id}/show', 'OrderController@sales_show')->name('sales.show');

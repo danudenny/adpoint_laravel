@@ -12,6 +12,7 @@ use App\User;
 use App\Customer;
 use Illuminate\Http\Request;
 use Auth;
+use Session;
 
 class LoginController extends Controller
 {
@@ -61,6 +62,7 @@ class LoginController extends Controller
 
         // check if they're an existing user
         $existingUser = User::where('email', $user->email)->first();
+        
         if($existingUser){
             // log them in
             auth()->login($existingUser, true);
@@ -113,6 +115,8 @@ class LoginController extends Controller
                 if ((auth()->user()->user_type == 'customer' || auth()->user()->user_type == 'seller') && auth()->user()->verified == 1) {
                     flash(__('Your logged!'))->success();
                     return redirect()->route('dashboard');
+                }else {
+                    return back();
                 }
             }
         }else{

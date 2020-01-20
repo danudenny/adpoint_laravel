@@ -21,6 +21,11 @@ use App\BusinessSetting;
 use App\Http\Controllers\SearchController;
 use ImageOptimizer;
 
+use Mail;
+use Notification;
+use App\Mail\User\RegistUser;
+use App\Notifications\UserRegistPush;
+
 class HomeController extends Controller
 {
     public function login()
@@ -48,22 +53,59 @@ class HomeController extends Controller
         return view('frontend.user_reset_password');
     }
 
-    // public function user_login(Request $request)
-    // {
-    //     $user = User::whereIn('user_type', ['customer', 'seller'])->where('email', $request->email)->first();
-    //     if($user != null){
-    //         if(Hash::check($request->password, $user->password)){
-    //             if($request->has('remember')){
-    //                 auth()->login($user, true);
-    //             }
-    //             else{
-    //                 auth()->login($user, false);
-    //             }
-    //             return redirect()->route('dashboard');
-    //         }
-    //     }
-    //     return back();
-    // }
+    public function registration_proses(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|string|min:6|confirmed',
+            'ktp' => 'required',
+            'npwp' => 'required',
+        ]);
+        $register = new User;
+        $register->name = $request->name;
+        $register->email = $request->email;
+        $register->password = Hash::make($request->password);
+        $register->ktp = $request->file('ktp')->store('uploads/users');
+        $register->npwp = $request->file('npwp')->store('uploads/users');
+        $user['name'] = $register->name;
+        $user['email'] = $register->email;
+        if ($register->save()) {
+            $register->verified = 0;
+            $request->session()->flash('message', 'Thanks for your registration, please check your email!.');
+            Notification::send(User::where('user_type','admin')->get(),new UserRegistPush);
+            Mail::to($request->email)->send(new RegistUser($user));
+            return back();
+        }
+        return back();
+    }
+
+    public function login_proses(Request $request)
+    {
+        $valid = Auth::attempt(['email' => $request->email, 'password' => $request->password,'verified'=> 1]);
+        $user = User::where('email', $request->email)->first();
+        if ($user !== null) {
+            if (password_verify($request->password, $user->password)) {
+                if ($user->verified === 1) {
+                    if ($user->user_type === 'customer' || $user->user_type === 'seller') {
+                        flash(__('Your logged!'))->success();
+                        return redirect()->route('dashboard');
+                    }else if($user->user_type === 'admin') {
+                        return redirect()->route('admin.dashboard');
+                    }
+                }else {
+                    $request->session()->flash('message', 'Your account has not been verified');
+                    return back();
+                }
+            }else {
+                $request->session()->flash('message', 'Your password does not match');
+                return back();
+            }
+        }else{
+            $request->session()->flash('message', 'Your email not registered');
+            return back();
+        }
+    }
 
     public function cart_login(Request $request)
     {
@@ -213,10 +255,6 @@ class HomeController extends Controller
      */
     public function index()
     {
-        // $files = scandir(base_path('public/uploads/categories'));
-        // foreach($files as $file) {
-        //     ImageOptimizer::optimize(base_path('public/uploads/categories/').$file);
-        // }
         return view('frontend.index');
     }
 
@@ -359,14 +397,10 @@ class HomeController extends Controller
         if ($states != null) {
             $conditions = array_merge($conditions, ['provinsi' => $states]);
         }
-        // if($subsubcategory_id != null){
-        //     $conditions = array_merge($conditions, ['subsubcategory_id' => $subsubcategory_id]);
-        // }
+       
         if($seller_id != null){
             $conditions = array_merge($conditions, ['user_id' => Seller::findOrFail($seller_id)->user->id]);
         }
-
-        // dd($conditions);
 
         $products = Product::where($conditions);  
 
@@ -525,6 +559,21 @@ class HomeController extends Controller
 
     public function getlistProduct(){
         return Product::all();
+    }
+
+    public function push(Request $request)
+    {
+        $this->validate($request,[
+            'endpoint'    => 'required',
+            'keys.auth'   => 'required',
+            'keys.p256dh' => 'required'
+        ]);
+        $endpoint = $request->endpoint;
+        $token = $request->keys['auth'];
+        $key = $request->keys['p256dh'];
+        $user = Auth::user();
+        $user->updatePushSubscription($endpoint, $key, $token);
+        return response()->json(['success' => true],200);
     }
 
 }

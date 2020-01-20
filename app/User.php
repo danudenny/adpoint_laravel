@@ -5,11 +5,12 @@ namespace App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use NotificationChannels\WebPush\HasPushSubscriptions;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
 class User extends Authenticatable implements JWTSubject
 {
-  use Notifiable;
+  use Notifiable, HasPushSubscriptions;
 
   /**
    * The attributes that are mass assignable.
@@ -62,6 +63,11 @@ class User extends Authenticatable implements JWTSubject
   public function orders()
   {
     return $this->hasMany(Order::class);
+  }
+
+  public function transaction()
+  {
+    return $this->hasMany(Transaction::class);
   }
 
   public function wallets()

@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Http\Request;
 use Mail;
+use Session;
 use App\Mail\User\RegistUser;
 
 
@@ -34,7 +35,7 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/';
+    protected $redirectTo = '/users/registration';
 
     /**
      * Create a new controller instance.
@@ -78,28 +79,20 @@ class RegisterController extends Controller
             'npwp'      => $data['npwp']->store('uploads/users')
         ]);
 
-        if(BusinessSetting::where('type', 'email_verification')->first()->value != 1){
-            $user->email_verified_at = date('Y-m-d H:m:s');
-            $user->ktp = $data['ktp']->store('uploads/users');
-            $user->npwp = $data['npwp']->store('uploads/users');
-            $user->verified = 2;
-            $user->save();
-            flash(__('Registration successfull. Please check your email.'))->success();
-        }
-        else {
-            $user->email_verified_at = date('Y-m-d H:m:s');
-            $user->ktp = $data['ktp']->store('uploads/users');
-            $user->npwp = $data['npwp']->store('uploads/users');
-            $user->verified = 2;
-            $user->save();
+        $user->email_verified_at = date('Y-m-d H:m:s');
+        $user->ktp = $data['ktp']->store('uploads/users');
+        $user->npwp = $data['npwp']->store('uploads/users');
+        $user->verified = 2;
+        if ($user->save()) {
             Mail::to($user->email)->send(new RegistUser($user));
+            \Session::flash('message', 'Please wait for the account to be verified');
             flash(__('Registration successfull. Please check your email.'))->success();
+            $customer = new Customer;
+            $customer->user_id = $user->id;
+            $customer->save();
+            return $user;
         }
-
-        $customer = new Customer;
-        $customer->user_id = $user->id;
-        $customer->save();
-
-        return $user;
+        
+       
     }
 }

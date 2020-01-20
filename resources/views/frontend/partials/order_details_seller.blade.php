@@ -73,13 +73,13 @@
                             <td class="w-50 strong-600">{{__('Order status')}}:</td>
                             <td>
                                 @if ($order->status_order == 0)
-                                    <span class="badge badge-warning">Disapproved</span>
+                                    <span class="badge badge-warning">Disapproved by admin</span>
                                 @elseif($order->status_order == 1)
                                     <span class="badge badge-secondary">Reviewed</span>
                                 @elseif($order->status_order == 2)
                                     <span class="badge badge-primary">Approved</span>
                                 @elseif($order->status_order == 3)
-                                    <span class="badge badge-warning">Disapproved</span>
+                                    <span class="badge badge-warning">Disapproved by seller</span>
                                 @elseif ($order->status_order == 4)
                                     <span class="badge badge-info">Aired</span>
                                 @elseif ($order->status_order == 5)
@@ -111,7 +111,24 @@
                             <td class="w-50 strong-600">{{__('Materi Advertising')}}</td>
                             <td>
                                 @if ($order->file_advertising != null)
-                                    <a href="{{ url($order->file_advertising) }}">Download File</a>
+                                    @php
+                                        $data = json_decode($order->file_advertising);
+                                    @endphp                                
+                                    @if ($data->gambar != null)
+                                        @foreach ($data->gambar as $key => $item)
+                                            <span class="badge badge-info"><a target="_blank" href="{{ $item }}" download>Gambar {{ $key+1 }}</a></span>
+                                        @endforeach
+                                    @endif
+                                    @if ($data->video != null)
+                                        @foreach ($data->video as $key => $item)
+                                            <span class="badge badge-success"><a target="_blank" href="{{ $item }}" download>Video {{ $key+1 }}</a></span>
+                                        @endforeach
+                                    @endif
+                                    @if ($data->zip != null)
+                                        @foreach ($data->zip as $key => $item)
+                                            <span class="badge badge-danger"><a target="_blank" href="{{ $item }}" download>Zip {{ $key+1 }}</a></span>
+                                        @endforeach
+                                    @endif
                                 @endif
                             </td>
                         </tr>
@@ -157,7 +174,7 @@
                                             $current_date = strtotime('now');
                                             $current = date('d M Y', $current_date);
                                         @endphp
-                                        @if ($end <= $current)
+                                        @if ($end == $current)
                                             @if ($orderDetail->complete == 1)
                                                 <div class="badge badge-success">Done</div>
                                             @else 

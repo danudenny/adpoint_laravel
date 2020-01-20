@@ -277,45 +277,7 @@
                     </ul>
                 </div>
                 <div class="col-md-4">
-                    <div class="text-center text-md-right">
-                        <ul class="inline-links">
-                            @if (\App\BusinessSetting::where('type', 'paypal_payment')->first()->value == 1)
-                                <li>
-                                    <img src="{{ asset('frontend/images/icons/cards/paypal.png')}}" height="20">
-                                </li>
-                            @endif
-                            @if (\App\BusinessSetting::where('type', 'stripe_payment')->first()->value == 1)
-                                <li>
-                                    <img src="{{ asset('frontend/images/icons/cards/stripe.png')}}" height="20">
-                                </li>
-                            @endif
-                            @if (\App\BusinessSetting::where('type', 'sslcommerz_payment')->first()->value == 1)
-                                <li>
-                                    <img src="{{ asset('frontend/images/icons/cards/sslcommerz.png')}}" height="20">
-                                </li>
-                            @endif
-                            @if (\App\BusinessSetting::where('type', 'instamojo_payment')->first()->value == 1)
-                                <li>
-                                    <img src="{{ asset('frontend/images/icons/cards/instamojo.png')}}" height="20">
-                                </li>
-                            @endif
-                            @if (\App\BusinessSetting::where('type', 'razorpay')->first()->value == 1)
-                                <li>
-                                    <img src="{{ asset('frontend/images/icons/cards/rozarpay.png')}}" height="20">
-                                </li>
-                            @endif
-                            @if (\App\BusinessSetting::where('type', 'paystack')->first()->value == 1)
-                                <li>
-                                    <img src="{{ asset('frontend/images/icons/cards/paystack.png')}}" height="20">
-                                </li>
-                            @endif
-                            @if (\App\BusinessSetting::where('type', 'cash_payment')->first()->value == 1)
-                                <li>
-                                    <img src="{{ asset('frontend/images/icons/cards/cod.png')}}" height="20">
-                                </li>
-                            @endif
-                        </ul>
-                    </div>
+                    
                 </div>
             </div>
         </div>
