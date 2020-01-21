@@ -1298,7 +1298,15 @@
     const key = "{{ config('app.vapid') }}";
 </script>
 <script src="{{ asset('js/enable-push.js') }}" defer></script>
+<script src="https://sdk.pushy.me/web/1.0.5/pushy-sdk.js"></script>
 
+<script>
+    Pushy.register({ appId: '5e1d3baf2aef376635ee37a6' }).then(function (deviceToken) {
+        console.log('Pushy device token: ' + deviceToken);
+    }).catch(function (err) {
+        console.error(err);
+    });    
+</script>
 @endauth
 </body>
 </html>
