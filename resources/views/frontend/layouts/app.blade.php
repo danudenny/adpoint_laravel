@@ -1298,15 +1298,33 @@
 
 @auth
 
-<script>
-    const key = "{{ config('app.vapid') }}";
-</script>
-<script src="{{ asset('js/enable-push.js') }}" defer></script>
 <script src="https://sdk.pushy.me/web/1.0.5/pushy-sdk.js"></script>
+<script src="{{ asset('service-worker.js')}}"></script>
+
+@php
+$user = Auth::id();
+@endphp
 
 <script>
     Pushy.register({ appId: '5e1d3baf2aef376635ee37a6' }).then(function (deviceToken) {
-        console.log('Pushy device token: ' + deviceToken);
+        const url = 'http://127.0.0.1:8000/api/pushy_token/register/device';
+
+        const data_token = {
+            user_id: {{Auth::id()}},
+            device_token: deviceToken
+        };
+
+        const options = {
+            method: 'POST',
+            body: JSON.stringify(data_token),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }
+
+        fetch(url, options)
+            .then(res => res.json())
+            .then(res => console.log(res));
     }).catch(function (err) {
         console.error(err);
     });    
