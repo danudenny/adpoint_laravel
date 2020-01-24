@@ -121,6 +121,10 @@
 <script src="{{ asset('frontend/js/dataTables.bootstrap4.min.js') }}"></script>
 <script src="{{ asset('frontend/js/jquery-ui.js') }}"></script>
 <script src="{{ asset('frontend/js/bootstrap-select.min.js') }}"></script>
+<script src="{{ asset('js/dropzone.js') }}"></script>
+
+<link rel="stylesheet" href="{{ asset('css/dropzone.css') }}">
+
 
 @if (\App\BusinessSetting::where('type', 'google_analytics')->first()->value == 1)
 <!-- Global site tag (gtag.js) - Google Analytics -->

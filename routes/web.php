@@ -120,11 +120,13 @@ Route::group(['middleware' => ['user', 'verified']], function(){
 
 	Route::resource('purchase_history','PurchaseHistoryController');
 	Route::post('/purchase_history/details', 'PurchaseHistoryController@purchase_history_details')->name('purchase_history.details');
+	Route::post('/purchase_history/item.details', 'PurchaseHistoryController@item_details')->name('item.details');
 	Route::get('/purchase_history/my_order/{id}', 'PurchaseHistoryController@my_order')->name('my.order');
 	Route::get('/purchase_history/destroy/{id}', 'PurchaseHistoryController@destroy')->name('purchase_history.destroy');
 
 
 	Route::get('/transaction', 'TransactionController@trx_page_buyer')->name('trx.page.buyer');
+	Route::post('/transaction/show_transaction_details', 'TransactionController@show_transaction_details')->name('show.transaction.details');
 	
 	
 	Route::resource('wishlists','WishlistController');
@@ -163,6 +165,7 @@ Route::group(['middleware' => ['auth']], function(){
 	Route::get('invoice/seller/{order_id}', 'InvoiceController@seller_invoice_download')->name('seller.invoice.download');
 
 	Route::resource('orders','OrderController');
+	Route::post('/orders/item_details', 'OrderController@item_details_seller')->name('item.details.seller');
 	Route::get('/orders/approve_by_seller/{id}', 'OrderController@approve_by_seller')->name('approve.by.seller');
 	Route::get('/orders/approve_all_by_seller', 'OrderController@approve_all_by_seller')->name('approved.all.by.seller');
 	Route::post('/orders/disapprove_by_seller', 'OrderController@disapprove_by_seller')->name('disapprove.by.seller');
@@ -172,9 +175,11 @@ Route::group(['middleware' => ['auth']], function(){
 	Route::post('/orders/update_delivery_status', 'OrderController@update_delivery_status')->name('orders.update_delivery_status');
 	Route::post('/orders/update_payment_status', 'OrderController@update_payment_status')->name('orders.update_payment_status');
 	Route::get('/confirm_payment', 'OrderController@confirm_payment')->name('confirm.payment');
+	Route::get('/continue_payment/{id}', 'OrderController@continue_payment')->name('continue.payment');
 	Route::get('/confirm_payment/{id}', 'OrderController@confirm_payment_id')->name('confirm.payment.id');
 	Route::post('/confirm_payment/insert', 'OrderController@insert_confirm_payment')->name('insert.confirm.payment');
 	Route::get('/order_complete/{id}', 'OrderController@order_complete')->name('order.complete');
+	Route::get('/order_activate/{id}', 'OrderController@activate')->name('order.activate');
 
 	Route::resource('broadcast_proof', 'EvidenceController');
 	Route::get('/broadcast_proof/aktifkan/{id}', 'EvidenceController@aktifkan')->name('aktifkan');
@@ -183,6 +188,8 @@ Route::group(['middleware' => ['auth']], function(){
 	Route::get('/broadcast_proof/complete/{id}', 'EvidenceController@complete')->name('complete');
 	Route::get('/broadcast', 'EvidenceController@broadcast_customer')->name('broadcast.index');
 	Route::post('/broadcast/details', 'EvidenceController@broadcast_details')->name('broadcast.details');
+
+	Route::post('bukti_tayang_detail', 'EvidenceController@bukti_tayang_detail')->name('bukti.tayang.detail');
 
 	Route::resource('/reviews', 'ReviewController');
 });

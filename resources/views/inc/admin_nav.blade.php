@@ -58,25 +58,6 @@
             </ul>
             <ul class="nav navbar-top-links">
 
-                @php
-                    $trx = DB::table('transactions')
-                                ->orderBy('id', 'desc')
-                                ->where('viewed',0)
-                                ->get();
-                    $confirm_payment = DB::table('confirm_payments')
-                                ->where('read', 0)
-                                ->get();
-                    $customer_new = DB::table('users')
-                                ->orderBy('id', 'desc')
-                                ->where('verified', 0)
-                                ->get();
-                    $sellers = DB::table('sellers')
-                                ->where('verification_status',0)
-                                ->where('verification_info', '!=', null)
-                                ->get();
-                    $jumlah = count($trx) + count($confirm_payment) + count($customer_new) + count($sellers);
-                @endphp
-
                 <li class="dropdown" id="lang-change">
                     @php
                         if(Session::has('locale')){
@@ -102,15 +83,7 @@
                 <li class="dropdown">
                     <a href="#" data-toggle="dropdown" class="dropdown-toggle" aria-expanded="true">
                         <i class="demo-pli-bell"></i>
-                        @if(count($trx) > 0)
-                            <span class="badge badge-header badge-danger">{{ $jumlah }}</span>
-                        @elseif(count($sellers) > 0)
-                            <span class="badge badge-header badge-danger">{{ $jumlah }}</span>
-                        @elseif(count($confirm_payment) > 0)
-                            <span class="badge badge-header badge-danger">{{ $jumlah }}</span>
-                        @elseif (count($customer_new) > 0)
-                            <span class="badge badge-header badge-danger">{{ $jumlah }}</span>
-                        @endif
+                        {{-- <span class="badge badge-header badge-danger">0</span> --}}
                     </a>
 
                     <!--Notification dropdown menu-->
@@ -118,49 +91,14 @@
                         <div class="nano scrollable has-scrollbar" style="height: 265px;">
                             <div class="nano-content" tabindex="0" style="right: -17px;">
                                 <ul class="head-list">
-                                    @if(count($trx) > 0)
-                                        @foreach ($trx as $key => $trx)
-                                            <li>
-                                                <a class="media" href="{{ route('transaction.index') }}" style="position:relative">
-                                                    <span class="badge badge-header badge-info" style="right:auto;left:3px;"></span>
-                                                    <div class="media-body">
-                                                        <p class="mar-no text-nowrap text-main text-semibold">transaction {{ $trx->code }}</p>
-                                                    </div>
-                                                </a>
-                                            </li>
-                                        @endforeach
-                                    @endif
-                                    @if(count($sellers) > 0)
-                                        <li>
-                                            <a class="media" href="{{ route('sellers.index') }}">
-                                                <div class="media-body">
-                                                    <p class="mar-no text-nowrap text-main text-semibold">{{__('New verification request(s)')}}</p>
-                                                </div>
-                                            </a>
-                                        </li>
-                                    @endif
-                                    @if (count($confirm_payment)> 0)
-                                        @foreach ($confirm_payment as $key => $cp)
-                                            <li>
-                                                <a class="media" href="#">
-                                                    <div class="media-body">
-                                                        <p class="mar-no text-nowrap text-main text-semibold">new payment</p>
-                                                    </div>
-                                                </a>
-                                            </li>
-                                        @endforeach
-                                    @endif
-                                    @if (count($customer_new) > 0)
-                                        @foreach ($customer_new as $key => $cn)    
-                                            <li>
-                                                <a class="media" href="#">
-                                                    <div class="media-body">
-                                                        <p class="mar-no text-nowrap text-main text-semibold">new customer {{ $cn->name }}</p>
-                                                    </div>
-                                                </a>
-                                            </li>
-                                        @endforeach
-                                    @endif
+                                    {{-- <li>
+                                        <a class="media" href="{{ route('transaction.index') }}" style="position:relative">
+                                            <span class="badge badge-header badge-info" style="right:auto;left:3px;"></span>
+                                            <div class="media-body">
+                                                <p class="mar-no text-nowrap text-main text-semibold">Hmm</p>
+                                            </div>
+                                        </a>
+                                    </li> --}}
                                 </ul>
                             </div>
                             <div class="nano-pane" style="">

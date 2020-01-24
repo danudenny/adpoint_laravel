@@ -34,30 +34,6 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('confirm.payment') }}" class="{{ areActiveRoutesHome(['confirm.payment'])}}">
-                        <i class="la la-file-text"></i>
-                        <span class="category-name">
-                            {{__('Confirm Payment')}}
-                        </span>
-                    </a>
-                </li>
-                <li>
-                    <a href="{{ route('broadcast.index') }}" class="{{ areActiveRoutesHome(['broadcast.index'])}}">
-                        <i class="la la-image"></i>
-                        <span class="category-name">
-                            {{__('Bukti Tayang')}}
-                        </span>
-                    </a>
-                </li>
-                <li>
-                    <a href="{{ route('wishlists.index') }}" class="{{ areActiveRoutesHome(['wishlists.index'])}}">
-                        <i class="la la-heart-o"></i>
-                        <span class="category-name">
-                            {{__('Wishlist')}}
-                        </span>
-                    </a>
-                </li>
-                <li>
                     <a href="{{ route('profile') }}" class="{{ areActiveRoutesHome(['profile'])}}">
                         <i class="la la-user"></i>
                         <span class="category-name">
@@ -65,16 +41,6 @@
                         </span>
                     </a>
                 </li>
-                @if (\App\BusinessSetting::where('type', 'wallet_system')->first()->value == 1)
-                    <li>
-                        <a href="{{ route('wallet.index') }}" class="{{ areActiveRoutesHome(['wallet.index'])}}">
-                            <i class="la la-dollar"></i>
-                            <span class="category-name">
-                                {{__('My Wallet')}}
-                            </span>
-                        </a>
-                    </li>
-                @endif
                 <li>
                     <a href="{{ route('support_ticket.index') }}" class="{{ areActiveRoutesHome(['support_ticket.index'])}}">
                         <i class="la la-support"></i>

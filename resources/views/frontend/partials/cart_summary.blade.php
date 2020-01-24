@@ -43,8 +43,7 @@
                         <tbody>
                             @php
                                 $subtotal = 0;
-                                $tax = 0;
-                                $shipping = 0;
+                                $tax = 0.1;
                             @endphp
                             @foreach ($d as $key => $cartItem)
                                 @php
@@ -73,9 +72,15 @@
                     <table class="table-cart table-cart-review">
                         <tfoot>
                             <tr class="cart-subtotal">
+                                <th>{{__('Tax 10%')}}</th>
+                                <td class="text-right">
+                                    <span class="strong-600">{{ single_price($subtotal*$tax) }}</span>
+                                </td>
+                            </tr>
+                            <tr class="cart-subtotal">
                                 <th>{{__('Subtotal')}}</th>
                                 <td class="text-right">
-                                    <span class="strong-600">{{ single_price($subtotal) }}</span>
+                                    <span class="strong-600">{{ single_price(($subtotal*$tax)+$subtotal) }}</span>
                                 </td>
                             </tr>
                         </tfoot>
@@ -83,7 +88,7 @@
                 </div>
             </div>
             @php
-                array_push($total_kes, $subtotal);
+                array_push($total_kes, ($subtotal*$tax)+$subtotal);
             @endphp
         @endforeach
         @php
@@ -94,16 +99,7 @@
                 <table class="table-cart table-cart-review">
                     <tfoot>
                         @php
-                            $pajak = 0;
-                        @endphp
-                        <tr class="cart-shipping">
-                            <th class="text-white">{{__('Tax 10%')}}</th>
-                            <td class="text-right">
-                                <span class="text-italic text-white">{{ single_price($pajak) }}</span>
-                            </td>
-                        </tr>
-                        @php
-                            $total = $total_keseluruhan+$pajak;
+                            $total = $total_keseluruhan;
                             if(Session::has('coupon_discount')){
                                 $total -= Session::get('coupon_discount');
                             }

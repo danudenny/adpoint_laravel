@@ -54,24 +54,6 @@ class EvidenceController extends Controller
         return view('frontend.evidence.bukti_tayang', compact('order_id','query'));
     }
 
-    public function aktifkan($id)
-    {
-        $order = Order::where('id', decrypt($id))->first();
-        $user = User::where('id', $order->user_id)->first();
-        $users = [];
-        $users['name'] = $user->name;
-        if ($order != null) {
-            $order->status_order = 4;
-            $order->updated_at = time();
-            $order->save();
-            Mail::to($user->email)->send(new OrderActive($users));
-            flash('Evidences success')->success();
-        }else{
-            flash('Someting Wrong!')->error();
-        }
-        return back();
-    }
-
     public function complete($id)
     {
         $order = Order::where('id', decrypt($id))->first();
@@ -84,6 +66,33 @@ class EvidenceController extends Controller
             flash('Someting Wrong!')->error();
         }
         return back();
+    }
+
+    public function bukti_tayang_detail(Request $request)
+    {
+        $order_active = DB::table('order_details as od')
+                            ->join('orders as o', 'o.id', '=', 'od.order_id')
+                            ->where([
+                                'o.approved'    => 1,
+                                'o.seller_id'   => Auth::user()->id,
+                                'od.status'     => 3,
+                                'od.id'         => $request->order_detail_id
+                            ])
+                            ->select([
+                                'od.*',
+                                'o.id as o_id',
+                                'o.user_id as o_user_id',
+                                'o.transaction_id as o_trx_id',
+                                'o.seller_id as o_seller_id',
+                                'o.code as o_code',
+                                'o.approved as o_approved',
+                                'o.grand_total as o_grandtotal',
+                                'o.tax as o_tax',
+                                'o.adpoint_earning as o_adpoint_earning',
+                                'o.address as o_addres'
+                            ])
+                            ->first();
+        return view('frontend.partials.form_bukti_tayang', compact('order_active'));
     }
 
     public function upload_bukti_tayang(Request $request)
@@ -249,4 +258,5 @@ class EvidenceController extends Controller
     {
         //
     }
+
 }

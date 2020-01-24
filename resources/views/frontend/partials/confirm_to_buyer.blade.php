@@ -29,7 +29,6 @@
                 <tbody>
                     @php
                         $subtotal = 0;
-                        $tax = 0;
                     @endphp
                     @foreach ($co as $key => $item)
                         @php
@@ -37,24 +36,24 @@
                         @endphp
                         @if ($item['status'] == 2)
                             @php
-                                $reject+=$item['price']*$item['quantity'];
-                                $subtotal += ($item['price']*$item['quantity'])-$reject;
+                                $reject+=$item['price'];
+                                $subtotal += ($item['price'])-$reject;
                             @endphp
                             <tr style="text-decoration: line-through">
                                 <td width="250"> <i class="fa fa-fw fa-times text-danger"></i> {{ $product->name }}</td>
                                 <td width="50">{{ $item['quantity'] }}</td>
-                                <td>{{ single_price($item['price']) }}</td>
-                                <td align="right">{{ single_price($item['price']*$item['quantity']) }}</td>
+                                <td>{{ single_price($product->unit_price) }}</td>
+                                <td align="right">{{ single_price($item['price']) }}</td>
                             </tr>
                         @else
                             @php
-                                $subtotal += $item['price']*$item['quantity'];
+                                $subtotal += $item['price'];
                             @endphp
                             <tr>
                                 <td width="250"><i class="fa fa-fw fa-check text-success"></i> {{ $product->name }}</td>
                                 <td width="50">{{ $item['quantity'] }}</td>
-                                <td>{{ single_price($item['price']) }}</td>
-                                <td align="right">{{ single_price($item['price']*$item['quantity']) }}</td>
+                                <td>{{ single_price($product->unit_price) }}</td>
+                                <td align="right">{{ single_price($item['price']) }}</td>
                             </tr>
                         @endif
                         
@@ -63,14 +62,16 @@
                 <table class="table">
                     <tfoot>
                         <tr class="cart-subtotal">
+                            @php
+                                $tax = $subtotal*0.1;
+                                $subtotal = $tax+$subtotal;
+                            @endphp
+                            <td align="right">Tax: (10%)</td>
+                            <td align="right" width="200">{{ single_price($tax) }}</td>
+                        </tr>
+                        <tr class="cart-subtotal">
                             <td align="right">Sub Total:</td>
                             <td align="right" width="200">{{ single_price($subtotal) }}</td>
-                        </tr>
-                    </tfoot>
-                    <tfoot>
-                        <tr class="cart-subtotal">
-                            <td align="right">Tax:</td>
-                            <td align="right" width="200">0</td>
                         </tr>
                     </tfoot>
                 </table>

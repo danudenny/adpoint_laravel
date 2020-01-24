@@ -10,25 +10,36 @@
         <h3 class="panel-title">{{__('Transaction Detail')}}</h3>
     </div>
     <div class="panel-body">
-        <h4 class="text-bold">Code: {{ $details->code }}</h4>
-        <div>
-            <i>Payment status:</i>
-            @if ($details->payment_status === 1)
-                <div class="badge badge-success">Paid</div>
-            @endif
-            <div class="badge badge-danger">Unpaid</div>
+        <div class="row">
+            <div class="col-md-12">
+                <h4 class="text-bold">Code: {{ $details->code }}</h4>
+                <div>
+                    <i>Payment status:</i>
+                    @if ($details->payment_status === "1")
+                        <div class="badge badge-success">Paid</div>
+                    @else
+                        <div class="badge badge-danger">Unpaid</div>
+                    @endif
+                </div>
+                @if ($details->status === "ready")
+                    <br>
+                    <div>
+                        <a onclick="confirmToBuyer({{$details->id}})" class="btn btn-primary">Confirm to buyer</a>
+                    </div>
+                @elseif ($details->status === "confirmed")
+                    <br>
+                    <div>
+                        <div class="badge badge-success">Confirmed</div>
+                    </div>
+                @elseif ($details->status === "paid")
+                    <br>
+                    <div>
+                        <a class="btn btn-primary" href="{{ route('transaction.show.invoice', encrypt($details->id)) }}"><i class="fa fa-eye"></i> {{__('Show Invoice')}}</a>
+                        <a class="btn btn-success" href="{{ route('transaction.show.payment', $details->code) }}"><i class="fa fa-money"></i> {{__('Paid')}}</a>
+                    </div>
+                @endif
+            </div>
         </div>
-        @if ($details->status === "ready")
-            <br>
-            <div>
-                <a onclick="confirmToBuyer({{$details->id}})" class="btn btn-primary">Confirm to buyer</a>
-            </div>
-        @elseif ($details->status === "confirmed")
-            <br>
-            <div>
-                <div class="badge badge-success">Confirmed</div>
-            </div>
-        @endif
         <br>
         <div class="row">
            <div class="col-md-12">
@@ -41,7 +52,7 @@
                    <div class="card-body">
                     @php
                         $order = \App\Order::where('transaction_id', $details->id)->get();
-                    @endphp
+                    @endphp 
                     @foreach ($order as $no => $o)
                         <div style="height: 50px; background: #303641; color: white; border-bottom: 2px solid #fd7e14">
                             <div style="line-height: 50px; margin-left: 15px">

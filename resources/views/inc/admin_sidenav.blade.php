@@ -108,7 +108,7 @@
                                     <li class="{{ areActiveRoutes(['orders.list.orders','sales.show'])}}">
                                         <a class="nav-link" href="{{ route('orders.list.orders') }}">{{__('Order List')}}</a>
                                     </li>
-                                    <li class="{{ areActiveRoutes(['transaction.index']) }}">
+                                    <li class="{{ areActiveRoutes(['transaction.index','transaction.details','transaction.show.payment','transaction.show.invoice']) }}">
                                         <a class="nav-link" href="{{ route('transaction.index') }}">{{__('Transaction')}}</a>
                                     </li>
                                 </ul>

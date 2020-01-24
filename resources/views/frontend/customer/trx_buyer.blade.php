@@ -40,6 +40,21 @@
                                 {!! session('message') !!}
                             </div>
                         @endif
+
+                        <div class="card no-border mt-4">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="input-group mb-3">
+                                        <input type="text" class="form-control" placeholder="Type transaction number" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                                            <div class="input-group-append">
+                                                <button class="btn btn-secondary" type="button"><i class="fa fa-search"></i></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         
                         <div class="card no-border mt-4">
                             <div class="card-body">
@@ -51,149 +66,79 @@
                                 </nav>
                                 <div class="tab-content mt-2" id="nav-tabContent">
                                     <div class="tab-pane fade show active" id="nav-unpaid" role="tabpanel" aria-labelledby="nav-unpaid-tab">
-                                        <div class="row">
-                                            <div class="accordion col-md-12" id="accordionExample">
-                                                <article class="card">
-                                                    @foreach ($trx as $no => $t)
-                                                        @if ($t->payment_status == 0)
-                                                        <header style="height: 50px; background: #0f355a; color: white; border-bottom: 2px solid #fd7e14" id="headingOne{{$no}}">
-                                                            <a style="cursor: pointer; line-height: 50px; margin-left: 15px" data-toggle="collapse" data-target="#collapseOne{{$no}}" aria-expanded="true" aria-controls="collapseOne{{$no}}">
-                                                                Transaction ID: <b>{{ $t->code }}</b> |  <i>{{ date('d M Y h:i:s', strtotime($t->created_at)) }}</i>
-                                                            </a>
-                                                        </header>
-                                                        <div id="collapseOne{{$no}}" class="collapse show" aria-labelledby="headingOne{{$no}}" data-parent="#accordionExample">
-                                                            
-                                                            <div class="table-responsive">
-                                                                <table class="table table-hover">
-                                                                    @php
-                                                                        $list_order = \App\Order::where(['transaction_id' => $t->id])->get();
-                                                                    @endphp
-                                                                    @foreach ($list_order as $key => $lo)
-                                                                        <tr>
-                                                                            <td>
-                                                                                {{ $key+1 }}
-                                                                            </td>
-                                                                            <td> 
-                                                                                <p class="title mb-0">Order code: {{ $lo->code }}</p>
-                                                                                <var class="price text-muted">Subtotal: Rp. {{ number_format($lo->grand_total,2,",",".") }}</var>
-                                                                            </td>
-                                                                            <td>
-                                                                                Order Status:
-                                                                                <br> 
-                                                                                @if ($lo->status_order == 0)
-                                                                                    <span class="badge badge-warning">Pending</span>
-                                                                                @elseif ($lo->status_order == 1)
-                                                                                    <span class="badge badge-secondary">Reviewed</span>
-                                                                                @elseif ($lo->status_order == 2)
-                                                                                    <span class="badge badge-primary">Approved</span>
-                                                                                @elseif ($lo->status_order == 3)
-                                                                                    <span class="badge badge-warning">Disapproved</span>
-                                                                                @elseif ($lo->status_order == 4)
-                                                                                    <span class="badge badge-info">Aired</span>
-                                                                                @elseif ($lo->status_order == 5)
-                                                                                    <span class="badge badge-success">Complete</span>
-                                                                                @elseif ($lo->status_order == 6)
-                                                                                    <span class="badge badge-danger">Cancelled</span>
-                                                                                @endif
-                                                                            </td>
-                                                                            <td align="right">
-                                                                                <a href="#" class="btn btn-outline-primary">Details</a>
-                                                                            </td>
-                                                                        </tr>
-                                                                    @endforeach
-                                                                </table>
-                                                            </div> <!-- table-responsive .end// -->
-                                                        </div> 
-                                                        @endif
-                                                    @endforeach
-                                                </article>
+                                        @foreach ($trx as $no => $t)
+                                            @if ($t->payment_status == 0)
+                                            <div class="card" style="background: #0f355a; 
+                                                                    color: white; border-radius: 0%; 
+                                                                    border-bottom: 2px solid #fd7e14; 
+                                                                    border-top: 0;
+                                                                    border-left: 0;
+                                                                    border-right: 0;">
+                                                <div class="card-header">
+                                                    Code: <b>{{ $t->code }}</b> | <i class="fa fa-clock-o"></i> <i>{{ date('d M Y h:i:s', strtotime($t->created_at)) }}</i>
+                                                    @if ($t->status === "confirmed")
+                                                        <a href="{{ route('confirm.payment.id', encrypt($t->id)) }}" class="btn btn-sm btn-circle btn-outline-warning pull-right">Confirm Payment</a>
+                                                    @endif
+                                                    <button onclick="trxDetails({{ $t->id }})" class="btn btn-sm btn-circle btn-outline-warning pull-right"><i class="fa fa-eye"></i> Details</button>
+                                                </div>
                                             </div>
-                                        </div>
+                                            @endif
+                                        @endforeach
                                     </div>
                                     <div class="tab-pane fade" id="nav-paid" role="tabpanel" aria-labelledby="nav-paid-tab">
-                                        <div class="row">
-                                            <div class="accordion col-md-12" id="accordionExample">
-                                                <article class="card">
-                                                    @foreach ($trx as $no => $t)
-                                                        @if ($t->payment_status == 1)
-                                                        <header style="height: 50px; background: #0f355a; color: white; border-bottom: 2px solid #fd7e14" id="headingOne{{$no}}">
-                                                            <a style="cursor: pointer; line-height: 50px; margin-left: 15px" data-toggle="collapse" data-target="#collapseOne{{$no}}" aria-expanded="true" aria-controls="collapseOne{{$no}}">
-                                                                Transaction ID: <b>{{ $t->code }}</b> |  <i>{{ date('d M Y h:i:s', strtotime($t->created_at)) }}</i>
-                                                            </a>
-                                                        </header>
-                                                        <div id="collapseOne{{$no}}" class="collapse show" aria-labelledby="headingOne{{$no}}" data-parent="#accordionExample">
-                                                            
-                                                            <div class="table-responsive">
-                                                                <table class="table table-hover">
-                                                                    @php
-                                                                        $list_order = \App\Order::where(['transaction_id' => $t->id])->get();
-                                                                    @endphp
-                                                                    @foreach ($list_order as $key => $lo)
-                                                                        <tr>
-                                                                            <td>
-                                                                                {{ $key+1 }}
-                                                                            </td>
-                                                                            <td> 
-                                                                                <p class="title mb-0">Order code: {{ $lo->code }}</p>
-                                                                                <var class="price text-muted">Subtotal: Rp. {{ number_format($lo->grand_total,2,",",".") }}</var>
-                                                                            </td>
-                                                                            <td>
-                                                                                Order Status:
-                                                                                <br> 
-                                                                                @if ($lo->status_order == 0)
-                                                                                    <span class="badge badge-warning">Pending</span>
-                                                                                @elseif ($lo->status_order == 1)
-                                                                                    <span class="badge badge-secondary">Reviewed</span>
-                                                                                @elseif ($lo->status_order == 2)
-                                                                                    <span class="badge badge-primary">Approved</span>
-                                                                                @elseif ($lo->status_order == 3)
-                                                                                    <span class="badge badge-warning">Disapproved</span>
-                                                                                @elseif ($lo->status_order == 4)
-                                                                                    <span class="badge badge-info">Aired</span>
-                                                                                @elseif ($lo->status_order == 5)
-                                                                                    <span class="badge badge-success">Complete</span>
-                                                                                @elseif ($lo->status_order == 6)
-                                                                                    <span class="badge badge-danger">Cancelled</span>
-                                                                                @endif
-                                                                            </td>
-                                                                            <td align="right">
-                                                                                <a href="#" class="btn btn-outline-primary">Details</a>
-                                                                            </td>
-                                                                        </tr>
-                                                                    @endforeach
-                                                                </table>
-                                                            </div> <!-- table-responsive .end// -->
-                                                        </div> 
+                                        @foreach ($trx as $no => $t)
+                                            @if ($t->payment_status == 1)
+                                                <div class="card" style="background: #0f355a; 
+                                                                        color: white; border-radius: 0%; 
+                                                                        border-bottom: 2px solid #fd7e14; 
+                                                                        border-top: 0;
+                                                                        border-left: 0;
+                                                                        border-right: 0;">
+                                                    <div class="card-header">
+                                                        Code: <b>{{ $t->code }}</b> | <i class="fa fa-clock-o"></i> <i>{{ date('d M Y h:i:s', strtotime($t->created_at)) }}</i>
+                                                        @if ($t->status === "confirmed")
+                                                            <a href="{{ route('confirm.payment.id', encrypt($t->id)) }}" class="btn btn-sm btn-circle btn-outline-warning pull-right">Confirm Payment</a>
                                                         @endif
-                                                    @endforeach
-                                                </article>
-                                            </div>
-                                        </div>
+                                                        <button onclick="trxDetails({{ $t->id }})" class="btn btn-sm btn-circle btn-outline-warning pull-right"><i class="fa fa-eye"></i> Details</button>
+                                                    </div>
+                                                </div>
+                                            @endif
+                                        @endforeach
                                     </div>
                                 </div>
                             </div>
                         </div>
-
-                        
-
-                        
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <div class="modal fade" id="order_details" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="trxDetails" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-zoom product-modal" id="modal-size" role="document">
             <div class="modal-content position-relative">
                 <div class="c-preloader">
                     <i class="fa fa-spin fa-spinner"></i>
                 </div>
-                <div id="order-details-modal-body">
+                <div id="trxDetails-body">
 
                 </div>
             </div>
         </div>
     </div>
 
+@endsection
+
+@section('script')
+    <script>
+        function trxDetails(id) {
+            $('#trxDetails-body').html(null);
+            $('#trxDetails').modal();
+            $('.c-preloader').show();
+            $.post('{{ route('show.transaction.details') }}', {_token:'{{ csrf_token() }}', trx_id:id}, function(data){
+                $('.c-preloader').hide();
+                $('#trxDetails-body').html(data);
+            });
+        }
+    </script>
 @endsection

@@ -12,9 +12,9 @@
     		<div class="invoice-bill row">
     			<div class="col-sm-6 text-xs-center">
     				<address>
-        				<strong class="text-main">{{ json_decode($order->shipping_address)->name }}</strong><br>
-                         {{ json_decode($order->shipping_address)->email }}<br>
-        				 {{ json_decode($order->shipping_address)->address }}, {{ json_decode($order->shipping_address)->city }}, {{ json_decode($order->shipping_address)->country }}
+        				<strong class="text-main">{{ json_decode($order->address)->name }}</strong><br>
+                         {{ json_decode($order->address)->email }}<br>
+        				 {{ json_decode($order->address)->address }}, {{ json_decode($order->address)->city }}, {{ json_decode($order->address)->country }}
                     </address>
     			</div>
     			<div class="col-sm-6 text-xs-center">
