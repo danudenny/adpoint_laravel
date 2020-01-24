@@ -70,3 +70,7 @@ Route::group(['middleware' => ['auth.jwt','jsonify']], function () {
     Route::post('order/add', 'Api\OrderCtrl@store');
 
 });
+
+// Pushy
+Route::get('pushy_token', 'Api\PushyCtrl@index');
+Route::post('pushy_token/register/device', 'Api\PushyCtrl@store');

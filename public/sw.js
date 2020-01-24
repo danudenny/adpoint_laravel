@@ -1,31 +1,24 @@
-self.addEventListener('push', function(e) {
+self.addEventListener('push', function (e) {
 
     if (!(self.Notification && self.Notification.permission === 'granted')) {
-
-        //notifications aren't supported or permission not granted!
-
         return;
-
     }
 
+    var data = e.data.json() || {};
+    console.log(data)
 
+    var image = data.image || 'https://sdk.pushy.me/web/assets/img/icon.png';
+    var title = data.title || '';
+    var body = data.message || '';
 
-    if (e.data) {
+    var options = {
+        body: body,
+        icon: image,
+        badge: image,
+        data: {
+            url: data.url
+        }
+    };
 
-        var msg = e.data.json();
-
-        console.log(msg)
-
-        e.waitUntil(self.registration.showNotification(msg.title, {
-
-            body: msg.body,
-
-            icon: msg.icon,
-
-            actions: msg.actions
-
-        }));
-
-    }
-
+    e.waitUntil(self.registration.showNotification(title, options));
 });

@@ -946,6 +946,60 @@
                 ]
             }
         },
+        "/pushy_token": {
+            "get": {
+                "tags": [
+                    "Pushy"
+                ],
+                "summary": "Display a listing of the pushy token devices",
+                "operationId": "list pushy token devices",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page number",
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    }
+                }
+            }
+        },
+        "/pushy_token/register/device": {
+            "post": {
+                "tags": [
+                    "Pushy"
+                ],
+                "summary": "Add Device Token",
+                "operationId": "Add Device Token",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PushySchema"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    }
+                }
+            }
+        },
         "/register": {
             "post": {
                 "tags": [
@@ -1726,6 +1780,20 @@
                         "example": "string"
                     },
                     "target_pendengarradio": {
+                        "type": "string",
+                        "example": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "PushySchema": {
+                "title": "PushyToken",
+                "properties": {
+                    "user_id": {
+                        "type": "integer",
+                        "example": "123456"
+                    },
+                    "device_token": {
                         "type": "string",
                         "example": "string"
                     }

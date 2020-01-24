@@ -20,6 +20,7 @@ use App\State;
 use App\BusinessSetting;
 use App\Http\Controllers\SearchController;
 use ImageOptimizer;
+use App\Pushy;
 
 use Mail;
 use Notification;
@@ -71,9 +72,20 @@ class HomeController extends Controller
         $user['name'] = $register->name;
         $user['email'] = $register->email;
         if ($register->save()) {
+            $data = array('message' => 'User Baru telah terdaftar!');
+            $to = array('24cacc011075f412c7dc65');
+            $options = array(
+                'notification' => array(
+                    'badge' => 1,
+                    'sound' => 'ping.aiff',
+                    'body'  => "User Baru telah terdaftar!"
+                )
+            );
+
             $register->verified = 0;
             $request->session()->flash('message', 'Thanks for your registration, please check your email!.');
-            Notification::send(User::where('user_type','admin')->get(),new UserRegistPush);
+            // Notification::send(User::where('user_type','admin')->get(),new UserRegistPush);
+            Pushy::sendPushNotification($data, $to, $options);
             Mail::to($request->email)->send(new RegistUser($user));
             return back();
         }
