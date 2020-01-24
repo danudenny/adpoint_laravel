@@ -17,12 +17,44 @@ class PurchaseHistoryController extends Controller
      */
     public function index()
     {
-        // $orders = Order::where('user_id', Auth::user()->id)->orderBy('code', 'desc')->paginate(9);
         $order_details = DB::table('order_details as od')
                             ->join('orders as o', 'o.id', '=', 'od.order_id')
                             ->where('o.user_id', Auth::user()->id)
+                            ->select([
+                                'od.*',
+                                'o.id as o_id',
+                                'o.user_id as o_user_id',
+                                'o.transaction_id as o_trx_id',
+                                'o.seller_id as o_seller_id',
+                                'o.code as o_code',
+                                'o.approved as o_approved',
+                                'o.grand_total as o_grandtotal',
+                                'o.tax as o_tax',
+                                'o.adpoint_earning as o_adpoint_earning',
+                                'o.address as o_addres'
+                            ])
                             ->get();
         return view('frontend.purchase_history', compact('order_details'));
+    }
+
+    public function item_details(Request $request)
+    {
+        $query = DB::table('transactions as t')
+                    ->join('orders as o', 'o.transaction_id', '=', 't.id')
+                    ->join('order_details as od', 'od.order_id', '=', 'o.id')
+                    ->where([
+                        'od.id' => $request->order_detail_id
+                    ])
+                    ->select([
+                        't.code as code_trx',
+                        't.payment_status',
+                        'o.code as code_order',
+                        'o.created_at as order_date',
+                        'od.product_id as item_name',
+                        'od.status as od_status',
+                    ])
+                    ->first();
+        return view('frontend.partials.item_details', compact('query'));
     }
 
     public function purchase_history_details(Request $request)

@@ -35,118 +35,250 @@
                         
                         <div class="card no-border mt-4">
                             <div class="card-body">
-                               <div class="row">
-                                   <div class="accordion col-md-12" id="accordionExample">
-                                    @if (Session::has('message'))
-                                        <div class="alert alert-success">
-                                            {!! session('message') !!}
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <input type="text" class="form-control" id="startDate" placeholder="Start">
                                         </div>
-                                    @endif
-                                    <article class="card">
-                                        @foreach ($orders as $no => $o)
-                                            @if ($o->approved == 1)
-                                                <header style="height: 50px; background: #0f355a; color: white; border-bottom: 2px solid #fd7e14" id="headingOne{{$no}}">
-                                                    <div style="line-height: 50px; margin-left: 10px">
-                                                        <div style="float: left">
-                                                            <a style="cursor: pointer;" data-toggle="collapse" data-target="#collapseOne{{$no}}" aria-expanded="true" aria-controls="collapseOne{{$no}}">
-                                                                Order ID: <b>{{ $o->code }}</b> |  <i>{{ date('d M Y h:i:s', strtotime($o->created_at)) }}</i>
-                                                            </a>
-                                                        </div>
-                                                        <div style="float: right; margin-right: 10px;">
-                                                            {{-- <a class="btn btn-success btn-sm" href="{{ route('approved.all.by.seller', encrypt($o->id)) }}">Approve All</a> --}}
-                                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <input type="text" class="form-control" id="endDate" placeholder="End">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <select class="form-control selectpicker">
+                                            <option value="latest">Latest</option>
+                                            <option value="old">Old</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <button class="btn btn-danger">Reset Filter</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card no-border mt-2">
+                            <div class="card-body">
+                                <nav class="no-border" style="color: black">
+                                    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                                    <a class="nav-item nav-link active" id="nav-order-place-tab" data-toggle="tab" href="#nav-order-place" role="tab" aria-controls="nav-order-place" aria-selected="true">Order place</a>
+                                    <a class="nav-item nav-link" id="nav-onreview-tab" data-toggle="tab" href="#nav-onreview" role="tab" aria-controls="nav-onreview" aria-selected="false">On review</a>
+                                    <a class="nav-item nav-link" id="nav-active-tab" data-toggle="tab" href="#nav-active" role="tab" aria-controls="nav-active" aria-selected="false">Active</a>
+                                    <a class="nav-item nav-link" id="nav-complete-tab" data-toggle="tab" href="#nav-complete" role="tab" aria-controls="nav-complete" aria-selected="false">Complete</a>
+                                    <a class="nav-item nav-link" id="nav-cancel-tab" data-toggle="tab" href="#nav-cancel" role="tab" aria-controls="nav-cancel" aria-selected="false">Cancelled</a>
+                                    </div>
+                                </nav>
+                            </div>
+                        </div>
+                        
+                        <div class="card no-border mt-1">
+                            <div class="card-body">
+                                <div class="tab-content" id="nav-tabContent">
+                                    <div class="tab-pane fade show active" id="nav-order-place" role="tabpanel" aria-labelledby="nav-order-place-tab">
+                                        @foreach ($order_details as $key => $od)
+                                            @if ($od->status === 0)
+                                                <article class="card mt-1">
+                                                    <div style="height: 35px; background: #0f355a; color: white; border-bottom: 2px solid #fd7e14">
+                                                        <strong style="line-height: 35px; margin-left: 15px">{{ $od->created_at }}</strong>
                                                     </div>
-                                                </header>
-                                                <div id="collapseOne{{$no}}" class="collapse show" aria-labelledby="headingOne{{$no}}" data-parent="#accordionExample">
-                                                    
                                                     <div class="table-responsive">
-                                                        <table class="table table-bordered">
+                                                        <table class="table">
                                                             @php
-                                                                $order_details = \App\OrderDetail::where('order_id',$o->id)->get();
+                                                                $product = \App\Product::where('id', $od->product_id)->first();
                                                             @endphp
-                                                            @foreach ($order_details as $key => $od)
-                                                                @php
-                                                                    $product = \App\Product::where('id', $od->product_id)->first();
-                                                                @endphp
-                                                                <tr>
-                                                                    <td>
-                                                                        <img src="{{ url(json_decode($product->photos)[0]) }}" class="img-fluid" width="50">
-                                                                    </td>
-                                                                    <td>
-                                                                        <a target="_blank" href="{{ route('product', $product->slug) }}">{{ $product->name }}</a>
-                                                                        <br>
-                                                                        {{ $od->variation }} 
-                                                                        <small class="text-info text-bold">
-                                                                            ( {{ date('d M Y', strtotime($od->start_date)) }} - {{ date('d M Y', strtotime($od->end_date)) }} )
-                                                                        </small> 
-                                                                    </td>
-                                                                    <td>
-                                                                        Price: <br>
-                                                                        <b>{{ single_price($od->price) }}</b>
-                                                                    </td>
-                                                                    <td>
-                                                                        Qty: <br>
-                                                                        <div class="badge badge-info">{{ $od->quantity }}</div>
-                                                                    </td>
-                                                                    <td>
-                                                                        Total: <br>
-                                                                        @php
-                                                                            $total = $od->price * $od->quantity;
-                                                                        @endphp
-                                                                        <b>{{ single_price($total) }}</b>
-                                                                    </td>
-                                                                    <td>
-                                                                        @if ($od->status === 1)
-                                                                            <div class="badge badge-success">Approved</div>
-                                                                        @elseif($od->status === 2)
-                                                                            <div class="badge badge-danger">Rejected</div>
-                                                                        @else 
-                                                                        <a href="{{ route('approve.by.seller', encrypt($od->id)) }}" data-toggle="tooltip" data-placement="top" title="Approve" class="btn btn-sm btn-success">
-                                                                            <i class="fa fa-check"></i>
-                                                                        </a>
-                                                                        <a data-toggle="modal" data-target="#reject{{$od->id}}" style="cursor: pointer; color: white" class="btn btn-sm btn-danger">
-                                                                            <i class="fa fa-times"></i>
-                                                                        </a>
-                                                                        @endif
-                                                                    </td>
-                                                                </tr>
-                                                                <div class="modal fade" id="reject{{ $od->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-                                                                    <div class="modal-dialog modal-dialog-centered" role="document">
-                                                                        <div class="modal-content">
-                                                                            <div class="modal-header">
-                                                                            <h5 class="modal-title" id="exampleModalLongTitle">Reject item {{ $product->name }}</h5>
-                                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                                <span aria-hidden="true">&times;</span>
-                                                                            </button>
-                                                                        </div>
-                                                                        <form action="{{ route('disapprove.by.seller') }}" method="POST">
-                                                                            <div class="modal-body">
-                                                                                <div class="form-group">
-                                                                                    @csrf
-                                                                                    <input type="hidden" name="od_id" value="{{$od->id}}">
-                                                                                    <label>Alasan</label>
-                                                                                    <textarea name="alasan" class="form-control" placeholder="Tuliskan alasan" cols="20" rows="5"></textarea>
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="modal-footer">
-                                                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                                                                <button type="submit" class="btn btn-primary">Submit</button>
-                                                                            </div>
-                                                                        </form>
+                                                            <tr>
+                                                                <td>
+                                                                    <img src="{{ url(json_decode($product->photos)[0]) }}" class="img-fluid" width="50">
+                                                                </td>
+                                                                <td> 
+                                                                    {{ $product->name }} <br>
+                                                                    {{ $od->variation }} 
+                                                                    <small>
+                                                                        ( {{ date('d M Y', strtotime($od->start_date)) }} - {{ date('d M Y', strtotime($od->end_date)) }} )
+                                                                    </small>
+                                                                </td>
+                                                                <td align="right">
+                                                                    <a href="{{ route('approve.by.seller', encrypt($od->id)) }}" class="btn btn-outline-success btn-circle btn-sm"><i class="fa fa-check"></i> Approve</a>
+                                                                    <a data-toggle="modal" href="" data-target="#reject{{$od->id}}" class="btn btn-sm btn-circle btn-outline-danger">
+                                                                        <i class="fa fa-times"></i> Reject
+                                                                    </a>
+                                                                    <button class="btn btn-outline-secondary btn-circle btn-sm" onclick="itemDetailsSeller({{ $od->id }})">
+                                                                        <i class="fa fa-eye"></i> Details
+                                                                    </button>
+                                                                    <!-- Modal -->
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </div>
+                                                </article>
+                                                <div class="modal fade" id="reject{{ $od->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                                        <form action="{{ route('disapprove.by.seller') }}" method="POST">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title" id="exampleModalCenterTitle">Reject item {{ $product->name }}</h5>
+                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                    </button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <div class="form-group">
+                                                                        @csrf
+                                                                        <input type="hidden" name="od_id" value="{{$od->id}}">
+                                                                        <label>Alasan</label>
+                                                                        <textarea name="alasan" class="form-control" placeholder="Tuliskan alasan" cols="20" rows="5"></textarea>
                                                                     </div>
                                                                 </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                                    <button type="submit" class="btn btn-primary">Submit</button>
                                                                 </div>
-                                                            @endforeach
-                                                        </table>
-                                                    </div> <!-- table-responsive .end// -->
+                                                            </div>
+                                                        </form>
+                                                    </div>
                                                 </div>
-                                            @else
-                                                <h5 class="text-center">Nothing!</h5>
                                             @endif
                                         @endforeach
-                                    </article> <!-- order-group.// --> 
+                                    </div>
+                                    <div class="tab-pane fade" id="nav-onreview" role="tabpanel" aria-labelledby="nav-onreview-tab">
+                                        @foreach ($order_details as $key => $od)
+                                            @if ($od->status === 1)
+                                                <article class="card mt-1">
+                                                    <div style="height: 35px; background: #0f355a; color: white; border-bottom: 2px solid #fd7e14">
+                                                        <strong style="line-height: 35px; margin-left: 15px">{{ $od->created_at }}</strong>
+                                                    </div>
+                                                    <div class="table-responsive">
+                                                        <table class="table">
+                                                            @php
+                                                                $product = \App\Product::where('id', $od->product_id)->first();
+                                                            @endphp
+                                                            <tr>
+                                                                <td>
+                                                                    <img src="{{ url(json_decode($product->photos)[0]) }}" class="img-fluid" width="50">
+                                                                </td>
+                                                                <td> 
+                                                                    {{ $product->name }} <br>
+                                                                    {{ $od->variation }} 
+                                                                    <small>
+                                                                        ( {{ date('d M Y', strtotime($od->start_date)) }} - {{ date('d M Y', strtotime($od->end_date)) }} )
+                                                                    </small>
+                                                                </td>
+                                                                <td align="right">
+                                                                    <button class="btn btn-outline-secondary btn-circle btn-sm" onclick="itemDetailsSeller({{ $od->id }})">
+                                                                        <i class="fa fa-eye"></i> Details
+                                                                    </button>
+                                                                    @if ($od->status == 1)
+                                                                        @if ($od->is_paid == true)
+                                                                            <a href="{{ route('order.activate', encrypt($od->id)) }}" class="btn btn-circle btn-sm btn-outline-primary">
+                                                                                <i class="fa fa-calendar-check-o"></i> Activate
+                                                                            </a>
+                                                                        @else
+                                                                            <button type="button" class="btn btn-sm btn-circle btn-outline-primary" style="cursor: not-allowed" disabled>
+                                                                                <i class="fa fa-calendar-check-o"></i> Activate
+                                                                            </button>
+                                                                        @endif
+                                                                    @endif
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </div>
+                                                </article>
+                                            @endif
+                                        @endforeach
+                                    </div>
+                                    <div class="tab-pane fade" id="nav-active" role="tabpanel" aria-labelledby="nav-active-tab">
+                                        @foreach ($order_details as $key => $od)
+                                            @if ($od->status === 3)
+                                                <article class="card mt-1">
+                                                    <div style="height: 35px; background: #0f355a; color: white; border-bottom: 2px solid #fd7e14">
+                                                        <strong style="line-height: 35px; margin-left: 15px">{{ $od->created_at }}</strong>
+                                                    </div>
+                                                    <div class="table-responsive">
+                                                        <table class="table">
+                                                            @php
+                                                                $product = \App\Product::where('id', $od->product_id)->first();
+                                                            @endphp
+                                                            <tr>
+                                                                <td>
+                                                                    <img src="{{ url(json_decode($product->photos)[0]) }}" class="img-fluid" width="50">
+                                                                </td>
+                                                                <td width="250"> 
+                                                                    {{ $product->name }} <br>
+                                                                    {{ $od->variation }} 
+                                                                    <small>
+                                                                        ( {{ date('d M Y', strtotime($od->start_date)) }} - {{ date('d M Y', strtotime($od->end_date)) }} )
+                                                                    </small>
+                                                                </td>
+                                                                <td align="right">
+                                                                    <button class="btn btn-outline-secondary btn-circle btn-sm" onclick="itemDetailsSeller({{ $od->id }})">
+                                                                        <i class="fa fa-eye"></i> Details
+                                                                    </button>
+                                                                    <button class="btn btn-outline-secondary btn-circle btn-sm" onclick="buktiTayang({{ $od->id }})">
+                                                                        <i class="fa fa-upload"></i> Bukti Tayang
+                                                                    </button> 
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </div>
+                                                </article>
+                                            @endif
+                                        @endforeach
+                                    </div>
+                                    <div class="tab-pane fade" id="nav-complete" role="tabpanel" aria-labelledby="nav-complete-tab">
+                                        <h1>Active</h1>
+                                    </div>
+                                    <div class="tab-pane fade" id="nav-cancel" role="tabpanel" aria-labelledby="nav-cancel-tab">
+                                        @foreach ($order_details as $key => $od)
+                                            @if ($od->status === 100)
+                                                <article class="card mt-1">
+                                                    <div style="height: 35px; background: #0f355a; color: white; border-bottom: 2px solid #fd7e14">
+                                                        <strong style="line-height: 35px; margin-left: 15px">{{ $od->created_at }}</strong>
+                                                    </div>
+                                                    <div class="table-responsive">
+                                                        <table class="table">
+                                                            @php
+                                                                $product = \App\Product::where('id', $od->product_id)->first();
+                                                            @endphp
+                                                            <tr>
+                                                                <td width="80">
+                                                                    <img src="{{ url(json_decode($product->photos)[0]) }}" class="img-fluid" width="50">
+                                                                </td>
+                                                                <td width="250"> 
+                                                                    {{ $product->name }} <br>
+                                                                    {{ $od->variation }} 
+                                                                    <small>
+                                                                        ( {{ date('d M Y', strtotime($od->start_date)) }} - {{ date('d M Y', strtotime($od->end_date)) }} )
+                                                                    </small>
+                                                                </td>
+                                                                <td width="200">
+                                                                    QTY: {{ $od->quantity }} <br>
+                                                                    {{ single_price($od->price) }}
+                                                                </td>
+                                                                <td>
+                                                                    Status: 
+                                                                    @if ($od->status === 100)
+                                                                        <div class="badge badge-danger">
+                                                                            Rejected
+                                                                        </div>
+                                                                    @endif
+                                                                </td>
+                                                                <td align="right">
+                                                                    <button class="btn btn-outline-secondary btn-circle btn-sm" onclick="itemDetailsSeller({{ $od->id }})">
+                                                                        <i class="fa fa-eye"></i> Details
+                                                                    </button>
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </div>
+                                                </article>
+                                            @endif
+                                        @endforeach
+                                    </div>
                                 </div>
-                               </div>
                             </div>
                         </div>
                     
@@ -155,4 +287,54 @@
             </div>
         </div>
     </section>
+    <div class="modal fade" id="buktiTayang" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-zoom product-modal" id="modal-size" role="document">
+            <div class="modal-content position-relative">
+                <div class="c-preloader">
+                    <i class="fa fa-spin fa-spinner"></i>
+                </div>
+                <div id="buktiTayang_body">
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="itemDetailsSeller" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-zoom product-modal" id="modal-size" role="document">
+            <div class="modal-content position-relative">
+                <div class="c-preloader">
+                    <i class="fa fa-spin fa-spinner"></i>
+                </div>
+                <div id="itemDetailsSellerbody">
+
+                </div>
+            </div>
+        </div>
+    </div>
+@endsection
+
+@section('script')
+    <script>
+        function buktiTayang(id) {
+            console.log(id);
+            $('#buktiTayang_body').html(null);
+            $('#buktiTayang').modal();
+            $('.c-preloader').show();
+            $.post('{{ route('bukti.tayang.detail') }}', {_token:'{{ csrf_token() }}', order_detail_id:id}, function(data){
+                $('.c-preloader').hide();
+                $('#buktiTayang_body').html(data);
+            });
+        }
+
+        function itemDetailsSeller(id) {
+            $('#itemDetailsSellerbody').html(null);
+            $('#itemDetailsSeller').modal();
+            $('.c-preloader').show();
+            $.post('{{ route('item.details.seller') }}', {_token:'{{ csrf_token() }}', order_detail_id:id}, function(data){
+                $('.c-preloader').hide();
+                $('#itemDetailsSellerbody').html(data);
+            });
+        }
+    </script>
 @endsection

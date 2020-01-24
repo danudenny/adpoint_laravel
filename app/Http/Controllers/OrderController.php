@@ -1,8 +1,6 @@
 <?php
 
 namespace App\Http\Controllers;
-// namespace App\Notifications;
-
 use Illuminate\Http\Request;
 use App\Order;
 use App\User;
@@ -13,6 +11,8 @@ use App\CouponUsage;
 use App\ConfirmPayment;
 use App\Evidence;
 use App\Transaction;
+use App\Invoice;
+use App\Seller;
 use Auth;
 use Session;
 use DB;
@@ -20,35 +20,73 @@ use PDF;
 use Mail;
 use File;
 
-// use App\Mail\Order\OrderComplete;
 use App\Mail\Order\OrderStart;
 use App\Mail\Order\OrderApprovedAdmin;
 use App\Mail\Order\OrderSold;
 use App\Mail\Order\OrderDisapprovedAdmin;
 use App\Mail\Order\OrderApprovedSeller;
 use App\Mail\Order\OrderConfirmation;
+use App\Mail\Order\OrderInvoice;
 use App\Mail\Order\OrderDisapprovedSeller;
-use App\Mail\Order\OrderNotifPaymentBuyer;
-use App\Mail\Order\OrderNotifPaymentSeller;
 
-use App\Notifications\OrderStartPush;
 use Notification;
+use App\Notifications\OrderStartPush;
+use App\Notifications\OrderApproveAdminPush;
+use App\Notifications\OrderSoldPush;
+use App\Notifications\OrderApproveSellerPush;
 
 
 class OrderController extends Controller
 {
-    /**
-     * Display a listing of the resource to seller.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    // page seller
     public function index()
     {
-        $orders = Order::where('seller_id', Auth::user()->id)
-                        ->get();
-        return view('frontend.seller.orders', compact('orders'));
+        $order_details = DB::table('order_details as od')
+                            ->join('orders as o', 'o.id', '=', 'od.order_id')
+                            ->where([
+                                'o.seller_id' => Auth::user()->id,
+                                'o.approved'  => 1
+                            ])
+                            ->select([
+                                'od.*',
+                                'o.id as o_id',
+                                'o.user_id as o_user_id',
+                                'o.transaction_id as o_trx_id',
+                                'o.seller_id as o_seller_id',
+                                'o.code as o_code',
+                                'o.approved as o_approved',
+                                'o.grand_total as o_grandtotal',
+                                'o.tax as o_tax',
+                                'o.adpoint_earning as o_adpoint_earning',
+                                'o.address as o_addres'
+                            ])
+                            ->get();
+        return view('frontend.seller.orders', compact('order_details'));
     }
 
+    public function item_details_seller(Request $request)
+    {
+        $query = DB::table('transactions as t')
+                    ->join('orders as o', 'o.transaction_id', '=', 't.id')
+                    ->join('order_details as od', 'od.order_id', '=', 'o.id')
+                    ->where([
+                        'od.id' => $request->order_detail_id
+                    ])
+                    ->select([
+                        't.code as code_trx',
+                        't.payment_status',
+                        'o.code as code_order',
+                        'o.created_at as order_date',
+                        'o.address',
+                        'o.user_id as buyer_name',
+                        'od.product_id as item_name',
+                        'od.status as od_status',
+                    ])
+                    ->first();
+        return view('frontend.partials.item_details_seller', compact('query'));
+    }
+
+    // page admin
     public function list_orders(Request $request)
     {
         $orders = Order::orderBy('id', 'desc')->get();
@@ -83,12 +121,14 @@ class OrderController extends Controller
             $default_status_o = $this->_cek_default_status_orders($order->transaction_id);
             if (count($default_status_o) === 0) {
                 Mail::to($buyer->email)->send(new OrderApprovedAdmin($data));
+                Notification::send($buyer,new OrderApproveAdminPush);
                 $orders = Order::where(['transaction_id' => $order->transaction_id, 'approved' => 1])->get();
                 foreach ($orders as $key => $o) {
                     $user = User::where('id', $o->seller_id)->first();
                     $seller['code'] = $o->code;
                     $seller['seller_name'] = $user->name;
                     Mail::to($user->email)->send(new OrderSold($seller));
+                    Notification::send($user,new OrderSoldPush);
                 }
             }
             $request->session()->flash('message', 'Order ID'.' '.$order->code.' '.'Approved');
@@ -199,20 +239,15 @@ class OrderController extends Controller
                     $trx = Transaction::where('id', $order->transaction_id)->first();
                     $trx->status = "ready";
                     $trx->save();
+                    Notification::send(User::where('user_type','admin')->get(),new OrderApproveSellerPush);
                 }
-                flash('Order disapproved')->success();
-                $request->session()->flash('message', 'Items'.' '.$product->name.' '.'Approved');
+                flash('Item '.$product->name.' Approved')->success();
                 return back();
             }
         }else {
             flash('Something went wrong')->error();
             return back();
         }
-    }
-
-    public function approve_all_by_seller(Request $request)
-    {
-        dd('hai');
     }
 
     public function disapprove_by_seller(Request $request)
@@ -231,8 +266,7 @@ class OrderController extends Controller
                     $trx->status = "ready";
                     $trx->save();
                 }
-                flash('Order rejected')->success();
-                $request->session()->flash('message', 'Items'.' '.$product->name.' '.'Rejected');
+                flash('Item '.$product->name.' Rejected')->success();
                 return back();
             }
         }else {
@@ -252,6 +286,14 @@ class OrderController extends Controller
         $invoice = $this->_generate_invoice($request->trx_id);
         $trx = Transaction::where('id', $request->trx_id)->first();
         if ($trx != null && $trx->status == "ready") {
+
+            $cekinv = Invoice::where('transaction_id', $trx->id)->first();
+            if ($cekinv === null) {
+                $inv = new Invoice;
+                $inv->code = 'INV-'.time();
+                $inv->transaction_id = $trx->id;
+                $inv->save();
+            }
             $trx->status = "confirmed";
             $trx->save();
         }
@@ -266,11 +308,6 @@ class OrderController extends Controller
         }
     }
 
-    /**
-     * Display a listing of the resource to admin.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function admin_orders(Request $request)
     {
         $orders = DB::table('orders')
@@ -284,41 +321,25 @@ class OrderController extends Controller
         return view('orders.index', compact('orders'));
     }
 
-    /**
-     * Display a listing of the sales to admin.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function sales(Request $request)
-    {
-        $orders = Order::orderBy('code', 'desc')->get();
-        return view('sales.index', compact('orders'));
-    }
 
-
-    public function confirm_payment(Request $request)
+    public function continue_payment(Request $request, $trx_id)
     {
-        $transactions = Transaction::where(['user_id'=>Auth::user()->id,'status'=>'confirmed'])->get();
-        $trx_id = null;
-        return view('frontend.confirm_payment', compact('transactions', 'trx_id'));
+        $invoice = $this->_generate_invoice(decrypt($trx_id));
+        Mail::to($invoice['buyer_email'])->send(new OrderInvoice($invoice));
+        flash('Order confirmed')->success();
+        $request->session()->flash('message', 'CODE: '.' '.$invoice['code_trx'].' '.'Confirmed');
+        return redirect('transaction');
     }
 
     public function confirm_payment_id(Request $request, $trx_id)
     {
-        $transactions = Transaction::where(['user_id'=>Auth::user()->id,'status'=>'confirmed','id'=>$trx_id])->get();
-        $condition = Transaction::where(['id' => $trx_id, 'payment_status' => 0])->first();
-        if ($condition != null) {
-            return view('frontend.confirm_payment', compact('transactions','trx_id'));
-        }else {
-            $request->session()->flash('message', 'You have confirmed');
-            return redirect('transaction');
-        }
-        
+        $trx_id = decrypt($trx_id);
+        $trx = Transaction::where('id', $trx_id)->first();
+        return view('frontend.confirm_payment', compact('trx'));
     }
 
     public function insert_confirm_payment(Request $request)
     {
-        // dd($request->all());
         $request->validate([
             'trx_code' => 'required',
             'no_rek' => 'required',
@@ -337,12 +358,12 @@ class OrderController extends Controller
             $confirm_payment->nama_bank = $request->nama_bank;
             $confirm_payment->no_rek = $request->no_rek;
             $confirm_payment->bukti = $request->bukti->store('uploads/bukti_transfer');
-            $confirm_payment->read = 0;
+            $confirm_payment->approved = 0;
             $confirm_payment->save();
             $trx = Transaction::where('id', $request->trx_id)->first();
             flash('Order confirmed')->success();
             $request->session()->flash('message', 'Transaction paid!');
-            return redirect('purchase_history');
+            return redirect('transaction');
         } else {
             flash('Something went wrong')->error();
             return back();
@@ -350,69 +371,19 @@ class OrderController extends Controller
         
     }
 
-    public function show_payment($id)
+    public function activate(Request $request, $id)
     {
-        $cp = ConfirmPayment::where('order_id', decrypt($id))->first();
-        if ($cp != null) {
-            $cp->read = 1;
-            $cp->updated_at = time();
-            $cp->save();
-        }
-        $query = DB::table('confirm_payments as cp')
-            ->join('orders as o', 'o.id', '=', 'cp.order_id')
-            ->where('cp.order_id', decrypt($id))
-            ->select([
-                'cp.no_order',
-                'cp.nama',
-                'cp.nama_bank',
-                'cp.no_rek',
-                'cp.bukti',
-                'o.grand_total',
-                'o.payment_status'
-            ])->get();
-        $order_id = decrypt($id);
-        return view('confirm_payment.show_payment', compact('query', 'order_id'));
-    }
-
-    public function change_to_paid($id)
-    {
-        $order = Order::where('id', decrypt($id))->first();
-        $query = DB::table('orders as o')
-            ->join('order_details as od', 'o.id', '=', 'od.order_id')
-            ->join('users as b', 'o.user_id', '=', 'b.id')
-            ->join('users as s', 'od.seller_id', '=', 's.id')
-            ->select(
-                [
-                    'o.code',
-                    'o.grand_total',
-                    'b.name as buyer_name',
-                    'b.email as buyer_email',
-                    's.name as seller_name',
-                    's.email as seller_email',
-                ]
-            )
-            ->where('o.id', '=', decrypt($id))
-            ->first();
-        $users = [];
-        $users['order_id'] = decrypt($id);
-        $users['code'] = $query->code;
-        $users['grand_total'] = $query->grand_total;
-        $users['buyer_name'] = $query->buyer_name;
-        $users['buyer_email'] = $query->buyer_email;
-        $users['seller_name'] = $query->seller_name;
-        $users['seller_email'] = $query->seller_email;
-
-        if ($order != null) {
-            $order->payment_status = 'paid';
-            $order->updated_at = time();
-            $order->save();
-            Mail::to($users['buyer_email'])->send(new OrderNotifPaymentBuyer($users));
-            Mail::to($users['seller_email'])->send(new OrderNotifPaymentSeller($users));
-            flash('Order Paid')->success();
-        } else {
-            flash('Something went wrong')->error();
-        }
-        return back();
+       $item = OrderDetail::where('id', decrypt($id))->first();
+       $product = Product::where('id', $item->product_id)->first();
+       if ($item !== null) {
+           $item->status = 3; // activated
+           $item->save();
+           flash('Item '.$product->name.' Activated!')->success();
+           return back();
+       }else {
+            flash('Item '.$product->name.' Invalid!')->error();
+            return back();
+       }
     }
 
     public function order_complete($order_detail_id)
@@ -440,33 +411,6 @@ class OrderController extends Controller
         return back();
     }
 
-    /**
-     * Display a single sale to admin.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function sales_show($id)
-    {
-        $order = Order::findOrFail(decrypt($id));
-        return view('sales.show', compact('order'));
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
 
@@ -504,7 +448,6 @@ class OrderController extends Controller
                 $order->address = json_encode($request->session()->get('shipping_info'));               
                 $order->code = 'ODR/'.time().''.$key;
                 $order->transaction_id = $trx->id;
-                $order->tax = 0;
                 $order->seller_id = $key;
                 $order->approved = 0;
                 if ($order->save()) {
@@ -570,7 +513,13 @@ class OrderController extends Controller
                         $product->num_of_sale++;
                         $product->save();
                     }
-                    $order->grand_total = $subtotal;
+                    $seller = Seller::where('user_id', $key)->first();
+
+                    $tax = $subtotal*0.1;
+                    $grandtotal = $subtotal+$tax;
+                    $order->tax = $tax;
+                    $order->grand_total = $grandtotal;
+                    $order->adpoint_earning = $seller->commission/100*$grandtotal;
 
                     if (Session::has('coupon_discount')) {
                         $order->grand_total -= Session::get('coupon_discount');
@@ -592,12 +541,6 @@ class OrderController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
         $order = Order::findOrFail(decrypt($id));
@@ -606,35 +549,7 @@ class OrderController extends Controller
         return view('orders.show', compact('order'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+    
     public function destroy($id)
     {
         $order = Order::findOrFail($id);
@@ -656,31 +571,4 @@ class OrderController extends Controller
         return view('frontend.partials.order_details_seller', compact('order'));
     }
 
-    public function update_delivery_status(Request $request)
-    {
-        $order = Order::findOrFail($request->order_id);
-        foreach ($order->orderDetails->where('seller_id', Auth::user()->id) as $key => $orderDetail) {
-            $orderDetail->delivery_status = $request->status;
-            $orderDetail->save();
-        }
-        return 1;
-    }
-
-    public function update_payment_status(Request $request)
-    {
-        $order = Order::findOrFail($request->order_id);
-        foreach ($order->orderDetails->where('seller_id', Auth::user()->id) as $key => $orderDetail) {
-            $orderDetail->payment_status = $request->status;
-            $orderDetail->save();
-        }
-        $status = 'paid';
-        foreach ($order->orderDetails as $key => $orderDetail) {
-            if ($orderDetail->payment_status != 'paid') {
-                $status = 'unpaid';
-            }
-        }
-        $order->payment_status = $status;
-        $order->save();
-        return 1;
-    }
 }

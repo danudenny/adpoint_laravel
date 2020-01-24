@@ -47,7 +47,7 @@ class CheckoutController extends Controller
                 $request->session()->forget('order_id');
                 flash("Your order has been placed successfully")->success();
                 $request->session()->flash('message', 'Thanks for your order, please check your email!');
-                return redirect('purchase_history');
+                return redirect('transaction');
             }
         }
     }

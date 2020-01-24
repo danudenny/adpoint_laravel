@@ -29,6 +29,6 @@ class OrderNotifPaymentSeller extends Mailable implements ShouldQueue
     public function build()
     {
         return $this->view('emails.orders.order_notif_payment_seller')
-            ->subject('Order '.$this->user['code']. ' Telah di bayar');
+            ->subject('Order Telah di bayar');
     }
 }

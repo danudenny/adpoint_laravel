@@ -42,21 +42,7 @@
                                             @csrf
                                             <div class="form-group">
                                                 <label>Code Transaction</label>
-                                                <select class="form-control selectpicker" name="trx_code" data-placeholder="{{__('Chose one')}}">
-                                                    <option value="">{{__('Chose one')}}</option>
-                                                    @foreach ($transactions as $key => $trx)
-                                                        @if ($trx_id !== null)
-                                                            @php
-                                                                $trx_ = \App\Transaction::where('id', $trx_id)->first();
-                                                            @endphp
-                                                            @if ($trx->code === $trx_->code)
-                                                                <option value="{{ $trx->code }}" selected>{{ $trx->code }}</option>   
-                                                            @endif
-                                                        @else 
-                                                            <option value="{{ $trx->code }}">{{ $trx->code }}</option>   
-                                                        @endif
-                                                    @endforeach
-                                                </select>
+                                                <input type="text" class="form-control" name="trx_code" value="{{ $trx->code }}" readonly>
                                             </div>
                                             <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
                                             <div class="form-group">

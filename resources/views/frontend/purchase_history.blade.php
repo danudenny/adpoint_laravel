@@ -86,151 +86,145 @@
 
                         <div class="card no-border mt-1">
                             <div class="card-body">
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="tab-content" id="nav-tabContent">
-                                            <div class="tab-pane fade show active" id="nav-order-place" role="tabpanel" aria-labelledby="nav-order-place-tab">
-                                                @foreach ($order_details as $key => $od)
-                                                    @if ($od->status === 0)
-                                                        <article class="card mt-3">
-                                                            <div style="height: 35px; background: #0f355a; color: white; border-bottom: 2px solid #fd7e14">
-                                                                <strong style="line-height: 35px; margin-left: 15px">{{ $od->created_at }}</strong>
-                                                            </div>
-                                                            <div class="table-responsive">
-                                                                <table class="table">
-                                                                    @php
-                                                                        $product = \App\Product::where('id', $od->product_id)->first();
-                                                                    @endphp
-                                                                    <tr>
-                                                                        <td width="80">
-                                                                            <img src="{{ url(json_decode($product->photos)[0]) }}" class="img-fluid" width="50">
-                                                                        </td>
-                                                                        <td width="250"> 
-                                                                            {{ $product->name }} <br>
-                                                                            {{ $od->variation }} 
-                                                                            <small>
-                                                                                ( {{ date('d M Y', strtotime($od->start_date)) }} - {{ date('d M Y', strtotime($od->end_date)) }} )
-                                                                            </small>
-                                                                        </td>
-                                                                        <td width="200">
-                                                                            QTY: {{ $od->quantity }} <br>
-                                                                            {{ single_price($od->price) }}
-                                                                        </td>
-                                                                        <td>
-                                                                            Status: 
-                                                                            @if ($od->status === 0)
-                                                                                <div class="badge badge-warning">
-                                                                                    Placed
-                                                                                </div>
-                                                                            @endif
-                                                                        </td>
-                                                                        <td align="right">
-                                                                            <a href="#" class="btn btn-light"><i class="fa fa-eye"></i> Details</a> 
-                                                                        </td>
-                                                                    </tr>
-                                                                </table>
-                                                            </div>
-                                                        </article>
-                                                    @endif
-                                                @endforeach
-                                            </div>
-                                            <div class="tab-pane fade" id="nav-onreview" role="tabpanel" aria-labelledby="nav-onreview-tab">
-                                                @foreach ($order_details as $key => $od)
-                                                    @if ($od->status === 1)
-                                                        <article class="card mt-3">
-                                                            <div style="height: 35px; background: #0f355a; color: white; border-bottom: 2px solid #fd7e14">
-                                                                <strong style="line-height: 35px; margin-left: 15px">{{ $od->created_at }}</strong>
-                                                            </div>
-                                                            <div class="table-responsive">
-                                                                <table class="table">
-                                                                    @php
-                                                                        $product = \App\Product::where('id', $od->product_id)->first();
-                                                                    @endphp
-                                                                    <tr>
-                                                                        <td width="80">
-                                                                            <img src="{{ url(json_decode($product->photos)[0]) }}" class="img-fluid" width="50">
-                                                                        </td>
-                                                                        <td width="250"> 
-                                                                            {{ $product->name }} <br>
-                                                                            {{ $od->variation }} 
-                                                                            <small>
-                                                                                ( {{ date('d M Y', strtotime($od->start_date)) }} - {{ date('d M Y', strtotime($od->end_date)) }} )
-                                                                            </small>
-                                                                        </td>
-                                                                        <td width="200">
-                                                                            QTY: {{ $od->quantity }} <br>
-                                                                            {{ single_price($od->price) }}
-                                                                        </td>
-                                                                        <td>
-                                                                            Status: 
-                                                                            @if ($od->status === 1)
-                                                                                <div class="badge badge-secondary">
-                                                                                    On Review
-                                                                                </div>
-                                                                            @endif
-                                                                        </td>
-                                                                        <td align="right">
-                                                                            <a href="#" class="btn btn-light"><i class="fa fa-eye"></i> Details</a> 
-                                                                        </td>
-                                                                    </tr>
-                                                                </table>
-                                                            </div>
-                                                        </article>
-                                                    @endif
-                                                @endforeach
-                                            </div>
-                                            <div class="tab-pane fade" id="nav-active" role="tabpanel" aria-labelledby="nav-active-tab">
-                                                <h1>Active</h1>
-                                            </div>
-                                            <div class="tab-pane fade" id="nav-complete" role="tabpanel" aria-labelledby="nav-complete-tab">
-                                                <h1>Active</h1>
-                                            </div>
-                                            <div class="tab-pane fade" id="nav-cancel" role="tabpanel" aria-labelledby="nav-cancel-tab">
-                                                @foreach ($order_details as $key => $od)
-                                                    @if ($od->status === 100)
-                                                        <article class="card mt-3">
-                                                            <div style="height: 35px; background: #0f355a; color: white; border-bottom: 2px solid #fd7e14">
-                                                                <strong style="line-height: 35px; margin-left: 15px">{{ $od->created_at }}</strong>
-                                                            </div>
-                                                            <div class="table-responsive">
-                                                                <table class="table">
-                                                                    @php
-                                                                        $product = \App\Product::where('id', $od->product_id)->first();
-                                                                    @endphp
-                                                                    <tr>
-                                                                        <td width="80">
-                                                                            <img src="{{ url(json_decode($product->photos)[0]) }}" class="img-fluid" width="50">
-                                                                        </td>
-                                                                        <td width="250"> 
-                                                                            {{ $product->name }} <br>
-                                                                            {{ $od->variation }} 
-                                                                            <small>
-                                                                                ( {{ date('d M Y', strtotime($od->start_date)) }} - {{ date('d M Y', strtotime($od->end_date)) }} )
-                                                                            </small>
-                                                                        </td>
-                                                                        <td width="200">
-                                                                            QTY: {{ $od->quantity }} <br>
-                                                                            {{ single_price($od->price) }}
-                                                                        </td>
-                                                                        <td>
-                                                                            Status: 
-                                                                            @if ($od->status === 100)
-                                                                                <div class="badge badge-danger">
-                                                                                    Rejected
-                                                                                </div>
-                                                                            @endif
-                                                                        </td>
-                                                                        <td align="right">
-                                                                            <a href="#" class="btn btn-light"><i class="fa fa-eye"></i> Details</a> 
-                                                                        </td>
-                                                                    </tr>
-                                                                </table>
-                                                            </div>
-                                                        </article>
-                                                    @endif
-                                                @endforeach
-                                            </div>
-                                        </div>
+                                <div class="tab-content" id="nav-tabContent">
+                                    <div class="tab-pane fade show active" id="nav-order-place" role="tabpanel" aria-labelledby="nav-order-place-tab">
+                                        @foreach ($order_details as $key => $od)
+                                            @if ($od->status === 0)
+                                                <article class="card mt-1">
+                                                    <div style="height: 35px; background: #0f355a; color: white; border-bottom: 2px solid #fd7e14">
+                                                        <strong style="line-height: 35px; margin-left: 15px">{{ $od->created_at }}</strong>
+                                                    </div>
+                                                    <div class="table-responsive">
+                                                        <table class="table">
+                                                            @php
+                                                                $product = \App\Product::where('id', $od->product_id)->first();
+                                                            @endphp
+                                                            <tr>
+                                                                <td width="80">
+                                                                    <img src="{{ url(json_decode($product->photos)[0]) }}" class="img-fluid" width="80">
+                                                                </td>
+                                                                <td> 
+                                                                    {{ $product->name }} <br>
+                                                                    {{ $od->variation }} 
+                                                                    <small>
+                                                                        <strong>( {{ date('d M Y', strtotime($od->start_date)) }} - {{ date('d M Y', strtotime($od->end_date)) }} )</strong>
+                                                                    </small>
+                                                                </td>
+                                                                <td align="right">
+                                                                    <button onclick="itemDetails({{ $od->id }})" class="btn btn-outline-secondary btn-sm btn-circle"><i class="fa fa-eye"></i> Details</button> 
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </div>
+                                                </article>
+                                            @endif
+                                        @endforeach
+                                    </div>
+                                    <div class="tab-pane fade" id="nav-onreview" role="tabpanel" aria-labelledby="nav-onreview-tab">
+                                        @foreach ($order_details as $key => $od)
+                                            @if ($od->status === 1)
+                                                <article class="card mt-1">
+                                                    <div style="height: 35px; background: #0f355a; color: white; border-bottom: 2px solid #fd7e14">
+                                                        <strong style="line-height: 35px; margin-left: 15px">{{ $od->created_at }}</strong>
+                                                    </div>
+                                                    <div class="table-responsive">
+                                                        <table class="table">
+                                                            @php
+                                                                $product = \App\Product::where('id', $od->product_id)->first();
+                                                            @endphp
+                                                            <tr>
+                                                                <td width="80">
+                                                                    <img src="{{ url(json_decode($product->photos)[0]) }}" class="img-fluid" width="80">
+                                                                </td>
+                                                                <td> 
+                                                                    {{ $product->name }} <br>
+                                                                    {{ $od->variation }} 
+                                                                    <small>
+                                                                        <strong>( {{ date('d M Y', strtotime($od->start_date)) }} - {{ date('d M Y', strtotime($od->end_date)) }} )</strong>
+                                                                    </small>
+                                                                </td>
+                                                                <td align="right">
+                                                                    <button onclick="itemDetails({{ $od->id }})" class="btn btn-outline-secondary btn-sm btn-circle"><i class="fa fa-eye"></i> Details</button> 
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </div>
+                                                </article>
+                                            @endif
+                                        @endforeach
+                                    </div>
+                                    <div class="tab-pane fade" id="nav-active" role="tabpanel" aria-labelledby="nav-active-tab">
+                                        @foreach ($order_details as $key => $od)
+                                            @if ($od->status === 3)
+                                                <article class="card mt-1">
+                                                    <div style="height: 35px; background: #0f355a; color: white; border-bottom: 2px solid #fd7e14">
+                                                        <strong style="line-height: 35px; margin-left: 15px">{{ $od->created_at }}</strong>
+                                                    </div>
+                                                    <div class="table-responsive">
+                                                        <table class="table">
+                                                            @php
+                                                                $product = \App\Product::where('id', $od->product_id)->first();
+                                                            @endphp
+                                                            <tr>
+                                                                <td width="80">
+                                                                    <img src="{{ url(json_decode($product->photos)[0]) }}" class="img-fluid" width="80">
+                                                                </td>
+                                                                <td> 
+                                                                    {{ $product->name }} <br>
+                                                                    {{ $od->variation }} 
+                                                                    <small>
+                                                                        <strong>( {{ date('d M Y', strtotime($od->start_date)) }} - {{ date('d M Y', strtotime($od->end_date)) }} )</strong>
+                                                                    </small>
+                                                                </td>
+                                                                <td align="right">
+                                                                    <button onclick="itemDetails({{ $od->id }})" class="btn btn-outline-secondary btn-sm btn-circle"><i class="fa fa-eye"></i> Details</button> 
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </div>
+                                                </article>
+                                            @endif
+                                        @endforeach
+                                    </div>
+                                    <div class="tab-pane fade" id="nav-complete" role="tabpanel" aria-labelledby="nav-complete-tab">
+                                        <h1>Complete</h1>
+                                    </div>
+                                    <div class="tab-pane fade" id="nav-cancel" role="tabpanel" aria-labelledby="nav-cancel-tab">
+                                        @foreach ($order_details as $key => $od)
+                                            @if ($od->status === 100)
+                                                <article class="card mt-1">
+                                                    <div style="height: 35px; background: #0f355a; color: white; border-bottom: 2px solid #fd7e14">
+                                                        <strong style="line-height: 35px; margin-left: 15px">{{ $od->created_at }}</strong>
+                                                    </div>
+                                                    <div class="table-responsive">
+                                                        <table class="table">
+                                                            @php
+                                                                $product = \App\Product::where('id', $od->product_id)->first();
+                                                            @endphp
+                                                            <tr>
+                                                                <td width="80">
+                                                                    <img src="{{ url(json_decode($product->photos)[0]) }}" class="img-fluid" width="80">
+                                                                </td>
+                                                                <td> 
+                                                                    {{ $product->name }} <br>
+                                                                    {{ $od->variation }} 
+                                                                    <small>
+                                                                        <strong>( {{ date('d M Y', strtotime($od->start_date)) }} - {{ date('d M Y', strtotime($od->end_date)) }} )</strong>
+                                                                    </small>
+                                                                </td>
+                                                                <td>
+                                                                    QTY: {{ $od->quantity }} <br>
+                                                                    {{ single_price($od->price) }}
+                                                                </td>
+                                                                <td align="right">
+                                                                    <button onclick="itemDetails({{ $od->id }})" class="btn btn-outline-secondary btn-sm btn-circle"><i class="fa fa-eye"></i> Details</button> 
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </div>
+                                                </article>
+                                            @endif
+                                        @endforeach
                                     </div>
                                 </div>
                             </div>
@@ -241,13 +235,13 @@
         </div>
     </section>
 
-    <div class="modal fade" id="order_details" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-zoom product-modal" id="modal-size" role="document">
+    <div class="modal fade" id="itemDetails" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-md modal-dialog-centered modal-dialog-zoom product-modal" id="modal-size" role="document">
             <div class="modal-content position-relative">
                 <div class="c-preloader">
                     <i class="fa fa-spin fa-spinner"></i>
                 </div>
-                <div id="order-details-modal-body">
+                <div id="itemDetailsbody">
 
                 </div>
             </div>
@@ -276,5 +270,15 @@
                 return $('#startDate').val();
             }
         });
+
+        function itemDetails(id) {
+            $('#itemDetailsbody').html(null);
+            $('#itemDetails').modal();
+            $('.c-preloader').show();
+            $.post('{{ route('item.details') }}', {_token:'{{ csrf_token() }}', order_detail_id:id}, function(data){
+                $('.c-preloader').hide();
+                $('#itemDetailsbody').html(data);
+            });
+        }
     </script>
 @endsection

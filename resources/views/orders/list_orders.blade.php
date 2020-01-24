@@ -20,7 +20,6 @@
                     <th>Amount</th>
                     <th>Created</th>
                     <th>Order Status</th>
-                    <th width="10%">{{__('options')}}</th>
                 </tr>
             </thead>
             <tbody>
@@ -57,16 +56,6 @@
                             @elseif ($order->approved == 2)
                                 <span class="badge badge-danger">Rejected</span>
                             @endif
-                        </td>
-                        <td>
-                            <div class="btn-group dropdown">
-                                <button class="btn btn-primary dropdown-toggle dropdown-toggle-icon" data-toggle="dropdown" type="button">
-                                    {{__('Actions')}} <i class="dropdown-caret"></i>
-                                </button>
-                                <ul class="dropdown-menu dropdown-menu-right">
-                                    <li><a href="{{route('sales.show', encrypt($order->id))}}">{{__('View')}}</a></li>
-                                </ul>
-                            </div>
                         </td>
                     </tr>
                 <div class="modal fade" id="disapprove{{$order->id}}" tabindex="-1" role="dialog" aria-labelledby="disapproveTitle" aria-hidden="true">

@@ -19,8 +19,14 @@ Route::group(['prefix' =>'admin', 'middleware' => ['auth', 'admin']], function()
 
 	Route::resource('transaction', 'TransactionController');
 	Route::get('/transaction/details/{id}', 'TransactionController@transaction_details')->name('transaction.details');
+	Route::get('/transaction/show_payment/{id}', 'TransactionController@show_payment')->name('transaction.show.payment');
+	Route::get('/transaction/change_to_paid/{id}', 'TransactionController@change_to_paid')->name('transaction.change.to.paid');
+	Route::get('/transaction/show_invoice/{id}', 'TransactionController@show_invoice')->name('transaction.show.invoice');
+	Route::get('/transaction/paid_invoice/{id}', 'TransactionController@paid_invoice')->name('transaction.paid.invoice');
 
-	Route::get('/payment/admin', 'PaymentController@admin_payment_index')->name('admin.payment.index');
+
+
+	Route::get('/payment/list', 'PaymentController@admin_payment_index')->name('admin.payment.index');
 	Route::get('/payment/confirm', 'PaymentController@admin_payment_confirm')->name('admin.payment.confirm');
 
 	Route::resource('subcategories','SubCategoryController');
@@ -128,14 +134,11 @@ Route::group(['prefix' =>'admin', 'middleware' => ['auth', 'admin']], function()
 
 	Route::get('/orders', 'OrderController@admin_orders')->name('orders.index.admin');
 	Route::get('/orders/list', 'OrderController@list_orders')->name('orders.list.orders');
-	Route::get('/orders/show_payment/{id}', 'OrderController@show_payment')->name('show.payment');
-	Route::get('/orders/change_to_paid/{id}', 'OrderController@change_to_paid')->name('change.to.paid');
 	Route::get('/orders/approve_by_admin/{id}', 'OrderController@approve_by_admin')->name('approve.by.admin');
 	Route::post('/orders/confirm_to_buyer', 'OrderController@confirm_to_buyer')->name('confirm.to.buyer');
 	Route::post('/orders/proses_confirm_to_buyer', 'OrderController@proses_confirm_to_buyer')->name('proses.confirm.to.buyer');
 	Route::get('/orders/disapprove_by_admin', 'OrderController@disapprove_by_admin')->name('disapprove.by.admin');
 	Route::get('/orders/{id}/show', 'OrderController@show')->name('orders.show');
-	Route::get('/sales/{id}/show', 'OrderController@sales_show')->name('sales.show');
 	Route::get('/orders/destroy/{id}', 'OrderController@destroy')->name('orders.destroy');
 	Route::get('/sales', 'OrderController@sales')->name('sales.index');
 

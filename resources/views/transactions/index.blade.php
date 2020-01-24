@@ -4,6 +4,11 @@
 
 <!-- Basic Data Tables -->
 <!--===================================================-->
+@if (Session::has('message'))
+    <div class="alert alert-success">
+        {!! session('message') !!}
+    </div>
+@endif
 <div class="panel">
     <div class="panel-heading">
         <h3 class="panel-title">{{__('Transaction')}}</h3>
@@ -23,7 +28,7 @@
                 @foreach ($transactions as $key => $transaction)
                     <tr>
                         <td>{{ $key+1 }}</td>
-                        <td>{{ $transaction->code }}</td>
+                        <td><a data-toggle="tooltip" data-placement="top" title="click to details" href="{{ route('transaction.details', encrypt($transaction->id)) }}"><strong class="text-primary">{{ $transaction->code }}</strong></a></td>
                         <td>
                             @if ($transaction->payment_status == 1)
                                 <span class="badge badge-success">Paid</span>
@@ -40,9 +45,6 @@
                                     {{__('Actions')}} <i class="dropdown-caret"></i>
                                 </button>
                                 <ul class="dropdown-menu dropdown-menu-right">
-                                    @if ($transaction->payment_status == 0)
-                                        <li><a style="cursor: pointer;">{{__('Paid')}}</a></li>  
-                                    @endif
                                     <li><a href="{{ route('transaction.details', encrypt($transaction->id)) }}">{{__('Details')}}</a></li>
                                 </ul>
                             </div>
