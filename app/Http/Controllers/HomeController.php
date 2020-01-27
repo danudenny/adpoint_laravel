@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Session;
 use Auth;
 use Hash;
+use DB;
 use App\Category;
 use App\Brand;
 use App\SubCategory;
@@ -72,8 +73,14 @@ class HomeController extends Controller
         $user['name'] = $register->name;
         $user['email'] = $register->email;
         if ($register->save()) {
+            $query = DB::table('pushy_tokens as pt')
+                    ->join('users as u', 'u.id', '=', 'pt.user_id')
+                    ->where(['u.user_type' => 'admin'])
+                    ->select(['pt.*'])
+                    ->get();
+            $tokenPushy = $query[0]->device_token;
             $data = array('message' => 'User Baru telah terdaftar!');
-            $to = array('24cacc011075f412c7dc65');
+            $to = array($tokenPushy);
             $options = array(
                 'notification' => array(
                     'badge' => 1,
