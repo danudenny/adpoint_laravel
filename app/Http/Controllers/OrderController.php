@@ -35,6 +35,8 @@ use App\Notifications\OrderApproveAdminPush;
 use App\Notifications\OrderSoldPush;
 use App\Notifications\OrderApproveSellerPush;
 
+use App\Jobs\PaymentDuration;
+
 
 class OrderController extends Controller
 {
@@ -75,11 +77,13 @@ class OrderController extends Controller
                     ->select([
                         't.code as code_trx',
                         't.payment_status',
+                        't.file_advertising',
                         'o.code as code_order',
                         'o.created_at as order_date',
                         'o.address',
                         'o.user_id as buyer_name',
                         'od.product_id as item_name',
+                        'od.seller_id',
                         'od.status as od_status',
                     ])
                     ->first();
@@ -296,6 +300,8 @@ class OrderController extends Controller
             }
             $trx->status = "confirmed";
             $trx->save();
+            PaymentDuration::dispatch($trx)
+                ->delay(now()->addSeconds(5));
         }
         if ($invoice != null) {
             Mail::to($invoice['buyer_email'])->send(new OrderConfirmation($invoice));
@@ -328,6 +334,7 @@ class OrderController extends Controller
         Mail::to($invoice['buyer_email'])->send(new OrderInvoice($invoice));
         flash('Order confirmed')->success();
         $request->session()->flash('message', 'CODE: '.' '.$invoice['code_trx'].' '.'Confirmed');
+
         return redirect('transaction');
     }
 
@@ -446,7 +453,7 @@ class OrderController extends Controller
                     $order->user_id = Auth::user()->id;
                 }
                 $order->address = json_encode($request->session()->get('shipping_info'));               
-                $order->code = 'ODR/'.time().''.$key;
+                $order->code = 'ODR-'.time().''.$key;
                 $order->transaction_id = $trx->id;
                 $order->seller_id = $key;
                 $order->approved = 0;

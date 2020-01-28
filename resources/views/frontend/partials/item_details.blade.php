@@ -1,6 +1,11 @@
 <div class="modal-header">
     <h5 class="modal-title strong-600 heading-5">
-        # {{ \App\Product::where('id', $query->item_name)->first()->name }}
+        # {{ \App\Product::where('id', $query->item_name)->first()->name }} |
+        @if ($query->payment_status === 1)
+            <span class="badge badge-success"><i class="fa fa-money"></i> Paid</span>
+        @else 
+            <span class="badge badge-danger"><i class="fa fa-money"></i> Unpaid</span>
+        @endif
     </h5>
     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
         <span aria-hidden="true">&times;</span>
@@ -11,26 +16,34 @@
         <tbody>
             <tr>
                 <th>{{__('Transaction Number')}}</th>
-                <td class="text-right">
-                    <span class="strong-600">{{ $query->code_trx }}</span>
+                <td>
+                    <span>: {{ $query->code_trx }}</span>
                 </td>
             </tr>
             <tr>
                 <th>{{__('Order Number')}}</th>
-                <td class="text-right">
-                    <span class="strong-600">{{ $query->code_order }}</span>
+                <td>
+                    <span>: {{ $query->code_order }}</span>
+                </td>
+            </tr>
+            <tr>
+                <th>{{__('Seller')}}</th>
+                <td>
+                    <span>: 
+                        <b>{{ \App\User::where('id', $query->seller_id)->first()->name }}</b>
+                    </span>
                 </td>
             </tr>
             <tr>
                 <th>{{__('Order Date')}}</th>
-                <td class="text-right">
-                    <span class="strong-600">{{ $query->order_date }}</span>
+                <td>
+                    <span>: {{ $query->order_date }}</span>
                 </td>
             </tr>
             <tr>
                 <th>{{__('Order Status')}}</th>
-                <td class="text-right">
-                    <span class="strong-600">
+                <td>
+                    <span>: 
                         @if ($query->od_status == 0)
                             <i class="text-black">Placed</i>
                         @elseif ($query->od_status == 1)
@@ -46,13 +59,28 @@
                 </td>
             </tr>
             <tr>
-                <th>{{__('Payment Status')}}</th>
-                <td class="text-right">
-                    <span class="strong-600">
-                        @if ($query->payment_status === 1)
-                            <span class="badge badge-success"><i class="fa fa-money"></i> Paid</span>
-                        @else 
-                            <span class="badge badge-danger"><i class="fa fa-money"></i> Unpaid</span>
+                <th>{{__('File Advertising')}}</th>
+                <td>
+                    <span>: 
+                        @php
+                            $file = json_decode($query->file_advertising);
+                        @endphp
+                        @if ($file->gambar !== null)
+                            @foreach ($file->gambar as $key => $g)
+                                <a href="{{ url($g) }}" download>Gambar {{ $key+1 }}</a> -
+                            @endforeach
+                        @endif
+
+                        @if ($file->video !== null)
+                            @foreach ($file->video as $key => $v)
+                                <a href="{{ url($v) }}" download>Video {{ $key+1 }}</a> -
+                            @endforeach
+                        @endif
+
+                        @if ($file->zip !== null)
+                            @foreach ($file->zip as $key => $z)
+                                <a href="{{ url($z) }}" download>Zip {{ $key+1 }}</a> - 
+                            @endforeach
                         @endif
                     </span>
                 </td>
@@ -60,4 +88,3 @@
         </tbody>
     </table>
 </div>
-

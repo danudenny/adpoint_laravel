@@ -123,6 +123,7 @@
 <script src="{{ asset('frontend/js/bootstrap-select.min.js') }}"></script>
 <script src="{{ asset('js/dropzone.js') }}"></script>
 
+
 <link rel="stylesheet" href="{{ asset('css/dropzone.css') }}">
 
 
@@ -546,6 +547,7 @@
     }
 
     function removeFromCart(key){
+        // console.log(key);
         $.post('{{ route('cart.removeFromCart') }}', {_token:'{{ csrf_token() }}', key:key}, function(data){
             updateNavCart();
             $('#cart-summary').html(data);

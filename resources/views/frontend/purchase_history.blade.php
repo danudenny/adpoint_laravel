@@ -109,6 +109,23 @@
                                                                     <small>
                                                                         <strong>( {{ date('d M Y', strtotime($od->start_date)) }} - {{ date('d M Y', strtotime($od->end_date)) }} )</strong>
                                                                     </small>
+                                                                    @php
+                                                                        $query = DB::table('transactions as t')
+                                                                                    ->join('orders as o', 'o.transaction_id', '=', 't.id')
+                                                                                    ->join('order_details as od', 'od.order_id', '=', 'o.id')
+                                                                                    ->where([
+                                                                                        'od.id' => $od->id,
+                                                                                        'o.user_id' => Auth::user()->id
+                                                                                    ])
+                                                                                    ->select([
+                                                                                        't.payment_status'
+                                                                                    ])->first();
+                                                                    @endphp
+                                                                    @if ($query->payment_status === 1)
+                                                                        <div class="badge badge-success">Paid</div>
+                                                                    @else 
+                                                                        <div class="badge badge-danger">Unpaid</div>
+                                                                    @endif
                                                                 </td>
                                                                 <td align="right">
                                                                     <button onclick="itemDetails({{ $od->id }})" class="btn btn-outline-secondary btn-sm btn-circle"><i class="fa fa-eye"></i> Details</button> 
@@ -142,6 +159,23 @@
                                                                     <small>
                                                                         <strong>( {{ date('d M Y', strtotime($od->start_date)) }} - {{ date('d M Y', strtotime($od->end_date)) }} )</strong>
                                                                     </small>
+                                                                    @php
+                                                                        $query = DB::table('transactions as t')
+                                                                                    ->join('orders as o', 'o.transaction_id', '=', 't.id')
+                                                                                    ->join('order_details as od', 'od.order_id', '=', 'o.id')
+                                                                                    ->where([
+                                                                                        'od.id' => $od->id,
+                                                                                        'o.user_id' => Auth::user()->id
+                                                                                    ])
+                                                                                    ->select([
+                                                                                        't.payment_status'
+                                                                                    ])->first();
+                                                                    @endphp
+                                                                    @if ($query->payment_status === 1)
+                                                                        <div class="badge badge-success">Paid</div>
+                                                                    @else 
+                                                                        <div class="badge badge-danger">Unpaid</div>
+                                                                    @endif
                                                                 </td>
                                                                 <td align="right">
                                                                     <button onclick="itemDetails({{ $od->id }})" class="btn btn-outline-secondary btn-sm btn-circle"><i class="fa fa-eye"></i> Details</button> 
@@ -175,8 +209,31 @@
                                                                     <small>
                                                                         <strong>( {{ date('d M Y', strtotime($od->start_date)) }} - {{ date('d M Y', strtotime($od->end_date)) }} )</strong>
                                                                     </small>
+                                                                    @php
+                                                                        $query = DB::table('transactions as t')
+                                                                                    ->join('orders as o', 'o.transaction_id', '=', 't.id')
+                                                                                    ->join('order_details as od', 'od.order_id', '=', 'o.id')
+                                                                                    ->where([
+                                                                                        'od.id' => $od->id,
+                                                                                        'o.user_id' => Auth::user()->id
+                                                                                    ])
+                                                                                    ->select([
+                                                                                        't.payment_status'
+                                                                                    ])->first();
+                                                                    @endphp
+                                                                    @if ($query->payment_status === 1)
+                                                                        <div class="badge badge-success">Paid</div>
+                                                                    @else 
+                                                                        <div class="badge badge-danger">Unpaid</div>
+                                                                    @endif
                                                                 </td>
                                                                 <td align="right">
+                                                                    @php
+                                                                        $bukti = \App\Evidence::where('order_detail_id', $od->id)->first();
+                                                                    @endphp
+                                                                    @if ($bukti !== null)
+                                                                        <button onclick="showBuktiTayang({{ $bukti->id }})" class="btn btn-sm btn-circle btn-outline-success"><i class="fa fa-image"></i> Show Bukti Tayang</button>
+                                                                    @endif
                                                                     <button onclick="itemDetails({{ $od->id }})" class="btn btn-outline-secondary btn-sm btn-circle"><i class="fa fa-eye"></i> Details</button> 
                                                                 </td>
                                                             </tr>
@@ -211,6 +268,23 @@
                                                                     <small>
                                                                         <strong>( {{ date('d M Y', strtotime($od->start_date)) }} - {{ date('d M Y', strtotime($od->end_date)) }} )</strong>
                                                                     </small>
+                                                                    @php
+                                                                        $query = DB::table('transactions as t')
+                                                                                    ->join('orders as o', 'o.transaction_id', '=', 't.id')
+                                                                                    ->join('order_details as od', 'od.order_id', '=', 'o.id')
+                                                                                    ->where([
+                                                                                        'od.id' => $od->id,
+                                                                                        'o.user_id' => Auth::user()->id
+                                                                                    ])
+                                                                                    ->select([
+                                                                                        't.payment_status'
+                                                                                    ])->first();
+                                                                    @endphp
+                                                                    @if ($query->payment_status === 1)
+                                                                        <div class="badge badge-success">Paid</div>
+                                                                    @else 
+                                                                        <div class="badge badge-danger">Unpaid</div>
+                                                                    @endif
                                                                 </td>
                                                                 <td>
                                                                     QTY: {{ $od->quantity }} <br>
@@ -248,6 +322,19 @@
         </div>
     </div>
 
+    <div class="modal fade" id="buktiTayangCustomer" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-zoom product-modal" id="modal-size" role="document">
+            <div class="modal-content position-relative">
+                <div class="c-preloader">
+                    <i class="fa fa-spin fa-spinner"></i>
+                </div>
+                <div id="buktiTayangCustomerbody">
+
+                </div>
+            </div>
+        </div>
+    </div>
+
 @endsection
 
 @section('script')
@@ -278,6 +365,16 @@
             $.post('{{ route('item.details') }}', {_token:'{{ csrf_token() }}', order_detail_id:id}, function(data){
                 $('.c-preloader').hide();
                 $('#itemDetailsbody').html(data);
+            });
+        }
+
+        function showBuktiTayang(id) {
+            $('#buktiTayangCustomerbody').html(null);
+            $('#buktiTayangCustomer').modal();
+            $('.c-preloader').show();
+            $.post('{{ route('show.bukti.tayang') }}', {_token:'{{ csrf_token() }}', evidence_id:id}, function(data){
+                $('.c-preloader').hide();
+                $('#buktiTayangCustomerbody').html(data);
             });
         }
     </script>

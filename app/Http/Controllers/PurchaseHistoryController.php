@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Order;
 use App\OrderDetail;
+use App\Evidence;
 use Auth;
 use DB;
 
@@ -48,13 +49,21 @@ class PurchaseHistoryController extends Controller
                     ->select([
                         't.code as code_trx',
                         't.payment_status',
+                        't.file_advertising',
                         'o.code as code_order',
                         'o.created_at as order_date',
                         'od.product_id as item_name',
+                        'od.seller_id',
                         'od.status as od_status',
                     ])
                     ->first();
         return view('frontend.partials.item_details', compact('query'));
+    }
+
+    public function show_bukti_tayang(Request $request)
+    {
+        $query = Evidence::where('id', $request->evidence_id)->first();
+        return view('frontend.partials.bukti_tayang_customer', compact('query'));
     }
 
     public function purchase_history_details(Request $request)

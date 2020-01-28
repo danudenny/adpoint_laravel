@@ -134,7 +134,7 @@
                                                         <span>{{ single_price($cartItem['price']*$cartItem['quantity']) }}</span>
                                                     </td>
                                                     <td class="product-remove">
-                                                        <a href="#" onclick="removeFromCartView(event, {{ $cartItem['id'] }})" class="text-right pl-4">
+                                                        <a href="#" onclick="removeFromCartView(event, {{ $key }})" class="text-right pl-4">
                                                             <i class="la la-trash"></i>
                                                         </a>
                                                     </td>
