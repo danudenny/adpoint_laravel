@@ -80,33 +80,8 @@
                                     <i class="text-primary">Actived</i>
                                 @elseif ($query->od_status == 4)
                                     <i class="text-success">Completed</i>
-                                @endif
-                            </span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>{{__('File Advertising')}}</th>
-                        <td>
-                            <span> :
-                                @php
-                                $file = json_decode($query->file_advertising);
-                                @endphp
-                                @if ($file->gambar !== null)
-                                    @foreach ($file->gambar as $key => $g)
-                                        <a href="{{ url($g) }}" download>Gambar {{ $key+1 }}</a> -
-                                    @endforeach
-                                @endif
-            
-                                @if ($file->video !== null)
-                                    @foreach ($file->video as $key => $v)
-                                        <a href="{{ url($v) }}" download>Video {{ $key+1 }}</a> - 
-                                    @endforeach
-                                @endif
-            
-                                @if ($file->zip !== null)
-                                    @foreach ($file->zip as $key => $z)
-                                        <a href="{{ url($z) }}" download>Zip {{ $key+1 }}</a> - 
-                                    @endforeach
+                                @elseif ($query->od_status == 100)
+                                    <i class="text-danger">Cancelled</i>
                                 @endif
                             </span>
                         </td>

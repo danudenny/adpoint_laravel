@@ -8,13 +8,15 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 
+use App\Http\Controllers\OrderController;
+
 use App\Transaction;
 
 class PaymentDuration implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    protected $trx;
+    public $trx;
     /**
      * Create a new job instance.
      *
@@ -24,7 +26,6 @@ class PaymentDuration implements ShouldQueue
     {
         $this->trx = $trx;
     }
-
     /**
      * Execute the job.
      *
@@ -32,10 +33,7 @@ class PaymentDuration implements ShouldQueue
      */
     public function handle()
     {
-        $cancel = Transaction::where('id', $this->$trx->id)->first();
-        if ($cancel !== null) {
-            $cancel->status = "cancelled";
-            $cancel->save();
-        }
+        $cancelled = new OrderController;
+        return $cancelled->auto_cancel_trx($this->trx->id);
     }
 }

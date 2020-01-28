@@ -286,10 +286,6 @@
                                                                         <div class="badge badge-danger">Unpaid</div>
                                                                     @endif
                                                                 </td>
-                                                                <td>
-                                                                    QTY: {{ $od->quantity }} <br>
-                                                                    {{ single_price($od->price) }}
-                                                                </td>
                                                                 <td align="right">
                                                                     <button onclick="itemDetails({{ $od->id }})" class="btn btn-outline-secondary btn-sm btn-circle"><i class="fa fa-eye"></i> Details</button> 
                                                                 </td>
@@ -309,8 +305,9 @@
         </div>
     </section>
 
+
     <div class="modal fade" id="itemDetails" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-md modal-dialog-centered modal-dialog-zoom product-modal" id="modal-size" role="document">
+        <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content position-relative">
                 <div class="c-preloader">
                     <i class="fa fa-spin fa-spinner"></i>

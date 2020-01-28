@@ -119,19 +119,42 @@
                                                                     @endif
                                                                 </td>
                                                                 <td align="right">
-                                                                    <a href="{{ route('approve.by.seller', encrypt($od->id)) }}" class="btn btn-outline-success btn-circle btn-sm"><i class="fa fa-check"></i> Approve</a>
-                                                                    <a data-toggle="modal" href="" data-target="#reject{{$od->id}}" class="btn btn-sm btn-circle btn-outline-danger">
+                                                                    <button data-toggle="modal" data-target="#approve{{$od->id}}" class="btn btn-outline-success btn-circle btn-sm"><i class="fa fa-check"></i> Approve</button>
+                                                                    <button data-toggle="modal" data-target="#reject{{$od->id}}" class="btn btn-sm btn-circle btn-outline-danger">
                                                                         <i class="fa fa-times"></i> Reject
-                                                                    </a>
+                                                                    </button>
                                                                     <button class="btn btn-outline-secondary btn-circle btn-sm" onclick="itemDetailsSeller({{ $od->id }})">
                                                                         <i class="fa fa-eye"></i> Details
                                                                     </button>
-                                                                    <!-- Modal -->
                                                                 </td>
                                                             </tr>
                                                         </table>
                                                     </div>
                                                 </article>
+                                                <!-- Modal Approve-->
+                                                <div class="modal fade" id="approve{{ $od->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLongTitle">Are you sure approve ?</h5>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <h5>#{{ \App\Product::where('id', $od->product_id)->first()->name }}</h5>
+                                                            <p>Clik yes to continue approve.</p>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                        <a href="{{ route('approve.by.seller', encrypt($od->id)) }}" class="btn btn-primary">Yes</a>
+                                                        </div>
+                                                    </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Modal Reject -->
+
                                                 <div class="modal fade" id="reject{{ $od->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                                                     <div class="modal-dialog modal-dialog-centered" role="document">
                                                         <form action="{{ route('disapprove.by.seller') }}" method="POST">
@@ -207,9 +230,9 @@
                                                                     </button>
                                                                     @if ($od->status == 1)
                                                                         @if ($od->is_paid == true)
-                                                                            <a href="{{ route('order.activate', encrypt($od->id)) }}" class="btn btn-circle btn-sm btn-outline-primary">
+                                                                            <button data-toggle="modal" data-target="#active{{$od->id}}" class="btn btn-circle btn-sm btn-outline-primary">
                                                                                 <i class="fa fa-calendar-check-o"></i> Activate
-                                                                            </a>
+                                                                            </button>
                                                                         @else
                                                                             <button type="button" class="btn btn-sm btn-circle btn-outline-primary" style="cursor: not-allowed" disabled>
                                                                                 <i class="fa fa-calendar-check-o"></i> Activate
@@ -221,6 +244,28 @@
                                                         </table>
                                                     </div>
                                                 </article>
+
+                                                <!-- Modal Approve-->
+                                                <div class="modal fade" id="active{{ $od->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLongTitle">Are you sure activate ?</h5>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <h5>#{{ \App\Product::where('id', $od->product_id)->first()->name }}</h5>
+                                                            <p>Clik yes to continue activate.</p>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                        <a href="{{ route('order.activate', encrypt($od->id)) }}" class="btn btn-primary">Yes</a>
+                                                        </div>
+                                                    </div>
+                                                    </div>
+                                                </div>
                                             @endif
                                         @endforeach
                                     </div>

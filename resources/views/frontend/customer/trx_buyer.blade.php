@@ -85,8 +85,21 @@
                                                         <div class="row">
                                                             <div class="col-md-8">
                                                                 <div class="text-info">
-                                                                    Silahkan melakukan pembayaran sebelum 12/08/2019 11:00:22
+                                                                    Silahkan melakukan pembayaran sebelum {{ date('d M Y h:i:s', strtotime(\Carbon\Carbon::createFromTimestamp(strtotime($t->created_at))->addHour(24))) }}
                                                                 </div>
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <div class="text-right">
+                                                                    
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    @endif
+                                                    @if ($t->status === "paid")
+                                                        <hr>
+                                                        <div class="row">
+                                                            <div class="col-md-8">
+                                                                
                                                             </div>
                                                             <div class="col-md-4">
                                                                 <div class="text-right">
