@@ -37,7 +37,7 @@
             <tr>
                 <th>{{__('Order Date')}}</th>
                 <td>
-                    <span>: {{ $query->order_date }}</span>
+                    <span>: {{ date('d M Y H:i:s', strtotime($query->order_date)) }}</span>
                 </td>
             </tr>
             <tr>
