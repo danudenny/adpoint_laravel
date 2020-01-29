@@ -42,9 +42,11 @@ use App\Jobs\PaymentDuration;
 class OrderController extends Controller
 {
     // page seller
-    public function index()
+
+    public function get_items()
     {
         $order_details = DB::table('order_details as od')
+                            ->orderBy('od.id', 'desc')
                             ->join('orders as o', 'o.id', '=', 'od.order_id')
                             ->where([
                                 'o.seller_id' => Auth::user()->id,
@@ -64,6 +66,12 @@ class OrderController extends Controller
                                 'o.address as o_addres'
                             ])
                             ->get();
+        return $order_details;
+    }
+
+    public function index()
+    {
+        $order_details = $this->get_items();
         return view('frontend.seller.orders', compact('order_details'));
     }
 
@@ -593,6 +601,37 @@ class OrderController extends Controller
     {
         $order = Order::findOrFail($request->order_id);
         return view('frontend.partials.order_details_seller', compact('order'));
+    }
+
+    // get load from ajax
+    public function order_place()
+    {
+        $order_details = $this->get_items();
+        return view('myorderseller.order_place', compact('order_details'));
+    }
+
+    public function order_review()
+    {
+        $order_details = $this->get_items();
+        return view('myorderseller.order_review', compact('order_details'));
+    }
+
+    public function order_active()
+    {
+        $order_details = $this->get_items();
+        return view('myorderseller.order_active', compact('order_details'));
+    }
+
+    public function order_completes()
+    {
+        $order_details = $this->get_items();
+        return view('myorderseller.order_completes', compact('order_details'));
+    }
+
+    public function order_cancelled()
+    {
+        $order_details = $this->get_items();
+        return view('myorderseller.order_cancelled', compact('order_details'));
     }
 
 }

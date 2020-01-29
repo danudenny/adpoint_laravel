@@ -73,11 +73,17 @@ class TransactionController extends Controller
         }
     }
 
-    public function trx_page_buyer()
+    public function get_trx()
     {
         $trx = Transaction::orderBy('id', 'desc')
                         ->where('user_id', Auth::user()->id)
                         ->get();
+        return $trx;
+    }
+
+    public function trx_page_buyer()
+    {
+        $trx = $this->get_trx();
         return view('frontend.customer.trx_buyer', compact('trx'));
     }
 
@@ -85,5 +91,17 @@ class TransactionController extends Controller
     {
         $transaction = Transaction::where('id', $request->trx_id)->first();
         return view('frontend.partials.show_trx_details', compact('transaction'));
+    }
+
+    public function trx_unpaid()
+    {
+        $trx = $this->get_trx();
+        return view('mytrx.unpaid', compact('trx'));
+    }
+
+    public function trx_paid()
+    {
+        $trx = $this->get_trx();
+        return view('mytrx.paid', compact('trx'));
     }
 }

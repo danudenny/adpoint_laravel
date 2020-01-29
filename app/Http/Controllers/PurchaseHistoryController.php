@@ -11,14 +11,10 @@ use DB;
 
 class PurchaseHistoryController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    public function get_items()
     {
         $order_details = DB::table('order_details as od')
+                            ->orderBy('od.id', 'desc')
                             ->join('orders as o', 'o.id', '=', 'od.order_id')
                             ->where('o.user_id', Auth::user()->id)
                             ->select([
@@ -35,6 +31,12 @@ class PurchaseHistoryController extends Controller
                                 'o.address as o_addres'
                             ])
                             ->get();
+        return $order_details;
+    }
+
+    public function index()
+    {
+        $order_details = $this->get_items();
         return view('frontend.purchase_history', compact('order_details'));
     }
 
@@ -93,69 +95,35 @@ class PurchaseHistoryController extends Controller
         return view('frontend.my_order_customer', compact('order_id', 'order'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    // get load from ajax
+
+    public function order_place()
     {
-        //
+        $order_details = $this->get_items();
+        return view('myorder.order_place', compact('order_details'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function order_review()
     {
-        //
+        $order_details = $this->get_items();
+        return view('myorder.order_review', compact('order_details'));
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function order_active()
     {
-        //
+        $order_details = $this->get_items();
+        return view('myorder.order_active', compact('order_details'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+    public function order_complete()
     {
-        //
+        $order_details = $this->get_items();
+        return view('myorder.order_complete', compact('order_details'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+    public function order_cancelled()
     {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        $order_details = $this->get_items();
+        return view('myorder.order_cancelled', compact('order_details'));
     }
 }

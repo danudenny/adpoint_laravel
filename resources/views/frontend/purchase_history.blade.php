@@ -74,11 +74,11 @@
                             <div class="card-body">
                                 <nav class="no-border" style="color: black">
                                     <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                                    <a class="nav-item nav-link active" id="nav-order-place-tab" data-toggle="tab" href="#nav-order-place" role="tab" aria-controls="nav-order-place" aria-selected="true">Order place</a>
-                                    <a class="nav-item nav-link" id="nav-onreview-tab" data-toggle="tab" href="#nav-onreview" role="tab" aria-controls="nav-onreview" aria-selected="false">On review</a>
-                                    <a class="nav-item nav-link" id="nav-active-tab" data-toggle="tab" href="#nav-active" role="tab" aria-controls="nav-active" aria-selected="false">Active</a>
-                                    <a class="nav-item nav-link" id="nav-complete-tab" data-toggle="tab" href="#nav-complete" role="tab" aria-controls="nav-complete" aria-selected="false">Complete</a>
-                                    <a class="nav-item nav-link" id="nav-cancel-tab" data-toggle="tab" href="#nav-cancel" role="tab" aria-controls="nav-cancel" aria-selected="false">Cancelled</a>
+                                        <a class="nav-item nav-link active" id="nav-order-place-tab" data-url="{{ route('myorder.place.order') }}" data-toggle="tab" href="#nav-order-place" role="tab" aria-controls="nav-order-place" aria-selected="true">Order place</a>
+                                        <a class="nav-item nav-link" id="nav-onreview-tab" data-url="{{ route('myorder.review.order') }}" data-toggle="tab" href="#nav-onreview" role="tab" aria-controls="nav-onreview" aria-selected="false">On review</a>
+                                        <a class="nav-item nav-link" id="nav-active-tab" data-url="{{ route('myorder.active.order') }}" data-toggle="tab" href="#nav-active" role="tab" aria-controls="nav-active" aria-selected="false">Active</a>
+                                        <a class="nav-item nav-link" id="nav-complete-tab" data-url="{{ route('myorder.complete.order') }}" data-toggle="tab" href="#nav-complete" role="tab" aria-controls="nav-complete" aria-selected="false">Complete</a>
+                                        <a class="nav-item nav-link" id="nav-cancel-tab" data-url="{{ route('myorder.cancelled.order') }}" data-toggle="tab" href="#nav-cancel" role="tab" aria-controls="nav-cancel" aria-selected="false">Cancelled</a>
                                     </div>
                                 </nav>
                             </div>
@@ -87,214 +87,23 @@
                         <div class="card no-border mt-1">
                             <div class="card-body">
                                 <div class="tab-content" id="nav-tabContent">
+                                    <div class="c-nav-load">
+                                        <i class="fa fa-spin fa-spinner"></i>
+                                    </div>
                                     <div class="tab-pane fade show active" id="nav-order-place" role="tabpanel" aria-labelledby="nav-order-place-tab">
-                                        @foreach ($order_details as $key => $od)
-                                            @if ($od->status === 0)
-                                                <article class="card mt-1">
-                                                    <div style="height: 35px; background: #0f355a; color: white; border-bottom: 2px solid #fd7e14">
-                                                        <strong style="line-height: 35px; margin-left: 15px">{{ $od->created_at }}</strong>
-                                                    </div>
-                                                    <div class="table-responsive">
-                                                        <table class="table">
-                                                            @php
-                                                                $product = \App\Product::where('id', $od->product_id)->first();
-                                                            @endphp
-                                                            <tr>
-                                                                <td width="80">
-                                                                    <img src="{{ url(json_decode($product->photos)[0]) }}" class="img-fluid" width="80">
-                                                                </td>
-                                                                <td> 
-                                                                    {{ $product->name }} <br>
-                                                                    {{ $od->variation }} 
-                                                                    <small>
-                                                                        <strong>( {{ date('d M Y', strtotime($od->start_date)) }} - {{ date('d M Y', strtotime($od->end_date)) }} )</strong>
-                                                                    </small>
-                                                                    @php
-                                                                        $query = DB::table('transactions as t')
-                                                                                    ->join('orders as o', 'o.transaction_id', '=', 't.id')
-                                                                                    ->join('order_details as od', 'od.order_id', '=', 'o.id')
-                                                                                    ->where([
-                                                                                        'od.id' => $od->id,
-                                                                                        'o.user_id' => Auth::user()->id
-                                                                                    ])
-                                                                                    ->select([
-                                                                                        't.payment_status'
-                                                                                    ])->first();
-                                                                    @endphp
-                                                                    @if ($query->payment_status === 1)
-                                                                        <div class="badge badge-success">Paid</div>
-                                                                    @else 
-                                                                        <div class="badge badge-danger">Unpaid</div>
-                                                                    @endif
-                                                                </td>
-                                                                <td align="right">
-                                                                    <button onclick="itemDetails({{ $od->id }})" class="btn btn-outline-secondary btn-sm btn-circle"><i class="fa fa-eye"></i> Details</button> 
-                                                                </td>
-                                                            </tr>
-                                                        </table>
-                                                    </div>
-                                                </article>
-                                            @endif
-                                        @endforeach
+                                        
                                     </div>
                                     <div class="tab-pane fade" id="nav-onreview" role="tabpanel" aria-labelledby="nav-onreview-tab">
-                                        @foreach ($order_details as $key => $od)
-                                            @if ($od->status === 1)
-                                                <article class="card mt-1">
-                                                    <div style="height: 35px; background: #0f355a; color: white; border-bottom: 2px solid #fd7e14">
-                                                        <strong style="line-height: 35px; margin-left: 15px">{{ $od->created_at }}</strong>
-                                                    </div>
-                                                    <div class="table-responsive">
-                                                        <table class="table">
-                                                            @php
-                                                                $product = \App\Product::where('id', $od->product_id)->first();
-                                                            @endphp
-                                                            <tr>
-                                                                <td width="80">
-                                                                    <img src="{{ url(json_decode($product->photos)[0]) }}" class="img-fluid" width="80">
-                                                                </td>
-                                                                <td> 
-                                                                    {{ $product->name }} <br>
-                                                                    {{ $od->variation }} 
-                                                                    <small>
-                                                                        <strong>( {{ date('d M Y', strtotime($od->start_date)) }} - {{ date('d M Y', strtotime($od->end_date)) }} )</strong>
-                                                                    </small>
-                                                                    @php
-                                                                        $query = DB::table('transactions as t')
-                                                                                    ->join('orders as o', 'o.transaction_id', '=', 't.id')
-                                                                                    ->join('order_details as od', 'od.order_id', '=', 'o.id')
-                                                                                    ->where([
-                                                                                        'od.id' => $od->id,
-                                                                                        'o.user_id' => Auth::user()->id
-                                                                                    ])
-                                                                                    ->select([
-                                                                                        't.payment_status'
-                                                                                    ])->first();
-                                                                    @endphp
-                                                                    @if ($query->payment_status === 1)
-                                                                        <div class="badge badge-success">Paid</div>
-                                                                    @else 
-                                                                        <div class="badge badge-danger">Unpaid</div>
-                                                                    @endif
-                                                                </td>
-                                                                <td align="right">
-                                                                    <button onclick="itemDetails({{ $od->id }})" class="btn btn-outline-secondary btn-sm btn-circle"><i class="fa fa-eye"></i> Details</button> 
-                                                                </td>
-                                                            </tr>
-                                                        </table>
-                                                    </div>
-                                                </article>
-                                            @endif
-                                        @endforeach
+                                        
                                     </div>
                                     <div class="tab-pane fade" id="nav-active" role="tabpanel" aria-labelledby="nav-active-tab">
-                                        @foreach ($order_details as $key => $od)
-                                            @if ($od->status === 3)
-                                                <article class="card mt-1">
-                                                    <div style="height: 35px; background: #0f355a; color: white; border-bottom: 2px solid #fd7e14">
-                                                        <strong style="line-height: 35px; margin-left: 15px">{{ $od->created_at }}</strong>
-                                                    </div>
-                                                    <div class="table-responsive">
-                                                        <table class="table">
-                                                            @php
-                                                                $product = \App\Product::where('id', $od->product_id)->first();
-                                                            @endphp
-                                                            <tr>
-                                                                <td width="80">
-                                                                    <img src="{{ url(json_decode($product->photos)[0]) }}" class="img-fluid" width="80">
-                                                                </td>
-                                                                <td> 
-                                                                    {{ $product->name }} <br>
-                                                                    {{ $od->variation }} 
-                                                                    <small>
-                                                                        <strong>( {{ date('d M Y', strtotime($od->start_date)) }} - {{ date('d M Y', strtotime($od->end_date)) }} )</strong>
-                                                                    </small>
-                                                                    @php
-                                                                        $query = DB::table('transactions as t')
-                                                                                    ->join('orders as o', 'o.transaction_id', '=', 't.id')
-                                                                                    ->join('order_details as od', 'od.order_id', '=', 'o.id')
-                                                                                    ->where([
-                                                                                        'od.id' => $od->id,
-                                                                                        'o.user_id' => Auth::user()->id
-                                                                                    ])
-                                                                                    ->select([
-                                                                                        't.payment_status'
-                                                                                    ])->first();
-                                                                    @endphp
-                                                                    @if ($query->payment_status === 1)
-                                                                        <div class="badge badge-success">Paid</div>
-                                                                    @else 
-                                                                        <div class="badge badge-danger">Unpaid</div>
-                                                                    @endif
-                                                                </td>
-                                                                <td align="right">
-                                                                    @php
-                                                                        $bukti = \App\Evidence::where('order_detail_id', $od->id)->first();
-                                                                    @endphp
-                                                                    @if ($bukti !== null)
-                                                                        <button onclick="showBuktiTayang({{ $bukti->id }})" class="btn btn-sm btn-circle btn-outline-success"><i class="fa fa-image"></i> Show Bukti Tayang</button>
-                                                                    @endif
-                                                                    <button onclick="itemDetails({{ $od->id }})" class="btn btn-outline-secondary btn-sm btn-circle"><i class="fa fa-eye"></i> Details</button> 
-                                                                </td>
-                                                            </tr>
-                                                        </table>
-                                                    </div>
-                                                </article>
-                                            @endif
-                                        @endforeach
+                                        
                                     </div>
                                     <div class="tab-pane fade" id="nav-complete" role="tabpanel" aria-labelledby="nav-complete-tab">
-                                        <h1>Complete</h1>
+                                        
                                     </div>
                                     <div class="tab-pane fade" id="nav-cancel" role="tabpanel" aria-labelledby="nav-cancel-tab">
-                                        @foreach ($order_details as $key => $od)
-                                            @if ($od->status === 100)
-                                                <article class="card mt-1">
-                                                    <div style="height: 35px; background: #0f355a; color: white; border-bottom: 2px solid #fd7e14">
-                                                        <strong style="line-height: 35px; margin-left: 15px">{{ $od->created_at }}</strong>
-                                                    </div>
-                                                    <div class="table-responsive">
-                                                        <table class="table">
-                                                            @php
-                                                                $product = \App\Product::where('id', $od->product_id)->first();
-                                                            @endphp
-                                                            <tr>
-                                                                <td width="80">
-                                                                    <img src="{{ url(json_decode($product->photos)[0]) }}" class="img-fluid" width="80">
-                                                                </td>
-                                                                <td> 
-                                                                    {{ $product->name }} <br>
-                                                                    {{ $od->variation }} 
-                                                                    <small>
-                                                                        <strong>( {{ date('d M Y', strtotime($od->start_date)) }} - {{ date('d M Y', strtotime($od->end_date)) }} )</strong>
-                                                                    </small>
-                                                                    @php
-                                                                        $query = DB::table('transactions as t')
-                                                                                    ->join('orders as o', 'o.transaction_id', '=', 't.id')
-                                                                                    ->join('order_details as od', 'od.order_id', '=', 'o.id')
-                                                                                    ->where([
-                                                                                        'od.id' => $od->id,
-                                                                                        'o.user_id' => Auth::user()->id
-                                                                                    ])
-                                                                                    ->select([
-                                                                                        't.payment_status'
-                                                                                    ])->first();
-                                                                    @endphp
-                                                                    @if ($query->payment_status === 1)
-                                                                        <div class="badge badge-success">Paid</div>
-                                                                    @else 
-                                                                        <div class="badge badge-danger">Unpaid</div>
-                                                                    @endif
-                                                                </td>
-                                                                <td align="right">
-                                                                    <button onclick="itemDetails({{ $od->id }})" class="btn btn-outline-secondary btn-sm btn-circle"><i class="fa fa-eye"></i> Details</button> 
-                                                                </td>
-                                                            </tr>
-                                                        </table>
-                                                    </div>
-                                                </article>
-                                            @endif
-                                        @endforeach
+                                        
                                     </div>
                                 </div>
                             </div>
@@ -374,5 +183,23 @@
                 $('#buktiTayangCustomerbody').html(data);
             });
         }
+
+        $('#nav-order-place').load('{{ route('myorder.place.order') }}',function(result){
+            $(this).tab('show');
+            $('.c-nav-load').hide();
+        });
+
+        $('#nav-tab a').click(function (e) {
+            e.preventDefault();
+            var url = $(this).attr("data-url");
+            var href = this.hash;
+            var pane = $(this);
+            // ajax load from data-url
+            $('.c-nav-load').show();
+            $(href).load(url,function(result){
+                pane.tab('show');
+                $('.c-nav-load').hide();
+            });
+        });
     </script>
 @endsection

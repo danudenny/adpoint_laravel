@@ -125,9 +125,20 @@ Route::group(['middleware' => ['user', 'verified']], function(){
 	Route::get('/purchase_history/my_order/{id}', 'PurchaseHistoryController@my_order')->name('my.order');
 	Route::get('/purchase_history/destroy/{id}', 'PurchaseHistoryController@destroy')->name('purchase_history.destroy');
 
+	// load get from ajax
+	Route::get('place-order', 'PurchaseHistoryController@order_place')->name('myorder.place.order');
+	Route::get('review-order', 'PurchaseHistoryController@order_review')->name('myorder.review.order');
+	Route::get('active-order', 'PurchaseHistoryController@order_active')->name('myorder.active.order');
+	Route::get('complete-order', 'PurchaseHistoryController@order_complete')->name('myorder.complete.order');
+	Route::get('cancelled-order', 'PurchaseHistoryController@order_cancelled')->name('myorder.cancelled.order');
+
 
 	Route::get('/transaction', 'TransactionController@trx_page_buyer')->name('trx.page.buyer');
 	Route::post('/transaction/show_transaction_details', 'TransactionController@show_transaction_details')->name('show.transaction.details');
+
+	// load get from ajax
+	Route::get('trx-unpaid', 'TransactionController@trx_unpaid')->name('trx.unpaid');
+	Route::get('trx-paid', 'TransactionController@trx_paid')->name('trx.paid');
 	
 	
 	Route::resource('wishlists','WishlistController');
@@ -170,6 +181,13 @@ Route::group(['middleware' => ['auth']], function(){
 	Route::get('/orders/approve_by_seller/{id}', 'OrderController@approve_by_seller')->name('approve.by.seller');
 	Route::get('/orders/approve_all_by_seller', 'OrderController@approve_all_by_seller')->name('approved.all.by.seller');
 	Route::post('/orders/disapprove_by_seller', 'OrderController@disapprove_by_seller')->name('disapprove.by.seller');
+
+	// load get from ajax
+	Route::get('place-order-seller', 'OrderController@order_place')->name('orders.place.order');
+	Route::get('review-order-seller', 'OrderController@order_review')->name('orders.review.order');
+	Route::get('active-order-seller', 'OrderController@order_active')->name('orders.active.order');
+	Route::get('complete-order-seller', 'OrderController@order_completes')->name('orders.complete.order');
+	Route::get('cancelled-order-seller', 'OrderController@order_cancelled')->name('orders.cancelled.order');
 	
 	Route::get('/orders/destroy/{id}', 'OrderController@destroy')->name('orders.destroy');
 	Route::post('/orders/details', 'OrderController@order_details')->name('orders.details');
