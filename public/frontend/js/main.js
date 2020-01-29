@@ -208,7 +208,7 @@ $(document).ready(function() {
                 rows: slidesRows,
                 centerPadding: '0px',
                 centerMode: slidesCenterMode,
-                speed: 300,
+                speed: 5000,
                 prevArrow: '<button type="button" class="slick-prev"><span class="prev-icon"></span></button>',
                 nextArrow: '<button type="button" class="slick-next"><span class="next-icon"></span></button>',
                 responsive: [

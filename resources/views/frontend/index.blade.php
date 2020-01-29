@@ -4,7 +4,29 @@
     <section class="home-banner-area mb-4">
         <div class="container">
             <div class="row no-gutters position-relative">
-                <div class="col-lg-2 position-static order-2 order-lg-0">
+                <div class="text-home-top">
+                    <h1>Cari space iklan yang sesuai dengan <br> kebutuhan Anda sekarang juga</h1>
+                </div>
+                <div class="form-group select-city">
+                    <select class="form-control">
+                      <option>City</option>
+                      <option>2</option>
+                    </select>
+                </div>
+                <div class="form-group select-address">
+                    <select class="form-control">
+                      <option>Address</option>
+                      <option>2</option>
+                    </select>
+                </div>  
+                <div class="form-group select-media">
+                    <select class="form-control">
+                      <option>Media</option>
+                      <option>2</option>
+                    </select>
+                </div>
+                <button class="button-cari"><i class="fa fa-search"></i> Search</button>
+                {{-- <div class="col-lg-2 position-static order-2 order-lg-0">
                     <div class="category-sidebar">
                         <div class="all-category d-none d-lg-block">
                             <span >{{__('Categories')}}</span>
@@ -82,28 +104,72 @@
                             @endforeach
                         </ul>
                     </div>
-                </div>
+                </div> --}}
 
-                <div class="col-lg-10 order-1 order-lg-0">
+                {{-- <div class="col-lg-10 order-1 order-lg-0">
                     <div id="dashboardMap" class="map mb-3" style="height: 455px;"></div>
-                </div>
+                </div> --}}
             </div>
         </div>
     </section>
 
     <section class="mb-4">
         <div class="container">
-            <div class="row gutters-10">
-                @foreach (\App\Banner::where('position', 1)->where('published', 1)->get() as $key => $banner)
-                    <div class="col-lg-{{ 12/count(\App\Banner::where('position', 1)->where('published', 1)->get()) }}">
-                        <div class="media-banner mb-3 mb-lg-0">
-                            <a href="{{ $banner->url }}" target="_blank" class="banner-container">
-                                <img src="{{ asset($banner->photo) }}" alt="" class="img-fluid">
-                            </a>
-                        </div>
-                    </div>
-                @endforeach
+            <h2 style="text-align: center">Explore by Media Categories</h2>
+        </div>
+    </section>
+
+
+    <div class="container">
+        <div class="row">
+            @foreach (\App\Category::where('top', 1)->get() as $category)
+                <div class="box-cat">
+                    <img src="{{ asset($category->banner) }}" alt="" class="img-fluid img">
+                    <span class="browse-cat">{{ __($category->name) }}</span>
+                </div>
+            @endforeach
+        </div>
+    </div>
+
+    <section class="mb-4">
+        <div class="container">
+            <div style="margin-left: 46%;">
+                <button class="btn btn-lg btn-primary"><i class="fa fa-plus"></i> Show All</button>
             </div>
+        </div>
+    </section>
+
+    <section class="mb-4">
+        <div class="container card-center">
+            <div class="row">
+                <div class="card card-seller-buyer">
+                    <div class="card-body">
+                        <h3 class="card-title">Are You a Seller</h3>
+                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                        <a href="#" class="btn btn-warning">Sell with us</a>
+                    </div>
+                </div>
+                <div class="card card-seller-buyer">
+                    <div class="card-body">
+                        <h3 class="card-title">Are You a Buyer</h3>
+                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                        <a href="#" class="btn btn-success">Buy Ad Space</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="mb-4">
+        <div class="image-block-home">
+            <img style="object-fit: cover; height: 400px; width: 100%;" src="{{ asset('img/bg-img/ad-agency-blog-pic.jpg') }}" >
+        </div>
+    </section>
+
+    <section class="mb-4">
+        <div class="container" style="margin-top: 20px;">
+            <h2 style="text-align: center">Benefits of Joining Us</h2>
+            <p style="text-align: center; font-size:16px;">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
         </div>
     </section>
 
@@ -162,7 +228,7 @@
         @endif
     </section>
 
-    <section class="mb-4">
+    {{-- <section class="mb-4">
         <div class="container">
             <div class="px-2 py-4 p-md-4 bg-white shadow-sm">
                 <div class="section-title-1 clearfix">
@@ -202,22 +268,19 @@
                 </div>
             </div>
         </div>
-    </section>
+    </section> --}}
 
     @if (\App\BusinessSetting::where('type', 'best_selling')->first()->value == 1)
         <section class="mb-4">
             <div class="container">
                 <div class="px-2 py-4 p-md-4 bg-white shadow-sm">
                     <div class="section-title-1 clearfix">
-                        <h3 class="heading-5 strong-700 mb-0 float-left">
-                            <span class="mr-4">{{__('Best Selling')}}</span>
+                        <h3 class="heading-5 strong-700 mb-0">
+                            <span class="mr-4">{{__('Recommended Ad Space')}}</span>
                         </h3>
-                        <ul class="inline-links float-right">
-                            <li><a  class="active">{{__('Top 20')}}</a></li>
-                        </ul>
                     </div>
                     <div class="caorusel-box">
-                        <div class="slick-carousel" data-slick-items="3" data-slick-lg-items="3"  data-slick-md-items="2" data-slick-sm-items="2" data-slick-xs-items="1" data-slick-dots="true" data-slick-rows="2">
+                        <div class="slick-carousel" data-slick-items="3" data-slick-lg-items="3"  data-slick-md-items="4" data-slick-sm-items="4" data-slick-xs-items="1" data-slick-dots="true" data-slick-rows="4">
                             @foreach (filter_products(\App\Product::where('published', 1)->orderBy('num_of_sale', 'desc'))->limit(20)->get() as $key => $product)
                                 <div class="p-2">
                                     <div class="row no-gutters product-box-2 align-items-center">
@@ -361,14 +424,11 @@
                 <div class="px-2 py-4 p-md-4 bg-white shadow-sm">
                     <div class="section-title-1 clearfix">
                         <h3 class="heading-5 strong-700 mb-0 float-left">
-                            <span class="mr-4">{{__('Best Media Owner')}}</span>
+                            <span class="mr-4">{{__('Media Partner')}}</span>
                         </h3>
-                        <ul class="inline-links float-right">
-                            <li><a  class="active">{{__('Top 20')}}</a></li>
-                        </ul>
                     </div>
                     <div class="caorusel-box">
-                        <div class="slick-carousel" data-slick-items="3" data-slick-lg-items="3"  data-slick-md-items="2" data-slick-sm-items="2" data-slick-xs-items="1" data-slick-dots="true" data-slick-rows="2">
+                        <div class="slick-carousel" data-slick-items="5" data-slick-lg-items="5"  data-slick-md-items="2" data-slick-sm-items="2" data-slick-xs-items="1" data-slick-dots="true" data-slick-rows="2"  data-slick-autoplay="true">
                             @php
                                 $count = 0;
                             @endphp
@@ -385,7 +445,7 @@
                                         }
                                     @endphp
                                     <div class="p-2">
-                                        <div class="row no-gutters box-3 align-items-center border">
+                                        <div class="row no-gutters box-3 align-items-center border" style="height: 91px;">
                                             <div class="col-4">
                                                 <a href="{{ route('shop.visit', $seller->user->shop->slug) }}" class="d-block product-image p-3">
                                                     <img src="{{ asset($seller->user->shop->logo) }}" alt="" class="img-fluid">
@@ -396,18 +456,6 @@
                                                     <h2 class="product-title mb-0 p-0 text-truncate">
                                                         <a href="{{ route('shop.visit', $seller->user->shop->slug) }}">{{ __($seller->user->shop->name) }}</a>
                                                     </h2>
-                                                    <div class="star-rating star-rating-sm mb-2">
-                                                        @if ($total > 0)
-                                                            {{ renderStarRating($rating/$total) }}
-                                                        @else
-                                                            {{ renderStarRating(0) }}
-                                                        @endif
-                                                    </div>
-                                                    <div class="">
-                                                        <a href="{{ route('shop.visit', $seller->user->shop->slug) }}" class="icon-anim">
-                                                            {{ __('Visit Store') }} <i class="la la-angle-right text-sm"></i>
-                                                        </a>
-                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -421,72 +469,4 @@
         </section>
     @endif
 
-    <section class="mb-3">
-        <div class="container">
-            <div class="row gutters-10">
-                <div class="col-lg-6">
-                    <div class="section-title-1 clearfix">
-                        <h3 class="heading-5 strong-700 mb-0 float-left">
-                            <span class="mr-4">{{__('Top 10 Catogories')}}</span>
-                        </h3>
-                        <ul class="float-right inline-links">
-                            <li>
-                                <a href="{{ route('categories.all') }}" class="active">{{__('View All Catogories')}}</a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="row gutters-5">
-                        @foreach (\App\Category::where('top', 1)->get() as $category)
-                            <div class="mb-3 col-6">
-                                <a href="{{ route('products.category', $category->slug) }}" class="bg-white border d-block c-base-2 box-2 icon-anim pl-2">
-                                    <div class="row align-items-center no-gutters">
-                                        <div class="col-3 text-center">
-                                            <img src="{{ asset($category->banner) }}" alt="" class="img-fluid img">
-                                        </div>
-                                        <div class="info col-7">
-                                            <div class="name text-truncate pl-3 py-4">{{ __($category->name) }}</div>
-                                        </div>
-                                        <div class="col-2">
-                                            <i class="la la-angle-right c-base-1"></i>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                        @endforeach
-                    </div>
-                </div>
-                <div class="col-lg-6">
-                    <div class="section-title-1 clearfix">
-                        <h3 class="heading-5 strong-700 mb-0 float-left">
-                            <span class="mr-4">{{__('Top 10 Media Owner')}}</span>
-                        </h3>
-                        <ul class="float-right inline-links">
-                            <li>
-                                <a href="{{ route('brands.all') }}" class="active">{{__('View All Media Owner')}}</a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="row">
-                        @foreach (\App\Brand::where('top', 1)->get() as $brand)
-                            <div class="mb-3 col-6">
-                                <a href="{{ route('products.brand', $brand->slug) }}" class="bg-white border d-block c-base-2 box-2 icon-anim pl-2">
-                                    <div class="row align-items-center no-gutters">
-                                        <div class="col-3 text-center">
-                                            <img src="{{ asset($brand->logo) }}" alt="" class="img-fluid img">
-                                        </div>
-                                        <div class="info col-7">
-                                            <div class="name text-truncate pl-3 py-4">{{ __($brand->name) }}</div>
-                                        </div>
-                                        <div class="col-2">
-                                            <i class="la la-angle-right c-base-1"></i>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                        @endforeach
-                    </div>
-                </div>
-            </div>
-
-    </section>
 @endsection
