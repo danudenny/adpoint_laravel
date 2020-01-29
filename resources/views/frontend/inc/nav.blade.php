@@ -1,6 +1,6 @@
 <div class="header bg-white">
     <!-- Top Bar -->
-    <div class="top-navbar">
+    {{-- <div class="top-navbar">
         <div class="container">
             <div class="row">
                 <div class="col-lg-7 col">
@@ -26,26 +26,6 @@
                             </ul>
                         </li>
 
-                        {{-- <li class="dropdown" id="currency-change">
-                            @php
-                                if(Session::has('currency_code')){
-                                    $currency_code = Session::get('currency_code', $code);
-                                }
-                                else{
-                                    $currency_code = \App\Currency::findOrFail(\App\BusinessSetting::where('type', 'system_default_currency')->first()->value)->code;
-                                }
-                            @endphp
-                            <a href="" class="dropdown-toggle top-bar-item" data-toggle="dropdown">
-                                {{ \App\Currency::where('code', $currency_code)->first()->name }} {{ (\App\Currency::where('code', $currency_code)->first()->symbol) }}
-                            </a>
-                            <ul class="dropdown-menu">
-                                @foreach (\App\Currency::where('status', 1)->get() as $key => $currency)
-                                    <li class="dropdown-item @if($currency_code == $currency->code) active @endif">
-                                        <a href="" data-currency="{{ $currency->code }}">{{ $currency->name }} ({{ $currency->symbol }})</a>
-                                    </li>
-                                @endforeach
-                            </ul>
-                        </li> --}}
                     </ul>
                 </div>
 
@@ -73,7 +53,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
     <!-- END Top Bar -->
 
     <!-- mobile menu -->
@@ -370,48 +350,6 @@
                     </div>
                     <div class="col-lg-9 col-4 position-static">
                         <div class="d-flex w-100">
-                            <div class="search-box flex-grow-1 px-4">
-                                <form action="{{ route('search') }}" method="GET">
-                                    <div class="d-flex position-relative">
-                                        <div class="d-lg-none search-box-back">
-                                            <button class="" type="button"><i class="la la-long-arrow-left"></i></button>
-                                        </div>
-                                        <div class="w-100">
-                                            <input type="text" aria-label="Search" id="search" name="q" class="w-100" placeholder="I'm shopping for..." autocomplete="off">
-                                        </div>
-                                        <div class="form-group category-select d-none d-xl-block">
-                                            <select class="form-control selectpicker" name="category">
-                                                <option value="">{{__('All Categories')}}</option>
-                                                @foreach (\App\Category::all() as $key => $category)
-                                                <option value="{{ $category->slug }}"
-                                                    @isset($category_id)
-                                                        @if ($category_id == $category->id)
-                                                            selected
-                                                        @endif
-                                                    @endisset
-                                                    >{{ __($category->name) }}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                        <button class="d-none d-lg-block" type="submit">
-                                            <i class="la la-search la-flip-horizontal"></i>
-                                        </button>
-                                        <div class="typed-search-box d-none">
-                                            <div class="search-preloader">
-                                                <div class="loader"><div></div><div></div><div></div></div>
-                                            </div>
-                                            <div class="search-nothing d-none">
-
-                                            </div>
-                                            <div id="search-content">
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                </form>
-
-                            </div>
-
                             <div class="logo-bar-icons d-inline-block ml-auto">
                                 <div class="d-inline-block d-lg-none">
                                     <div class="nav-search-box">
@@ -420,121 +358,118 @@
                                         </a>
                                     </div>
                                 </div>
-                                <div class="d-none d-lg-inline-block">
-                                    <div class="nav-compare-box" id="compare">
-                                        <a href="{{ route('compare') }}" class="nav-box-link">
-                                            <i class="la la-refresh d-inline-block nav-box-icon"></i>
-                                            <span class="nav-box-text d-none d-xl-inline-block">{{__('Compare')}}</span>
-                                            @if(Session::has('compare'))
-                                                <span class="nav-box-number">{{ count(Session::get('compare'))}}</span>
-                                            @else
-                                                <span class="nav-box-number">0</span>
-                                            @endif
-                                        </a>
-                                    </div>
+                                <div class="d-none d-lg-inline-block topnav-text">
+                                    <i class="fa fa-envelope icon-nav"></i>
+                                    <span> hello@adpoint.id</span>
                                 </div>
-                                <div class="d-none d-lg-inline-block">
-                                    <div class="nav-wishlist-box" id="wishlist">
-                                        <a href="{{ route('wishlists.index') }}" class="nav-box-link">
-                                            <i class="la la-heart-o d-inline-block nav-box-icon"></i>
-                                            <span class="nav-box-text d-none d-xl-inline-block">{{__('Wishlist')}}</span>
-                                            @if(Auth::check())
-                                                <span class="nav-box-number">{{ count(Auth::user()->wishlists)}}</span>
-                                            @else
-                                                <span class="nav-box-number">0</span>
-                                            @endif
-                                        </a>
-                                    </div>
+                                <div class="d-none d-lg-inline-block topnav-text">
+                                    <i class="fa fa-phone icon-nav"></i>
+                                    <span> 021 538 5359</span>
                                 </div>
-                                <div class="d-inline-block" data-hover="dropdown">
-                                    <div class="nav-cart-box dropdown" id="cart_items">
-                                        <a href="" class="nav-box-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <i class="la la-shopping-cart d-inline-block nav-box-icon"></i>
-                                            <span class="nav-box-text d-none d-xl-inline-block">{{__('Cart')}}</span>
-                                            @if(Session::has('cart'))
-                                                <span class="nav-box-number">{{ count(Session::get('cart'))}}</span>
-                                            @else
-                                                <span class="nav-box-number">0</span>
-                                            @endif
-                                        </a>
-                                        <ul class="dropdown-menu dropdown-menu-right px-0">
-                                            <li>
-                                                <div class="dropdown-cart px-0">
-                                                    @if(Session::has('cart'))
-                                                        @if(count($cart = Session::get('cart')) > 0)
-                                                            <div class="dc-header">
-                                                                <h3 class="heading heading-6 strong-700">{{__('Cart Items')}}</h3>
-                                                            </div>
-                                                            <div class="dropdown-cart-items c-scrollbar">
-                                                                @php
-                                                                    $total = 0;
-                                                                @endphp
-                                                                @foreach($cart as $key => $cartItem)
+                                @auth
+                                    <div class="d-none d-lg-inline-block topnav-text">
+                                        <a href="{{ route('dashboard') }}" class="login-text">{{__('My Panel')}}</a>
+                                    </div>
+                                    <div class="d-none d-lg-inline-block topnav-text">
+                                        <a href="{{ route('logout') }}" class="login-text">{{__('Logout')}}</a>
+                                    </div>
+                                    <div class="d-inline-block" data-hover="dropdown">
+                                        <div class="nav-cart-box dropdown" id="cart_items">
+                                            <a href="" class="nav-box-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <i class="la la-shopping-cart d-inline-block nav-box-icon"></i>
+                                                <span class="nav-box-text d-none d-xl-inline-block">{{__('Cart')}}</span>
+                                                @if(Session::has('cart'))
+                                                    <span class="nav-box-number">{{ count(Session::get('cart'))}}</span>
+                                                @else
+                                                    <span class="nav-box-number">0</span>
+                                                @endif
+                                            </a>
+                                            <ul class="dropdown-menu dropdown-menu-right px-0">
+                                                <li>
+                                                    <div class="dropdown-cart px-0">
+                                                        @if(Session::has('cart'))
+                                                            @if(count($cart = Session::get('cart')) > 0)
+                                                                <div class="dc-header">
+                                                                    <h3 class="heading heading-6 strong-700">{{__('Cart Items')}}</h3>
+                                                                </div>
+                                                                <div class="dropdown-cart-items c-scrollbar">
                                                                     @php
-                                                                        $product = \App\Product::find($cartItem['id']);
-                                                                        $total = $total + $cartItem['price']*$cartItem['quantity'];
+                                                                        $total = 0;
                                                                     @endphp
-                                                                    <div class="dc-item">
-                                                                        <div class="d-flex align-items-center">
-                                                                            <div class="dc-image">
-                                                                                <a href="{{ route('product', $product->slug) }}">
-                                                                                    <img src="{{ asset($product->thumbnail_img) }}" class="img-fluid" alt="">
-                                                                                </a>
-                                                                            </div>
-                                                                            <div class="dc-content">
-                                                                                <span class="d-block dc-product-name text-capitalize strong-600 mb-1">
+                                                                    @foreach($cart as $key => $cartItem)
+                                                                        @php
+                                                                            $product = \App\Product::find($cartItem['id']);
+                                                                            $total = $total + $cartItem['price']*$cartItem['quantity'];
+                                                                        @endphp
+                                                                        <div class="dc-item">
+                                                                            <div class="d-flex align-items-center">
+                                                                                <div class="dc-image">
                                                                                     <a href="{{ route('product', $product->slug) }}">
-                                                                                        {{ __($product->name) }}
+                                                                                        <img src="{{ asset($product->thumbnail_img) }}" class="img-fluid" alt="">
                                                                                     </a>
-                                                                                </span>
+                                                                                </div>
+                                                                                <div class="dc-content">
+                                                                                    <span class="d-block dc-product-name text-capitalize strong-600 mb-1">
+                                                                                        <a href="{{ route('product', $product->slug) }}">
+                                                                                            {{ __($product->name) }}
+                                                                                        </a>
+                                                                                    </span>
 
-                                                                                <span class="dc-quantity">x{{ $cartItem['quantity'] }}</span>
-                                                                                <span class="dc-price">{{ single_price($cartItem['price']*$cartItem['quantity']) }}</span>
-                                                                            </div>
-                                                                            <div class="dc-actions">
-                                                                                <button onclick="removeFromCart({{ $key }})">
-                                                                                    <i class="la la-close"></i>
-                                                                                </button>
+                                                                                    <span class="dc-quantity">x{{ $cartItem['quantity'] }}</span>
+                                                                                    <span class="dc-price">{{ single_price($cartItem['price']*$cartItem['quantity']) }}</span>
+                                                                                </div>
+                                                                                <div class="dc-actions">
+                                                                                    <button onclick="removeFromCart({{ $key }})">
+                                                                                        <i class="la la-close"></i>
+                                                                                    </button>
+                                                                                </div>
                                                                             </div>
                                                                         </div>
-                                                                    </div>
-                                                                @endforeach
-                                                            </div>
-                                                            <div class="dc-item py-3">
-                                                                <span class="subtotal-text">{{__('Subtotal')}}</span>
-                                                                <span class="subtotal-amount">{{ single_price($total) }}</span>
-                                                            </div>
-                                                            <div class="py-2 text-center dc-btn">
-                                                                <ul class="inline-links inline-links--style-3">
-                                                                    <li class="px-1">
-                                                                        <a href="{{ route('cart') }}" class="link link--style-1 text-capitalize btn btn-base-1 px-3 py-1">
-                                                                            <i class="la la-shopping-cart"></i> {{__('View cart')}}
-                                                                        </a>
-                                                                    </li>
-                                                                    @if (Auth::check())
-                                                                    <li class="px-1">
-                                                                        <a href="{{ route('checkout.shipping_info') }}" class="link link--style-1 text-capitalize btn btn-base-1 px-3 py-1 light-text">
-                                                                            <i class="la la-mail-forward"></i> {{__('Checkout')}}
-                                                                        </a>
-                                                                    </li>
-                                                                    @endif
-                                                                </ul>
-                                                            </div>
+                                                                    @endforeach
+                                                                </div>
+                                                                <div class="dc-item py-3">
+                                                                    <span class="subtotal-text">{{__('Subtotal')}}</span>
+                                                                    <span class="subtotal-amount">{{ single_price($total) }}</span>
+                                                                </div>
+                                                                <div class="py-2 text-center dc-btn">
+                                                                    <ul class="inline-links inline-links--style-3">
+                                                                        <li class="px-1">
+                                                                            <a href="{{ route('cart') }}" class="link link--style-1 text-capitalize btn btn-base-1 px-3 py-1">
+                                                                                <i class="la la-shopping-cart"></i> {{__('View cart')}}
+                                                                            </a>
+                                                                        </li>
+                                                                        @if (Auth::check())
+                                                                        <li class="px-1">
+                                                                            <a href="{{ route('checkout.shipping_info') }}" class="link link--style-1 text-capitalize btn btn-base-1 px-3 py-1 light-text">
+                                                                                <i class="la la-mail-forward"></i> {{__('Checkout')}}
+                                                                            </a>
+                                                                        </li>
+                                                                        @endif
+                                                                    </ul>
+                                                                </div>
+                                                            @else
+                                                                <div class="dc-header">
+                                                                    <h3 class="heading heading-6 strong-700">{{__('Your Cart is empty')}}</h3>
+                                                                </div>
+                                                            @endif
                                                         @else
                                                             <div class="dc-header">
                                                                 <h3 class="heading heading-6 strong-700">{{__('Your Cart is empty')}}</h3>
                                                             </div>
                                                         @endif
-                                                    @else
-                                                        <div class="dc-header">
-                                                            <h3 class="heading heading-6 strong-700">{{__('Your Cart is empty')}}</h3>
-                                                        </div>
-                                                    @endif
-                                                </div>
-                                            </li>
-                                        </ul>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
                                     </div>
+                                @else
+                                <div class="d-none d-lg-inline-block topnav-text">
+                                    <a href="{{ route('user.login') }}" class="login-text"> Login</a>
                                 </div>
+                                <div class="d-none d-lg-inline-block topnav-text">
+                                    <a href="{{ route('user.registration') }}" class="icon-nav"> Register</a>
+                                </div>
+                                @endauth
                             </div>
                         </div>
                     </div>

@@ -40,7 +40,7 @@ p:not(.lead) {
 }
 
 .gry-bg {
-    background-color: #f3f3f3;
+    background-color: white;
 }
 
 .bg-gray {
@@ -279,7 +279,185 @@ input[type="submit"] {
     transform: translate(0, 0)scale(1);
 }
 
+.text-home-top h1 {
+    color: white;
+    margin: 80px auto 0 150px;
+    font-weight: bold;
+    position: absolute;
+}
 
+.select-city{
+    position: absolute;
+    width: 300px;
+    margin: 220px auto 0 150px;
+}
+
+.select-address{
+    position: absolute;
+    width: 300px;
+    margin: 220px auto 0 480px;
+}
+
+.select-media{
+    position: absolute;
+    width: 300px;
+    margin: 220px auto 0 810px;
+}
+
+.button-cari {
+    background-color: #333; /* Green */
+    border: none;
+    border-radius: 5px;
+    padding: 7px 30px;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 220px auto 0 1130px;
+}
+
+.button-cari:hover {
+    background-color: darkblue; /* Green */
+    border: none;
+    border-radius: 5px;
+    padding: 7px 30px;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 220px auto 0 1130px;
+}
+
+.topnav-text {
+    font-size: 16px;
+    color: white;
+}
+
+.icon-nav {
+    background-color: white;
+    border-radius: 5px;
+    padding: 10px;
+    margin-left: 10px;
+    text-decoration: none;
+    color: orange;
+}
+
+.login-text {
+    color: white
+}
+
+.login-text:hover {
+    color: #333
+}
+
+.browse-cat {
+    display: inline;
+    list-style-type: none;
+    text-decoration: none;
+    margin: 20px;
+    justify-content: space-between;
+    text-align: center;
+}
+
+.box-cat {
+    display: inline-block;
+    max-width: 190px;
+    height: auto;
+    position: relative;
+    overflow: hidden;
+    justify-content: space-between;
+    text-align: center;
+    padding: 20px;
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.box-cat img{
+    display: block;
+    margin: 0 auto;
+    height: auto;
+    /* width: 150%;  */
+    /* margin: 0 0 0 -20%; */
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    -ms-border-radius: 50%;
+    -o-border-radius: 50%;
+    border-radius: 15%;  
+}
+
+.card-seller-buyer {
+    width: 500px;
+    margin: 10px;
+    background-color: whitesmoke;
+}
+
+.card-seller-buyer p {
+    text-align: center;
+    font-size: 16px;
+    margin-top: 10px;
+}
+
+.card-seller-buyer h3 {
+    text-align: center;
+    font-weight: bold;
+}
+
+.card-seller-buyer a {
+    text-align: center;
+    margin: -50px -50px; 
+    position:relative;
+    top:50%; 
+    left:50%;
+}
+
+.card-center {
+    display: flex;
+    align-items: center;
+    justify-content: center
+}
+
+.cards-double {
+    margin: -50px -50px; 
+    position:relative;
+    top:50%; 
+    left:50%;
+}
+
+.image-block-home {
+    max-height: 400px;
+    width: 100%;
+    position: relative;
+}
+
+.box-partner {
+    display: inline-block;
+    width: 200px;
+    height: auto;
+    position: relative;
+    overflow: hidden;
+    justify-content: space-between;
+    text-align: center;
+    padding: 20px;
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.box-partner img{
+    display: block;
+    margin: 0 auto;
+    height: auto;
+    /* width: 150%;  */
+    /* margin: 0 0 0 -20%; */
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    -ms-border-radius: 50%;
+    -o-border-radius: 50%;
+    border-radius: 15%;  
+}
 /* bootstrap extra container */
 
 @media (min-width:1500px) {
@@ -409,6 +587,7 @@ select+.select2-container {
 .top-navbar .top-bar-item {
     padding: 10px 0;
     display: inline-block;
+    color: white;
 }
 
 .top-navbar {
@@ -451,9 +630,9 @@ select+.select2-container {
 /* logo bar area */
 
 .logo-bar-area {
-    padding-top: 20px;
+    padding: 10px;
     z-index: 101;
-    background-color: #0f355a;
+    background: linear-gradient(39deg, rgba(254,165,0,1) 0%, rgba(254,165,0,1) 29%, rgba(242,185,79,1) 100%);
 }
 
 .logo-bar-area .navbar-brand {
@@ -468,6 +647,7 @@ select+.select2-container {
     width: auto;
     height: auto;
     max-height: 40px;
+    margin-left: 140px;
 }
 
 .category-menu-icon-box {
@@ -674,9 +854,7 @@ select+.select2-container {
 /* main nav bar area */
 
 .main-nav-area {
-    border-bottom: 2px solid #ff9400;
-    padding: 15px 0;
-    background-color: #0f355a;
+    background-color: orange;
 }
 
 .main-nav-area .navbar-nav .nav-item .nav-link {
@@ -701,8 +879,8 @@ select+.select2-container {
 /* category menu area */
 
 section.home-banner-area {
-    background: #FCF9F7;
-    height: 455px;
+    background: linear-gradient(39deg, rgba(254,165,0,1) 0%, rgba(254,165,0,1) 29%, rgba(242,185,79,1) 100%);
+    height: 400px;
 }
 
 .category-sidebar {
@@ -4230,7 +4408,7 @@ ul.inline-links>li {
 
 @media (min-width: 1500px) {
     .container {
-        max-width: 1400px;
+        max-width: 80%;
     }
     .col-xxl {
         -ms-flex-preferred-size: 0;
