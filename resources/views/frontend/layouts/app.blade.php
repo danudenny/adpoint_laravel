@@ -121,7 +121,7 @@
 <script src="{{ asset('frontend/js/dataTables.bootstrap4.min.js') }}"></script>
 <script src="{{ asset('frontend/js/jquery-ui.js') }}"></script>
 <script src="{{ asset('frontend/js/bootstrap-select.min.js') }}"></script>
-<script src="{{ asset('js/dropzone.js') }}"></script>
+<script src="{{ asset('frontend/js/bootstrap-select.min.js') }}"></script>
 
 
 <link rel="stylesheet" href="{{ asset('css/dropzone.css') }}">

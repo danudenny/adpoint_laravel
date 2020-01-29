@@ -1,5 +1,5 @@
-@foreach ($order_details as $key => $od)
-    @if ($od->status === 1)
+@if (count($order_details) > 0)
+    @foreach ($order_details as $key => $od)
         <article class="card mt-1">
             <div style="height: 35px; background: #0f355a; color: white; border-bottom: 2px solid #fd7e14">
                 <strong style="line-height: 35px; margin-left: 15px">{{ $od->created_at }}</strong>
@@ -57,7 +57,6 @@
                 </table>
             </div>
         </article>
-
         <!-- Modal Approve-->
         <div class="modal fade" id="active{{ $od->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
@@ -79,5 +78,7 @@
             </div>
             </div>
         </div>
-    @endif
-@endforeach
+    @endforeach
+@else
+    @include('frontend.not_found')
+@endif

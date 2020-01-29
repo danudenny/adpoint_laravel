@@ -33,36 +33,26 @@
 
                         <!-- Order history table -->
                         
-                        <div class="card no-border mt-4">
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-md-3">
-                                        <div class="form-group">
-                                            <input type="text" class="form-control" id="startDate" placeholder="Start">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <div class="form-group">
-                                            <input type="text" class="form-control" id="endDate" placeholder="End">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <select class="form-control selectpicker">
-                                            <option value="latest">Latest</option>
-                                            <option value="old">Old</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-md-2">
-                                        <div class="form-group">
-                                            <button class="btn btn-danger">Reset Filter</button>
-                                        </div>
-                                    </div>
+                        <div class="row no-border mt-4">
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <input type="text" class="form-control" id="startDate" placeholder="Start">
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <input type="text" class="form-control" id="endDate" placeholder="End">
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <button class="btn btn-block btn-outline-info btn-circle">Apply</button>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="card no-border mt-2">
-                            <div class="card-body">
+                        <div class="row no-border mt-2">
+                            <div class="col-md-12">
                                 <nav class="no-border" style="color: black">
                                     <div class="nav nav-tabs" id="nav-tab" role="tablist">
                                         <a class="nav-item nav-link active" id="nav-order-place-tab" data-url="{{ route('orders.place.order') }}" data-toggle="tab" href="#nav-order-place" role="tab" aria-controls="nav-order-place" aria-selected="true">Order place</a>
@@ -75,10 +65,10 @@
                             </div>
                         </div>
                         
-                        <div class="card no-border mt-1">
-                            <div class="card-body">
+                        <div class="row no-border mt-1">
+                            <div class="col-md-12">
                                 <div class="tab-content" id="nav-tabContent">
-                                    <div class="c-nav-load">
+                                    <div class="c-nav-load mt-5">
                                         <i class="fa fa-spin fa-spinner"></i>
                                     </div>
                                     <div class="tab-pane fade show active" id="nav-order-place" role="tabpanel" aria-labelledby="nav-order-place-tab">

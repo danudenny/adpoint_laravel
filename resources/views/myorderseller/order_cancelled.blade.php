@@ -1,5 +1,5 @@
-@foreach ($order_details as $key => $od)
-    @if ($od->status === 100)
+@if (count($order_details) > 0)
+    @foreach ($order_details as $key => $od)
         <article class="card mt-1">
             <div style="height: 35px; background: #0f355a; color: white; border-bottom: 2px solid #fd7e14">
                 <strong style="line-height: 35px; margin-left: 15px">{{ $od->created_at }}</strong>
@@ -41,14 +41,6 @@
                             QTY: {{ $od->quantity }} <br>
                             {{ single_price($od->price) }}
                         </td>
-                        <td>
-                            Status: 
-                            @if ($od->status === 100)
-                                <div class="badge badge-danger">
-                                    Rejected
-                                </div>
-                            @endif
-                        </td>
                         <td align="right">
                             <button class="btn btn-outline-secondary btn-circle btn-sm" onclick="itemDetailsSeller({{ $od->id }})">
                                 <i class="fa fa-eye"></i> Details
@@ -58,5 +50,7 @@
                 </table>
             </div>
         </article>
-    @endif
-@endforeach
+    @endforeach
+@else 
+    @include('frontend.not_found')
+@endif

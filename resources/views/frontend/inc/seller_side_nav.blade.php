@@ -77,14 +77,6 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('broadcast_proof.index') }}" class="{{ areActiveRoutesHome(['broadcast_proof.index'])}}">
-                        <i class="la la-image"></i>
-                        <span class="category-name">
-                            {{__('Bukti Tayang')}}
-                        </span>
-                    </a>
-                </li>
-                <li>
                     <a href="{{ route('reviews.seller') }}" class="{{ areActiveRoutesHome(['reviews.seller'])}}">
                         <i class="la la-star-o"></i>
                         <span class="category-name">
@@ -129,12 +121,12 @@
             <div class="text-center">
                 <div class="heading-4 strong-700 mb-4">
                     @php
-                        $orderDetails = \App\OrderDetail::where('seller_id', Auth::user()->id)->where('created_at', '>=', date('-30d'))->get();
+                        $orders = \App\Order::where('seller_id', Auth::user()->id)->where('created_at', '>=', date('-30d'))->get();
                         
                         $total = 0;
-                        foreach ($orderDetails as $key => $orderDetail) {
-                            if($orderDetail->order->payment_status == 'paid'){
-                                $total += $orderDetail->price;
+                        foreach ($orders as $key => $o) {
+                            if($o->approved == 1){
+                                $total += $o->grand_total-$o->adpoint_earning;
                             }
                         }
                     @endphp
@@ -144,11 +136,11 @@
                 <table class="text-left mb-0 table w-75 m-auto">
                     <tr>
                         @php
-                            $orderDetails = \App\OrderDetail::where('seller_id', Auth::user()->id)->get();
+                            $orders = \App\Order::where('seller_id', Auth::user()->id)->get();
                             $total = 0;
-                            foreach ($orderDetails as $key => $orderDetail) {
-                                if($orderDetail->order->payment_status == 'paid'){
-                                    $total += $orderDetail->price;
+                            foreach ($orders as $key => $o) {
+                                if($o->approved == 1){
+                                    $total += $o->grand_total-$o->adpoint_earning;
                                 }
                             }
                         @endphp
@@ -161,11 +153,11 @@
                     </tr>
                     <tr>
                         @php
-                            $orderDetails = \App\OrderDetail::where('seller_id', Auth::user()->id)->where('created_at', '>=', date('-60d'))->where('created_at', '<=', date('-30d'))->get();
+                            $orders = \App\Order::where('seller_id', Auth::user()->id)->where('created_at', '>=', date('-60d'))->where('created_at', '<=', date('-30d'))->get();
                             $total = 0;
-                            foreach ($orderDetails as $key => $orderDetail) {
-                                if($orderDetail->order->payment_status == 'paid'){
-                                    $total += $orderDetail->price;
+                            foreach ($orders as $key => $o) {
+                                if($o->approved == 1){
+                                    $total += $o->grand_total-$o->adpoint_earning;
                                 }
                             }
                         @endphp

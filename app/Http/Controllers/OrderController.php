@@ -43,14 +43,15 @@ class OrderController extends Controller
 {
     // page seller
 
-    public function get_items()
+    public function get_items($status = null)
     {
         $order_details = DB::table('order_details as od')
                             ->orderBy('od.id', 'desc')
                             ->join('orders as o', 'o.id', '=', 'od.order_id')
                             ->where([
                                 'o.seller_id' => Auth::user()->id,
-                                'o.approved'  => 1
+                                'o.approved'  => 1,
+                                'od.status' => $status
                             ])
                             ->select([
                                 'od.*',
@@ -294,21 +295,6 @@ class OrderController extends Controller
     {
         $invoice = $this->_generate_invoice($request->trx_id);
         return view('frontend.partials.confirm_to_buyer', compact('invoice'));
-    }
-
-    public function auto_cancel_trx($id)
-    {
-        $trx = Transaction::where('id', $id)->first();
-        $trx->status = "cancelled";
-        if ($trx->save()) {
-            foreach ($trx->orders as $key => $o) {
-                foreach ($o->orderDetails as $key => $od) {
-                    $item = OrderDetail::where('id', $od->id)->first();
-                    $item->status = 100;
-                    $item->save();
-                }
-            }
-        }
     }
 
     public function proses_confirm_to_buyer(Request $request)
@@ -606,31 +592,31 @@ class OrderController extends Controller
     // get load from ajax
     public function order_place()
     {
-        $order_details = $this->get_items();
+        $order_details = $this->get_items(0);
         return view('myorderseller.order_place', compact('order_details'));
     }
 
     public function order_review()
     {
-        $order_details = $this->get_items();
+        $order_details = $this->get_items(1);
         return view('myorderseller.order_review', compact('order_details'));
     }
 
     public function order_active()
     {
-        $order_details = $this->get_items();
+        $order_details = $this->get_items(3);
         return view('myorderseller.order_active', compact('order_details'));
     }
 
     public function order_completes()
     {
-        $order_details = $this->get_items();
+        $order_details = $this->get_items(4);
         return view('myorderseller.order_completes', compact('order_details'));
     }
 
     public function order_cancelled()
     {
-        $order_details = $this->get_items();
+        $order_details = $this->get_items(100);
         return view('myorderseller.order_cancelled', compact('order_details'));
     }
 

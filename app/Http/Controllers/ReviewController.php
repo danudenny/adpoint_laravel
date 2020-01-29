@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Review;
 use App\Product;
+use App\OrderDetail;
 use Auth;
 use DB;
 
@@ -33,6 +34,35 @@ class ReviewController extends Controller
                     ->paginate(9);
 
         return view('frontend.seller.reviews', compact('reviews'));
+    }
+
+    public function review_product(Request $request)
+    {
+        $query = OrderDetail::where('id', $request->order_detail_id)->first();
+        return view('frontend.partials.review_product', compact('query'));
+    }
+
+    public function create_review_product(Request $request)
+    {
+        $review = new Review;
+        $review->product_id = $request->product_id;
+        $review->user_id = $request->user_id;
+        $review->rating = $request->rating;
+        $review->comment = $request->comment;
+        if($review->save()){
+            $product = Product::findOrFail($request->product_id);
+            if(count(Review::where('product_id', $product->id)->where('status', 1)->get()) > 0){
+                $product->rating = Review::where('product_id', $product->id)->where('status', 1)->sum('rating')/count(Review::where('product_id', $product->id)->where('status', 1)->get());
+            }
+            else {
+                $product->rating = 0;
+            }
+            $product->save();
+            flash('Review has been submitted successfully')->success();
+            return back();
+        }
+        flash('Something went wrong')->error();
+        return back();
     }
 
     /**

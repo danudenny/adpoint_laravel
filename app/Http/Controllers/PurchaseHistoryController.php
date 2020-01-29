@@ -11,12 +11,15 @@ use DB;
 
 class PurchaseHistoryController extends Controller
 {
-    public function get_items()
+    public function get_items($status = null)
     {
         $order_details = DB::table('order_details as od')
                             ->orderBy('od.id', 'desc')
                             ->join('orders as o', 'o.id', '=', 'od.order_id')
-                            ->where('o.user_id', Auth::user()->id)
+                            ->where([
+                                'o.user_id' => Auth::user()->id,
+                                'od.status' => $status
+                            ])
                             ->select([
                                 'od.*',
                                 'o.id as o_id',
@@ -99,31 +102,31 @@ class PurchaseHistoryController extends Controller
 
     public function order_place()
     {
-        $order_details = $this->get_items();
+        $order_details = $this->get_items(0);
         return view('myorder.order_place', compact('order_details'));
     }
 
     public function order_review()
     {
-        $order_details = $this->get_items();
+        $order_details = $this->get_items(1);
         return view('myorder.order_review', compact('order_details'));
     }
 
     public function order_active()
     {
-        $order_details = $this->get_items();
+        $order_details = $this->get_items(3);
         return view('myorder.order_active', compact('order_details'));
     }
 
     public function order_complete()
     {
-        $order_details = $this->get_items();
+        $order_details = $this->get_items(4);
         return view('myorder.order_complete', compact('order_details'));
     }
 
     public function order_cancelled()
     {
-        $order_details = $this->get_items();
+        $order_details = $this->get_items(100);
         return view('myorder.order_cancelled', compact('order_details'));
     }
 }

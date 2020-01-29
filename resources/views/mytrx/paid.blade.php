@@ -1,6 +1,6 @@
-@foreach ($trx as $no => $t)
-    @if ($t->payment_status === 1)
-        <div class="card" style="background: #fff; 
+@if (count($trx) > 0)
+    @foreach ($trx as $no => $t)
+        <div class="card mt-2" style="background: #fff; 
                                 color: black; border-radius: 0%; 
                                 border-bottom: 2px solid #fd7e14; 
                                 border-top: 0;
@@ -14,5 +14,7 @@
                 <button onclick="trxDetails({{ $t->id }})" class="btn btn-sm btn-circle btn-outline-info pull-right"><i class="fa fa-eye"></i> Details</button>
             </div>
         </div>
-    @endif
-@endforeach
+    @endforeach
+@else 
+    @include('frontend.not_found')
+@endif

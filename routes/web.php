@@ -139,6 +139,9 @@ Route::group(['middleware' => ['user', 'verified']], function(){
 	// load get from ajax
 	Route::get('trx-unpaid', 'TransactionController@trx_unpaid')->name('trx.unpaid');
 	Route::get('trx-paid', 'TransactionController@trx_paid')->name('trx.paid');
+
+	Route::post('find-trx-unpaid', 'TransactionController@find_trx_unpaid')->name('find.trx.unpaid');
+	Route::post('find-trx-paid', 'TransactionController@find_trx_paid')->name('find.trx.paid');
 	
 	
 	Route::resource('wishlists','WishlistController');
@@ -214,6 +217,8 @@ Route::group(['middleware' => ['auth']], function(){
 	Route::post('bukti_tayang_detail', 'EvidenceController@bukti_tayang_detail')->name('bukti.tayang.detail');
 
 	Route::resource('/reviews', 'ReviewController');
+	Route::post('/review/review_product', 'ReviewController@review_product')->name('review.product');
+	Route::post('/review/create_review_product', 'ReviewController@create_review_product')->name('create.review.product');
 });
 
 Route::resource('shops', 'ShopController');
