@@ -93,41 +93,30 @@ class CheckoutController extends Controller
     public function store_shipping_info(Request $request)
     {
         $shipping_info = $request->session()->get('shipping_info');
-
-        if ($request->hasFile('filegambar')) {
+        if ($request->hasFile('image')) {
             $filegambar = [];
             $arr = [];
-            foreach ($request->filegambar as $key => $g) {
-                $path = $g->store('uploads/materi_advertising/gambar');
+            foreach ($request->image as $key => $g) {
+                $path = $g->store('uploads/bukti_tayang');
                 array_push($arr, $path);
                 $filegambar['gambar'] = $arr;
             }
         }else {
             $filegambar['gambar'] = null;
         }
-        if ($request->hasFile('filevideo')) {
+        if ($request->hasFile('video')) {
             $filevideo = [];
             $arr = [];
-            foreach ($request->filevideo as $key => $g) {
-                $path = $g->store('uploads/materi_advertising/video');
+            foreach ($request->video as $key => $g) {
+                $path = $g->store('uploads/bukti_tayang');
                 array_push($arr, $path);
                 $filevideo['video'] = $arr;
             }
         }else {
             $filevideo['video'] = null;
         }
-        if ($request->hasFile('filezip')) {
-            $filezip = [];
-            $arr = [];
-            foreach ($request->filezip as $key => $g) {
-                $path = $g->store('uploads/materi_advertising/zip');
-                array_push($arr, $path);
-                $filezip['zip'] = $arr;
-            }
-        }else {
-            $filezip['zip'] = null;
-        }
-        $result = array_merge($filegambar, $filevideo, $filezip);
+
+        $result = array_merge($filegambar, $filevideo);
         $file_ads = json_encode($result);
         $desc_ads = $request->desc_ads;
 

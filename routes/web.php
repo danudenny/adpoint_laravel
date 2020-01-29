@@ -120,7 +120,8 @@ Route::group(['middleware' => ['user', 'verified']], function(){
 
 	Route::resource('purchase_history','PurchaseHistoryController');
 	Route::post('/purchase_history/details', 'PurchaseHistoryController@purchase_history_details')->name('purchase_history.details');
-	Route::post('/purchase_history/item.details', 'PurchaseHistoryController@item_details')->name('item.details');
+	Route::post('/purchase_history/item_details', 'PurchaseHistoryController@item_details')->name('item.details');
+	Route::post('/purchase_history/show_bukti_tayang', 'PurchaseHistoryController@show_bukti_tayang')->name('show.bukti.tayang');
 	Route::get('/purchase_history/my_order/{id}', 'PurchaseHistoryController@my_order')->name('my.order');
 	Route::get('/purchase_history/destroy/{id}', 'PurchaseHistoryController@destroy')->name('purchase_history.destroy');
 
@@ -185,6 +186,9 @@ Route::group(['middleware' => ['auth']], function(){
 	Route::get('/broadcast_proof/aktifkan/{id}', 'EvidenceController@aktifkan')->name('aktifkan');
 	Route::get('/broadcast_proof/bukti_tayang/{id}', 'EvidenceController@bukti_tayang')->name('bukti.tayang');
 	Route::post('/broadcast_proof/upload_bukti_tayang', 'EvidenceController@upload_bukti_tayang')->name('upload.bukti.tayang');
+	Route::post('/broadcast_proof/update_bukti_tayang', 'EvidenceController@update_bukti_tayang')->name('update.bukti.tayang');
+	Route::post('/broadcast_proof/delete_file_image', 'EvidenceController@delete_file_image')->name('delete.file.image');
+	Route::post('/broadcast_proof/delete_file_video', 'EvidenceController@delete_file_video')->name('delete.file.video');
 	Route::get('/broadcast_proof/complete/{id}', 'EvidenceController@complete')->name('complete');
 	Route::get('/broadcast', 'EvidenceController@broadcast_customer')->name('broadcast.index');
 	Route::post('/broadcast/details', 'EvidenceController@broadcast_details')->name('broadcast.details');

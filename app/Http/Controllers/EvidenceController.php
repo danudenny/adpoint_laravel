@@ -97,62 +97,125 @@ class EvidenceController extends Controller
 
     public function upload_bukti_tayang(Request $request)
     {
-        if ($request->hasFile('filegambar')) {
+        if ($request->hasFile('image')) {
             $filegambar = [];
             $arr = [];
-            foreach ($request->filegambar as $key => $g) {
+            foreach ($request->image as $key => $g) {
                 $path = $g->store('uploads/bukti_tayang');
-                array_push($arr, ['filename'=>$path, 'description'=>$request->descgambar[$key]]);
+                array_push($arr, $path);
                 $filegambar['gambar'] = $arr;
             }
         }else {
             $filegambar['gambar'] = null;
         }
-        if ($request->hasFile('filevideo')) {
+        if ($request->hasFile('video')) {
             $filevideo = [];
             $arr = [];
-            foreach ($request->filevideo as $key => $g) {
+            foreach ($request->video as $key => $g) {
                 $path = $g->store('uploads/bukti_tayang');
-                array_push($arr, ['filename'=>$path, 'description'=>$request->descvideo[$key]]);
+                array_push($arr, $path);
                 $filevideo['video'] = $arr;
             }
         }else {
             $filevideo['video'] = null;
         }
-        if ($request->hasFile('filezip')) {
-            $filezip = [];
-            $arr = [];
-            foreach ($request->filezip as $key => $g) {
-                $path = $g->store('uploads/bukti_tayang');
-                array_push($arr, ['filename'=>$path, 'description'=>$request->desczip[$key]]);
-                $filezip['zip'] = $arr;
-            }
-        }else {
-            $filezip['zip'] = null;
-        }
-        $result = array_merge($filegambar, $filevideo, $filezip);
+
+        $result = array_merge($filegambar, $filevideo);
         $evidence = New Evidence;
         if ($evidence) {
-            $evidence->order_id = $request->order_id;
             $evidence->order_detail_id = $request->order_detail_id;
+            $evidence->no_order = $request->order_id;
             $order_detail = OrderDetail::where('id', $request->order_detail_id)->first();
             if ($order_detail != null) {
-                $order_detail->status_tayang = 1;
-                $order_detail->updated_at = time();
+                $order_detail->status = 3; // uploaded
                 $order_detail->save();
             }
             $evidence->no_bukti = $request->no_bukti;
             $evidence->no_order = $request->no_order;
             $evidence->file = json_encode($result);
-            $evidence->status = 1;
+            $evidence->status = 0;
             $evidence->save();
-            flash('Evidences success')->success();
+            flash('Bukti tayang uploaded!')->success();
+            return back();
         }else{
             flash('Someting Wrong!')->error();
+            return back();
         }
+    }
 
-        return back();
+    public function update_bukti_tayang(Request $request)
+    {
+        $evidence = Evidence::where('order_detail_id', $request->order_detail_id)->first();
         
+        $file = json_decode($evidence->file);
+
+        if ($request->hasFile('image')) {
+            $arr = [];
+            foreach ($request->image as $key => $g) {
+                $path = $g->store('uploads/bukti_tayang');
+                array_push($arr, $path);
+                if ($file->gambar !== null) {
+                    foreach ($file->gambar as $key => $a) {
+                        array_push($arr, $a);
+                    }
+                }
+            }
+            $file->gambar = $arr;
+        }
+        if ($request->hasFile('video')) {
+            $arr = [];
+            foreach ($request->video as $key => $g) {
+                $path = $g->store('uploads/bukti_tayang');
+                array_push($arr, $path);
+                if ($file->video !== null) {
+                    foreach ($file->video as $key => $b) {
+                        array_push($arr, $b);
+                    }
+                }
+            }
+            $file->video = $arr;
+        }
+        if ($evidence !== null) {
+            $evidence->file = json_encode($file);
+            $evidence->save();
+            flash('Bukti tayang updated!')->success();
+            return back();
+        }else {
+            flash('Someting Wrong!')->error();
+            return back();
+        }
+    }
+
+    public function delete_file_image(Request $request)
+    {
+        $evidence = Evidence::where('id', $request->id)->first();
+        if ($evidence !== null) {
+            $file = json_decode($evidence->file);
+            foreach ($file->gambar as $key => $gambar) {
+                if ($gambar === $request->val) {
+                    unset($file->gambar[$key]);
+                    unlink($request->val);
+                }
+            }
+            $evidence->file = json_encode($file);
+            $evidence->save();
+        }
+    }
+
+    public function delete_file_video(Request $request)
+    {
+        $evidence = Evidence::where('id', $request->id)->first();
+        if ($evidence !== null) {
+            $file = json_decode($evidence->file);
+            foreach ($file->video as $key => $video) {
+                if ($video === $request->val) {
+                    unset($file->video[$key]);
+                    unlink($request->val);
+                }
+            }
+            $evidence->file = json_encode($file);
+            $evidence->save();
+        }
     }
 
     public function broadcast_customer()

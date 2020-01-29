@@ -19,6 +19,7 @@ use DB;
 use PDF;
 use Mail;
 use File;
+use Carbon\Carbon;
 
 use App\Mail\Order\OrderStart;
 use App\Mail\Order\OrderApprovedAdmin;
@@ -34,6 +35,8 @@ use App\Notifications\OrderStartPush;
 use App\Notifications\OrderApproveAdminPush;
 use App\Notifications\OrderSoldPush;
 use App\Notifications\OrderApproveSellerPush;
+
+use App\Jobs\PaymentDuration;
 
 
 class OrderController extends Controller
@@ -75,11 +78,13 @@ class OrderController extends Controller
                     ->select([
                         't.code as code_trx',
                         't.payment_status',
+                        't.file_advertising',
                         'o.code as code_order',
                         'o.created_at as order_date',
                         'o.address',
                         'o.user_id as buyer_name',
                         'od.product_id as item_name',
+                        'od.seller_id',
                         'od.status as od_status',
                     ])
                     ->first();
@@ -193,10 +198,12 @@ class OrderController extends Controller
     private function _generate_invoice($trx_id) {
         $data = array();
         $trx = Transaction::where('id', $trx_id)->first();
+        $expire_date = Carbon::createFromTimestamp(strtotime($trx->created_at))->addHour(24);
         $buyer = User::where('id', $trx->user_id)->first();
         $data['trx_id'] = $trx->id;
+        $data['expire_date'] = date('d M Y h:i:s', strtotime($expire_date));
         $data['code_trx']   = $trx->code;
-        $data['created_at'] = $trx->created_at;
+        $data['created_at'] = date('d M Y h:i:s', strtotime($trx->created_at));
         $data['buyer_name'] = $buyer->name;
         $data['buyer_email'] = $buyer->email;
         $code_order = array();
@@ -281,12 +288,27 @@ class OrderController extends Controller
         return view('frontend.partials.confirm_to_buyer', compact('invoice'));
     }
 
+    public function auto_cancel_trx($id)
+    {
+        $trx = Transaction::where('id', $id)->first();
+        $trx->status = "cancelled";
+        if ($trx->save()) {
+            foreach ($trx->orders as $key => $o) {
+                foreach ($o->orderDetails as $key => $od) {
+                    $item = OrderDetail::where('id', $od->id)->first();
+                    $item->status = 100;
+                    $item->save();
+                }
+            }
+        }
+    }
+
     public function proses_confirm_to_buyer(Request $request)
     {
         $invoice = $this->_generate_invoice($request->trx_id);
         $trx = Transaction::where('id', $request->trx_id)->first();
+        $order_date = Carbon::createFromTimestamp(strtotime($trx->created_at))->addHour(24);
         if ($trx != null && $trx->status == "ready") {
-
             $cekinv = Invoice::where('transaction_id', $trx->id)->first();
             if ($cekinv === null) {
                 $inv = new Invoice;
@@ -296,6 +318,7 @@ class OrderController extends Controller
             }
             $trx->status = "confirmed";
             $trx->save();
+            PaymentDuration::dispatch($trx)->delay($order_date); // job expire date
         }
         if ($invoice != null) {
             Mail::to($invoice['buyer_email'])->send(new OrderConfirmation($invoice));
@@ -328,6 +351,7 @@ class OrderController extends Controller
         Mail::to($invoice['buyer_email'])->send(new OrderInvoice($invoice));
         flash('Order confirmed')->success();
         $request->session()->flash('message', 'CODE: '.' '.$invoice['code_trx'].' '.'Confirmed');
+
         return redirect('transaction');
     }
 
@@ -446,7 +470,7 @@ class OrderController extends Controller
                     $order->user_id = Auth::user()->id;
                 }
                 $order->address = json_encode($request->session()->get('shipping_info'));               
-                $order->code = 'ODR/'.time().''.$key;
+                $order->code = 'ODR-'.time().''.$key;
                 $order->transaction_id = $trx->id;
                 $order->seller_id = $key;
                 $order->approved = 0;
