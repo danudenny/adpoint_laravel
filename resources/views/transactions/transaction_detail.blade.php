@@ -13,7 +13,7 @@
         <div class="row">
             <div class="col-md-12">
                 <h4 class="text-bold">Code: {{ $details->code }}</h4>
-                <div>
+                <div class="text-left">
                     <i>Payment status:</i>
                     @if ($details->payment_status === "1")
                         <div class="badge badge-success">Paid</div>
@@ -21,6 +21,12 @@
                         <div class="badge badge-danger">Unpaid</div>
                     @endif
                 </div>
+                @if ($details->status === "paid")
+                    <div class="text-right">
+                        <a class="btn btn-primary" href="{{ route('transaction.show.invoice', encrypt($details->id)) }}"><i class="fa fa-eye"></i> {{__('Show Invoice')}}</a>
+                        <a class="btn btn-success" href="{{ route('transaction.show.payment', $details->code) }}"><i class="fa fa-money"></i> {{__('Paid')}}</a>
+                    </div>
+                @endif
                 @if ($details->status === "ready")
                     <br>
                     <div>
@@ -30,12 +36,6 @@
                     <br>
                     <div>
                         <div class="badge badge-success">Confirmed</div>
-                    </div>
-                @elseif ($details->status === "paid")
-                    <br>
-                    <div>
-                        <a class="btn btn-primary" href="{{ route('transaction.show.invoice', encrypt($details->id)) }}"><i class="fa fa-eye"></i> {{__('Show Invoice')}}</a>
-                        <a class="btn btn-success" href="{{ route('transaction.show.payment', $details->code) }}"><i class="fa fa-money"></i> {{__('Paid')}}</a>
                     </div>
                 @endif
             </div>
@@ -62,9 +62,9 @@
                                         <strong style="margin-right: 10px"><div class="badge badge-danger">Rejected</div></strong>
                                     @else 
                                         @if ($o->approved === 0)
-                                            <a class="btn btn-default" href="{{ route('approve.by.admin', encrypt($o->id)) }}" style="margin-right: 4px">Approve</a>
-                                            <a style="cursor: pointer; margin-right: 10px;" onclick="disapprove_by_admin({{$o->id}})">
-                                                <div class="badge badge-danger">{{__('Reject')}}</div>
+                                            <a class="btn btn-success" href="{{ route('approve.by.admin', encrypt($o->id)) }}" style="margin-right: 4px">Approve</a>
+                                            <a style="cursor: pointer; margin-right: 10px;" class="btn btn-danger" onclick="disapprove_by_admin({{$o->id}})">
+                                                {{__('Reject')}}
                                             </a>
                                         @else 
                                             <strong style="margin-right: 10px"><div class="badge badge-success">Approved</div></strong>

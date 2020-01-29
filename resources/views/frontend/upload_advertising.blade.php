@@ -81,20 +81,46 @@
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="form-group">
-                                                        <label>Type File</label>
-                                                        <select class="js-example-basic-multiple" id="type-file" multiple="multiple" required>
-                                                            <option value="gambar">Gambar</option>
-                                                            <option value="video">Video</option>
-                                                            <option value="zip">Zip</option>
-                                                        </select>
+                                                        <label>Image</label>
+                                                        <div id="upload-images">
+                                                            <div class="row">
+                                                                <div class="col-md-1">
+                                                                    <div class="text-left">
+                                                                        <button type="button" class="btn btn-info" onclick="add_more_image()"><i class="fa fa-plus"></i></button>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-11">
+                                                                    <input type="file" name="image[]" id="image-1" class="custom-input-file custom-input-file--4" data-multiple-caption="{count} files selected" accept="image/*" />
+                                                                    <label for="image-1" class="mw-100 mb-3">
+                                                                        <span></span>
+                                                                        <strong>
+                                                                            <i class="fa fa-upload"></i>
+                                                                        </strong>
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                     <div class="form-group">
-                                                        <table class="table">
-                                                            
-                                                            <tbody id="body-type-file">
-                                                                
-                                                            </tbody>
-                                                        </table>
+                                                        <label>Video</label>
+                                                        <div id="upload-videos">
+                                                            <div class="row">
+                                                                <div class="col-md-1">
+                                                                    <div class="text-left">
+                                                                        <button type="button" class="btn btn-info" onclick="add_more_video()"><i class="fa fa-plus"></i></button>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-11">
+                                                                    <input type="file" name="video[]" id="video-1" class="custom-input-file custom-input-file--4" data-multiple-caption="{count} files selected" accept="image/*" />
+                                                                    <label for="video-1" class="mw-100 mb-3">
+                                                                        <span></span>
+                                                                        <strong>
+                                                                            <i class="fa fa-upload"></i>
+                                                                        </strong>
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                     <div class="form-group">
                                                         <label>Description <span class="text-danger">*</span></label>
@@ -132,6 +158,56 @@
 
 @section('script')
     <script type="text/javascript">
+
+        var img_id = 2;
+        function add_more_image(){
+            var photoAdd =  '<div class="row">';
+            photoAdd +=  '<div class="col-md-1">';
+            photoAdd +=  '<button type="button" onclick="delete_this_row(this)" class="btn btn-link btn-icon text-danger"><i class="fa fa-trash-o"></i></button>';
+            photoAdd +=  '</div>';
+            photoAdd +=  '<div class="col-md-11">';
+            photoAdd +=  '<input type="file" name="image[]" id="image-'+img_id+'" class="custom-input-file custom-input-file--4" data-multiple-caption="{count} files selected" multiple accept="image/*" />';
+            photoAdd +=  '<label for="image-'+img_id+'" class="mw-100 mb-3">';
+            photoAdd +=  '<span></span>';
+            photoAdd +=  '<strong>';
+            photoAdd +=  '<i class="fa fa-upload"></i>';
+            photoAdd +=  '</strong>';
+            photoAdd +=  '</label>';
+            photoAdd +=  '</div>';
+            photoAdd +=  '</div>';
+            $('#upload-images').append(photoAdd);
+
+            img_id++;
+            imageInputInitialize();
+        }
+
+        var vid_id = 2;
+        function add_more_video(){
+            var photoAdd =  '<div class="row">';
+            photoAdd +=  '<div class="col-md-1">';
+            photoAdd +=  '<button type="button" onclick="delete_this_row(this)" class="btn btn-link btn-icon text-danger"><i class="fa fa-trash-o"></i></button>';
+            photoAdd +=  '</div>';
+            photoAdd +=  '<div class="col-md-11">';
+            photoAdd +=  '<input type="file" name="video[]" id="video-'+vid_id+'" class="custom-input-file custom-input-file--4" data-multiple-caption="{count} files selected" multiple accept="image/*" />';
+            photoAdd +=  '<label for="video-'+vid_id+'" class="mw-100 mb-3">';
+            photoAdd +=  '<span></span>';
+            photoAdd +=  '<strong>';
+            photoAdd +=  '<i class="fa fa-upload"></i>';
+            photoAdd +=  '</strong>';
+            photoAdd +=  '</label>';
+            photoAdd +=  '</div>';
+            photoAdd +=  '</div>';
+            $('#upload-videos').append(photoAdd);
+
+            vid_id++;
+            imageInputInitialize();
+        }
+
+        function delete_this_row(em){
+            $(em).closest('.row').remove();
+        }
+
+        // old function
 
         function capitalize(string) {
             return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();

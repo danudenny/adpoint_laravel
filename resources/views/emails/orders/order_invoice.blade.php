@@ -134,12 +134,13 @@
                         <table width="100%" border="0" cellspacing="0" cellpadding="0" role="presentation">
                             <tr>
                                 <p>Terimakasih.<br>
-                                    Anda sudah melakukan order. Mohon segera melakukan pembayaran
+                                    Anda sudah melakukan order. Mohon segera melakukan pembayaran <br>
+                                    lakukan pembaran sebelum tanggal {{ $user['expire_date'] }}
                                 </p>
                             </tr>
                             <tr>
                                 <td class="purchase_heading" align="left">
-                                    <a href="{{ route('confirm.payment.id', encrypt($user['trx_id'])) }}" target="_blank" class="f-fallback button button--green" target="_blank">Confirm</a>
+                                    <a href="{{ route('confirm.payment.id', encrypt($user['trx_id'])) }}" target="_blank" class="f-fallback button button--green" target="_blank">Pay</a>
                                 </td>
                             </tr>
                         </table>

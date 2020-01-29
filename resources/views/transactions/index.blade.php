@@ -40,14 +40,7 @@
                             {{ $transaction->payment_type }}
                         </td>
                         <td>
-                            <div class="btn-group dropdown">
-                                <button class="btn btn-primary dropdown-toggle dropdown-toggle-icon" data-toggle="dropdown" type="button">
-                                    {{__('Actions')}} <i class="dropdown-caret"></i>
-                                </button>
-                                <ul class="dropdown-menu dropdown-menu-right">
-                                    <li><a href="{{ route('transaction.details', encrypt($transaction->id)) }}">{{__('Details')}}</a></li>
-                                </ul>
-                            </div>
+                            <a class="btn btn-primary" href="{{ route('transaction.details', encrypt($transaction->id)) }}">{{__('Details')}}</a>
                         </td>
                     </tr>
                 @endforeach
