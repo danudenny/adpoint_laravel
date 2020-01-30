@@ -26,7 +26,8 @@
     <link href="{{ asset('css/demo/active-shop-demo-icons.min.css')}}" rel="stylesheet">
 
     <!--Font Awesome [ OPTIONAL ]-->
-    <link href="{{ asset('plugins/font-awesome/css/font-awesome.min.css')}}" rel="stylesheet">
+    {{-- <link href="{{ asset('plugins/font-awesome/css/font-awesome.min.css')}}" rel="stylesheet"> --}}
+    <link rel="stylesheet" href="https://cdnjs.Cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
 
     <!--Switchery [ OPTIONAL ]-->
     <link href="{{ asset('plugins/switchery/switchery.min.css')}}" rel="stylesheet">

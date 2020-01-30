@@ -7,10 +7,12 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use NotificationChannels\WebPush\HasPushSubscriptions;
 use Tymon\JWTAuth\Contracts\JWTSubject;
+use Watson\Rememberable\Rememberable;
+use Illuminate\Support\Facades\Cache;
 
 class User extends Authenticatable implements JWTSubject
 {
-  use Notifiable, HasPushSubscriptions;
+  use Notifiable, HasPushSubscriptions, Rememberable;
 
   /**
    * The attributes that are mass assignable.
@@ -29,6 +31,16 @@ class User extends Authenticatable implements JWTSubject
   protected $hidden = [
     'password', 'remember_token',
   ];
+
+  protected $rememberCacheTag;
+  protected $rememberFor;
+
+  public function __construct(array $attributes = [])
+  {
+      parent::__construct($attributes);
+      $this->rememberCacheTag = $this->getTable('users');
+      $this->rememberFor = 60*24;
+  }
 
   public function wishlists()
   {

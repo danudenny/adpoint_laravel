@@ -18,8 +18,10 @@ class LanguageController extends Controller
 
     public function index(Request $request)
     {
-        $languages = Language::all();
-        return view('business_settings.languages.index', compact('languages'));
+        $languages = Language::with('languages')->all();
+        return view('business_settings.languages.index', [
+            'languages' => $languages
+        ]);
     }
 
     public function create(Request $request)

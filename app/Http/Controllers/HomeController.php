@@ -27,6 +27,7 @@ use Mail;
 use Notification;
 use App\Mail\User\RegistUser;
 use App\Notifications\UserRegistPush;
+use Illuminate\Support\Facades\Cache;
 
 class HomeController extends Controller
 {
@@ -274,6 +275,15 @@ class HomeController extends Controller
      */
     public function index()
     {
+        $query = Cache::remember("products", 10 * 60, function () {
+            return Product::all();
+        });
+
+        $query = Cache::remember("brands", 10 * 60, function () {
+            return Brand::all();
+        });
+
+        
         return view('frontend.index');
     }
 
@@ -326,7 +336,7 @@ class HomeController extends Controller
 
     public function all_categories(Request $request)
     {
-        $categories = Category::all();
+        $categories = Category::with('categories')->all();
         return view('frontend.all_category', compact('categories'));
     }
     public function all_brands(Request $request)
@@ -577,7 +587,8 @@ class HomeController extends Controller
     }
 
     public function getlistProduct(){
-        return Product::all();
+        
+        return Product::with('products')->all();
     }
 
     public function push(Request $request)

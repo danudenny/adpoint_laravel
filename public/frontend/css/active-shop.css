@@ -647,7 +647,7 @@
     }
 }
 
-.top-navbar--inverse {
+.top-navbar--inverse {  
     border-bottom: 1px solid black;
     background: black;
 }
