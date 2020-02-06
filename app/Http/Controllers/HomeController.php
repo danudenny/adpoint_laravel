@@ -129,6 +129,7 @@ class HomeController extends Controller
     public function cart_login(Request $request)
     {
         $user = User::whereIn('user_type', ['customer', 'seller'])->where('email', $request->email)->first();
+        
         if($user != null){
             updateCartSetup();
             if(Hash::check($request->password, $user->password)){
@@ -400,8 +401,7 @@ class HomeController extends Controller
         $seller_id = $request->seller_id;
         $states = urldecode($request->location);
         // dd($states);
-        
-
+    
         $conditions = ['published' => 1];
 
         if($brand_id != null){

@@ -26,8 +26,8 @@ class TransactionController extends Controller
 
     public function transaction_details($id)
     {
-        $details = Transaction::where('id', decrypt($id))->first();
-        return view('transactions.transaction_detail', compact('details'));
+        $transaction = Transaction::where('id', decrypt($id))->first();
+        return view('transactions.transaction_detail', compact('transaction'));
     }
 
     public function show_invoice(Request $request, $id)
@@ -73,10 +73,13 @@ class TransactionController extends Controller
         }
     }
 
-    public function get_trx()
+    public function get_trx($status = null)
     {
         $trx = Transaction::orderBy('id', 'desc')
-                        ->where('user_id', Auth::user()->id)
+                        ->where([
+                            'user_id' => Auth::user()->id,
+                            'payment_status' => $status
+                        ])
                         ->get();
         return $trx;
     }
@@ -95,13 +98,45 @@ class TransactionController extends Controller
 
     public function trx_unpaid()
     {
-        $trx = $this->get_trx();
+        $trx = $this->get_trx(0);
         return view('mytrx.unpaid', compact('trx'));
     }
 
     public function trx_paid()
     {
-        $trx = $this->get_trx();
+        $trx = $this->get_trx(1);
         return view('mytrx.paid', compact('trx'));
+    }
+
+    public function find_trx_unpaid(Request $request)
+    {
+        if ($request->value == null || $request->value == "") {
+            $trx = Transaction::where([
+                'payment_status' => 0,
+                'user_id' => Auth::user()->id
+            ])->get();
+        }else {
+            $trx = DB::table('transactions')
+                        ->where('code', 'like', '%'.$request->value.'%')
+                        ->where('payment_status', 0)
+                        ->get();
+        }
+        return view('mytrx.find_unpaid_trx', compact('trx'));
+    }
+
+    public function find_trx_paid(Request $request)
+    {
+        if ($request->value == null || $request->value == "") {
+            $trx = Transaction::where([
+                'payment_status' => 1,
+                'user_id' => Auth::user()->id
+            ])->get();
+        }else {
+            $trx = DB::table('transactions')
+                        ->where('code', 'like', '%'.$request->value.'%')
+                        ->where('payment_status', 1)
+                        ->get();
+        }
+        return view('mytrx.find_paid_trx', compact('trx'));
     }
 }

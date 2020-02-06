@@ -132,6 +132,8 @@ Route::group(['middleware' => ['user', 'verified']], function(){
 	Route::get('complete-order', 'PurchaseHistoryController@order_complete')->name('myorder.complete.order');
 	Route::get('cancelled-order', 'PurchaseHistoryController@order_cancelled')->name('myorder.cancelled.order');
 
+	Route::post('find_myorder', 'PurchaseHistoryController@find_myorder')->name('find.myorder');
+
 
 	Route::get('/transaction', 'TransactionController@trx_page_buyer')->name('trx.page.buyer');
 	Route::post('/transaction/show_transaction_details', 'TransactionController@show_transaction_details')->name('show.transaction.details');
@@ -139,6 +141,9 @@ Route::group(['middleware' => ['user', 'verified']], function(){
 	// load get from ajax
 	Route::get('trx-unpaid', 'TransactionController@trx_unpaid')->name('trx.unpaid');
 	Route::get('trx-paid', 'TransactionController@trx_paid')->name('trx.paid');
+
+	Route::post('find-trx-unpaid', 'TransactionController@find_trx_unpaid')->name('find.trx.unpaid');
+	Route::post('find-trx-paid', 'TransactionController@find_trx_paid')->name('find.trx.paid');
 	
 	
 	Route::resource('wishlists','WishlistController');
@@ -188,6 +193,9 @@ Route::group(['middleware' => ['auth']], function(){
 	Route::get('active-order-seller', 'OrderController@order_active')->name('orders.active.order');
 	Route::get('complete-order-seller', 'OrderController@order_completes')->name('orders.complete.order');
 	Route::get('cancelled-order-seller', 'OrderController@order_cancelled')->name('orders.cancelled.order');
+
+	Route::post('find_orders', 'OrderController@find_orders')->name('find.orders');
+
 	
 	Route::get('/orders/destroy/{id}', 'OrderController@destroy')->name('orders.destroy');
 	Route::post('/orders/details', 'OrderController@order_details')->name('orders.details');
@@ -214,6 +222,8 @@ Route::group(['middleware' => ['auth']], function(){
 	Route::post('bukti_tayang_detail', 'EvidenceController@bukti_tayang_detail')->name('bukti.tayang.detail');
 
 	Route::resource('/reviews', 'ReviewController');
+	Route::post('/review/review_product', 'ReviewController@review_product')->name('review.product');
+	Route::post('/review/create_review_product', 'ReviewController@create_review_product')->name('create.review.product');
 });
 
 Route::resource('shops', 'ShopController');

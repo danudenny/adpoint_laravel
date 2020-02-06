@@ -40,24 +40,9 @@
                                 {!! session('message') !!}
                             </div>
                         @endif
-
-                        <div class="card no-border mt-4">
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="input-group mb-3">
-                                        <input type="text" class="form-control" placeholder="Type transaction number" aria-label="Recipient's username" aria-describedby="basic-addon2">
-                                            <div class="input-group-append">
-                                                <button class="btn btn-secondary" type="button"><i class="fa fa-search"></i></button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                         
-                        <div class="card no-border mt-4">
-                            <div class="card-body">
+                        <div class="row no-border mt-4">
+                            <div class="col-md-12">
                                 <nav>
                                     <div class="nav nav-tabs" id="nav-tab" role="tablist">
                                         <a class="nav-item nav-link active" id="nav-unpaid-tab" data-url="{{ route('trx.unpaid') }}" data-toggle="tab" href="#nav-unpaid" role="tab" aria-controls="nav-unpaid" aria-selected="true">Unpaid</a>
@@ -67,10 +52,32 @@
                             </div>
                         </div>
 
-                        <div class="card no-border mt-1">
-                            <div class="card-body">
+                        <div class="row mt-2 form-unpaid">
+                            <div class="col-md-4">
+                                <div class="input-group mb-1">
+                                <input type="text" class="form-control" id="unpaid" placeholder="Type transaction number" aria-describedby="basic-addon2">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-secondary" type="button"><i class="fa fa-search"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mt-2 form-paid" style="display: none">
+                            <div class="col-md-4">
+                                <div class="input-group mb-1">
+                                <input type="text" class="form-control" id="paid" placeholder="Type transaction number" aria-describedby="basic-addon2">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-secondary" type="button"><i class="fa fa-search"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row no-border mt-1">
+                            <div class="col-md-12">
                                 <div class="tab-content mt-2" id="nav-tabContent">
-                                    <div class="c-nav-load">
+                                    <div class="c-nav-load mt-5">
                                         <i class="fa fa-spin fa-spinner"></i>
                                     </div>
                                     
@@ -124,6 +131,13 @@
             e.preventDefault();
             var url = $(this).attr("data-url");
             var href = this.hash;
+            if (href == '#nav-unpaid') {
+                $('.form-unpaid').show();
+                $('.form-paid').hide();
+            }else if (href == '#nav-paid') {
+                $('.form-paid').show();
+                $('.form-unpaid').hide();
+            }
             var pane = $(this);
             // ajax load from data-url
             $('.c-nav-load').show();
@@ -132,5 +146,21 @@
                 $('.c-nav-load').hide();
             });
         });
+
+        $('#unpaid').on('keyup', function(e) {
+            $('.c-nav-load').show();
+            $.post('{{ route('find.trx.unpaid') }}', {_token:'{{ csrf_token() }}', value:this.value}, function(data){
+                $('.c-nav-load').hide();
+                $('#nav-unpaid').html(data);
+            });
+        })
+
+        $('#paid').on('keyup', function(e) {
+            $('.c-nav-load').show();
+            $.post('{{ route('find.trx.paid') }}', {_token:'{{ csrf_token() }}', value:this.value}, function(data){
+                $('.c-nav-load').hide();
+                $('#nav-paid').html(data);
+            });
+        })
     </script>
 @endsection

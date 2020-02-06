@@ -86,7 +86,7 @@
                                                             <div class="row">
                                                                 <div class="col-md-1">
                                                                     <div class="text-left">
-                                                                        <button type="button" class="btn btn-info" onclick="add_more_image()"><i class="fa fa-plus"></i></button>
+                                                                        <button type="button" class="btn btn-default" onclick="add_more_image()"><i class="fa fa-plus"></i></button>
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-md-11">
@@ -107,7 +107,7 @@
                                                             <div class="row">
                                                                 <div class="col-md-1">
                                                                     <div class="text-left">
-                                                                        <button type="button" class="btn btn-info" onclick="add_more_video()"><i class="fa fa-plus"></i></button>
+                                                                        <button type="button" class="btn btn-default" onclick="add_more_video()"><i class="fa fa-plus"></i></button>
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-md-11">

@@ -72,7 +72,7 @@
                             @php
                                 $user = \App\User::where('id', $seller)->first();
                             @endphp
-                            <div style="height: 50px; background: #0f355a; color: white; border-bottom: 2px solid #fd7e14">
+                            <div style="height: 50px; background: #FBFBFB; border-bottom: 1px solid #ccc">
                                 <div style="line-height: 45px; margin-left: 30px;">
                                     <img class="img-fluid rounded-circle mr-2" width="30" src="{{ url($user->avatar_original) }}" alt="">
                                     {{ $user->name }}

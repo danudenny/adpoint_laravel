@@ -137,7 +137,7 @@ Route::group(['prefix' =>'admin', 'middleware' => ['auth', 'admin']], function()
 	Route::get('/orders/approve_by_admin/{id}', 'OrderController@approve_by_admin')->name('approve.by.admin');
 	Route::post('/orders/confirm_to_buyer', 'OrderController@confirm_to_buyer')->name('confirm.to.buyer');
 	Route::post('/orders/proses_confirm_to_buyer', 'OrderController@proses_confirm_to_buyer')->name('proses.confirm.to.buyer');
-	Route::get('/orders/disapprove_by_admin', 'OrderController@disapprove_by_admin')->name('disapprove.by.admin');
+	Route::post('/orders/disapprove_by_admin', 'OrderController@disapprove_by_admin')->name('disapprove.by.admin');
 	Route::get('/orders/{id}/show', 'OrderController@show')->name('orders.show');
 	Route::get('/orders/destroy/{id}', 'OrderController@destroy')->name('orders.destroy');
 	Route::get('/sales', 'OrderController@sales')->name('sales.index');

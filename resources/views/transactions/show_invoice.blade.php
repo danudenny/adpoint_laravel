@@ -68,75 +68,69 @@
 								$seller = \App\User::where('id', $o->seller_id)->first();
 							@endphp
 							<tr class="bg-trans-dark">
-								<th class="text-uppercase" colspan="6">
+								<th class="text-uppercase" colspan="5">
 									#{{ $o->code }} <div class="badge badge-info">{{ $seller->name }}</div>
 								</th>
 							</tr>
-							@php
-								$subtotal = 0;
-								$tax = 0.1;
-							@endphp
 							@foreach ($o->orderDetails as $key => $od)
 								@php
 									$product = \App\Product::where('id', $od->product->id)->first();
-									$subtotal += $od->price;
 								@endphp
-								<tr>
-									<td>{{ $key+1 }}</td>
-									<td>
-										<small>Name: </small>
-										<strong>{{ $product->name }}</strong>
-									</td>
-									<td>
-										<small>Qty: </small>
-										<strong>{{ $od->quantity }}</strong>
-									</td>
-									<td>
-										<small>Periode: </small>
-										<strong>{{ $od->variation }}</strong>
-									</td>
-									<td>
-										<small>Price: </small>
-										<strong>{{ single_price($product->unit_price) }}</strong>
-									</td>
-									<td align="right">
-										<small>Total: </small>
-										<strong>{{ single_price($od->price) }}</strong>
-									</td>
-								</tr>
+								@if ($od->status !== 2)
+									<tr>
+										<td>
+											<small>Name: </small>
+											<strong>{{ $product->name }}</strong>
+										</td>
+										<td>
+											<small>Qty: </small>
+											<strong>{{ $od->quantity }}</strong>
+										</td>
+										<td>
+											<small>Periode: </small>
+											<strong>{{ $od->variation }}</strong>
+										</td>
+										<td>
+											<small>Price: </small>
+											<strong>{{ single_price($od->price) }}</strong>
+										</td>
+										<td align="right">
+											<small>Total: </small>
+											<strong>{{ single_price($od->total) }}</strong>
+										</td>
+									</tr>
+								@endif
 							@endforeach
 							<tr>
-								<td colspan="5" align="right">Total</td>
-								<td align="right"><strong>{{ single_price($subtotal) }}</strong></td>
+								<td colspan="4" align="right">Total: </td>
+								<td align="right"><strong>{{ single_price($o->total) }}</strong></td>
 							</tr>
 							<tr>
-								<td colspan="5" align="right">Tax: (10%) </td>
-								<td align="right"><strong>{{ single_price($subtotal*$tax) }}</strong></td>
-							</tr>
-							<tr>
-								<td colspan="5" align="right">Subtotal: </td>
-								<td align="right"><strong>{{ single_price(($subtotal*$tax)+$subtotal) }}</strong></td>
+								<td colspan="4" align="right">Tax: (10%) </td>
+								<td align="right"><strong>{{ single_price($o->tax) }}</strong></td>
 							</tr>
 						@php
-							$grand_total+=($subtotal*$tax)+$subtotal;
+							$grand_total += $o->grand_total;
 						@endphp
 						@endforeach
+						<tr>
+							<td colspan="4" align="right">
+								<strong>{{__('Grand Total')}}</strong>
+							</td>
+							<td class="text-bold h4" align="right">
+								{{ single_price($grand_total) }}
+							</td>
+						</tr>
+						<tr>
+							<td colspan="4" align="right">
+								<strong>{{__('Adpoint Fee')}}</strong>
+							</td>
+							<td class="text-bold h4" align="right">
+								{{ single_price($o->adpoint_earning) }}
+							</td>
+						</tr>
     				</table>
     			</div>
-    		</div>
-    		<div class="clearfix">
-    			<table class="table invoice-total">
-    			<tbody>
-    			<tr>
-    				<td>
-    					<strong>{{__('Grand Total')}} :</strong>
-    				</td>
-    				<td class="text-bold h4" align="right">
-						{{ single_price($grand_total) }}
-    				</td>
-    			</tr>
-    			</tbody>
-    			</table>
     		</div>
     		<div class="text-right no-print">
     			<a href="#" class="btn btn-default"><i class="demo-pli-printer icon-lg"></i></a>

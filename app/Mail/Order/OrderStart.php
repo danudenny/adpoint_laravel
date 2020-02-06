@@ -10,15 +10,15 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 class OrderStart extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
-    public $user;
+    public $trx;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($user)
+    public function __construct($data)
     {
-        $this->user = $user;
+        $this->trx = $data;
     }
 
     /**
@@ -29,6 +29,6 @@ class OrderStart extends Mailable implements ShouldQueue
     public function build()
     {
         return $this->view('emails.orders.order_start')
-            ->subject('Terimakasih sudah order');
+            ->subject('Terimakasih sudah order '.$this->trx->code);
     }
 }

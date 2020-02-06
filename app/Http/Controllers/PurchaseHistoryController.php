@@ -11,12 +11,15 @@ use DB;
 
 class PurchaseHistoryController extends Controller
 {
-    public function get_items()
+    public function get_items($status = null)
     {
         $order_details = DB::table('order_details as od')
                             ->orderBy('od.id', 'desc')
                             ->join('orders as o', 'o.id', '=', 'od.order_id')
-                            ->where('o.user_id', Auth::user()->id)
+                            ->where([
+                                'o.user_id' => Auth::user()->id,
+                                'od.status' => $status
+                            ])
                             ->select([
                                 'od.*',
                                 'o.id as o_id',
@@ -54,6 +57,7 @@ class PurchaseHistoryController extends Controller
                         't.file_advertising',
                         'o.code as code_order',
                         'o.created_at as order_date',
+                        'od.id as order_detail_id',
                         'od.product_id as item_name',
                         'od.seller_id',
                         'od.status as od_status',
@@ -99,31 +103,87 @@ class PurchaseHistoryController extends Controller
 
     public function order_place()
     {
-        $order_details = $this->get_items();
+        $order_details = $this->get_items(0);
         return view('myorder.order_place', compact('order_details'));
     }
 
     public function order_review()
     {
-        $order_details = $this->get_items();
+        $order_details = $this->get_items(1);
         return view('myorder.order_review', compact('order_details'));
     }
 
     public function order_active()
     {
-        $order_details = $this->get_items();
+        $order_details = $this->get_items(3);
         return view('myorder.order_active', compact('order_details'));
     }
 
     public function order_complete()
     {
-        $order_details = $this->get_items();
+        $order_details = $this->get_items(4);
         return view('myorder.order_complete', compact('order_details'));
     }
 
     public function order_cancelled()
     {
-        $order_details = $this->get_items();
+        $order_details = $this->get_items(2);
         return view('myorder.order_cancelled', compact('order_details'));
+    }
+
+    public function find_myorder(Request $request)
+    {
+        $start = date('Y-m-d H:i:s', strtotime($request->start));
+        $end = date('Y-m-d H:i:s', strtotime($request->end));
+
+        switch ($request->status) {
+            case '0':
+                $order_details = $this->get_find_myorder(0, $start, $end);
+                return view('myorder.order_place', compact('order_details'));
+                break;
+            case '1':
+                $order_details = $this->get_find_myorder(1, $start, $end);
+                return view('myorder.order_review', compact('order_details'));
+                break;
+            case '3':
+                $order_details = $this->get_find_myorder(3, $start, $end);
+                return view('myorder.order_active', compact('order_details'));
+                break;
+            case '4':
+                $order_details = $this->get_find_myorder(4, $start, $end);
+                return view('myorder.order_complete', compact('order_details'));
+                break;
+            case '100':
+                $order_details = $this->get_find_myorder(100, $start, $end);
+                return view('myorder.order_cancelled', compact('order_details'));
+                break;
+            default:
+                break;
+        }
+    }
+
+    public function get_find_myorder($status, $start, $end)
+    {
+        $query = DB::table('order_details as od')
+                    ->join('orders as o', 'o.id', '=', 'od.order_id')
+                    ->where('o.user_id', Auth::user()->id)
+                    ->where('od.status', $status)
+                    ->where('od.created_at', '>=', $start)
+                    ->where('od.created_at', '<=', $end)
+                    ->select([
+                        'od.*',
+                        'o.id as o_id',
+                        'o.user_id as o_user_id',
+                        'o.transaction_id as o_trx_id',
+                        'o.seller_id as o_seller_id',
+                        'o.code as o_code',
+                        'o.approved as o_approved',
+                        'o.grand_total as o_grandtotal',
+                        'o.tax as o_tax',
+                        'o.adpoint_earning as o_adpoint_earning',
+                        'o.address as o_addres'
+                    ])
+                    ->get();
+        return $query;
     }
 }
