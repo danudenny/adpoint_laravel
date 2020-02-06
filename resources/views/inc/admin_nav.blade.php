@@ -1,5 +1,41 @@
 <!--NAVBAR-->
 <!--===================================================-->
+<style>
+    .fa-pulse {
+    color: red;
+        display: inline-block;
+        -moz-animation: pulse 1s infinite linear;
+        -o-animation: pulse 1s infinite linear;
+        -webkit-animation: pulse 1s infinite linear;
+        animation: pulse 1s infinite linear;
+    }
+
+    @-webkit-keyframes pulse {
+        0% { opacity: 1; }
+        50% { opacity: 0; }
+        100% { opacity: 1; }
+    }
+    @-moz-keyframes pulse {
+        0% { opacity: 1; }
+        50% { opacity: 0; }
+        100% { opacity: 1; }
+    }
+    @-o-keyframes pulse {
+        0% { opacity: 1; }
+        50% { opacity: 0; }
+        100% { opacity: 1; }
+    }
+    @-ms-keyframes pulse {
+        0% { opacity: 1; }
+        50% { opacity: 0; }
+        100% { opacity: 1; }
+    }
+    @keyframes pulse {
+        0% { opacity: 1; }
+        50% { opacity: 0; }
+        100% { opacity: 1; }
+    }
+</style>
 <header id="navbar">
     <div id="navbar-container" class="boxed">
 
@@ -58,32 +94,10 @@
             </ul>
             <ul class="nav navbar-top-links">
 
-                <li class="dropdown" id="lang-change">
-                    @php
-                        if(Session::has('locale')){
-                            $locale = Session::get('locale', Config::get('app.locale'));
-                        }
-                        else{
-                            $locale = 'en';
-                        }
-                    @endphp
-                    <a href="" class="dropdown-toggle top-bar-item" data-toggle="dropdown">
-                        <img src="{{ asset('frontend/images/icons/flags/'.$locale.'.png') }}" class="flag" style="margin-right:6px;"><span class="language">{{ \App\Language::where('code', $locale)->first()->name }}</span>
-                    </a>
-                    <ul class="dropdown-menu">
-                        @foreach (\App\Language::all() as $key => $language)
-                            <li class="dropdown-item @if($locale == $language) active @endif">
-                                <a href="#" data-flag="{{ $language->code }}"><img src="{{ asset('frontend/images/icons/flags/'.$language->code.'.png') }}" class="flag" style="margin-right:6px;"><span class="language">{{ $language->name }}</span></a>
-                            </li>
-                        @endforeach
-                    </ul>
-                </li>
-                
-
                 <li class="dropdown">
-                    <a href="#" data-toggle="dropdown" class="dropdown-toggle" aria-expanded="true">
+                    <a href="#" data-toggle="dropdown" class="dropdown-toggle" aria-expanded="true">    
                         <i class="demo-pli-bell"></i>
-                        {{-- <span class="badge badge-header badge-danger">0</span> --}}
+                        <span class="badge-header fa-pulse"><i class="fa fa-circle"></i></span>
                     </a>
 
                     <!--Notification dropdown menu-->
@@ -91,14 +105,14 @@
                         <div class="nano scrollable has-scrollbar" style="height: 265px;">
                             <div class="nano-content" tabindex="0" style="right: -17px;">
                                 <ul class="head-list">
-                                    {{-- <li>
+                                    <li>
                                         <a class="media" href="{{ route('transaction.index') }}" style="position:relative">
                                             <span class="badge badge-header badge-info" style="right:auto;left:3px;"></span>
                                             <div class="media-body">
                                                 <p class="mar-no text-nowrap text-main text-semibold">Hmm</p>
                                             </div>
                                         </a>
-                                    </li> --}}
+                                    </li>
                                 </ul>
                             </div>
                             <div class="nano-pane" style="">
@@ -107,7 +121,6 @@
                         </div>
                     </div>
                 </li>
-
                 <!--User dropdown-->
                 <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
                 <li id="dropdown-user" class="dropdown">

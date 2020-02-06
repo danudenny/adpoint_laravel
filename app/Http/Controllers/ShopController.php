@@ -25,7 +25,7 @@ class ShopController extends Controller
      */
     public function index()
     {
-        $shop = Auth::user()->shop;
+        $shop = Auth::with('shops')->user()->shop;
         return view('frontend.seller.shop', compact('shop'));
     }
 

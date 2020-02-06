@@ -59,7 +59,8 @@
 <!-- Latest compiled and minified CSS -->
 
 <!-- Icons -->
-<link rel="stylesheet" href="{{ asset('frontend/css/font-awesome.min.css') }}" type="text/css">
+{{-- <link rel="stylesheet" href="{{ asset('frontend/css/font-awesome.min.css') }}" type="text/css"> --}}
+<link rel="stylesheet" href="https://cdnjs.Cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
 <link rel="stylesheet" href="{{ asset('frontend/css/line-awesome.min.css') }}" type="text/css">
 
 <link type="text/css" href="{{ asset('frontend/css/bootstrap-tagsinput.css') }}" rel="stylesheet">

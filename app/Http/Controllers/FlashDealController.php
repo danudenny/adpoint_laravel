@@ -15,7 +15,10 @@ class FlashDealController extends Controller
      */
     public function index()
     {
-        $flash_deals = FlashDeal::all();
+        $flash_deals = Cache::remember("flash_deals", 10 * 60, function () {
+            return FlashDeal::all();
+        });
+
         return view('flash_deals.index', compact('flash_deals'));
     }
 
