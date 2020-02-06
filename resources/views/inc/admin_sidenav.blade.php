@@ -102,13 +102,25 @@
                                 <a href="#">
                                     <i class="fa fa-fw fa-dollar"></i>
                                     <span class="menu-title">{{__('Sales')}}</span>
-                                    <i class="arrow"></i>
+                                    <i class="arrow pull-right"></i>
+                                    @php
+                                        $sales =  \App\Order::where('approved', 0)->count();
+                                        $transaction = \App\Transaction::where('payment_status', 0)->count();
+                                    @endphp
+                                    @if ($sales > 0 && $transaction > 0)
+                                        <span class="fa-pulse pull-right" style="margin-right: 10px;"><i class="fa fa-circle"></i></span>
+                                    @else
+                                    <span class="fa-pulse pull-right" style="display:none;"><i class="fa fa-circle"></i></span>
+                                    @endif
+                                    
                                 </a>
                                 <ul class="collapse">
                                     <li class="{{ areActiveRoutes(['orders.list.orders','sales.show'])}}">
+                                        <span class="badge badge-danger pull-right" style="margin: 5px;">{{$sales}}</span>
                                         <a class="nav-link" href="{{ route('orders.list.orders') }}">{{__('Order List')}}</a>
                                     </li>
                                     <li class="{{ areActiveRoutes(['transaction.index','transaction.details','transaction.show.payment','transaction.show.invoice']) }}">
+                                        <span class="badge badge-warning pull-right" style="margin: 5px;">{{$transaction}}</span>
                                         <a class="nav-link" href="{{ route('transaction.index') }}">{{__('Transaction')}}</a>
                                     </li>
                                 </ul>
@@ -143,12 +155,25 @@
                                 <a href="#">
                                     <i class="fa fa-user-plus"></i>
                                     <span class="menu-title">{{__('Customers')}}</span>
-                                    <i class="arrow"></i>
+                                    <i class="arrow pull-right"></i>
+                                    @php
+                                        $customers = \App\User::where('verified', 0)->count();
+                                    @endphp
+                                    @if ($customers > 0)
+                                        <span class="fa-pulse pull-right" style="margin-right: 10px;"><i class="fa fa-circle"></i></span>
+                                    @else
+                                        <span class="fa-pulse pull-right" style="display:none;"><i class="fa fa-circle"></i></span>
+                                    @endif
                                 </a>
     
                                 <!--Submenu-->
                                 <ul class="collapse">
                                     <li class="{{ areActiveRoutes(['customers.index'])}}">
+                                        @if ($customers > 0)
+                                            <span class="badge badge-danger pull-right" style="margin: 7px;">{{$customers}}</span>
+                                        @else
+                                            <span class="badge badge-danger pull-right" style="display: none">{{$customers}}</span>
+                                        @endif
                                         <a class="nav-link" href="{{ route('customers.index') }}">{{__('Customer list')}}</a>
                                     </li>
                                 </ul>
@@ -304,3 +329,39 @@
 
     </div>
 </nav>
+<style>
+.fa-pulse {
+    color: red;
+	display: inline-block;
+	-moz-animation: pulse 1s infinite linear;
+	-o-animation: pulse 1s infinite linear;
+	-webkit-animation: pulse 1s infinite linear;
+	animation: pulse 1s infinite linear;
+}
+
+@-webkit-keyframes pulse {
+	0% { opacity: 1; }
+	50% { opacity: 0; }
+	100% { opacity: 1; }
+}
+@-moz-keyframes pulse {
+	0% { opacity: 1; }
+	50% { opacity: 0; }
+	100% { opacity: 1; }
+}
+@-o-keyframes pulse {
+	0% { opacity: 1; }
+	50% { opacity: 0; }
+	100% { opacity: 1; }
+}
+@-ms-keyframes pulse {
+	0% { opacity: 1; }
+	50% { opacity: 0; }
+	100% { opacity: 1; }
+}
+@keyframes pulse {
+	0% { opacity: 1; }
+	50% { opacity: 0; }
+	100% { opacity: 1; }
+}
+</style>
