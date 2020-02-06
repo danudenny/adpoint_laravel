@@ -8,13 +8,13 @@
                     <div class="f-fallback">
                         @php 
                             $grandtotal = 0; 
-                            $reject = 0; 
                             $note = DB::table('order_details as od')
                                 ->join('orders as o', 'o.id', '=', 'od.order_id')
                                 ->join('transactions as t', 't.id', '=', 'o.transaction_id')
-                                ->where([ 't.id' => $user['trx_id'], 'od.status' => 2 ])->get();
+                                ->where([ 't.id' => $trx->id, 'od.status' => 2 ])->get();
+                            $user = \App\User::where('id', $trx->user_id)->first();
                         @endphp
-                        <h4>Dear {{$user['buyer_name']}},</h4>
+                        <h4>Dear {{$user->name}},</h4>
                         <p>Terimakasih sudah melakukan order. rincian sebagai berikut.</p>
                         @if (count($note) > 0)
                             @foreach ($note as $key => $item) 
@@ -42,10 +42,10 @@
                             <tr>
                                 <td colspan="2">
                                     <table class="purchase_content" width="100%" cellpadding="0" cellspacing="0">
-                                        @foreach ($user['code_order'] as $key => $co)
+                                        @foreach ($trx->orders as $key => $o)
                                             <tr>
                                                 <th class="purchase_heading" align="left">
-                                                    <h5 class="f-fallback">{{ $key }}</h5>
+                                                    <h5 class="f-fallback">{{ $o->code }}</h5>
                                                 </th>
                                                 <th class="purchase_heading" align="right">
                                                 </th>
@@ -58,51 +58,36 @@
                                                     <p class="f-fallback">Amount</p>
                                                 </th>
                                             </tr>
-                                            @php 
-                                                $subtotal = 0; 
-                                                $tax = 0; 
-                                            @endphp 
-                                            @foreach ($co as $key => $item)
+                                            @foreach ($o->orderDetails as $key => $od)
                                                 @php 
-                                                    $product = \App\Product::where('id', $item['product_id'])->first();
+                                                    $product = \App\Product::where('id', $od->product_id)->first();
                                                 @endphp
-                                                @if ($item['status'] == 2)
-                                                    @php
-                                                        $reject += $item['price']; 
-                                                        $subtotal += ( $item['price'])-$reject;
-                                                    @endphp
+                                                @if ($od->status == 2)
                                                     <tr style="text-decoration: line-through">
                                                         <td width="60%" class="purchase_item">
-                                                            <span class="f-fallback" style="font-size: 12px">{{ $product->name }} ({{ $item['quantity'] }})</span>
+                                                            <span class="f-fallback" style="font-size: 12px">{{ $product->name }} (<i>{{ $od->quantity }} - {{ $od->variation }}</i>)</span>
                                                         </td>
                                                         <td class="align-right" width="40%" class="purchase_item">
-                                                            <span class="f-fallback" style="font-size: 12px">{{ single_price( $item['price']) }}</span>
+                                                            <span class="f-fallback" style="font-size: 12px">{{ single_price($od->price) }}</span>
                                                         </td>
                                                     </tr>
                                                 @else 
-                                                    @php 
-                                                        $subtotal +=  $item['price']; 
-                                                    @endphp
                                                     <tr>
                                                         <td width="60%" class="purchase_item">
-                                                            <span class="f-fallback" style="font-size: 12px">{{ $product->name }} ( <i>{{ $item['quantity'] }} - {{ $item['variation'] }}</i> )</span>
+                                                            <span class="f-fallback" style="font-size: 12px">{{ $product->name }} ( <i>{{ $od->quantity }} - {{ $od->variation }}</i> )</span>
                                                         </td>
                                                         <td class="align-right" width="40%" class="purchase_item">
-                                                            <span class="f-fallback" style="font-size: 12px">{{ single_price($item['price']) }}</span>
+                                                            <span class="f-fallback" style="font-size: 12px">{{ single_price($od->price) }}</span>
                                                         </td>
                                                     </tr>
                                                 @endif 
                                             @endforeach
-                                            @php
-                                                $tax = $subtotal*0.1;
-                                                $subtotal = $tax+$subtotal;
-                                            @endphp
                                             <tr>
                                                 <td align="left" class="purchase_item">
                                                     <p class="f-fallback" style="font-size: 12px">Tax: (10%)</p>
                                                 </td>
                                                 <td align="right" class="purchase_item">
-                                                    <p class="f-fallback" style="font-size: 12px">{{ single_price($tax) }}</p>
+                                                    <p class="f-fallback" style="font-size: 12px">{{ single_price($o->tax) }}</p>
                                                 </td>
                                             </tr>
                                             <tr>
@@ -110,11 +95,11 @@
                                                     <p class="f-fallback" style="font-size: 12px">Subtotal: </p>
                                                 </td>
                                                 <td align="right" class="purchase_item">
-                                                    <p class="f-fallback" style="font-size: 12px">{{ single_price($subtotal) }}</p>
+                                                    <p class="f-fallback" style="font-size: 12px">{{ single_price($o->total) }}</p>
                                                 </td>
                                             </tr>
                                             @php 
-                                                $grandtotal += $subtotal;
+                                                $grandtotal += $o->grand_total;
                                             @endphp 
                                         @endforeach
                                     </table>
@@ -135,12 +120,12 @@
                             <tr>
                                 <p>Terimakasih.<br>
                                     Anda sudah melakukan order. Mohon segera melakukan pembayaran <br>
-                                    lakukan pembaran sebelum tanggal {{ $user['expire_date'] }}
+                                    lakukan pembaran sebelum tanggal {{ date('d M Y H:i:s', strtotime(\Carbon\Carbon::createFromTimestamp(strtotime($trx->created_at))->addHour(24))) }}
                                 </p>
                             </tr>
                             <tr>
                                 <td class="purchase_heading" align="left">
-                                    <a href="{{ route('confirm.payment.id', encrypt($user['trx_id'])) }}" target="_blank" class="f-fallback button button--green" target="_blank">Pay</a>
+                                    <a href="{{ route('confirm.payment.id', encrypt($trx->id)) }}" target="_blank" class="f-fallback button button--green" target="_blank">Pay</a>
                                 </td>
                             </tr>
                         </table>

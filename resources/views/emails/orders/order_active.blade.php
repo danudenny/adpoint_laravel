@@ -7,10 +7,11 @@
             <tr>
                 <td class="content-cell">
                     <div class="f-fallback">
-                        <h4>Dear {{ $user['name'] }},</h4>
+                        <h4>Dear {{ $user->buyer_name }},</h4>
                         
                         <p>Selamat.<br>
-                            Orderan anda telah di tayangkan
+                            Iklan anda telah di aktifkan di <br>
+                            <b>{{ $user->product_name }}</b>
                         </p>
                         
                         <p>Terimakasih</p>

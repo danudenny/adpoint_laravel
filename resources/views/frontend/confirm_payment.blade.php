@@ -34,11 +34,11 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row mt-4">
-                            <div class="col-md-12">
-                                <form action="{{ route('insert.confirm.payment') }}" method="POST" enctype="multipart/form-data">
-                                    <div class="card">
-                                        <div class="card-body">
+                        <div class="card mt-4">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <form action="{{ route('insert.confirm.payment') }}" method="POST" enctype="multipart/form-data">
                                             @csrf
                                             <div class="form-group">
                                                 <label>Code Transaction</label>
@@ -68,9 +68,43 @@
                                                 <strong class="text-danger mt-1">{!! $errors->first('bukti', '<p class="help-block">:message</p>') !!}</strong>
                                             </div>
                                             <button type="submit" class="btn btn-success btn-block">Submit</button>
-                                        </div>
+                                        </form>
                                     </div>
-                                </form>
+                                    <div class="col-md-6">
+                                        <h5>Panduan Transfer</h5>
+                                        <div class="accordion mt-3" id="accordionExample">
+                                            <div class="card">
+                                              <div id="headingOne">
+                                                <p class="mb-0">
+                                                  <a class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                                    Bank Mandiri
+                                                  </a>
+                                                </p>
+                                              </div>
+                                          
+                                              <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+                                                <div class="card-body">
+                                                  Bank Mandiri panduan
+                                                </div>
+                                              </div>
+                                            </div>
+                                            <div class="card">
+                                              <div id="headingTwo">
+                                                <p class="mb-0">
+                                                  <a class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                                    Bank BCA
+                                                  </a>
+                                                </p>
+                                              </div>
+                                              <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+                                                <div class="card-body">
+                                                  Bank BCA Panduan
+                                                </div>
+                                              </div>
+                                            </div>
+                                          </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

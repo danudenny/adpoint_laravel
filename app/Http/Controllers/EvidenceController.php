@@ -8,7 +8,7 @@ use App\User;
 use App\OrderDetail;
 use App\Order;
 use Mail;
-use App\Mail\Order\OrderActive;
+use App\Mail\Order\OrderBuktiTayang;
 
 use DB;
 use Auth;
@@ -121,6 +121,18 @@ class EvidenceController extends Controller
         }
 
         $result = array_merge($filegambar, $filevideo);
+        $query = DB::table('orders as o')
+                ->join('order_details as od', 'od.order_id', '=', 'o.id')
+                ->join('users as b', 'b.id', '=', 'o.user_id')
+                ->join('products as p', 'p.id', '=', 'od.product_id')
+                ->where('od.id', $request->order_detail_id)
+                ->select([
+                    'od.*',
+                    'b.name as buyer_name',
+                    'b.email as buyer_email',
+                    'p.name as product_name',
+                ])
+                ->first();
         $evidence = New Evidence;
         if ($evidence) {
             $evidence->order_detail_id = $request->order_detail_id;
@@ -128,6 +140,7 @@ class EvidenceController extends Controller
             $order_detail = OrderDetail::where('id', $request->order_detail_id)->first();
             if ($order_detail != null) {
                 $order_detail->status = 3; // uploaded
+                Mail::to($query->buyer_email)->send(new OrderBuktiTayang($query));
                 $order_detail->save();
             }
             $evidence->no_bukti = $request->no_bukti;

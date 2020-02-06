@@ -60,6 +60,25 @@
                     </span>
                 </td>
             </tr>
+            <tr>
+                <th>{{__('Bukti Transfer')}}</th>
+                <td>
+                    @php
+                        $cp = \App\ConfirmPayment::where('code_trx', $query->code_trx)->first();
+                    @endphp
+                    @if ($cp !== null)
+                        <span>
+                            <a target="_blank" href="{{ url($cp->bukti) }}">
+                                <img src="{{ url($cp->bukti) }}" class="img-fluid img-responsive img-thumbnail" width="100" alt="Bukti Transfer">
+                            </a>
+                        </span>
+                    @else
+                        <span>
+                            Nothing
+                        </span>
+                    @endif
+                </td>
+            </tr>
         </tbody>
     </table>
 </div>

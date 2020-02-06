@@ -121,7 +121,6 @@
 <script src="{{ asset('frontend/js/dataTables.bootstrap4.min.js') }}"></script>
 <script src="{{ asset('frontend/js/jquery-ui.js') }}"></script>
 <script src="{{ asset('frontend/js/bootstrap-select.min.js') }}"></script>
-<script src="{{ asset('frontend/js/bootstrap-select.min.js') }}"></script>
 
 
 <link rel="stylesheet" href="{{ asset('css/dropzone.css') }}">
@@ -846,6 +845,8 @@
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBsVHufr4pDssMKPVCFZO6yXe58oalrtHs&libraries=places"></script>
 <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js">
 </script>
+<script type="text/javascript" src="{{ asset('frontend/js/daterangepicker.min.js') }}"></script>
+<link rel="stylesheet" type="text/css" href="{{ asset('frontend/css/daterangepicker.css') }}" />
 @yield('script')
 
 

@@ -26,8 +26,8 @@ class TransactionController extends Controller
 
     public function transaction_details($id)
     {
-        $details = Transaction::where('id', decrypt($id))->first();
-        return view('transactions.transaction_detail', compact('details'));
+        $transaction = Transaction::where('id', decrypt($id))->first();
+        return view('transactions.transaction_detail', compact('transaction'));
     }
 
     public function show_invoice(Request $request, $id)

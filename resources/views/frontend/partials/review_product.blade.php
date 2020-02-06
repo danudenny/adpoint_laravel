@@ -45,7 +45,7 @@
     @if ($review !== null)
         <div class="row">
             <div class="col-md-12">
-                <div style="font-size: 35px; color: orange; text-align: center;">
+                <div class="star-rating mb-1">
                     {{ renderStarRating($product->rating) }}
                 </div>
                 <div class="alert alert-success">{{ $review->comment }}</div>

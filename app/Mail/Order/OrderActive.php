@@ -29,6 +29,6 @@ class OrderActive extends Mailable implements ShouldQueue
     public function build()
     {
         return $this->view('emails.orders.order_active')
-            ->subject('Selamat. Order Aktif');
+            ->subject('Selamat. Iklan Aktif di #'.$this->user->product_name);
     }
 }

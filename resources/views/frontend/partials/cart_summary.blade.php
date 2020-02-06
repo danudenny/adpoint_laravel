@@ -29,7 +29,7 @@
                 @php
                     $user = \App\User::where('id', $seller)->first();
                 @endphp
-                <div style="height: 40px; background: #0f355a; color: white; border-bottom: 2px solid #fd7e14">
+                <div style="height: 40px; background: #FBFBFB; border-bottom: 1px solid #ccc">
                     <p style="line-height: 40px; margin-left: 10px">{{ $user->name }}</p>
                 </div>
                 <div class="card-body">
@@ -94,7 +94,7 @@
         @php
             $total_keseluruhan = array_sum($total_kes);
         @endphp
-        <div class="border-0" style="background: #F79F1F;">
+        <div class="border-0" style="background: #FBFBFB;">
             <div class="card-body">
                 <table class="table-cart table-cart-review">
                     <tfoot>
@@ -105,8 +105,8 @@
                             }
                         @endphp
                         <tr class="cart-total">
-                            <th class="text-white"><span class="strong-700">{{__('Grand Total')}}</span></th>
-                            <td class="text-right text-white">
+                            <th><span class="strong-700">{{__('Grand Total')}}</span></th>
+                            <td class="text-right">
                                 <strong><span>{{ single_price($total) }}</span></strong>
                             </td>
                         </tr>
