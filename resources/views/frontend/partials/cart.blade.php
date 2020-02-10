@@ -2,7 +2,13 @@
     <i class="la la-shopping-cart d-inline-block nav-box-icon"></i>
     <span class="nav-box-text d-none d-xl-inline-block">{{__('Cart')}}</span>
     @if(Session::has('cart'))
-        <span class="nav-box-number">{{ count(Session::get('cart'))}}</span>
+        @php
+            $count = 0;
+            foreach (Session::get('cart') as $key => $c) {
+                $count += count($c);
+            }
+        @endphp
+        <span class="nav-box-number">{{ $count }}</span>
     @else
         <span class="nav-box-number">0</span>
     @endif
@@ -19,35 +25,47 @@
                         @php
                             $total = 0;
                         @endphp
-                        @foreach($cart as $key => $cartItem)
+                        @foreach($cart as $seller_id => $c)
+                            <div class="dc-item p-2 ml-2">
+                                <strong>{{ \App\User::where('id', $seller_id)->first()->name }}</strong>
+                            </div>
                             @php
-                                $product = \App\Product::find($cartItem['id']);
-                                $total = $total + $cartItem['price']*$cartItem['quantity'];
+                                $subtotal = 0;
                             @endphp
-                            <div class="dc-item">
-                                <div class="d-flex align-items-center">
-                                    <div class="dc-image">
-                                        <a href="{{ route('product', $product->slug) }}">
-                                            <img src="{{ asset($product->thumbnail_img) }}" class="img-fluid" alt="">
-                                        </a>
-                                    </div>
-                                    <div class="dc-content">
-                                        <span class="d-block dc-product-name text-capitalize strong-600 mb-1">
-                                            <a href="{{ route('product', $product->slug) }}">
-                                                {{ __($product->name) }}
-                                            </a>
-                                        </span>
 
-                                        <span class="dc-quantity">x{{ $cartItem['quantity'] }}</span>
-                                        <span class="dc-price">{{ single_price($cartItem['price']*$cartItem['quantity']) }}</span>
-                                    </div>
-                                    <div class="dc-actions">
-                                        <button onclick="removeFromCart({{ $key }})">
-                                            <i class="la la-close"></i>
-                                        </button>
+                            @foreach ($c as $key => $cartItem)
+                                @php
+                                    $product = \App\Product::where('id', $cartItem['id'])->first();
+                                    $subtotal += $cartItem['price']*$cartItem['quantity'];
+                                @endphp
+                                <div class="dc-item">
+                                    <div class="d-flex align-items-center">
+                                        <div class="dc-image">
+                                            <a href="{{ route('product', $product->slug) }}">
+                                                <img src="{{ asset($product->thumbnail_img) }}" class="img-fluid" alt="">
+                                            </a>
+                                        </div>
+                                        <div class="dc-content">
+                                            <span class="d-block dc-product-name text-capitalize strong-600 mb-1">
+                                                <a href="{{ route('product', $product->slug) }}">
+                                                    {{ __($product->name) }}
+                                                </a>
+                                            </span>
+    
+                                            <span class="dc-quantity">x{{ $cartItem['quantity'] }}</span>
+                                            <span class="dc-price">{{ single_price($cartItem['price']*$cartItem['quantity']) }}</span>
+                                        </div>
+                                        <div class="dc-actions">
+                                            <button onclick="removeFromCart({{ $seller_id }}, {{ $key }})">
+                                                <i class="la la-close"></i>
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                            @endforeach
+                            @php
+                                $total += $subtotal;
+                            @endphp
                         @endforeach
                     </div>
                     <div class="dc-item py-3">

@@ -8,26 +8,25 @@
             </div>
 
             <div class="col-6 text-right">
-                <span class="badge badge-md badge-success">{{ count(Session::get('cart')) }} {{__('Items')}}</span>
+                @php
+                    $count = 0;
+                    foreach (Session::get('cart') as $key => $c) {
+                        $count += count($c);
+                    }
+                @endphp
+                <span class="badge badge-md badge-success">{{ $count }} {{__('Items')}}</span>
             </div>
         </div>
     </div>
     @php
-        $cart = [];
-        $data = [];
-        foreach (Session::get('cart') as $sc) {
-            array_push($cart, $sc);
-        }
-        foreach ($cart as $c) {
-            $data[$c['user_id']][] = $c;
-        }
+        $cart = Session::get('cart');
         $total_kes = [];
     @endphp
     <div class="card-body">
-        @foreach ($data as $seller => $d)
+        @foreach ($cart as $seller_id => $c)
             <div class="border-0">
                 @php
-                    $user = \App\User::where('id', $seller)->first();
+                    $user = \App\User::where('id', $seller_id)->first();
                 @endphp
                 <div style="height: 40px; background: #FBFBFB; border-bottom: 1px solid #ccc">
                     <p style="line-height: 40px; margin-left: 10px">{{ $user->name }}</p>
@@ -45,7 +44,7 @@
                                 $subtotal = 0;
                                 $tax = 0.1;
                             @endphp
-                            @foreach ($d as $key => $cartItem)
+                            @foreach ($c as $key => $cartItem)
                                 @php
                                     $product = \App\Product::find($cartItem['id']);
                                     $subtotal += $cartItem['price']*$cartItem['quantity'];
@@ -71,6 +70,12 @@
                     <hr>
                     <table class="table-cart table-cart-review">
                         <tfoot>
+                            <tr class="cart-subtotal">
+                                <th>{{__('Total')}}</th>
+                                <td class="text-right">
+                                    <span class="strong-600">{{ single_price($subtotal) }}</span>
+                                </td>
+                            </tr>
                             <tr class="cart-subtotal">
                                 <th>{{__('Tax 10%')}}</th>
                                 <td class="text-right">

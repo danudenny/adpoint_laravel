@@ -27,6 +27,7 @@ class CheckoutController extends Controller
     //check the selected payment gateway and redirect to that controller accordingly
     public function checkout(Request $request)
     { 
+        // dd($request->all());
         $orderController = new OrderController;
         $orderController->store($request);
         $request->session()->put('payment_type', 'cart_payment');
@@ -92,38 +93,12 @@ class CheckoutController extends Controller
 
     public function store_shipping_info(Request $request)
     {
-        $shipping_info = $request->session()->get('shipping_info');
-        if ($request->hasFile('image')) {
-            $filegambar = [];
-            $arr = [];
-            foreach ($request->image as $key => $g) {
-                $path = $g->store('uploads/bukti_tayang');
-                array_push($arr, $path);
-                $filegambar['gambar'] = $arr;
-            }
-        }else {
-            $filegambar['gambar'] = null;
-        }
-        if ($request->hasFile('video')) {
-            $filevideo = [];
-            $arr = [];
-            foreach ($request->video as $key => $g) {
-                $path = $g->store('uploads/bukti_tayang');
-                array_push($arr, $path);
-                $filevideo['video'] = $arr;
-            }
-        }else {
-            $filevideo['video'] = null;
-        }
-
-        $result = array_merge($filegambar, $filevideo);
-        $file_ads = json_encode($result);
-        $desc_ads = $request->desc_ads;
-
-        
+        $cart = Session::get('cart');
         $subtotal = 0;
-        foreach (Session::get('cart') as $key => $cartItem){
-            $subtotal += $cartItem['price']*$cartItem['quantity'];
+        foreach ($cart as $seller_id => $c){
+            foreach ($c as $key => $cartItem) {
+                $subtotal += $cartItem['price']*$cartItem['quantity'];
+            }
         }
         
         $total = $subtotal;
@@ -132,7 +107,7 @@ class CheckoutController extends Controller
             $total -= Session::get('coupon_discount');
         }
 
-        return view('frontend.payment_select', compact('total','file_ads','desc_ads'));
+        return view('frontend.payment_select', compact('total'));
     }
 
     public function upload_advertising(Request $request)

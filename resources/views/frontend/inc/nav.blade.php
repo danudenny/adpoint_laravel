@@ -1,59 +1,6 @@
 <div class="header bg-white">
     <!-- Top Bar -->
-    {{-- <div class="top-navbar">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-7 col">
-                    <ul class="inline-links d-lg-inline-block d-flex justify-content-between">
-                        <li class="dropdown" id="lang-change">
-                            @php
-                                if(Session::has('locale')){
-                                    $locale = Session::get('locale', Config::get('app.locale'));
-                                }
-                                else{
-                                    $locale = 'en';
-                                }
-                            @endphp
-                            <a href="" class="dropdown-toggle top-bar-item" data-toggle="dropdown">
-                                <img src="{{ asset('frontend/images/icons/flags/'.$locale.'.png') }}" class="flag"><span class="language">{{ \App\Language::where('code', $locale)->first()->name }}</span>
-                            </a>
-                            <ul class="dropdown-menu">
-                                @foreach (\App\Language::all() as $key => $language)
-                                    <li class="dropdown-item @if($locale == $language) active @endif">
-                                        <a href="#" data-flag="{{ $language->code }}"><img src="{{ asset('frontend/images/icons/flags/'.$language->code.'.png') }}" class="flag"><span class="language">{{ $language->name }}</span></a>
-                                    </li>
-                                @endforeach
-                            </ul>
-                        </li>
-
-                    </ul>
-                </div>
-
-                <div class="col-5 text-right d-none d-lg-block">
-                    <ul class="inline-links">
-                        <li>
-                            <a href="{{ route('orders.track') }}" class="top-bar-item">{{__('Track Order')}}</a>
-                        </li>
-                        @auth
-                        <li>
-                            <a href="{{ route('dashboard') }}" class="top-bar-item">{{__('My Panel')}}</a>
-                        </li>
-                        <li>
-                            <a href="{{ route('logout') }}" class="top-bar-item">{{__('Logout')}}</a>
-                        </li>
-                        @else
-                        <li>
-                            <a href="{{ route('user.login') }}" class="top-bar-item">{{__('Login')}}</a>
-                        </li>
-                        <li>
-                            <a href="{{ route('user.registration') }}" class="top-bar-item">{{__('Registration')}}</a>
-                        </li>
-                        @endauth
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div> --}}
+    
     <!-- END Top Bar -->
 
     <!-- mobile menu -->
@@ -379,7 +326,13 @@
                                                 <i class="la la-shopping-cart d-inline-block nav-box-icon"></i>
                                                 <span class="nav-box-text d-none d-xl-inline-block">{{__('Cart')}}</span>
                                                 @if(Session::has('cart'))
-                                                    <span class="nav-box-number">{{ count(Session::get('cart'))}}</span>
+                                                    @php
+                                                        $count = 0;
+                                                        foreach (Session::get('cart') as $key => $c) {
+                                                            $count += count($c);
+                                                        }
+                                                    @endphp
+                                                    <span class="nav-box-number">{{ $count }}</span>
                                                 @else
                                                     <span class="nav-box-number">0</span>
                                                 @endif
@@ -396,35 +349,46 @@
                                                                     @php
                                                                         $total = 0;
                                                                     @endphp
-                                                                    @foreach($cart as $key => $cartItem)
+                                                                    @foreach($cart as $seller_id => $c)
+                                                                        <div class="dc-item p-2 ml-2">
+                                                                            <strong>{{ \App\User::where('id', $seller_id)->first()->name }}</strong>
+                                                                        </div>
                                                                         @php
-                                                                            $product = \App\Product::find($cartItem['id']);
-                                                                            $total = $total + $cartItem['price']*$cartItem['quantity'];
+                                                                            $subtotal = 0;
                                                                         @endphp
-                                                                        <div class="dc-item">
-                                                                            <div class="d-flex align-items-center">
-                                                                                <div class="dc-image">
-                                                                                    <a href="{{ route('product', $product->slug) }}">
-                                                                                        <img src="{{ asset($product->thumbnail_img) }}" class="img-fluid" alt="">
-                                                                                    </a>
-                                                                                </div>
-                                                                                <div class="dc-content">
-                                                                                    <span class="d-block dc-product-name text-capitalize strong-600 mb-1">
-                                                                                        <a href="{{ route('product', $product->slug) }}">
-                                                                                            {{ __($product->name) }}
+                                                                        @foreach ($c as $key => $cartItem)
+                                                                            @php
+                                                                                $product = \App\Product::where('id', $cartItem['id'])->first();
+                                                                                $subtotal += $cartItem['price']*$cartItem['quantity'];
+                                                                            @endphp
+                                                                            <div class="dc-item">
+                                                                                <div class="d-flex align-items-center">
+                                                                                    <div class="dc-image">
+                                                                                        <a href="#">
+                                                                                            <img src="{{ url($product->thumbnail_img) }}" class="img-fluid" alt="">
                                                                                         </a>
-                                                                                    </span>
+                                                                                    </div>
+                                                                                    <div class="dc-content">
+                                                                                        <span class="d-block dc-product-name text-capitalize strong-600 mb-1">
+                                                                                            <a href="{{ route('product', $product->slug) }}">
+                                                                                                {{ __($product->name) }}
+                                                                                            </a>
+                                                                                        </span>
 
-                                                                                    <span class="dc-quantity">x{{ $cartItem['quantity'] }}</span>
-                                                                                    <span class="dc-price">{{ single_price($cartItem['price']*$cartItem['quantity']) }}</span>
-                                                                                </div>
-                                                                                <div class="dc-actions">
-                                                                                    <button onclick="removeFromCart({{ $key }})">
-                                                                                        <i class="la la-close"></i>
-                                                                                    </button>
+                                                                                        <span class="dc-quantity">x{{ $cartItem['quantity'] }}</span>
+                                                                                        <span class="dc-price">{{ single_price($cartItem['price']*$cartItem['quantity']) }}</span>
+                                                                                    </div>
+                                                                                    <div class="dc-actions">
+                                                                                        <button onclick="removeFromCart({{ $seller_id }}, {{ $key }})">
+                                                                                            <i class="la la-close"></i>
+                                                                                        </button>
+                                                                                    </div>
                                                                                 </div>
                                                                             </div>
-                                                                        </div>
+                                                                        @endforeach
+                                                                        @php
+                                                                            $total += $subtotal;
+                                                                        @endphp
                                                                     @endforeach
                                                                 </div>
                                                                 <div class="dc-item py-3">

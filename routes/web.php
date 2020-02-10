@@ -72,6 +72,9 @@ Route::post('/cart/addtocart', 'CartController@addToCart')->name('cart.addToCart
 Route::post('/cart/removeFromCart', 'CartController@removeFromCart')->name('cart.removeFromCart');
 Route::post('/cart/updateQuantity', 'CartController@updateQuantity')->name('cart.updateQuantity');
 
+Route::post('/cart/upload_ads', 'CartController@form_upload_ads')->name('form.upload.ads');
+Route::post('/cart/upload_ads_proses', 'CartController@upload_ads_proses')->name('upload.ads.proses');
+
 Route::post('/checkout/payment', 'CheckoutController@checkout')->name('payment.checkout');
 Route::get('/checkout', 'CheckoutController@get_shipping_info')->name('checkout.shipping_info');
 Route::post('/checkout/payment_select', 'CheckoutController@store_shipping_info')->name('checkout.store_shipping_infostore');

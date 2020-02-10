@@ -3,7 +3,7 @@
     <section class="slice-xs sct-color-2 border-bottom">
         <div class="container container-sm">
             <div class="row cols-delimited">
-                <div class="col-3">
+                <div class="col-4">
                     <div class="icon-block icon-block--style-1-v5 text-center">
                         <div class="block-icon mb-0">
                             <i class="la la-shopping-cart" style="color: #ff9400"></i>
@@ -14,7 +14,7 @@
                     </div>
                 </div>
 
-                <div class="col-3">
+                <div class="col-4">
                     <div class="icon-block icon-block--style-1-v5 text-center">
                         <div class="block-icon c-gray-light mb-0">
                             <i class="la la-truck"></i>
@@ -25,18 +25,7 @@
                     </div>
                 </div>
 
-                <div class="col-3">
-                    <div class="icon-block icon-block--style-1-v5 text-center">
-                        <div class="block-icon c-gray-light mb-0">
-                            <i class="la la-cloud-upload"></i>
-                        </div>
-                        <div class="block-content d-none d-md-block">
-                            <h3 class="heading heading-sm strong-300 c-gray-light text-capitalize">3. {{__('Upload Advertising')}}</h3>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-3">
+                <div class="col-4">
                     <div class="icon-block icon-block--style-1-v5 text-center">
                         <div class="block-icon c-gray-light mb-0">
                             <i class="la la-credit-card"></i>
@@ -55,176 +44,170 @@
         <div class="container">
             @if(Session::has('cart'))
                 @php
-                    $cart = [];
-                    $data = [];
-                    foreach (Session::get('cart') as $sc) {
-                        array_push($cart, $sc);
-                    }
-                    foreach ($cart as $c) {
-                        $data[$c['user_id']][] = $c;
-                    }
-                    
+                    $cart = Session::get('cart');
                 @endphp
-                <div class="row cols-xs-space cols-sm-space cols-md-space">
-                <div class="col-xl-8">
-                    @foreach ($data as $seller => $d)
-                        <div class="card">
-                            @php
-                                $user = \App\User::where('id', $seller)->first();
-                            @endphp
-                            <div style="height: 50px; background: #FBFBFB; border-bottom: 1px solid #ccc">
-                                <div style="line-height: 45px; margin-left: 30px;">
-                                    <img class="img-fluid rounded-circle mr-2" width="30" src="{{ url($user->avatar_original) }}" alt="">
-                                    {{ $user->name }}
-                                </div>
-                            </div>
-                            <div class="card-body">
-                                <div class="form-default bg-white p-4">
-                                    <div class="">
-                                        <div class="">
-                                            <table class="table-cart border-bottom">
-                                                <thead>
-                                                    <tr>
-                                                        <th class="product-image"></th>
-                                                        <th class="product-name">{{__('Product')}}</th>
-                                                        <th class="product-price d-none d-lg-table-cell">{{__('Price')}}</th>
-                                                        <th class="product-quanity d-none d-md-table-cell">{{__('Quantity')}}</th>
-                                                        <th class="product-total">{{__('Total')}}</th>
-                                                        <th class="product-remove"></th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    @php
-                                                    $total = 0;
-                                                    @endphp
-                                                    @foreach ($d as $key => $cartItem)
-                                                        @php
-                                                        $product = \App\Product::find($cartItem['id']);
-                                                        $total = $total + $cartItem['price']*$cartItem['quantity'];
-                                                        $product_name_with_choice = $product->name;
-                                                        // dd($cartItem);
-                                                        if(isset($cartItem['color'])){
-                                                            $product_name_with_choice .= ' - '.\App\Color::where('code', $cartItem['color'])->first()->name;
-                                                        }
-                                                        foreach (json_decode($product->choice_options) as $choice){
-                                                            $str = $choice->title; // example $str =  choice_0
-                                                            $product_name_with_choice .= ' - '.$cartItem[$str];
-                                                        }
-                                                        @endphp
-                                                        <tr class="cart-item">
-                                                            <td class="product-image">
-                                                                <a href="#" class="mr-3">
-                                                                    <img class="img-fluid" src="{{ asset($product->thumbnail_img) }}">
-                                                                </a>
-                                                            </td>
-                                                            
-                                                            <td class="product-name">
-                                                                <span class="pr-4 d-block">{{ $product_name_with_choice }}</span>
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="table-responsive">
+                            <table class="table">
+                                @foreach ($cart as $seller_id => $c)
+                                    @php
+                                        $user = \App\User::where('id', $seller_id)->first();
+                                    @endphp
+                                    <tr>
+                                        <th colspan="7" style="background: #ccc">
+                                            <img class="img-fluid rounded-circle mr-2" width="25" src="{{ url($user->avatar_original) }}" alt="">
+                                            {{ $user->name }}
+                                        </th>
+                                    </tr>
+                                    @php
+                                        $total = 0;
+                                    @endphp
+                                    @foreach ($c as $key => $cartItem)
+                                        @php
+                                            $product = \App\Product::find($cartItem['id']);
+                                            $total += $cartItem['price']*$cartItem['quantity'];
+                                            $product_name_with_choice = $product->name;
                                         
-                                                                @php
-                                                                    if ($cartItem['Periode'] === 'Harian') {
-                                                                        $end_date = date('d M Y', strtotime($cartItem['start_date']. ' + '.$cartItem['quantity'].' days'));
-                                                                        echo '<span class="badge badge-warning">'.$cartItem['start_date'].'</span>';
-                                                                        echo ' s/d ';
-                                                                        echo '<span id="e" class="badge badge-warning">'.$end_date.'</span>';
-                                                                    }
-                                                                    if ($cartItem['Periode'] === 'Mingguan') {
-                                                                        $_qty = (int)$cartItem['quantity'] * 7;
-                                                                        $end_date = date('d M Y', strtotime($cartItem['start_date']. ' + '.$_qty.' days'));
-                                                                        echo '<span class="badge badge-warning">'.$cartItem['start_date'].'</span>';
-                                                                        echo ' s/d ';
-                                                                        echo '<span id="e" class="badge badge-warning">'.$end_date.'</span>';
-                                                                    }
-                                                                    if ($cartItem['Periode'] === 'Bulanan') {
-                                                                        $end_date = date('d M Y', strtotime($cartItem['start_date']. ' + '.$cartItem['quantity'].' months'));
-                                                                        echo '<span class="badge badge-warning">'.$cartItem['start_date'].'</span>';
-                                                                        echo ' s/d ';
-                                                                        echo '<span id="e" class="badge badge-warning">'.$end_date.'</span>';
-                                                                    }
-                                                                    if ($cartItem['Periode'] === 'TigaBulan') {
-                                                                        $_qty = (int)$cartItem['quantity'] * 3;
-                                                                        $end_date = date('d M Y', strtotime($cartItem['start_date']. ' + '.(string)$_qty.' months'));
-                                                                        echo '<span class="badge badge-warning">'.$cartItem['start_date'].'</span>';
-                                                                        echo ' s/d ';
-                                                                        echo '<span id="e" class="badge badge-warning">'.$end_date.'</span>';
-                                                                    }
-                                                                    if ($cartItem['Periode'] === 'EnamBulan') {
-                                                                        $_qty = (int)$cartItem['quantity'] * 6;
-                                                                        $end_date = date('d M Y', strtotime($cartItem['start_date']. ' + '.(string)$_qty.' months'));
-                                                                        echo '<span class="badge badge-warning">'.$cartItem['start_date'].'</span>';
-                                                                        echo ' s/d ';
-                                                                        echo '<span id="e" class="badge badge-warning">'.$end_date.'</span>';
-                                                                    }
-                                                                    if ($cartItem['Periode'] === 'Tahunan') {
-                                                                        $_qty = (int)$cartItem['quantity'] * 12;
-                                                                        $end_date = date('d M Y', strtotime($cartItem['start_date']. ' + '.(string)$_qty.' months'));
-                                                                        echo '<span class="badge badge-warning">'.$cartItem['start_date'].'</span>';
-                                                                        echo ' s/d ';
-                                                                        echo '<span id="e" class="badge badge-warning">'.$end_date.'</span>';
-                                                                    }
-        
-                                                                @endphp
-                                                                <b hidden id="start_{{ $cartItem['Periode'] }}" class="text-sm text-info">{{ $cartItem['start_date'] }}</b>
-                                                            </td>
-                                                            
-                                                            <td class="product-price d-none d-lg-table-cell">
-                                                                <span class="pr-3 d-block">{{ single_price($cartItem['price']) }}</span>
-                                                            </td>
-        
-                                                            <td class="product-quantity d-none d-md-table-cell">
-                                                                <div class="input-group input-group--style-2 pr-4" style="width: 130px;">
-                                                                    <span class="input-group-btn">
-                                                                        <button class="btn btn-number" id="minus_{{ $cartItem['Periode'] }}" type="button" data-type="minus" data-field="quantity[{{ $cartItem['id'] }}]">
-                                                                            <i class="la la-minus"></i>
-                                                                        </button>
-                                                                    </span>
-                                                                    <input type="text" name="quantity[{{ $cartItem['id'] }}]" id="qty_{{ $cartItem['Periode'] }}" class="form-control input-number" placeholder="1" value="{{ $cartItem['quantity'] }}" min="1" max="10" onchange="updateQuantity( {{ $cartItem['id'] }}, this, $('#start_{{$cartItem['Periode']}}').text(), $('#e').text())">
-                                                                    <span class="input-group-btn">
-                                                                        <button class="btn btn-number" id="plus_{{ $cartItem['Periode'] }}" type="button" data-type="plus" data-field="quantity[{{ $cartItem['id'] }}]">
-                                                                            <i class="la la-plus"></i>
-                                                                        </button>
-                                                                    </span>
-                                                                </div>
-                                                            </td>
-                                                            <td class="product-total">
-                                                                <span>{{ single_price($cartItem['price']*$cartItem['quantity']) }}</span>
-                                                            </td>
-                                                            <td class="product-remove">
-                                                                <a href="#" onclick="removeFromCartView(event, {{ $key }})" class="text-right pl-4">
-                                                                    <i class="la la-trash"></i>
-                                                                </a>
-                                                            </td>
-                                                        </tr>
-                                                    @endforeach
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
+                                            foreach (json_decode($product->choice_options) as $choice){
+                                                $str = $choice->title;
+                                                $product_name_with_choice .= ' - '.$cartItem[$str];
+                                            }
+                                        @endphp
+                                        <tr>
+                                            <td>
+                                                <img class="img-fluid mr-2" width="60" src="{{ asset($product->thumbnail_img) }}">
+                                            </td>
+                                            <td>
+                                                <small>Name:</small><br>
+                                                <strong>{{ $product_name_with_choice }}</strong><br>
+                                                @php
+                                                    if ($cartItem['Periode'] === 'Harian') {
+                                                        $end_date = date('d M Y', strtotime($cartItem['start_date']. ' + '.$cartItem['quantity'].' days'));
+                                                        echo '<span class="badge badge-primary">'.$cartItem['start_date'].'</span>';
+                                                        echo ' <small style="color:black">s/d</small> ';
+                                                        echo '<span id="e" class="badge badge-primary">'.$end_date.'</span>';
+                                                    }
+                                                    if ($cartItem['Periode'] === 'Mingguan') {
+                                                        $_qty = (int)$cartItem['quantity'] * 7;
+                                                        $end_date = date('d M Y', strtotime($cartItem['start_date']. ' + '.$_qty.' days'));
+                                                        echo '<span class="badge badge-primary">'.$cartItem['start_date'].'</span>';
+                                                        echo ' <small style="color:black">s/d</small> ';
+                                                        echo '<span id="e" class="badge badge-primary">'.$end_date.'</span>';
+                                                    }
+                                                    if ($cartItem['Periode'] === 'Bulanan') {
+                                                        $end_date = date('d M Y', strtotime($cartItem['start_date']. ' + '.$cartItem['quantity'].' months'));
+                                                        echo '<span class="badge badge-primary">'.$cartItem['start_date'].'</span>';
+                                                        echo ' <small style="color:black">s/d</small> ';
+                                                        echo '<span id="e" class="badge badge-primary">'.$end_date.'</span>';
+                                                    }
+                                                    if ($cartItem['Periode'] === 'TigaBulan') {
+                                                        $_qty = (int)$cartItem['quantity'] * 3;
+                                                        $end_date = date('d M Y', strtotime($cartItem['start_date']. ' + '.(string)$_qty.' months'));
+                                                        echo '<span class="badge badge-primary">'.$cartItem['start_date'].'</span>';
+                                                        echo ' <small style="color:black">s/d</small> ';
+                                                        echo '<span id="e" class="badge badge-primary">'.$end_date.'</span>';
+                                                    }
+                                                    if ($cartItem['Periode'] === 'EnamBulan') {
+                                                        $_qty = (int)$cartItem['quantity'] * 6;
+                                                        $end_date = date('d M Y', strtotime($cartItem['start_date']. ' + '.(string)$_qty.' months'));
+                                                        echo '<span class="badge badge-primary">'.$cartItem['start_date'].'</span>';
+                                                        echo ' <small style="color:black">s/d</small> ';
+                                                        echo '<span id="e" class="badge badge-primary">'.$end_date.'</span>';
+                                                    }
+                                                    if ($cartItem['Periode'] === 'Tahunan') {
+                                                        $_qty = (int)$cartItem['quantity'] * 12;
+                                                        $end_date = date('d M Y', strtotime($cartItem['start_date']. ' + '.(string)$_qty.' months'));
+                                                        echo '<span class="badge badge-primary">'.$cartItem['start_date'].'</span>';
+                                                        echo ' <small style="color:black">s/d</small> ';
+                                                        echo '<span id="e" class="badge badge-primary">'.$end_date.'</span>';
+                                                    }
+
+                                                @endphp
+                                                <b hidden id="start_{{ $cartItem['Periode'] }}" class="text-sm text-info">{{ $cartItem['start_date'] }}</b>
+                                            </td>
+                                            <td>
+                                                <small>Price:</small><br>
+                                                <strong>{{ single_price($cartItem['price']) }}</strong>
+                                            </td>
+                                            <td>
+                                                <div class="input-group input-group--style-2 pr-4" style="width: 130px;">
+                                                    <span class="input-group-btn">
+                                                        <button class="btn btn-number" id="minus_{{ $cartItem['Periode'] }}" type="button" data-type="minus" data-field="quantity[{{ $cartItem['id'] }}]">
+                                                            <i class="la la-minus"></i>
+                                                        </button>
+                                                    </span>
+                                                    <input type="text" name="quantity[{{ $cartItem['id'] }}]" id="qty_{{ $cartItem['Periode'] }}" class="form-control input-number" placeholder="1" value="{{ $cartItem['quantity'] }}" min="1" max="10" onchange="updateQuantity(this.value, {{ $seller_id }}, {{ $key }}, $('#start_{{$cartItem['Periode']}}').text())">
+                                                    <span class="input-group-btn">
+                                                        <button class="btn btn-number" id="plus_{{ $cartItem['Periode'] }}" type="button" data-type="plus" data-field="quantity[{{ $cartItem['id'] }}]">
+                                                            <i class="la la-plus"></i>
+                                                        </button>
+                                                    </span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <small>Total:</small><br>
+                                                <strong>{{ single_price($cartItem['price']*$cartItem['quantity']) }}</strong>
+                                            </td>
+                                            <td>
+                                                @if ($cartItem['advertising'] !== null)
+                                                    <button class="btn btn-outline-success btn-circle btn-sm" disabled style="cursor: not-allowed">
+                                                        <i class="fa fa-check"></i> Uploaded
+                                                    </button>
+                                                @else 
+                                                    <button onclick="uploadAds({{$seller_id}}, {{$key}})" class="btn btn-outline-primary btn-circle btn-sm">
+                                                        <i class="fa fa-upload"></i> Upload
+                                                    </button>
+                                                @endif
+                                            </td>
+                                            <td>
+                                                <a href="#" onclick="removeFromCartView(event,{{ $seller_id }}, {{ $key }})" class="text-right btn btn-sm btn-danger">
+                                                    <i class="fa fa-trash"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                @endforeach
+                            </table>
+                        </div>
+                        
+                        <div class="row align-items-center mt-3">
+                            <div class="col-6">
+                                <a href="{{ route('home') }}" class="link link--style-3">
+                                    <i class="la la-mail-reply"></i>
+                                    {{__('Return to shop')}}
+                                </a>
                             </div>
-                        </div>
-                    @endforeach
-                    <div class="row align-items-center pt-4">
-                        <div class="col-6">
-                            <a href="{{ route('home') }}" class="link link--style-3">
-                                <i class="la la-mail-reply"></i>
-                                {{__('Return to shop')}}
-                            </a>
-                        </div>
-                        <div class="col-6 text-right">
-                            @if(Auth::check())
-                                <a href="{{ route('checkout.shipping_info') }}" class="btn btn-styled btn-base-1">{{__('Continue to Shipping')}}</a>
-                            @else
-                                <button class="btn btn-styled btn-base-1" onclick="showCheckoutModal()">{{__('Continue to Shipping')}}</button>
-                            @endif
+                            <div class="col-6 text-right">
+                                @if(Auth::check())
+                                    @php
+                                        $advertising = [];
+                                        $count = 0;
+                                        foreach (Session::get('cart') as $seller_id => $c) {
+                                            $count += count($c);
+                                            foreach ($c as $key => $cartItem) {
+                                                if ($cartItem['advertising'] !== null) {
+                                                    array_push($advertising, $cartItem['advertising']);
+                                                }
+                                            }
+                                        }
+                                    @endphp
+                                    @if (count($advertising) === $count)
+                                        <a href="{{ route('checkout.shipping_info') }}" class="btn btn-styled btn-base-1">{{__('Continue to Billing Details')}}</a>
+                                    @else 
+                                        <button class="btn btn-styled btn-base-1" onclick="showFrontendAlert('info', 'You have not uploaded the material')">{{__('Continue to Billing Details')}}</button>
+                                    @endif
+                                @else
+                                    <button class="btn btn-styled btn-base-1" onclick="showCheckoutModal()">{{__('Continue to Billing Details')}}</button>
+                                @endif
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="col-xl-4 ml-lg-auto">
-                    @include('frontend.partials.cart_summary')
+                    <div class="col-xl-4 ml-lg-auto">
+                        @include('frontend.partials.cart_summary')
+                    </div>
                 </div>
-            </div>
             @else
                 <div class="dc-header">
                     <h3 class="heading heading-6 strong-700">{{__('Your Cart is empty')}}</h3>
@@ -322,24 +305,46 @@
         </div>
     </div>
 
+    <div class="modal fade" id="uploadAds" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content position-relative">
+                <div class="c-preloader">
+                    <i class="fa fa-spin fa-spinner"></i>
+                </div>
+                <div id="uploadAdsbody">
+
+                </div>
+            </div>
+        </div>
+    </div>
+
 @endsection
 
 @section('script')
     <script type="text/javascript">
 
-        function removeFromCartView(e, key){
+        function removeFromCartView(e, seller_id, key){
             e.preventDefault();
-            removeFromCart(key);
+            removeFromCart(seller_id, key);
         }
 
-        function updateQuantity(key, element, start_date, end_date){
-            console.log(key);
+        function uploadAds(seller_id, index) {
+            $('#uploadAdsbody').html(null);
+            $('#uploadAds').modal();
+            $('.c-preloader').show();
+            $.post('{{ route('form.upload.ads') }}', {_token:'{{ csrf_token() }}', seller_id:seller_id,index:index}, function(data){
+                $('.c-preloader').hide();
+                $('#uploadAdsbody').html(data);
+            });
+        }
+
+        function updateQuantity(qty, seller_id, index, start_date){
             $.post('{{ route('cart.updateQuantity') }}', { 
                 _token:'{{ csrf_token() }}', 
-                key:key, 
-                quantity: element.value,
-                start_date : start_date,
-                end_date : end_date
+                seller_id:seller_id,
+                index:index, 
+                quantity: qty,
+                start_date : start_date
             },function(data){
                 updateNavCart();
                 $('#cart-summary').html(data);
@@ -349,6 +354,7 @@
         function showCheckoutModal(){
             $('#GuestCheckout').modal();
         }
+
     </script>
 @endsection
 
