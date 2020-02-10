@@ -546,9 +546,9 @@
         });
     }
 
-    function removeFromCart(key){
+    function removeFromCart(seller_id, key){
         // console.log(key);
-        $.post('{{ route('cart.removeFromCart') }}', {_token:'{{ csrf_token() }}', key:key}, function(data){
+        $.post('{{ route('cart.removeFromCart') }}', {_token:'{{ csrf_token() }}', seller_id:seller_id, key:key}, function(data){
             updateNavCart();
             $('#cart-summary').html(data);
             showFrontendAlert('success', 'Item has been removed from cart');

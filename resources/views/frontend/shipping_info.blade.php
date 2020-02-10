@@ -6,7 +6,7 @@
         <section class="slice-xs sct-color-2 border-bottom">
             <div class="container container-sm">
                 <div class="row cols-delimited">
-                    <div class="col-3">
+                    <div class="col-4">
                         <div class="icon-block icon-block--style-1-v5 text-center">
                             <div class="block-icon c-gray-light mb-0">
                                 <i class="la la-shopping-cart"></i>
@@ -17,7 +17,7 @@
                         </div>
                     </div>
 
-                    <div class="col-3">
+                    <div class="col-4">
                         <div class="icon-block icon-block--style-1-v5 text-center">
                             <div class="block-icon mb-0">
                                 <i class="la la-truck" style="color: #ff9400"></i>
@@ -28,18 +28,7 @@
                         </div>
                     </div>
 
-                    <div class="col-3">
-                        <div class="icon-block icon-block--style-1-v5 text-center">
-                            <div class="block-icon c-gray-light mb-0">
-                                <i class="la la-cloud-upload"></i>
-                            </div>
-                            <div class="block-content d-none d-md-block">
-                                <h3 class="heading heading-sm strong-300 c-gray-light text-capitalize">3. {{__('Upload Advertising')}}</h3>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-3">
+                    <div class="col-4">
                         <div class="icon-block icon-block--style-1-v5 text-center">
                             <div class="block-icon c-gray-light mb-0">
                                 <i class="la la-credit-card"></i>
@@ -58,7 +47,7 @@
             <div class="container">
                 <div class="row cols-xs-space cols-sm-space cols-md-space">
                     <div class="col-lg-8">
-                        <form class="form-default" data-toggle="validator" action="{{ route('checkout.upload_advertising') }}" role="form" method="POST">
+                        <form class="form-default" data-toggle="validator" action="{{ route('checkout.store_shipping_infostore') }}" role="form" method="POST">
                             @csrf
                             <div class="card">
                                 <div class="card-title px-4 py-3">
@@ -210,7 +199,7 @@
                                     </a>
                                 </div>
                                 <div class="col-6 text-right">
-                                    <button type="submit" class="btn btn-styled btn-base-1">{{__('Continue to Upload Ads')}}</a>
+                                    <button type="submit" class="btn btn-styled btn-base-1">{{__('Continue to Payment')}}</a>
                                 </div>
                             </div>
                         </form>

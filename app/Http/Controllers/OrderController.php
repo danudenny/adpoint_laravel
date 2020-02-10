@@ -37,6 +37,8 @@ use App\Notifications\OrderApproveAdminPush;
 use App\Notifications\OrderSoldPush;
 use App\Notifications\OrderApproveSellerPush;
 
+use App\Pushy;
+
 use App\Jobs\PaymentDuration;
 
 
@@ -139,7 +141,27 @@ class OrderController extends Controller
                     $user = User::where('id', $o->seller_id)->first();
                     $seller['code'] = $o->code;
                     $seller['seller_name'] = $user->name;
+                    // email
                     Mail::to($user->email)->send(new OrderSold($seller));
+
+                    // pushy notif
+                    $query = DB::table('pushy_tokens as pt')
+                            ->join('users as u', 'u.id', '=', 'pt.user_id')
+                            ->where(['u.id' => $o->seller_id])
+                            ->select(['pt.*'])
+                            ->first();
+                    // dd($query);
+                    $tokenPushy = $query->device_token;
+                    $data = array('message' => 'Selamat!. Orderan telah di review, silahkan di lanjutkan');
+                    $to = array($tokenPushy);
+                    $options = array(
+                        'notification' => array(
+                            'badge' => 1,
+                            'sound' => 'ping.aiff',
+                            'body'  => "Selamat!. Orderan telah di review, silahkan di lanjutkan"
+                        )
+                    );
+                    Pushy::sendPushNotification($data, $to, $options);
                 }
             }
             $request->session()->flash('message', 'TRX'.' '.$trx->code.' '.'Approved');
@@ -459,14 +481,7 @@ class OrderController extends Controller
     public function store(Request $request)
     {
 
-        $cart = [];
-        $data = [];
-        foreach (Session::get('cart') as $sc) {
-            array_push($cart, $sc);
-        }
-        foreach ($cart as $c) {
-            $data[$c['user_id']][] = $c;
-        }
+        $cart = Session::get('cart');
 
         $trx = new Transaction;
         $trx->code = 'TRX-'.time();
@@ -474,47 +489,39 @@ class OrderController extends Controller
         $trx->payment_type = $request->payment_option;
         $trx->user_id = Auth::user()->id;
         $trx->status = "on proses";
-        $trx->file_advertising = $request->file_ads;
-        $trx->description = $request->desc_ads;
-        $cart = [];
-        $data = [];
-        foreach (Session::get('cart') as $sc) {
-            array_push($cart, $sc);
-        }
-        foreach ($cart as $c) {
-            $data[$c['user_id']][] = $c;
-        }
+        $trx->file_advertising = null;
+        $trx->description = null;
 
         if ($trx->save()) {
-            foreach ($data as $key => $d) {
+            foreach ($cart as $seller_id => $c) {
                 $order = new Order;
                 if (Auth::check()) {
                     $order->user_id = Auth::user()->id;
                 }
                 $order->address = json_encode($request->session()->get('shipping_info'));               
-                $order->code = 'ODR-'.time().''.$key;
+                $order->code = 'ODR-'.time().''.$seller_id;
                 $order->transaction_id = $trx->id;
-                $order->seller_id = $key;
+                $order->seller_id = $seller_id;
                 $order->approved = 0;
                 if ($order->save()) {
                     $subtotal = 0;
-                    foreach ($d as $value) {
-                        $product = Product::find($value['id']);
-                        $subtotal += $value['price'] * $value['quantity'];
+                    foreach ($c as $key => $cartItem) {
+                        $product = Product::find($cartItem['id']);
+                        $subtotal += $cartItem['price'] * $cartItem['quantity'];
                         $product_variation = null;
     
                         foreach (json_decode($product->choice_options) as $choice) {
                             $str = $choice->title;
                             if ($product_variation != null) {
-                                $product_variation .= $value[$str];
+                                $product_variation .= $cartItem[$str];
                             } else {
-                                $product_variation .= $value[$str];
+                                $product_variation .= $cartItem[$str];
                             }
                         }
     
                         if ($product_variation != null) {
                             $variations = json_decode($product->variations);
-                            $variations->$product_variation->qty -= $value['quantity'];
+                            $variations->$product_variation->qty -= $cartItem['quantity'];
                             $product->variations = json_encode($variations);
                             $product->save();
                         }
@@ -522,37 +529,38 @@ class OrderController extends Controller
                         $order_detail = new OrderDetail;
                         
                         $order_detail->order_id  = $order->id;
-                        $order_detail->seller_id = $value['user_id'];
-                        $order_detail->product_id = $value['id'];
+                        $order_detail->seller_id = $cartItem['user_id'];
+                        $order_detail->product_id = $cartItem['id'];
                         $order_detail->variation = $product_variation;
-                        $order_detail->total = $value['price'] * $value['quantity'];
-                        $order_detail->price = $value['price'];
-                        $order_detail->quantity = $value['quantity'];
+                        $order_detail->total = $cartItem['price'] * $cartItem['quantity'];
+                        $order_detail->price = $cartItem['price'];
+                        $order_detail->quantity = $cartItem['quantity'];
+                        $order_detail->file_advertising = $cartItem['advertising'];
                         $order_detail->status = 0;
 
                         if ($product_variation == 'Harian') {
-                            $order_detail->start_date = date('Y-m-d', strtotime($value['start_date']));
-                            $order_detail->end_date = date('Y-m-d', strtotime($value['end_date']));
+                            $order_detail->start_date = date('Y-m-d', strtotime($cartItem['start_date']));
+                            $order_detail->end_date = date('Y-m-d', strtotime($cartItem['end_date']));
                         }
                         if ($product_variation == 'Mingguan') {
-                            $order_detail->start_date = date('Y-m-d', strtotime($value['start_date']));
-                            $order_detail->end_date = date('Y-m-d', strtotime($value['end_date']));
+                            $order_detail->start_date = date('Y-m-d', strtotime($cartItem['start_date']));
+                            $order_detail->end_date = date('Y-m-d', strtotime($cartItem['end_date']));
                         }
                         if ($product_variation == 'Bulanan') {
-                            $order_detail->start_date = date('Y-m-d', strtotime($value['start_date']));
-                            $order_detail->end_date = date('Y-m-d', strtotime($value['end_date']));
+                            $order_detail->start_date = date('Y-m-d', strtotime($cartItem['start_date']));
+                            $order_detail->end_date = date('Y-m-d', strtotime($cartItem['end_date']));
                         }
                         if ($product_variation == 'TigaBulan') {
-                            $order_detail->start_date = date('Y-m-d', strtotime($value['start_date']));
-                            $order_detail->end_date = date('Y-m-d', strtotime($value['end_date']));
+                            $order_detail->start_date = date('Y-m-d', strtotime($cartItem['start_date']));
+                            $order_detail->end_date = date('Y-m-d', strtotime($cartItem['end_date']));
                         }
                         if ($product_variation == 'EnamBulan') {
-                            $order_detail->start_date = date('Y-m-d', strtotime($value['start_date']));
-                            $order_detail->end_date = date('Y-m-d', strtotime($value['end_date']));
+                            $order_detail->start_date = date('Y-m-d', strtotime($cartItem['start_date']));
+                            $order_detail->end_date = date('Y-m-d', strtotime($cartItem['end_date']));
                         }
                         if ($product_variation == 'Tahunan') {
-                            $order_detail->start_date = date('Y-m-d', strtotime($value['start_date']));
-                            $order_detail->end_date = date('Y-m-d', strtotime($value['end_date']));
+                            $order_detail->start_date = date('Y-m-d', strtotime($cartItem['start_date']));
+                            $order_detail->end_date = date('Y-m-d', strtotime($cartItem['end_date']));
                         }
 
                         $order_detail->save();
@@ -560,7 +568,7 @@ class OrderController extends Controller
                         $product->num_of_sale++;
                         $product->save();
                     }
-                    $seller = Seller::where('user_id', $key)->first();
+                    $seller = Seller::where('user_id', $seller_id)->first();
 
                     $tax = $subtotal*0.1;
                     $order->total = $subtotal;

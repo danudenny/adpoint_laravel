@@ -29,6 +29,58 @@ class CartController extends Controller
         return view('frontend.partials.cart');
     }
 
+    public function form_upload_ads(Request $request)
+    {
+        $data['seller_id'] = $request->seller_id;
+        $data['index'] = $request->index;
+        return view('frontend.form_upload_ads_cart', compact('data'));
+    }
+
+    public function upload_ads_proses(Request $request)
+    {
+        if ($request->hasFile('image')) {
+            $filegambar = [];
+            $arr = [];
+            foreach ($request->image as $key => $g) {
+                $path = $g->store('uploads/materi_advertising');
+                array_push($arr, $path);
+                $filegambar['gambar'] = $arr;
+            }
+        }else {
+            $filegambar['gambar'] = null;
+        }
+        if ($request->hasFile('video')) {
+            $filevideo = [];
+            $arr = [];
+            foreach ($request->video as $key => $g) {
+                $path = $g->store('uploads/materi_advertising');
+                array_push($arr, $path);
+                $filevideo['video'] = $arr;
+            }
+        }else {
+            $filevideo['video'] = null;
+        }
+
+        $result = array_merge($filegambar, $filevideo);
+        $advertising = json_encode($result);
+
+        $cart = Session::get('cart');
+        foreach ($cart as $seller_id => $c) {
+            if ($seller_id === (int)$request->seller_id) {
+                foreach ($c as $key => $cartItem) {
+                    if ($key === (int)$request->index) {
+                        $cartItem['advertising'] = $advertising;
+                    }
+                    $c[$key] = $cartItem;
+                }
+                $cart[$seller_id] = $c;
+            }
+        }
+        $request->session()->put('cart', $cart);
+        return back();
+        
+    }
+
     public function addToCart(Request $request)
     {
         $product = Product::find($request->id);
@@ -95,14 +147,15 @@ class CartController extends Controller
         $data['price'] = $price;
         $data['start_date'] = $request['start_date'];
         $data['end_date'] = $request['end_date'];
-
+        $data['advertising'] = null;
+        
         if($request->session()->has('cart')){
-            $cart = $request->session()->get('cart', collect([]));
-            $cart->push($data);
-        }
-        else{
-            $cart = collect([$data]);
+            $cart = $request->session()->get('cart');
+            $cart[$product->user_id][] = $data;
             $request->session()->put('cart', $cart);
+        } else{
+            $result[$product->user_id] = [$data];
+            $request->session()->put('cart', $result);
         }
         return view('frontend.partials.addedToCart', compact('product', 'data'));
     }
@@ -111,58 +164,89 @@ class CartController extends Controller
     public function removeFromCart(Request $request)
     {
         if($request->session()->has('cart')){
-            $cart = $request->session()->get('cart', collect([]));
-            $cart->forget($request->key);
+            $cart = $request->session()->get('cart');
+            foreach ($cart as $seller_id => $c) {
+                if ($seller_id === (int)$request->seller_id) {
+                    $file = json_decode($c[$request->key]['advertising']);
+                    if ($file->gambar !== null) {
+                        foreach ($file->gambar as $key => $g) {
+                            if (file_exists($g)) {
+                                unlink($g);
+                            }
+                        }
+                    }
+                    if ($file->video !== null) {
+                        foreach ($file->video as $key => $v) {
+                            if (file_exists($v)) {
+                                unlink($v);
+                            }
+                        }
+                    }
+                    unset($c[$request->key]);
+                    $cart[$seller_id] = $c;
+                    if (count($cart[$seller_id]) === 0) {
+                        unset($cart[$seller_id]);
+                        $cart = $cart;
+                    }
+                }
+            }
             $request->session()->put('cart', $cart);
         }
 
-        return view('frontend.partials.cart_details');;
+        return view('frontend.partials.cart_details'); 
     }
 
     //updated the quantity for a cart item
     public function updateQuantity(Request $request)
     {   
-        $cart = $request->session()->get('cart', collect([]));
-        
-        $cart = $cart->map(function ($object, $key) use ($request) {
-            if((string)$object['id'] === $request->key){   
-                if ($object['Periode'] === 'Harian') {
-                    $object['quantity'] = $request->quantity;
-                    $object['start_date'] = $request->start_date;
-                    $object['end_date'] = date('d M Y', strtotime($request->start_date. ' + '.$request->quantity.' days'));
-                }
-                if ($object['Periode'] === 'Mingguan') {
-                    $_qty = (int)$request->quantity * 7;
-                    $object['quantity'] = $request->quantity;
-                    $object['start_date'] = $request->start_date;
-                    $object['end_date'] = date('d M Y', strtotime($request->start_date. ' + '.$_qty.' days'));
-                }
-                if ($object['Periode'] === 'Bulanan') {
-                    $object['quantity'] = $request->quantity;
-                    $object['start_date'] = $request->start_date;
-                    $object['end_date'] = date('d M Y', strtotime($request->start_date. ' + '.$request->quantity.' months'));
-                }
-                if ($object['Periode'] === 'TigaBulan') {
-                    $_qty = (int)$request->quantity * 3;
-                    $object['quantity'] = $request->quantity;
-                    $object['start_date'] = $request->start_date;
-                    $object['end_date'] = date('d M Y', strtotime($request->start_date. ' + '.(string)$_qty.' months'));
-                }
-                if ($object['Periode'] === 'EnamBulan') {
-                    $_qty = (int)$request->quantity * 6;
-                    $object['quantity'] = $request->quantity;
-                    $object['start_date'] = $request->start_date;
-                    $object['end_date'] = date('d M Y', strtotime($request->start_date. ' + '.(string)$_qty.' months'));
-                }
-                if ($object['Periode'] === 'Tahunan') {
-                    $_qty = (int)$request->quantity * 12;
-                    $object['quantity'] = $request->quantity;
-                    $object['start_date'] = $request->start_date;
-                    $object['end_date'] = date('d M Y', strtotime($request->start_date. ' + '.(string)$_qty.' months'));
+        if ($request->session()->has('cart')) {
+            $cart = $request->session()->get('cart');
+            foreach ($cart as $seller_id => $c) {
+                if ($seller_id === (int)$request->seller_id) {
+                    foreach ($c as $key => $cartItem) {
+                        if ($key === (int)$request->index) {
+                            if ($cartItem['Periode'] === 'Harian') {
+                                $cartItem['quantity'] = $request->quantity;
+                                $cartItem['start_date'] = $request->start_date;
+                                $cartItem['end_date'] = date('d M Y', strtotime($request->start_date. ' + '.$request->quantity.' days'));
+                            }
+                            if ($cartItem['Periode'] === 'Mingguan') {
+                                $_qty = (int)$request->quantity * 7;
+                                $cartItem['quantity'] = $request->quantity;
+                                $cartItem['start_date'] = $request->start_date;
+                                $cartItem['end_date'] = date('d M Y', strtotime($request->start_date. ' + '.$_qty.' days'));
+                            }
+                            if ($cartItem['Periode'] === 'Bulanan') {
+                                $cartItem['quantity'] = $request->quantity;
+                                $cartItem['start_date'] = $request->start_date;
+                                $cartItem['end_date'] = date('d M Y', strtotime($request->start_date. ' + '.$request->quantity.' months'));
+                            }
+                            if ($cartItem['Periode'] === 'TigaBulan') {
+                                $_qty = (int)$request->quantity * 3;
+                                $cartItem['quantity'] = $request->quantity;
+                                $cartItem['start_date'] = $request->start_date;
+                                $cartItem['end_date'] = date('d M Y', strtotime($request->start_date. ' + '.(string)$_qty.' months'));
+                            }
+                            if ($cartItem['Periode'] === 'EnamBulan') {
+                                $_qty = (int)$request->quantity * 6;
+                                $cartItem['quantity'] = $request->quantity;
+                                $cartItem['start_date'] = $request->start_date;
+                                $cartItem['end_date'] = date('d M Y', strtotime($request->start_date. ' + '.(string)$_qty.' months'));
+                            }
+                            if ($cartItem['Periode'] === 'Tahunan') {
+                                $_qty = (int)$request->quantity * 12;
+                                $cartItem['quantity'] = $request->quantity;
+                                $cartItem['start_date'] = $request->start_date;
+                                $cartItem['end_date'] = date('d M Y', strtotime($request->start_date. ' + '.(string)$_qty.' months'));
+                            }
+                            $c[$key] = $cartItem;
+                        }
+                    }
+                    $cart[$seller_id] = $c;
                 }
             }
-            return $object;
-        });
+        }
+
         $request->session()->put('cart', $cart);
         return view('frontend.partials.cart_details');
     }

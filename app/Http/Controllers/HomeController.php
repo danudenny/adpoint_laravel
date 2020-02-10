@@ -92,7 +92,6 @@ class HomeController extends Controller
 
             $register->verified = 0;
             $request->session()->flash('message', 'Thanks for your registration, please check your email!.');
-            // Notification::send(User::where('user_type','admin')->get(),new UserRegistPush);
             Pushy::sendPushNotification($data, $to, $options);
             Mail::to($request->email)->send(new RegistUser($user));
             return back();

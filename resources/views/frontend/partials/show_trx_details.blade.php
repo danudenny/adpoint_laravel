@@ -12,27 +12,6 @@
     </button>
 </div>
 <div class="modal-body px-3 pt-0">
-    <div class="row">
-        <div class="col-md-6">
-            <b>{{__('File Advertising')}} :</b>
-            <p>
-                @php
-                $file = json_decode($transaction->file_advertising);
-                @endphp
-                @if ($file->gambar !== null)
-                    @foreach ($file->gambar as $key => $g)
-                        <a href="{{ url($g) }}" download>Gambar {{ $key+1 }}</a><br>
-                    @endforeach
-                @endif
-
-                @if ($file->video !== null)
-                    @foreach ($file->video as $key => $v)
-                        <a href="{{ url($v) }}" download>Video {{ $key+1 }}</a><br>
-                    @endforeach
-                @endif
-            </p>
-        </div>
-    </div>
     <table class="table table-bordered mt-2">
         @php
             $grand_total = 0;
