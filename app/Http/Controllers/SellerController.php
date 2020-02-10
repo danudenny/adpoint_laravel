@@ -20,7 +20,7 @@ class SellerController extends Controller
      */
     public function index()
     {
-        $sellers = Seller::with('sellers')->orderBy('created_at', 'desc')->get();
+        $sellers = Seller::orderBy('created_at', 'desc')->get();
         return view('sellers.index', [
             'sellers' => $sellers,
         ]);

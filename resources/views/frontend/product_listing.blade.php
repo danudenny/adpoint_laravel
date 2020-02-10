@@ -268,6 +268,7 @@
                                                         <option value="2" @isset($sort_by) @if ($sort_by == '2') selected @endif @endisset>{{__('Oldest')}}</option>
                                                         <option value="3" @isset($sort_by) @if ($sort_by == '3') selected @endif @endisset>{{__('Price low to high')}}</option>
                                                         <option value="4" @isset($sort_by) @if ($sort_by == '4') selected @endif @endisset>{{__('Price high to low')}}</option>
+                                                        <option value="5" @isset($sort_by) @if ($sort_by == '5') selected @endif @endisset>{{__('Highest Rating')}}</option>
                                                     </select>
                                                 </div>
                                             </div>
