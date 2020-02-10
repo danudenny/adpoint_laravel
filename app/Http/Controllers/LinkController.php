@@ -14,7 +14,7 @@ class LinkController extends Controller
      */
     public function index()
     {
-        $links = Link::with('links')->all();
+        $links = Link::all();
         return view("links.index", [
             'links' => $links
         ]);

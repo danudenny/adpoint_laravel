@@ -1,6 +1,5 @@
 FROM php:7.2-alpine
 
-# Install dev dependencies
 RUN apk add --no-cache --virtual .build-deps \
     $PHPIZE_DEPS \
     curl-dev \
@@ -10,7 +9,6 @@ RUN apk add --no-cache --virtual .build-deps \
     postgresql-dev \
     sqlite-dev
 
-# Install production dependencies
 RUN apk add --no-cache \
     bash \
     curl \
@@ -31,12 +29,10 @@ RUN apk add --no-cache \
     zlib-dev \
     libzip-dev
 
-# Install PECL and PEAR extensions
 RUN pecl install \
     imagick \
     xdebug
 
-# Install and enable php extensions
 RUN docker-php-ext-enable \
     imagick \
     xdebug
@@ -56,14 +52,11 @@ RUN docker-php-ext-install \
     zip \
     bcmath
 
-# Install composer
 ENV COMPOSER_HOME /composer
 ENV PATH ./vendor/bin:/composer/vendor/bin:$PATH
 ENV COMPOSER_ALLOW_SUPERUSER 1
 RUN curl -s https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin/ --filename=composer
 
-# Cleanup dev dependencies
 RUN apk del -f .build-deps
 
-# Setup working directory
 WORKDIR /var/www

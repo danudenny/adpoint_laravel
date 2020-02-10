@@ -457,6 +457,9 @@ class HomeController extends Controller
                 case '4':
                     $products->orderBy('unit_price', 'desc');
                     break;
+                case '5':
+                    $products->orderBy('rating', 'desc');
+                    break;
                 default:
                     // code...
                     break;

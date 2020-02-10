@@ -123,11 +123,11 @@ class OrderController extends Controller
     {
         $trx = Transaction::where('id', decrypt($id))->first();
         $buyer = User::where('id', $trx->user_id)->first();
-        
+
         $data['code_trx']       = $trx->code;
         $data['buyer_name']     = $buyer->name;
         $data['buyer_email']    = $buyer->email;
-        
+
         if ($trx != null) {
             $trx->status = "approved"; // approve admin
             if($trx->save()) {
@@ -232,7 +232,7 @@ class OrderController extends Controller
                 $code_order[$order->code] = $item;
                 array_push($code_order);
             }
-            
+
         }
         $data['code_order'] = $code_order;
         return $data;
@@ -280,7 +280,7 @@ class OrderController extends Controller
 
             $seller = Seller::where('user_id', $order->seller_id)->first();
             $minadpointearning = $seller->commission/100*$mingrandtotal;
-            
+
             $order->total = $mintotal;
             $order->tax = $mintax;
             $order->grand_total = $mingrandtotal;
@@ -401,7 +401,7 @@ class OrderController extends Controller
             flash('Something went wrong')->error();
             return back();
         }
-        
+
     }
 
     public function activate(Request $request, $id)
@@ -491,7 +491,7 @@ class OrderController extends Controller
                 if (Auth::check()) {
                     $order->user_id = Auth::user()->id;
                 }
-                $order->address = json_encode($request->session()->get('shipping_info'));               
+                $order->address = json_encode($request->session()->get('shipping_info'));
                 $order->code = 'ODR-'.time().''.$key;
                 $order->transaction_id = $trx->id;
                 $order->seller_id = $key;
@@ -502,7 +502,7 @@ class OrderController extends Controller
                         $product = Product::find($value['id']);
                         $subtotal += $value['price'] * $value['quantity'];
                         $product_variation = null;
-    
+
                         foreach (json_decode($product->choice_options) as $choice) {
                             $str = $choice->title;
                             if ($product_variation != null) {
@@ -511,16 +511,16 @@ class OrderController extends Controller
                                 $product_variation .= $value[$str];
                             }
                         }
-    
+
                         if ($product_variation != null) {
                             $variations = json_decode($product->variations);
                             $variations->$product_variation->qty -= $value['quantity'];
                             $product->variations = json_encode($variations);
                             $product->save();
                         }
-    
+
                         $order_detail = new OrderDetail;
-                        
+
                         $order_detail->order_id  = $order->id;
                         $order_detail->seller_id = $value['user_id'];
                         $order_detail->product_id = $value['id'];
@@ -556,7 +556,7 @@ class OrderController extends Controller
                         }
 
                         $order_detail->save();
-    
+
                         $product->num_of_sale++;
                         $product->save();
                     }
@@ -596,7 +596,7 @@ class OrderController extends Controller
         return view('orders.show', compact('order'));
     }
 
-    
+
     public function destroy($id)
     {
         $order = Order::findOrFail($id);

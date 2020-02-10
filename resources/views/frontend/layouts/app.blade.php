@@ -45,7 +45,7 @@
 <!-- Favicon -->
 <link name="favicon" type="image/x-icon" href="{{ asset(\App\GeneralSetting::first()->favicon) }}" rel="shortcut icon" />
 
-<title>@yield('meta_title', config('app.name', 'Laravel'))</title>
+<title>@yield('meta_title', config('app.name', 'Adpoint'))</title>
 
 <!-- Fonts -->
 <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i" rel="stylesheet">

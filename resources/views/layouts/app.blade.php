@@ -193,7 +193,7 @@
                 <div id="addToCart-modal-body" style="margin: 20px; padding: 10px;">
                     <div class="row">
                         <div id="content-body" class="col-md-12 mx-auto">
-
+                            
                         </div>
                     </div>
                 </div>
