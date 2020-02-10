@@ -16,7 +16,7 @@ class GeneralSettingController extends Controller
      */
     public function index()
     {
-        $generalsetting = GeneralSetting::with('general_settings')->first();
+        $generalsetting = GeneralSetting::first();
         return view('general_settings.index', [
             'general_settings' => $general_settings,
         ]);

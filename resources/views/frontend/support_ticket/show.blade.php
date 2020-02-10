@@ -95,7 +95,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="flex-grow-1 mr-5 pr-5">
-                                                        <div class="p-3 bg-gray rounded">
+                                                        <div class="p-3 bg-success rounded">
                                                             @php echo $ticketreply->reply; @endphp
                                                             @if($ticketreply->files != null && is_array(json_decode($ticketreply->files)))
                                                                 <div class="mt-3 clearfix">

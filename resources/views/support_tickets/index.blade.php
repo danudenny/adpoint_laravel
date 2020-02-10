@@ -25,7 +25,11 @@
                         <td>#{{ $ticket->code }}</td>
                         <td>{{ $ticket->created_at }} @if($ticket->viewed == 0) <span class="pull-right badge badge-info">{{ __('New') }}</span> @endif</td>
                         <td>{{ $ticket->subject }}</td>
-                        <td>{{ $ticket->user->name }}</td>
+                        <td>{{ $ticket->user->name }} 
+                            @if($ticket->user->user_type == 'seller') <span class="pull-right badge badge-info">{{ $ticket->user->user_type }}</span>
+                            @else <span class="pull-right badge badge-warning">{{ $ticket->user->user_type }}</span>
+                            @endif
+                        </td>
                         <td>
                             @if ($ticket->status == 'pending')
                                 <span class="badge badge-pill badge-danger">Pending</span>

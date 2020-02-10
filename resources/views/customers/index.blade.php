@@ -20,10 +20,14 @@
         <table class="table table-striped table-bordered demo-dt-basic" cellspacing="0" width="100%">
             <thead>
                 <tr>
-                    <th>#</th>
+                    <th></th>
                     <th>{{__('Name')}}</th>
                     <th>{{__('Email Address')}}</th>
+                    <th>{{__('Phone')}}</th>
+                    <th>{{__('Address')}}</th>
+                    <th>{{__('City')}}</th>
                     <th>{{__('Status')}}</th>
+                    <th>{{__('Created')}}</th>
                 </tr>
             </thead>
             <tbody>
@@ -32,11 +36,15 @@
                         <td>{{$key+1}}</td>
                         <td>{{$customer->name}}</td>
                         <td>{{$customer->email}}</td>
+                        <td>{{$customer->phone}}</td>
+                        <td width="25%">{{$customer->address}}</td>
+                        <td>{{$customer->city}}</td>
                         @if ($customer->verified == 1)
                             <td><span class="badge badge-success">Verified</span></td>
                         @else
                             <td><span class="badge badge-danger" onclick="verifyUser({{$customer->id}})" data-toggle="tooltip" data-placement="top" style="cursor: pointer;" title="Verified Now">Not Verified</span></td>
                         @endif
+                        <td>{{date('d F Y', strtotime($customer->created_at))}}</td>
                     </tr>
                 @endforeach
             </tbody>

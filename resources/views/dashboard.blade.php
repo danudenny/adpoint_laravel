@@ -27,8 +27,6 @@
                 @if (\App\BusinessSetting::where('type', 'vendor_system_activation')->first()->value == 1)
                     <p class="text-lg text-main">Total seller's products: <span class="text-bold">{{ \App\Product::where('published', 1)->where('added_by', 'seller')->get()->count() }}</span></p>
                 @endif
-                <p class="text-lg text-main">Total admin's products: <span class="text-bold">{{ \App\Product::where('published', 1)->where('added_by', 'admin')->get()->count() }}</span></p>
-                <br>
                 <a href="{{ route('products.admin') }}" class="btn btn-primary mar-top">Manage Products <i class="fa fa-long-arrow-right"></i></a>
             </div>
         </div>
@@ -45,18 +43,18 @@
                 </div>
                 <div class="panel">
                     <div class="pad-top text-center dash-widget">
-                        <p class="text-normal text-main">Total product sub sub category</p>
-                        <p class="text-semibold text-3x text-main">{{ \App\SubSubCategory::all()->count() }}</p>
-                        <a href="{{ route('subsubcategories.create') }}" class="btn btn-primary mar-top btn-block top-border-radius-no">Create Sub Sub Category</a>
+                        <p class="text-normal text-main">Total Transaction</p>
+                        <p class="text-semibold text-3x text-main">{{ \App\Transaction::all()->count() }}</p>
+                        <a href="{{ route('transaction.index') }}" class="btn btn-primary mar-top btn-block top-border-radius-no">View All Transaction</a>
                     </div>
                 </div>
             </div>
             <div class="col-sm-6">
                 <div class="panel">
                     <div class="pad-top text-center dash-widget">
-                        <p class="text-normal text-main">Total product sub category</p>
-                        <p class="text-semibold text-3x text-main">{{ \App\SubCategory::all()->count() }}</p>
-                        <a href="{{ route('subcategories.create') }}" class="btn btn-primary mar-top btn-block top-border-radius-no">Create Sub Category</a>
+                        <p class="text-normal text-main">Total Orders</p>
+                        <p class="text-semibold text-3x text-main">{{ \App\Order::all()->count() }}</p>
+                        <a href="{{ route('orders.list.orders') }}" class="btn btn-primary mar-top btn-block top-border-radius-no">View All Orders</a>
                     </div>
                 </div>
                 <div class="panel">
@@ -74,7 +72,7 @@
 
 @if((Auth::user()->user_type == 'admin' || in_array('5', json_decode(Auth::user()->staff->role->permissions))) && \App\BusinessSetting::where('type', 'vendor_system_activation')->first()->value == 1)
     <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-3">
         <div class="panel">
             <div class="panel-body text-center dash-widget dash-widget-left">
                 <div class="dash-widget-vertical">
@@ -84,33 +82,46 @@
                 <p class="text-normal text-main">Total sellers</p>
                 <p class="text-semibold text-3x text-main">{{ \App\Seller::all()->count() }}</p>
                 <br>
-                <a href="{{ route('sellers.index') }}" class="btn-link">Manage Sellers <i class="fa fa-long-arrow-right"></i></a>
+                <a href="{{ route('sellers.index') }}" class="btn-link">View All Sellers <i class="fa fa-long-arrow-right"></i></a>
                 <br>
                 <br>
             </div>
         </div>
     </div>
-    <div class="col-md-4">
+    <div class="col-md-3">
         <div class="panel">
             <div class="panel-body text-center dash-widget">
                 <br>
                 <p class="text-normal text-main">Total approved sellers</p>
                 <p class="text-semibold text-3x text-main">{{ \App\Seller::where('verification_status', 1)->get()->count() }}</p>
                 <br>
-                <a href="{{ route('sellers.index') }}" class="btn-link">Manage Sellers <i class="fa fa-long-arrow-right"></i></a>
+                <a href="{{ route('sellers.index') }}" class="btn-link">View All Sellers <i class="fa fa-long-arrow-right"></i></a>
                 <br>
                 <br>
             </div>
         </div>
     </div>
-    <div class="col-md-4">
+    <div class="col-md-3">
         <div class="panel">
             <div class="panel-body text-center dash-widget">
                 <br>
                 <p class="text-normal text-main">Total pending sellers</p>
                 <p class="text-semibold text-3x text-main">{{ \App\Seller::where('verification_status', 0)->count() }}</p>
                 <br>
-                <a href="{{ route('sellers.index') }}" class="btn-link">Manage Sellers <i class="fa fa-long-arrow-right"></i></a>
+                <a href="{{ route('sellers.index') }}" class="btn-link">View All Sellers <i class="fa fa-long-arrow-right"></i></a>
+                <br>
+                <br>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="panel">
+            <div class="panel-body text-center dash-widget">
+                <br>
+                <p class="text-normal text-main">Total Customers</p>
+                <p class="text-semibold text-3x text-main">{{ \App\User::all()->count() }}</p>
+                <br>
+                <a href="{{ route('customers.index') }}" class="btn-link">View All Customers <i class="fa fa-long-arrow-right"></i></a>
                 <br>
                 <br>
             </div>

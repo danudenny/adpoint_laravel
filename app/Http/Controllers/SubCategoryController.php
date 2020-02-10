@@ -19,7 +19,7 @@ class SubCategoryController extends Controller
      */
     public function index()
     {
-        $subcategories = SubCategory::with('sub_categories')->all();
+        $subcategories = SubCategory::all();
         return view('subcategories.index', [
             'subcategories' => $subcategories,
         ]);

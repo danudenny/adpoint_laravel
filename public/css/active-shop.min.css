@@ -608,7 +608,7 @@ h1,h2,h3,h4,h5,h6,.h1,.h2,.h3,.h4,.h5,.h6 {
 	padding:2px 10px
 }
 .navbar-top-links .head-list li:first-child {
-	padding-top:10px
+	padding-top:0;
 }
 .navbar-top-links .head-list li:last-child {
 	padding-bottom:10px
@@ -657,10 +657,10 @@ h1,h2,h3,h4,h5,h6,.h1,.h2,.h3,.h4,.h5,.h6 {
 	animation-iteration-count:5
 }
 .navbar-top-links .dropdown-menu {
-	margin:0
+	margin:0;
 }
 .navbar-top-links .dropdown-menu .nano {
-	max-height:265px
+	max-height:600px
 }
 .navbar-content .custom-search-form {
 	display:table-cell;
@@ -5662,7 +5662,7 @@ a.list-group-item-dark:hover,a.list-group-item-dark:focus {
 	min-width:220px
 }
 .dropdown-menu-md {
-	min-width:270px
+	min-width:350px
 }
 .dropdown-menu-lg {
 	min-width:300px
