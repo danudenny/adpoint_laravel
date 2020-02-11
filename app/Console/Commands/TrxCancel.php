@@ -51,7 +51,7 @@ class TrxCancel extends Command
                     foreach ($t->orders as $key => $o) {
                         foreach ($o->orderDetails as $key => $od) {
                             $item = OrderDetail::where('id', $od->id)->first();
-                            $item->status = 100;
+                            $item->status = 2;
                             $item->save();
                         }
                     }

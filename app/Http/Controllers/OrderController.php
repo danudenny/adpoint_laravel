@@ -21,6 +21,8 @@ use Mail;
 use File;
 use Carbon\Carbon;
 
+use App\ActivatedProces;
+
 use App\Mail\Order\OrderStart;
 use App\Mail\Order\OrderApprovedAdmin;
 use App\Mail\Order\OrderSold;
@@ -98,6 +100,7 @@ class OrderController extends Controller
                         'od.product_id as item_name',
                         'od.seller_id',
                         'od.status as od_status',
+                        'od.file_advertising as od_file_advertising'
                     ])
                     ->first();
         return view('frontend.partials.item_details_seller', compact('query'));
@@ -290,27 +293,13 @@ class OrderController extends Controller
         $order_detail = OrderDetail::where('id', $request->od_id)->first();
         if ($order_detail != null) {
             $order_detail->status = 2;
+            $order_detail->is_confirm = 0;
             $order_detail->rejected = $request->alasan;
             $order_detail->updated_at = time();
             $product = Product::where('id', $order_detail->product_id)->first();
 
-            // calculate earning
-            // $order = Order::where('id', $order_detail->order_id)->first();
-            // $mintotal = $order->total-$order_detail->total;
-            // $mintax = $mintotal*0.1;
-            // $mingrandtotal = $mintotal+$mintax;
-
-            $seller = Seller::where('user_id', $order->seller_id)->first();
-            $minadpointearning = $seller->commission/100*$mingrandtotal;
-
-            $order->total = $mintotal;
-            $order->tax = $mintax;
-            $order->grand_total = $mingrandtotal;
-            $order->adpoint_earning = $minadpointearning;
-
-            $order->save();
-
             if ($order_detail->save()) {
+                // push ke admin info bila di reject untuk kalkulasi
                 $order = Order::where('id', $order_detail->order_id)->first();
                 $default_status_od = $this->_cek_default_status_order_details($order->transaction_id);
                 if (count($default_status_od) === 0) {
@@ -448,8 +437,8 @@ class OrderController extends Controller
             flash('Item '.$query->product_name.' Activated!')->success();
             return back();
         }else {
-                flash('Item '.$query->product_name.' Invalid!')->error();
-                return back();
+            flash('Item '.$query->product_name.' Invalid!')->error();
+            return back();
         }
     }
 
@@ -480,7 +469,6 @@ class OrderController extends Controller
 
     public function store(Request $request)
     {
-
         $cart = Session::get('cart');
 
         $trx = new Transaction;
@@ -714,6 +702,25 @@ class OrderController extends Controller
                         ])
                         ->get();
         return $query;
+    }
+
+    public function post_process_active(Request $request)
+    {
+        $ap = ActivatedProces::where('order_detail_id', $request->order_detail_id)->first();
+        if ($ap !== null) {
+            $ap->status = $request->status;
+            if ($request->status == "1") {
+                $ap->time_1 = now();
+            }else if($request->status == "2"){
+                $ap->time_2 = now();
+            }else if($request->status == "3"){
+                $ap->time_3 = now();
+            }
+            $ap->save();
+            return 1;
+        }else {
+            return 0;
+        }
     }
 
 }

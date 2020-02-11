@@ -202,6 +202,8 @@ Route::group(['middleware' => ['auth']], function(){
 	Route::get('complete-order-seller', 'OrderController@order_completes')->name('orders.complete.order');
 	Route::get('cancelled-order-seller', 'OrderController@order_cancelled')->name('orders.cancelled.order');
 
+	Route::post('post-process-active', 'OrderController@post_process_active')->name('post.process.active');
+
 	Route::post('find_orders', 'OrderController@find_orders')->name('find.orders');
 
 	

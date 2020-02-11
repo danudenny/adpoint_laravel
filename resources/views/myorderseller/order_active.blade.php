@@ -45,9 +45,18 @@
                                 <button class="btn btn-outline-secondary btn-circle btn-sm" onclick="itemDetailsSeller({{ $od->id }})">
                                     <i class="fa fa-eye"></i> Details
                                 </button>
-                                <button class="btn btn-outline-secondary btn-circle btn-sm" onclick="buktiTayang({{ $od->id }})">
-                                    <i class="fa fa-upload"></i> Upload Bukti
-                                </button>
+                                @php
+                                    $bt = \App\Evidence::where('order_detail_id', $od->id)->first();
+                                @endphp
+                                @if ($bt !== null)
+                                    <button class="btn btn-outline-success btn-circle btn-sm" onclick="buktiTayang({{ $od->id }})">
+                                        <i class="fa fa-check"></i> Uploaded
+                                    </button>
+                                @else 
+                                    <button class="btn btn-outline-secondary btn-circle btn-sm" onclick="buktiTayang({{ $od->id }})">
+                                        <i class="fa fa-upload"></i> Upload Bukti
+                                    </button>
+                                @endif
                             </td>
                         </tr>
                     </table>

@@ -24,6 +24,10 @@ Route::group(['prefix' =>'admin', 'middleware' => ['auth', 'admin']], function()
 	Route::get('/transaction/show_invoice/{id}', 'TransactionController@show_invoice')->name('transaction.show.invoice');
 	Route::get('/transaction/paid_invoice/{id}', 'TransactionController@paid_invoice')->name('transaction.paid.invoice');
 
+	Route::post('/reject/details', 'TransactionController@reject_detail')->name('reject.detail');
+	Route::post('/reject/detail/proses', 'TransactionController@reject_detail_proses')->name('reject.detail.proses');
+
+
 
 
 	Route::get('/payment/list', 'PaymentController@admin_payment_index')->name('admin.payment.index');

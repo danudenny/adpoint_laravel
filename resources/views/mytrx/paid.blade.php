@@ -20,8 +20,11 @@
                                 @elseif ($t->status == "paid")
                                     <i class="text-success">Paid</i>
                                 @endif
-                                @if ($t->status === "confirmed")
-                                    <a href="{{ route('confirm.payment.id', encrypt($t->id)) }}" class="btn btn-sm btn-circle btn-outline-warning pull-right">Confirm Payment</a>
+                                @php
+                                    $cp = \App\ConfirmPayment::where('code_trx', $t->code)->first();
+                                @endphp
+                                @if ($cp !== null)
+                                    | <b><a href="{{ url($cp->bukti) }}" download=""><i class="fa fa-download"></i> Bukti Transfer</a></b>
                                 @endif
                                 <button onclick="trxDetails({{ $t->id }})" class="btn btn-sm btn-circle btn-outline-info pull-right"><i class="fa fa-eye"></i> Details</button>
                             </td>

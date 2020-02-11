@@ -168,7 +168,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         L5Swagger\L5SwaggerServiceProvider::class,
         // Barryvdh\Cors\ServiceProvider::class,
-        Barryvdh\Debugbar\ServiceProvider::class,
+        // Barryvdh\Debugbar\ServiceProvider::class,
 
     ],
 
@@ -222,7 +222,7 @@ return [
         'Paypal' => Netshell\Paypal\Facades\Paypal::class,
         'PDF' => Barryvdh\DomPDF\Facade::class,
         'Paystack' => Mehedi\Paystack\Facades\Paystack::class,
-        'Debugbar' => Barryvdh\Debugbar\Facade::class,
+        // 'Debugbar' => Barryvdh\Debugbar\Facade::class,
     ],
 
 ];
