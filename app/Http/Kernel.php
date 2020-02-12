@@ -22,7 +22,8 @@ class Kernel extends HttpKernel
         \App\Http\Middleware\TrimStrings::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
         \App\Http\Middleware\TrustProxies::class,
-        \App\Http\Middleware\Cors::class
+        \App\Http\Middleware\Cors::class,
+        \PragmaRX\Tracker\Vendor\Laravel\Middlewares\Tracker::class,
         // \Barryvdh\Cors\HandleCors::class,
     ];
 
@@ -41,6 +42,7 @@ class Kernel extends HttpKernel
             \App\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
             \App\Http\Middleware\Language::class,
+            \PragmaRX\Tracker\Vendor\Laravel\Middlewares\Tracker::class,
             // \App\Http\Middleware\HttpsProtocol::class
         ],
 
@@ -72,6 +74,7 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'auth.jwt'  =>  \Tymon\JWTAuth\Http\Middleware\Authenticate::class,
         'jsonify'    => \App\Http\Middleware\Jsonify::class,
+        'tracker' => \PragmaRX\Tracker\Vendor\Laravel\Middlewares\Tracker::class,
         // 'cors' => \App\Http\Middleware\Cors::class,
     ];
 

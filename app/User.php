@@ -42,6 +42,11 @@ class User extends Authenticatable implements JWTSubject
       $this->rememberFor = 60*24;
   }
 
+  public function getIsAdminAttribute()
+  {
+      return true;
+  }
+
   public function wishlists()
   {
     return $this->hasMany(Wishlist::class);

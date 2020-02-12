@@ -22,6 +22,7 @@ use App\BusinessSetting;
 use App\Http\Controllers\SearchController;
 use ImageOptimizer;
 use App\Pushy;
+use Tracker;
 
 use Mail;
 use Notification;
@@ -303,9 +304,11 @@ class HomeController extends Controller
     public function product($slug)
     {
         $product  = Product::where('slug', $slug)->first();
+        $visitor = Tracker::currentSession();
+        dd($visitor);
         if($product!=null){
             updateCartSetup();
-            return view('frontend.product_details', compact('product'));
+            return view('frontend.product_details', compact('product'), $visitor);
         }
         abort(404);
     }
