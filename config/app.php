@@ -169,6 +169,7 @@ return [
         L5Swagger\L5SwaggerServiceProvider::class,
         // Barryvdh\Cors\ServiceProvider::class,
         // Barryvdh\Debugbar\ServiceProvider::class,
+        PragmaRX\Tracker\Vendor\Laravel\ServiceProvider::class,
 
     ],
 
@@ -223,6 +224,7 @@ return [
         'PDF' => Barryvdh\DomPDF\Facade::class,
         'Paystack' => Mehedi\Paystack\Facades\Paystack::class,
         // 'Debugbar' => Barryvdh\Debugbar\Facade::class,
+        'Tracker' => 'PragmaRX\Tracker\Vendor\Laravel\Facade',
     ],
 
 ];

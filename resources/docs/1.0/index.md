@@ -1,0 +1,3 @@
+- ## Get Started
+    - [Overview](/{{route}}/{{version}}/overview)
+    - [Manual](/{{route}}/{{version}}/manual)
