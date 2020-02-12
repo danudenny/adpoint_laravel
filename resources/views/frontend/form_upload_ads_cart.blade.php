@@ -12,8 +12,10 @@
     </button>
 </div>
 <div class="modal-body px-3 pt-0">
-    <div class="row">
+    <div class="row mt-4">
         <div class="col-md-12">
+            <h4 class="text-center">Upload this here</h4>
+            <hr>
             <form action="{{ route('upload.ads.proses') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <input type="hidden" name="seller_id" value="{{$data['seller_id']}}">

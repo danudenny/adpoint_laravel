@@ -3,7 +3,7 @@
         $cart = Session::get('cart');
     @endphp
     <div class="row">
-        <div class="col-xl-8">
+        <div class="col-md-9">
             <div class="table-responsive">
                 <table class="table">
                     @foreach ($cart as $seller_id => $c)
@@ -32,7 +32,7 @@
                             @endphp
                             <tr>
                                 <td>
-                                    <img class="img-fluid mr-2" width="60" src="{{ asset($product->thumbnail_img) }}">
+                                    <img class="img-fluid mr-2" width="150" src="{{ asset($product->thumbnail_img) }}">
                                 </td>
                                 <td>
                                     <small>Name:</small><br>
@@ -159,7 +159,7 @@
             </div>
         </div>
 
-        <div class="col-xl-4 ml-lg-auto">
+        <div class="col-md-3">
             @include('frontend.partials.cart_summary')
         </div>
     </div>

@@ -81,29 +81,6 @@
                     @endif
                 </td>
             </tr>
-            @if ($query->od_status !== 2)
-                <tr>
-                    <th>{{__('Bukti Transfer')}}</th>
-                    <td>
-                        @php
-                            $cp = \App\ConfirmPayment::where('code_trx', $query->code_trx)->first();
-                        @endphp
-                        @if ($cp !== null)
-                            :
-                            <span>
-                                <a href="{{ url($cp->bukti) }}" download>
-                                    <b>Bukti Transfer</b> <i class="fa fa-download"></i>
-                                </a>
-                            </span>
-                        @else
-                            :
-                            <span>
-                                Nothing
-                            </span>
-                        @endif
-                    </td>
-                </tr>   
-            @endif
         </tbody>
     </table>
 </div>
