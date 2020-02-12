@@ -105,7 +105,7 @@
                                     <i class="arrow pull-right"></i>
                                     @php
                                         $sales =  \App\Order::where('approved', 0)->count();
-                                        $transaction = \App\Transaction::where('payment_status', 0)->count();
+                                        $transaction = \App\Transaction::where('payment_status', 0)->whereIn('status', array('confirmed', 'ready'))->count();
                                     @endphp
                                     @if ($sales > 0 || $transaction > 0)
                                         <span class="fa-pulse pull-right" style="margin-right: 10px;"><i class="fa fa-circle"></i></span>

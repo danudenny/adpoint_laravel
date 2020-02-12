@@ -31,6 +31,52 @@
                             </td>
                             <td>
                                 <button onclick="trxDetails({{ $t->id }})" class="btn btn-sm btn-circle btn-outline-info pull-right mr-2"><i class="fa fa-eye"></i> Details</button>
+
+                                @if ($t->status === "confirmed")
+                                    <hr>
+                                    <div class="row">
+                                        <div class="col-md-8">
+                                            <div class="text-info">
+                                                Silahkan melakukan pembayaran sebelum {{ date('d M Y H:i:s', strtotime(\Carbon\Carbon::createFromTimestamp(strtotime($t->created_at))->addHour(24))) }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="text-right">
+                                                
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endif
+                                @if ($t->status === "cancelled")
+                                    <hr>
+                                    <div class="row">
+                                        <div class="col-md-8">
+                                            <div class="text-info">
+                                                Silahkan melakukan pembayaran sebelum {{ date('d M Y H:i:s', strtotime(\Carbon\Carbon::createFromTimestamp(strtotime($t->created_at))->addHour(24))) }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="text-right">
+                                                
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endif
+                                @if ($t->status === "paid")
+                                    <hr>
+                                    <div class="row">
+                                        <div class="col-md-8">
+                                            
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="text-right">
+                                                @if ($t->status === "paid" || $t->payment_status === 1)
+                                                    <span class="badge badge-danger">Waiting approval admin...</span>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endif
                             </td>
                             @if ($t->status === "confirmed")
                                 <tr>

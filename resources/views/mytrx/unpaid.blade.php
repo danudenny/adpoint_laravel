@@ -1,4 +1,5 @@
 <style>
+
     .bg-pay {
         background-color: #f5f5f5;
         padding: 10px;
@@ -6,6 +7,7 @@
         border: 1px dashed;
         text-align: center;
     }
+
 </style>
 @if (count($trx) > 0)
     @foreach ($trx as $no => $t)
@@ -102,6 +104,8 @@
     var cd = $('#cd').val();
     // Set the date we're counting down to
     var countDownDate = new Date(cd).getTime();
+
+    // var orderDate = new Date(od).getTime();
     // Update the count down every 1 second
     var x = setInterval(function() {
         // Get today's date and time
