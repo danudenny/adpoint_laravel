@@ -1,3 +1,17 @@
+<style>
+    .card-unpaid{
+        background-color: #F5EFCF;
+        font-style: italic;
+        border-radius: 5px;
+        padding: 10px;
+        color: #F27455;
+    }
+    .card-unpaid b {
+        color: #517D8A;
+        text-decoration: underline;
+    }
+
+</style>
 @if (count($trx) > 0)
     @foreach ($trx as $no => $t)
         <div style="border-bottom: 1px solid #ccc">
@@ -17,7 +31,9 @@
                             @elseif ($t->status == "confirmed")
                                 <i class="text-primary">Confirmed</i>
                             @elseif ($t->status == "paid")
-                                <i class="text-success">Paid</i>
+                                <i class="badge badge-success">Paid</i>
+                            @elseif ($t->status == "cancelled")
+                                <h5 class="badge badge-danger">Cancelled</h5>
                             @endif
                             @if ($t->status === "confirmed")
                                 <a href="{{ route('confirm.payment.id', encrypt($t->id)) }}" class="btn btn-sm btn-circle btn-outline-warning pull-right"><i class="fa fa-money"></i> Pay</a>
@@ -42,6 +58,14 @@
                                     <div class="col-md-4">
                                         <div class="text-right">
                                             
+                                        </div>
+                                    </div>
+                                </div>
+                            @elseif ($t->status === "cancelled")
+                                <div class="row">
+                                    <div class="col-md-7">
+                                        <div class="card-unpaid">
+                                            Transaksi anda telah dibatalkan karena belum ada pembayaran yang kami terima.
                                         </div>
                                     </div>
                                 </div>
@@ -77,6 +101,8 @@
     var cd = $('#cd').val();
     // Set the date we're counting down to
     var countDownDate = new Date(cd).getTime();
+
+    // var orderDate = new Date(od).getTime();
     // Update the count down every 1 second
     var x = setInterval(function() {
         // Get today's date and time

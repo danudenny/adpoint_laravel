@@ -38,6 +38,8 @@
                         <td>
                             @if ($transaction->payment_status == 1)
                                 <span class="badge badge-success">Paid</span>
+                            @elseif ($transaction->status == "cancelled")
+                                <span class="badge badge-danger">Cancelled</span>
                             @else
                                 <span class="badge badge-danger">Unpaid</span>
                             @endif
@@ -50,11 +52,13 @@
                             @elseif ($transaction->status == "rejected")
                                 <i class="text-danger">Rejected</i>
                             @elseif ($transaction->status == "ready")
-                                <i v>Checked Seller</i>
+                                <i class="text-primary">Checked Seller</i>
                             @elseif ($transaction->status == "confirmed")
                                 <i class="text-primary">Confirmed</i>
                             @elseif ($transaction->status == "paid")
                                 <i class="text-success">Paid</i>
+                            @elseif ($transaction->status == "cancelled")
+                                <i class="text-danger">Cancelled</i>
                             @endif
                         </td>
                         <td>
