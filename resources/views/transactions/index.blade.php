@@ -65,7 +65,7 @@
                             {{ $transaction->payment_type }}
                         </td>
                         <td>
-                            {{ date('d M Y H:i:s', $transaction->crated_at) }}
+                            {{ date('d M Y H:i:s', strtotime($transaction->created_at)) }}
                         </td>
                         <td>
                             <a class="btn btn-primary" href="{{ route('transaction.details', encrypt($transaction->id)) }}">{{__('Details')}}</a>

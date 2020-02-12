@@ -67,33 +67,62 @@
                             <i class="fa fa-times"></i> Reject
                         </button>
                     @elseif ($transaction->status === "ready")
-                        <button onclick="confirmToBuyer({{$transaction->id}})" class="btn btn-primary">Confirm to buyer</button>
+                        @php
+                            $true = [];
+                            $false = [];
+                        @endphp
+                        @foreach (\App\Transaction::where('id', $transaction->id)->get() as $key => $t)
+                            @foreach ($t->orders as $key => $o)
+                                @foreach ($o->orderDetails as $key => $od)
+                                    @php
+                                        array_push($false, $od->is_confirm);
+                                    @endphp
+                                    @if ($od->is_confirm === 1)
+                                        @php
+                                            array_push($true, $od->is_confirm);
+                                        @endphp
+                                    @endif
+                                @endforeach
+                            @endforeach
+                        @endforeach
+                        @if (count($true) === count($false))
+                            <button onclick="confirmToBuyer({{$transaction->id}})" class="btn btn-primary">Confirm</button>
+                        @endif
                     @elseif ($transaction->status === "paid")
                         <a class="btn btn-primary" href="{{ route('transaction.show.invoice', encrypt($transaction->id)) }}">
                             <i class="fa fa-money"></i> Invoice
                         </a>
-                        <a class="btn btn-success" href="{{ route('transaction.show.payment', $transaction->code) }}">
-                            <i class="fa fa-money"></i> Mark as Paid
-                        </a>
+                        @if ($transaction->payment_status !== 1)
+                            <a class="btn btn-success" href="{{ route('transaction.show.payment', $transaction->code) }}">
+                                <i class="fa fa-money"></i> Mark as paid
+                            </a>
+                        @else 
+                            <a class="btn btn-success" href="{{ route('transaction.show.payment', $transaction->code) }}">
+                                <i class="fa fa-money"></i> View
+                            </a>
+                        @endif
                     @endif
                 </div>
             </div>
         </div>
         <div class="modal fade" id="approve{{$transaction->id}}" tabindex="-1" role="dialog" aria-labelledby="disapproveTitle" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-dialog modal-dialog-centered" style="width: 300px" role="document">
                 <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">Approve TRX: {{ $transaction->code }}</h5>
+                    <h5 class="modal-title" id="exampleModalLongTitle">#Approval </h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    Are you sure to approve <strong>{{ $transaction->code }}</strong> ?
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
-                    <a href="{{ route('approve.by.admin', encrypt($transaction->id)) }}" class="btn btn-primary">Yes</a>
+                    <div class="text-center">
+                        <h3>Are you sure to approve ?</h3>
+                        <strong># {{ $transaction->code  }}</strong>
+                        <div style="margin-top: 30px">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <a href="{{ route('approve.by.admin', encrypt($transaction->id)) }}" class="btn btn-primary">Yes, approve</a>
+                        </div>
+                    </div>
                 </div>
                 </div>
             </div>
@@ -131,9 +160,6 @@
                    <div class="card-body">
                        <div class="table-responsive">
                            <table class="table table-bordered">
-                                @php
-                                    $grand_total = 0;
-                                @endphp
                                 @foreach ($transaction->orders as $key => $o)
                                     @php
                                         $seller = \App\User::where('id', $o->seller_id)->first();
@@ -142,6 +168,14 @@
                                         <th colspan="6">
                                             Order Number: {{ $o->code }} - <span class="badge badge-primary"># {{ $seller->name }}</span>
                                         </th>
+                                    </tr>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Description</th>
+                                        <th>File Advertising</th>
+                                        <th>Price</th>
+                                        <th>Total</th>
+                                        <th></th>
                                     </tr>
                                     @foreach ($o->orderDetails as $key => $od)
                                         @php
@@ -152,24 +186,37 @@
                                                 <td>{{ $key+1 }}</td>
                                                 <td>
                                                     <i class="fa fa-fw fa-times text-danger"></i>
-                                                    <small>Name: </small><br>
-                                                    <strong>{{ $product->name }}</strong>
+                                                    <strong>{{ $product->name }}</strong> ( <strong>{{ $od->quantity }}</strong> <i><strong>{{ $od->variation }}</strong></i>) 
                                                 </td>
                                                 <td>
-                                                    <small>Qty: </small><br>
-                                                    <strong>{{ $od->quantity }}</strong>
+                                                    @php
+                                                        $file = json_decode($od->file_advertising);
+                                                    @endphp
+                                                    @if ($file !== null)
+                                                        @if ($file->gambar !== null)
+                                                            @foreach ($file->gambar as $key => $g)
+                                                                <b><a href="{{ url($g) }}" download>Gambar {{ $key+1 }}</a></b> <br>
+                                                            @endforeach
+                                                        @endif
+                                                        @if ($file->video !== null)
+                                                            @foreach ($file->video as $key => $v)
+                                                                <b><a href="{{ url($v) }}" download>Video {{ $key+1 }}</a></b> <br>
+                                                            @endforeach
+                                                        @endif
+                                                    @endif                                                   
                                                 </td>
                                                 <td>
-                                                    <small>Periode: </small><br>
-                                                    <strong>{{ $od->variation }}</strong>
-                                                </td>
-                                                <td>
-                                                    <small>Price: </small><br>
                                                     <strong>{{ single_price($od->price) }}</strong>
                                                 </td>
                                                 <td align="right">
-                                                    <small>Total: </small><br>
                                                     <strong>{{ single_price($od->total) }}</strong>
+                                                </td>
+                                                <td>
+                                                    @if ($od->is_confirm == 0)
+                                                        <button data-toggle="tooltip" title="Details" onclick="rejectDetail({{ $od->id }})" class="btn btn-sm btn-primary">
+                                                            <i class="fa fa-eye"></i>
+                                                        </button>
+                                                    @endif
                                                 </td>
                                             </tr>
                                         @else 
@@ -177,52 +224,36 @@
                                                 <td>{{ $key+1 }}</td>
                                                 <td>
                                                     <i class="fa fa-fw fa-check text-success"></i>
-                                                    <small>Name: </small><br>
-                                                    <strong>{{ $product->name }}</strong>
+                                                    <strong>{{ $product->name }}</strong> ( <strong>{{ $od->quantity }}</strong> <i><strong>{{ $od->variation }}</strong></i>) 
                                                 </td>
                                                 <td>
-                                                    <small>Qty: </small><br>
-                                                    <strong>{{ $od->quantity }}</strong>
+                                                    @php
+                                                        $file = json_decode($od->file_advertising);
+                                                    @endphp
+                                                    @if ($file !== null)
+                                                        @if ($file->gambar !== null)
+                                                            @foreach ($file->gambar as $key => $g)
+                                                                <b><a href="{{ url($g) }}" download>Gambar {{ $key+1 }}</a></b> <br>
+                                                            @endforeach
+                                                        @endif
+                                                        @if ($file->video !== null)
+                                                            @foreach ($file->video as $key => $v)
+                                                                <b><a href="{{ url($v) }}" download>Video {{ $key+1 }}</a></b> <br>
+                                                            @endforeach
+                                                        @endif
+                                                    @endif
                                                 </td>
                                                 <td>
-                                                    <small>Periode: </small><br>
-                                                    <strong>{{ $od->variation }}</strong>
-                                                </td>
-                                                <td>
-                                                    <small>Price: </small><br>
                                                     <strong>{{ single_price($od->price) }}</strong>
                                                 </td>
                                                 <td align="right">
-                                                    <small>Total: </small><br>
                                                     <strong>{{ single_price($od->total) }}</strong>
                                                 </td>
+                                                <td></td>
                                             </tr>
                                         @endif
                                     @endforeach
-                                    <tr>
-                                        <td colspan="5" align="right">Total</td>
-                                        <td align="right"><strong>{{ single_price($o->total) }}</strong></td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="5" align="right">Tax: (10%) </td>
-                                        <td align="right"><strong>{{ single_price($o->tax) }}</strong></td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="5" align="right">Subtotal: </td>
-                                        <td align="right"><strong>{{ single_price($o->grand_total) }}</strong></td>
-                                    </tr>
-                                    @php
-                                        $grand_total += $o->grand_total;
-                                    @endphp
                                 @endforeach
-                                <tr>
-                                    <td align="right" colspan="5">
-                                        <h4>{{__('Grand Total')}} :</h4>
-                                    </td>
-                                    <td align="right">
-                                        <h4>{{ single_price($grand_total) }}</h4>
-                                    </td>
-                                </tr>
                            </table>
                        </div>
                    </div>
@@ -236,6 +267,16 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div id="confirm-modal-body">
 
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="rejectDetail" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-zoom product-modal" id="modal-size" role="document">
+        <div class="modal-content position-relative">
+            <div id="rejectDetailbody">
+
+            </div>
         </div>
     </div>
 </div>
@@ -257,6 +298,14 @@
             $.post('{{ route('confirm.to.buyer') }}', { _token : '{{ @csrf_token() }}', trx_id : id}, function(data){
                 $('#confirm-modal-body').html(data);
                 $('#confirmToBuyer').modal();
+            });
+        }
+
+        function rejectDetail(id) {
+            $('#rejectDetailbody').html(null);
+            $('#rejectDetail').modal();
+            $.post('{{ route('reject.detail') }}', {_token:'{{ csrf_token() }}', order_detail_id:id}, function(data){
+                $('#rejectDetailbody').html(data);
             });
         }
     </script>

@@ -8,6 +8,7 @@ use App\User;
 use App\Order;
 use App\OrderDetail;
 use App\Invoice;
+use App\Seller;
 use App\ConfirmPayment;
 use Mail;
 use Auth;
@@ -138,5 +139,40 @@ class TransactionController extends Controller
                         ->get();
         }
         return view('mytrx.find_paid_trx', compact('trx'));
+    }
+
+    public function reject_detail(Request $request)
+    {
+        $order_detail = OrderDetail::where('id', $request->order_detail_id)->first();
+        return view('transactions.reject_detail', compact('order_detail'));
+    }
+
+    public function reject_detail_proses(Request $request)
+    {
+        $order_detail = OrderDetail::where('id', $request->order_detail_id)->first();
+
+        if ($order_detail !== null) {
+            $order_detail->is_confirm = 1;
+            // calculate earning
+            $order = Order::where('id', $order_detail->order_id)->first();
+            $mintotal = $order->total-$order_detail->total;
+            $mintax = $mintotal*0.1;
+            $mingrandtotal = $mintotal+$mintax;
+
+            $seller = Seller::where('user_id', $order->seller_id)->first();
+            $minadpointearning = $seller->commission/100*$mingrandtotal;
+
+            $order->total = $mintotal;
+            $order->tax = $mintax;
+            $order->grand_total = $mingrandtotal;
+            $order->adpoint_earning = $minadpointearning;
+
+            $order_detail->save();
+            $order->save();
+
+            return back();
+        }
+        
+        
     }
 }
