@@ -8,6 +8,7 @@ use App\User;
 use App\Order;
 use App\OrderDetail;
 use App\Invoice;
+use App\ActivatedProces;
 use App\Seller;
 use App\ConfirmPayment;
 use Mail;
@@ -64,6 +65,11 @@ class TransactionController extends Controller
                     $od = OrderDetail::where('id', $od->id)->first();
                     $od->is_paid = true;
                     $od->save();
+
+                    $ap = new ActivatedProces;
+                    $ap->order_detail_id = $od->id;
+                    $ap->status = 0;
+                    $ap->save();
                 }
                 $seller = User::where('id', $o->seller_id)->first();
                 $dataS['seller_name'] = $seller->name;

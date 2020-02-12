@@ -2,9 +2,9 @@
     <div class="card-title">
         <div class="row align-items-center">
             <div class="col-6">
-                <h4 class="heading heading-4 strong-300 mb-0">
+                <h6 class="heading">
                     <span>{{__('Summary')}}</span>
-                </h4>
+                </h6>
             </div>
 
             <div class="col-6 text-right">
@@ -22,9 +22,9 @@
         $cart = Session::get('cart');
         $total_kes = [];
     @endphp
-    <div class="card-body">
+    <div class="card-body p-0">
         @foreach ($cart as $seller_id => $c)
-            <div class="border-0">
+            <div class="border-0 p-0">
                 @php
                     $user = \App\User::where('id', $seller_id)->first();
                 @endphp
