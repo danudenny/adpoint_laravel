@@ -118,7 +118,7 @@ class TransactionController extends Controller
         }else {
             $trx = DB::table('transactions')
                         ->where('code', 'like', '%'.$request->value.'%')
-                        ->where('payment_status', 0)
+                        ->whereIn('payment_status', 0)
                         ->get();
         }
         return view('mytrx.find_unpaid_trx', compact('trx'));

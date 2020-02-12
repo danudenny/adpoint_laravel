@@ -62,6 +62,7 @@
             $trxNew = DB::table('transactions')
                         -> orderBy('id', 'desc')
                         -> where('payment_status', 0)
+                        -> whereIn('status', array('confirmed', 'ready'))
                         ->get();
             $ticketNew = DB::table('tickets as t')
                         -> join('users as u', 'u.id', '=', 't.user_id')

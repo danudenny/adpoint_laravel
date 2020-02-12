@@ -24,6 +24,10 @@
                                 <div class="badge badge-success">
                                     <i class="fa fa-money"></i> Paid
                                 </div>
+                            @elseif ($transaction->status === 'cancelled')
+                                <div class="badge badge-danger">
+                                    <i class="fa fa-times"></i> Cancelled
+                                </div>
                             @else
                                 <div class="badge badge-danger">
                                     <i class="fa fa-money"></i> Unpaid
@@ -46,6 +50,8 @@
                                 <i>Confirmed</i>
                             @elseif ($transaction->status === "paid")
                                 <i>Paid</i>
+                            @elseif ($transaction->status === "cancelled")
+                                <i>Cancelled</i>
                             @endif
                         </th>
                     </tr>
@@ -67,7 +73,7 @@
                             <i class="fa fa-money"></i> Invoice
                         </a>
                         <a class="btn btn-success" href="{{ route('transaction.show.payment', $transaction->code) }}">
-                            <i class="fa fa-money"></i> Change To Paid
+                            <i class="fa fa-money"></i> Mark as Paid
                         </a>
                     @endif
                 </div>
