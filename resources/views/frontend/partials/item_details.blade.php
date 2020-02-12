@@ -61,24 +61,49 @@
                 </td>
             </tr>
             <tr>
-                <th>{{__('Bukti Transfer')}}</th>
+                <th>File Advertising</th>
                 <td>
+                    :
                     @php
-                        $cp = \App\ConfirmPayment::where('code_trx', $query->code_trx)->first();
+                        $file = json_decode($query->od_file_advertising);
                     @endphp
-                    @if ($cp !== null)
-                        <span>
-                            <a target="_blank" href="{{ url($cp->bukti) }}">
-                                <img src="{{ url($cp->bukti) }}" class="img-fluid img-responsive img-thumbnail" width="100" alt="Bukti Transfer">
-                            </a>
-                        </span>
-                    @else
-                        <span>
-                            Nothing
-                        </span>
+                    @if ($file !== null)
+                        @if ($file->gambar !== null)
+                            @foreach ($file->gambar as $key => $g)
+                                <b><a href="{{ url($g) }}" download>Gambar {{ $key+1 }} <i class="fa fa-download"></i></a></b> <br>
+                            @endforeach
+                        @endif
+                        @if ($file->video !== null)
+                            @foreach ($file->video as $key => $v)
+                                <b><a href="{{ url($v) }}" download>Video {{ $key+1 }} <i class="fa fa-download"></i></a></b> <br>
+                            @endforeach
+                        @endif
                     @endif
                 </td>
             </tr>
+            @if ($query->od_status !== 2)
+                <tr>
+                    <th>{{__('Bukti Transfer')}}</th>
+                    <td>
+                        @php
+                            $cp = \App\ConfirmPayment::where('code_trx', $query->code_trx)->first();
+                        @endphp
+                        @if ($cp !== null)
+                            :
+                            <span>
+                                <a href="{{ url($cp->bukti) }}" download>
+                                    <b>Bukti Transfer</b> <i class="fa fa-download"></i>
+                                </a>
+                            </span>
+                        @else
+                            :
+                            <span>
+                                Nothing
+                            </span>
+                        @endif
+                    </td>
+                </tr>   
+            @endif
         </tbody>
     </table>
 </div>

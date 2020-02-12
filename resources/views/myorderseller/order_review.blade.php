@@ -1,3 +1,4 @@
+
 @if (count($order_details) > 0)
     @foreach ($order_details as $key => $od)
         <div style="border-bottom: 1px solid #ccc">
@@ -47,8 +48,11 @@
                                 </button>
                                 @if ($od->status == 1)
                                     @if ($od->is_paid == true)
-                                        <button data-toggle="modal" data-target="#active{{$od->id}}" class="btn btn-circle btn-sm btn-outline-primary">
+                                        {{-- <button data-toggle="modal" data-target="#active{{$od->id}}" class="btn btn-circle btn-sm btn-outline-primary">
                                             <i class="fa fa-calendar-check-o"></i> Activate
+                                        </button> --}}
+                                        <button data-toggle="collapse" data-target="#proses-active{{ $od->id }}" aria-expanded="false" aria-controls="collapseExample" class="btn btn-circle btn-sm btn-outline-primary">
+                                            <i class="fa fa-calendar-check-o"></i> Proses Active
                                         </button>
                                     @else
                                         <button type="button" class="btn btn-sm btn-circle btn-outline-primary" style="cursor: not-allowed" disabled>
@@ -57,6 +61,79 @@
                                     @endif
                                 @endif
                             </td>
+                        </tr>
+                        <tr>
+                            <table class="table">
+                                <tr>
+                                    <td>
+                                        <div class="collapse" id="proses-active{{ $od->id }}">
+                                            <div class="card mt-2" style="border-radius: 0; background: #fbfbfb">
+                                                <div class="card-body">
+                                                    <div class="row justify-content-center">
+                                                        @php
+                                                            $ap = \App\ActivatedProces::where('order_detail_id', $od->id)->first();
+                                                        @endphp
+                                                        <div class="col-12">
+                                                            <div class="step-wizard">
+                                                                <div class="row">
+                                                                    <div class="col-4 margin-top d-flex justify-content-center">
+                                                                        <label class="checkbox">
+                                                                            <input id="editing" onchange="editingProcess(event, {{ $od->id }})" type="checkbox" @if ($ap->status === 1 || $ap->status === 2 || $ap->status === 3) checked disabled @endif>
+                                                                            <span id="ec" class="checkmark"></span>
+                                                                        </label>
+                                                                    </div>
+                                                                    <div class="col-4 margin-top d-flex justify-content-center">
+                                                                        <label class="checkbox">
+                                                                            <input id="install" onchange="installationProcess(event, {{ $od->id }})" type="checkbox" @if ($ap->status === 2 || $ap->status === 3) checked disabled @endif>
+                                                                            <span id="ic" class="checkmark"></span>
+                                                                        </label>
+                                                                    </div>
+                                                                    <div class="col-4 margin-top d-flex justify-content-center">
+                                                                        <label class="checkbox">
+                                                                            <input id="done" onchange="doneProcess(event, {{ $od->id }})" type="checkbox" @if ($ap->status === 3) checked disabled @endif>
+                                                                            <span id="dc" class="checkmark"></span>
+                                                                        </label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row justify-content-center">
+                                                        <div class="col-12">
+                                                            <div class="row">
+                                                                <div class="col-4 margin-b d-flex justify-content-center">
+                                                                    <div class="text-center">
+                                                                        <b>Editing Process</b><br>
+                                                                        @if ($ap->status === 1 || $ap->status === 2 || $ap->status === 3)
+                                                                            <p>{{ date('d M Y H:i:s', strtotime($ap->time_1)) }}</p>
+                                                                        @endif
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-4 margin-b d-flex justify-content-center">
+                                                                    <div class="text-center">
+                                                                        <b>Installation Process</b><br>
+                                                                        @if ($ap->status === 2 || $ap->status === 3)
+                                                                            <p>{{ date('d M Y H:i:s', strtotime($ap->time_2)) }}</p>
+                                                                        @endif
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-4 margin-b d-flex justify-content-center">
+                                                                    <div class="text-center">
+                                                                        <b>Ready to Aired</b><br>
+                                                                        @if ($ap->status === 3)
+                                                                            <p>{{ date('d M Y H:i:s', strtotime($ap->time_3)) }}</p>
+                                                                        @endif
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
                         </tr>
                     </table>
                 </div>
@@ -87,3 +164,60 @@
 @else
     @include('frontend.not_found')
 @endif
+
+<div style="cursor: not-allowed">
+
+</div>
+
+<script>
+    function editingProcess(e, id) {
+        e.preventDefault();
+        postStatus(id, 1);
+        $('#editing').prop('disabled', true);
+    }
+    function installationProcess(e, id) {
+        e.preventDefault();
+        postStatus(id, 2);
+        $('#install').prop('disabled', true);
+    }
+    function doneProcess(e, id) {
+        e.preventDefault();
+        postStatus(id, 3);
+        $('#done').prop('disabled', true);
+    }
+
+    function postStatus(id, status) {
+        $.ajax({
+            url: '{{ route('post.process.active') }}',
+            method: 'POST',
+            dataType: 'JSON',
+            data: {
+                _token:'{{ csrf_token() }}',
+                order_detail_id : id,
+                status : status
+            },
+            success: function(result) {
+                if (result === 1) {
+                    switch (status) {
+                        case 1:
+                            showFrontendAlert('success', 'Editing process done!');
+                            break;
+                        case 2:
+                            showFrontendAlert('success', 'Installation process done!');
+                            break;
+                        case 3:
+                            showFrontendAlert('success', 'Process done!');
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            },
+            error: function(err){
+                if (err === 0) {
+                    showFrontendAlert('error', 'Something wrong!');
+                }
+            }
+        })
+    }
+</script>

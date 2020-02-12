@@ -44,8 +44,8 @@ class CheckoutController extends Controller
                     }
                 }
 
-                $request->session()->put('cart', collect([]));
                 $request->session()->forget('order_id');
+                $request->session()->forget('cart');
                 flash("Your order has been placed successfully")->success();
                 $request->session()->flash('message', 'Thanks for your order, please check your email!');
                 return redirect('transaction');
@@ -93,6 +93,19 @@ class CheckoutController extends Controller
 
     public function store_shipping_info(Request $request)
     {
+        $data['name'] = $request->name;
+        $data['email'] = $request->email;
+        $data['address'] = $request->address;
+        $data['country'] = $request->country;
+        $data['city'] = $request->city;
+        $data['postal_code'] = $request->postal_code;
+        $data['phone'] = $request->phone;
+        $data['checkout_type'] = $request->checkout_type;
+
+        $shipping_info = $data;
+        $request->session()->put('shipping_info', $shipping_info);
+
+
         $cart = Session::get('cart');
         $subtotal = 0;
         foreach ($cart as $seller_id => $c){

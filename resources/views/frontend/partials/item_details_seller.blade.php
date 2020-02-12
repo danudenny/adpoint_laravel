@@ -34,6 +34,27 @@
                             <span>: {{ json_decode($query->address)->address }}, {{ json_decode($query->address)->city }}, {{ json_decode($query->address)->country }}</span>
                         </td>
                     </tr>
+                    <tr>
+                        <th>File Advertising</th>
+                        <td>
+                            :
+                            @php
+                                $file = json_decode($query->od_file_advertising);
+                            @endphp
+                            @if ($file !== null)
+                                @if ($file->gambar !== null)
+                                    @foreach ($file->gambar as $key => $g)
+                                        <b><a href="{{ url($g) }}" download>Gambar {{ $key+1 }} <i class="fa fa-download"></i></a></b> <br>
+                                    @endforeach
+                                @endif
+                                @if ($file->video !== null)
+                                    @foreach ($file->video as $key => $v)
+                                        <b><a href="{{ url($v) }}" download>Video {{ $key+1 }} <i class="fa fa-download"></i></a></b> <br>
+                                    @endforeach
+                                @endif
+                            @endif
+                        </td>
+                    </tr>
                 </tbody>
             </table>
         </div>
