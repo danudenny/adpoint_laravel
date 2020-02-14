@@ -74,14 +74,6 @@
                         </td>
                     </tr>
                     <tr>
-                        <th>{{__('Seller')}}</th>
-                        <td>
-                            <span>: 
-                                <b>{{ \App\User::where('id', $query->seller_id)->first()->name }}</b>
-                            </span>
-                        </td>
-                    </tr>
-                    <tr>
                         <th>{{__('Order Date')}}</th>
                         <td>
                             <span>: {{ date('d M Y H:i:s', strtotime($query->order_date)) }}</span>

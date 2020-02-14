@@ -8,8 +8,8 @@
                             $product = \App\Product::where('id', $od->product_id)->first();
                         @endphp
                         <tr>
-                            <td width="80">
-                                <img src="{{ url(json_decode($product->photos)[0]) }}" class="img-fluid" width="80">
+                            <td width="100">
+                                <img width="100" src="{{ url(json_decode($product->photos)[0]) }}" class="img-fluid" width="80">
                             </td>
                             <td width="250"> 
                                 <a target="_blank" href="{{ route('product', $product->slug) }}">{{ $product->name }}</a><br>

@@ -104,14 +104,15 @@ class CartController extends Controller
         if($str != null){
             $variations = json_decode($product->variations);
             $price = $variations->$str->price;
-            if($variations->$str->qty >= $request['quantity']){
-                
-            }
-            else{
+            if ($product->available === 0) {
                 return view('frontend.partials.outOfStockCart');
             }
-        }
-        else{
+            // if($variations->$str->qty >= $request['quantity']){
+                
+            // }else{
+            //     return view('frontend.partials.outOfStockCart');
+            // }
+        }else{
             $price = $product->unit_price;
         }
 
@@ -143,15 +144,30 @@ class CartController extends Controller
             $price += $product->tax;
         }
 
+        
         $data['quantity'] = $request['quantity'];
         $data['price'] = $price;
         $data['start_date'] = $request['start_date'];
         $data['end_date'] = $request['end_date'];
         $data['advertising'] = null;
-        
+
+        // dd($request->session()->has('cart'));
         if($request->session()->has('cart')){
             $cart = $request->session()->get('cart');
-            $cart[$product->user_id][] = $data;
+            if (isset($cart[$product->user_id])) {
+                foreach ($cart as $seller_id => $c) {
+                    foreach ($c as $key => $cartItem) {
+                        if ($cartItem['id'] === $data['id']) {
+                            return view('frontend.partials.ItemHashCart');   
+                        }else {
+                            $c[$key+1] = $data;
+                        }
+                    }
+                    $cart[$product->user_id] = $c;
+                }
+            }else {
+                $cart[$product->user_id][] = $data;
+            }
             $request->session()->put('cart', $cart);
         } else{
             $result[$product->user_id] = [$data];
@@ -168,17 +184,19 @@ class CartController extends Controller
             foreach ($cart as $seller_id => $c) {
                 if ($seller_id === (int)$request->seller_id) {
                     $file = json_decode($c[$request->key]['advertising']);
-                    if ($file->gambar !== null) {
-                        foreach ($file->gambar as $key => $g) {
-                            if (file_exists($g)) {
-                                unlink($g);
+                    if ($file !== null) {
+                        if ($file->gambar !== null) {
+                            foreach ($file->gambar as $key => $g) {
+                                if (file_exists($g)) {
+                                    unlink($g);
+                                }
                             }
                         }
-                    }
-                    if ($file->video !== null) {
-                        foreach ($file->video as $key => $v) {
-                            if (file_exists($v)) {
-                                unlink($v);
+                        if ($file->video !== null) {
+                            foreach ($file->video as $key => $v) {
+                                if (file_exists($v)) {
+                                    unlink($v);
+                                }
                             }
                         }
                     }
@@ -191,6 +209,10 @@ class CartController extends Controller
                 }
             }
             $request->session()->put('cart', $cart);
+        }
+        $cart = $request->session()->get('cart');
+        if (count($cart) === 0) {
+            $request->session()->forget('cart');
         }
 
         return view('frontend.partials.cart_details'); 

@@ -57,7 +57,7 @@
                             <div class="col-md-12">
                                 <nav class="no-border" style="color: black">
                                     <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                                        <a class="nav-item nav-link active" id="nav-order-place-tab" data-url="{{ route('orders.place.order') }}" data-toggle="tab" href="#nav-order-place" role="tab" aria-controls="nav-order-place" aria-selected="true">Order place</a>
+                                        <a class="nav-item nav-link" id="nav-order-place-tab" data-url="{{ route('orders.place.order') }}" data-toggle="tab" href="#nav-order-place" role="tab" aria-controls="nav-order-place" aria-selected="true">Order place</a>
                                         <a class="nav-item nav-link" id="nav-onreview-tab" data-url="{{ route('orders.review.order') }}" data-toggle="tab" href="#nav-onreview" role="tab" aria-controls="nav-onreview" aria-selected="false">On review</a>
                                         <a class="nav-item nav-link" id="nav-active-tab" data-url="{{ route('orders.active.order') }}" data-toggle="tab" href="#nav-active" role="tab" aria-controls="nav-active" aria-selected="false">Active</a>
                                         <a class="nav-item nav-link" id="nav-complete-tab" data-url="{{ route('orders.complete.order') }}" data-toggle="tab" href="#nav-complete" role="tab" aria-controls="nav-complete" aria-selected="false">Complete</a>
@@ -73,7 +73,7 @@
                                     <div class="c-nav-load mt-5">
                                         <i class="fa fa-spin fa-spinner"></i>
                                     </div>
-                                    <div class="tab-pane fade show active" id="nav-order-place" role="tabpanel" aria-labelledby="nav-order-place-tab">
+                                    <div class="tab-pane fade" id="nav-order-place" role="tabpanel" aria-labelledby="nav-order-place-tab">
                                         
                                     </div>
                                     <div class="tab-pane fade" id="nav-onreview" role="tabpanel" aria-labelledby="nav-onreview-tab">
@@ -97,6 +97,38 @@
             </div>
         </div>
     </section>
+    @if (Session::has('popup'))
+        <script>
+            $(function() {
+                $('#intruksi_upload').modal('show');
+            });
+        </script>
+    @endif
+
+    <!-- Modal -->
+    <div class="modal fade" id="intruksi_upload" tabindex="-1" role="dialog" aria-labelledby="intruksi_uploadTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle">Upload bukti tayang</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="modal-body">
+                <div class="text-center p-4">
+                    <h1 class="rounded-circle">
+                        <i class="fa fa-cloud-upload"></i>
+                    </h1>
+                    <h4>
+                       <b>Please</b> upload bukti tayang
+                    </h4>
+                </div>
+            </div>
+        </div>
+        </div>
+    </div>
+
     <div class="modal fade" id="buktiTayang" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-scrollable" id="modal-size" role="document">
             <div class="modal-content">
@@ -146,17 +178,14 @@
             });
         }
 
-        $('#nav-order-place').load('{{ route('orders.place.order') }}',function(result){
-            $(this).tab('show');
-            $('.c-nav-load').hide();
-        });
-
         $('#status').val(0);
         $('#nav-tab a').click(function (e) {
             e.preventDefault();
             var url = $(this).attr("data-url");
             var href = this.hash;
             var pane = $(this);
+            localStorage.setItem('activeTabSeller', $(e.target).attr('href'));
+            localStorage.setItem('routeTabSeller', $(e.target).attr('data-url'));
 
             switch (href) {
                 case '#nav-order-place':
@@ -184,6 +213,24 @@
                 $('.c-nav-load').hide();
             });
         });
+
+        var activeTab = localStorage.getItem('activeTabSeller');
+        if(activeTab !== null){
+            var routeTab = localStorage.getItem('routeTabSeller')
+            $('a[href="'+activeTab+'"]').addClass('active');
+            $(activeTab).load(routeTab,function(result){
+                $(activeTab).addClass('show');
+                $(activeTab).addClass('active');
+                $('.c-nav-load').hide();
+            });
+        }else {
+            $('a[href="#nav-order-place"]').addClass('active');
+            $('#nav-order-place').load('{{ route('orders.place.order') }}',function(result){
+                $('#nav-order-place').addClass('show');
+                $('#nav-order-place').addClass('active');
+                $('.c-nav-load').hide();
+            });
+        }
 
         // date range picker
         var start = moment().subtract(29, 'days');

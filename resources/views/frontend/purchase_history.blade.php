@@ -66,7 +66,7 @@
                             <div class="col-md-12">
                                 <nav class="no-border" style="color: black">
                                     <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                                        <a class="nav-item nav-link active" id="nav-order-place-tab" data-url="{{ route('myorder.place.order') }}" data-toggle="tab" href="#nav-order-place" role="tab" aria-controls="nav-order-place" aria-selected="true">Order place</a>
+                                        <a class="nav-item nav-link" id="nav-order-place-tab" data-url="{{ route('myorder.place.order') }}" data-toggle="tab" href="#nav-order-place" role="tab" aria-controls="nav-order-place" aria-selected="true">Order place</a>
                                         <a class="nav-item nav-link" id="nav-onreview-tab" data-url="{{ route('myorder.review.order') }}" data-toggle="tab" href="#nav-onreview" role="tab" aria-controls="nav-onreview" aria-selected="false">On review</a>
                                         <a class="nav-item nav-link" id="nav-active-tab" data-url="{{ route('myorder.active.order') }}" data-toggle="tab" href="#nav-active" role="tab" aria-controls="nav-active" aria-selected="false">Active</a>
                                         <a class="nav-item nav-link" id="nav-complete-tab" data-url="{{ route('myorder.complete.order') }}" data-toggle="tab" href="#nav-complete" role="tab" aria-controls="nav-complete" aria-selected="false">Complete</a>
@@ -82,7 +82,7 @@
                                     <div class="c-nav-load mt-5">
                                         <i class="fa fa-spin fa-spinner"></i>
                                     </div>
-                                    <div class="tab-pane fade show active" id="nav-order-place" role="tabpanel" aria-labelledby="nav-order-place-tab">
+                                    <div class="tab-pane fade" id="nav-order-place" role="tabpanel" aria-labelledby="nav-order-place-tab">
                                         
                                     </div>
                                     <div class="tab-pane fade" id="nav-onreview" role="tabpanel" aria-labelledby="nav-onreview-tab">
@@ -180,17 +180,14 @@
             });
         }
 
-        $('#nav-order-place').load('{{ route('myorder.place.order') }}',function(result){
-            $(this).tab('show');
-            $('.c-nav-load').hide();
-        });
-
         $('#status').val(0);
         $('#nav-tab a').click(function (e) {
             e.preventDefault();
             var url = $(this).attr("data-url");
             var href = this.hash;
             var pane = $(this);
+            localStorage.setItem('activeTabBuyer', $(e.target).attr('href'));
+            localStorage.setItem('routeTabBuyer', $(e.target).attr('data-url'));
 
             switch (href) {
                 case '#nav-order-place':
@@ -219,6 +216,24 @@
                 $('.c-nav-load').hide();
             });
         });
+
+        var activeTab = localStorage.getItem('activeTabBuyer');
+        if(activeTab !== null){
+            var routeTab = localStorage.getItem('routeTabBuyer')
+            $('a[href="'+activeTab+'"]').addClass('active');
+            $(activeTab).load(routeTab,function(result){
+                $(activeTab).addClass('show');
+                $(activeTab).addClass('active');
+                $('.c-nav-load').hide();
+            });
+        }else {
+            $('a[href="#nav-order-place"]').addClass('active');
+            $('#nav-order-place').load('{{ route('myorder.place.order') }}',function(result){
+                $('#nav-order-place').addClass('show');
+                $('#nav-order-place').addClass('active');
+                $('.c-nav-load').hide();
+            });
+        }
 
         // date range picker
         var start = moment().subtract(29, 'days');

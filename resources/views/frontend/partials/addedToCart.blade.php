@@ -6,21 +6,27 @@
     <div class="product-box">
         <div class="block">
             <div class="row">
-                <div class="col-md-4">
-                    <img src="{{ asset($product->thumbnail_img) }}" class="img-fluid img-thumbnail" alt="Product Image">
+                <div class="col-4">
+                    <img src="{{ asset($product->thumbnail_img) }}" class="img-fluid" alt="Product Image">
                 </div>
-                <div class="col-md-8">
+                <div class="col-8">
                     <h6>{{ __($product->name) }}</h6>
                     <strong class="text-black">Price : {{ single_price($data['price']*$data['quantity']) }}</strong>
-                    <div>
-                        <strong class="text-warning">{{ $data['start_date']}} s/d {{ $data['end_date'] }}</strong>
+                    <div class="mt-2">
+                        <strong class="text-dark">
+                            <h6>{{ $data['start_date']}} s/d {{ $data['end_date'] }}</h6>
+                        </strong>
                     </div>
                 </div>
             </div>
         </div>
     </div>
     <div class="text-center">
-        <button class="btn btn-styled btn-base-1 btn-outline mb-3 mb-sm-0" data-dismiss="modal">{{__('Back to shopping')}}</button>
-        <a href="{{ route('cart') }}" class="btn btn-styled btn-base-1 mb-3 mb-sm-0">{{__('Proceed to Checkout')}}</a>
+        <button class="btn btn-default btn-outline btn-circle mb-3 mb-sm-0" data-dismiss="modal">
+            <i class="la la-mail-reply"></i> {{__('Back to shopping')}}
+        </button>
+        <a href="{{ route('cart') }}" class="btn btn-orange btn-circle mb-3 mb-sm-0">
+            <i class="fa fa-location-arrow"></i> {{__('Proceed to Checkout')}}
+        </a>
     </div>
 </div>

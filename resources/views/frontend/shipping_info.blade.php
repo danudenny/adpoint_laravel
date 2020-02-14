@@ -46,7 +46,7 @@
         <section class="py-4 gry-bg">
             <div class="container">
                 <div class="row cols-xs-space cols-sm-space cols-md-space">
-                    <div class="col-lg-8">
+                    <div class="col-md-8">
                         <form class="form-default" data-toggle="validator" action="{{ route('checkout.store_shipping_infostore') }}" role="form" method="POST">
                             @csrf
                             <div class="card">
@@ -193,19 +193,21 @@
                             
                             <div class="row align-items-center pt-4">
                                 <div class="col-6">
-                                    <a href="{{ route('home') }}" class="link link--style-3">
-                                        <i class="ion-android-arrow-back"></i>
+                                    <a href="{{ route('home') }}" class="btn btn-danger btn-circle">
+                                        <i class="la la-mail-reply"></i>
                                         {{__('Return to shop')}}
                                     </a>
                                 </div>
                                 <div class="col-6 text-right">
-                                    <button type="submit" class="btn btn-styled btn-base-1">{{__('Continue to Payment')}}</a>
+                                    <button type="submit" class="btn btn-orange btn-circle">
+                                        <i class="fa fa-money"></i> {{__('Continue to Payment')}}
+                                    </a>
                                 </div>
                             </div>
                         </form>
                     </div>
 
-                    <div class="col-lg-4 ml-lg-auto">
+                    <div class="col-md-4">
                         @include('frontend.partials.cart_summary')
                     </div>
                 </div>

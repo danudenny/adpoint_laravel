@@ -90,13 +90,15 @@
 
                             <div class="row align-items-center pt-4">
                                 <div class="col-6">
-                                    <a href="{{ route('home') }}" class="link link--style-3">
-                                        <i class="ion-android-arrow-back"></i>
+                                    <a href="{{ route('home') }}" class="btn btn-danger btn-circle">
+                                        <i class="la la-mail-reply"></i>
                                         {{__('Return to shop')}}
                                     </a>
                                 </div>
                                 <div class="col-6 text-right">
-                                    <button type="submit" id="complete" style="cursor: not-allowed" class="btn btn-styled btn-base-1" disabled>{{__('Place Order')}}</button>
+                                    <button type="submit" id="complete" style="cursor: not-allowed" class="btn btn-orange btn-circle" disabled>
+                                        <i class="fa fa-location-arrow"></i> {{__('Place Order')}}
+                                    </button>
                                 </div>
                             </div>
                         </form>

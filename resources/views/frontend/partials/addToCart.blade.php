@@ -22,10 +22,10 @@
             <div class="product-description-wrapper">
                 <!-- Product title -->
                 <h2 class="product-title">
-                    {{-- {{ __($product->name) }} --}}
+                    {{ __($product->name) }}
                 </h2>
 
-                <div class="row no-gutters mt-4">
+                {{-- <div class="row no-gutters mt-4">
                     <div class="col-2">
                         <div class="product-description-label">{{__('Price')}}:</div>
                     </div>
@@ -37,17 +37,17 @@
                             </del>
                         </div>
                     </div>
-                </div>
+                </div> --}}
                 <div class="row no-gutters mt-3">
                     <div class="col-2">
-                        <div class="product-description-label">{{__('Discount Price')}}:</div>
+                        <div class="product-description-label">{{__('Price')}}:</div>
                     </div>
                     <div class="col-10">
                         <div class="product-price">
                             <strong>
                                 {{ home_discounted_price($product->id) }}
                             </strong>
-                            <span class="piece">/{{ $product->unit }}</span>
+                            <span class="piece">{{ $product->unit }}</span>
                         </div>
                     </div>
                 </div>
@@ -140,8 +140,8 @@
                 <div class="d-table width-100 mt-3">
                     <div class="d-table-cell">
                         <!-- Add to cart button -->
-                        <button type="button" id="addtocartModal" class="btn btn-base-1 btn-icon-left" onclick="addToCart()">
-                            <i class="icon ion-bag"></i> {{__('Add to cart')}}
+                        <button type="button" id="addtocartModal" class="btn btn-orange btn-circle" onclick="addToCart()">
+                            <i class="fa fa-cart-plus"></i> {{__('Add to cart')}}
                         </button>
                     </div>
                 </div>

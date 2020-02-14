@@ -2,7 +2,7 @@
 <section class="slice-sm footer-top-bar bg-white">
     <div class="container sct-inner">
         <div class="row no-gutters">
-            <div class="col-lg-3 col-md-6">
+            <div class="col-3">
                 <div class="footer-top-box text-center">
                     <a href="{{ route('sellerpolicy') }}">
                         <i class="la la-file-text"></i>
@@ -10,7 +10,7 @@
                     </a>
                 </div>
             </div>
-            <div class="col-lg-3 col-md-6">
+            <div class="col-3">
                 <div class="footer-top-box text-center">
                     <a href="{{ route('returnpolicy') }}">
                         <i class="la la-mail-reply"></i>
@@ -18,7 +18,7 @@
                     </a>
                 </div>
             </div>
-            <div class="col-lg-3 col-md-6">
+            <div class="col-3">
                 <div class="footer-top-box text-center">
                     <a href="{{ route('supportpolicy') }}">
                         <i class="la la-support"></i>
@@ -26,7 +26,7 @@
                     </a>
                 </div>
             </div>
-            <div class="col-lg-3 col-md-6">
+            <div class="col-3">
                 <div class="footer-top-box text-center">
                     <a href="{{ route('profile') }}">
                         <i class="la la-dashboard"></i>
