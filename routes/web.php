@@ -215,8 +215,8 @@ Route::group(['middleware' => ['auth']], function(){
 	Route::get('/continue_payment/{id}', 'OrderController@continue_payment')->name('continue.payment');
 	Route::get('/confirm_payment/{id}', 'OrderController@confirm_payment_id')->name('confirm.payment.id');
 	Route::post('/confirm_payment/insert', 'OrderController@insert_confirm_payment')->name('insert.confirm.payment');
-	Route::get('/order_complete/{id}', 'OrderController@order_complete')->name('order.complete');
-	Route::get('/order_activate/{id}', 'OrderController@activate')->name('order.activate');
+	Route::post('/order_activate', 'OrderController@activate')->name('order.activate');
+	Route::get('/order_complete/{id}', 'OrderController@complete')->name('order.complete');
 
 	Route::resource('broadcast_proof', 'EvidenceController');
 	Route::get('/broadcast_proof/aktifkan/{id}', 'EvidenceController@aktifkan')->name('aktifkan');

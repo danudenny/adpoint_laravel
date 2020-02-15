@@ -28,68 +28,70 @@
                 @php
                     $user = \App\User::where('id', $seller_id)->first();
                 @endphp
-                <div style="height: 40px; background: #FBFBFB; border-bottom: 1px solid #ccc">
-                    <p style="line-height: 40px; margin-left: 10px">{{ $user->name }}</p>
+                <div data-toggle="collapse" href="#headSeller{{$user->id}}" role="button" aria-expanded="false" aria-controls="headSeller{{$user->id}}" style="height: 40px; background: #FBFBFB; border-bottom: 1px solid #ccc; cursor: pointer;">
+                    <b style="line-height: 40px; margin-left: 10px"># {{ $user->name }}</b>
                 </div>
-                <div class="card-body">
-                    <table class="table-cart table-cart-review">
-                        <thead>
-                            <tr>
-                                <th class="product-name">{{__('Product')}}</th>
-                                <th class="product-total text-right">{{__('Total')}}</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @php
-                                $subtotal = 0;
-                                $tax = 0.1;
-                            @endphp
-                            @foreach ($c as $key => $cartItem)
+                <div class="collapse" id="headSeller{{$user->id}}">
+                    <div class="card-body">
+                        <table class="table-cart table-cart-review">
+                            <thead>
+                                <tr>
+                                    <th class="product-name">{{__('Product')}}</th>
+                                    <th class="product-total text-right">{{__('Total')}}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
                                 @php
-                                    $product = \App\Product::find($cartItem['id']);
-                                    $subtotal += $cartItem['price']*$cartItem['quantity'];
-                                    $product_name_with_choice = $product->name;
-                                    foreach (json_decode($product->choice_options) as $choice){
-                                        $str = $choice->title;
-                                        $product_name_with_choice .= ' - '.$cartItem[$str];
-                                    }
+                                    $subtotal = 0;
+                                    $tax = 0.1;
                                 @endphp
-                                <tr class="cart_item">
-                                    <td class="product-name">
-                                        {{ $product_name_with_choice }}
-                                        <strong class="product-quantity">× {{ $cartItem['quantity'] }}</strong>
-                                    </td>
-                                    <td class="product-total text-right">
-                                        <span class="pl-4">{{ single_price($cartItem['price']*$cartItem['quantity']) }}</span>
+                                @foreach ($c as $key => $cartItem)
+                                    @php
+                                        $product = \App\Product::find($cartItem['id']);
+                                        $subtotal += $cartItem['price']*$cartItem['quantity'];
+                                        $product_name_with_choice = $product->name;
+                                        foreach (json_decode($product->choice_options) as $choice){
+                                            $str = $choice->title;
+                                            $product_name_with_choice .= ' - '.$cartItem[$str];
+                                        }
+                                    @endphp
+                                    <tr class="cart_item">
+                                        <td class="product-name">
+                                            {{ $product_name_with_choice }}
+                                            <strong class="product-quantity">× {{ $cartItem['quantity'] }}</strong>
+                                        </td>
+                                        <td class="product-total text-right">
+                                            <span class="pl-4">{{ single_price($cartItem['price']*$cartItem['quantity']) }}</span>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                        
+                        <hr>
+                        <table class="table-cart table-cart-review">
+                            <tfoot>
+                                <tr class="cart-subtotal">
+                                    <th>{{__('Total')}}</th>
+                                    <td class="text-right">
+                                        <span class="strong-600">{{ single_price($subtotal) }}</span>
                                     </td>
                                 </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                    
-                    <hr>
-                    <table class="table-cart table-cart-review">
-                        <tfoot>
-                            <tr class="cart-subtotal">
-                                <th>{{__('Total')}}</th>
-                                <td class="text-right">
-                                    <span class="strong-600">{{ single_price($subtotal) }}</span>
-                                </td>
-                            </tr>
-                            <tr class="cart-subtotal">
-                                <th>{{__('Tax 10%')}}</th>
-                                <td class="text-right">
-                                    <span class="strong-600">{{ single_price($subtotal*$tax) }}</span>
-                                </td>
-                            </tr>
-                            <tr class="cart-subtotal">
-                                <th>{{__('Subtotal')}}</th>
-                                <td class="text-right">
-                                    <span class="strong-600">{{ single_price(($subtotal*$tax)+$subtotal) }}</span>
-                                </td>
-                            </tr>
-                        </tfoot>
-                    </table>
+                                <tr class="cart-subtotal">
+                                    <th>{{__('Tax 10%')}}</th>
+                                    <td class="text-right">
+                                        <span class="strong-600">{{ single_price($subtotal*$tax) }}</span>
+                                    </td>
+                                </tr>
+                                <tr class="cart-subtotal">
+                                    <th>{{__('Subtotal')}}</th>
+                                    <td class="text-right">
+                                        <span class="strong-600">{{ single_price(($subtotal*$tax)+$subtotal) }}</span>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
                 </div>
             </div>
             @php
@@ -100,7 +102,7 @@
             $total_keseluruhan = array_sum($total_kes);
         @endphp
         <div class="border-0" style="background: #FBFBFB;">
-            <div class="card-body">
+            <div class="card p-2">
                 <table class="table-cart table-cart-review">
                     <tfoot>
                         @php
@@ -109,10 +111,16 @@
                                 $total -= Session::get('coupon_discount');
                             }
                         @endphp
-                        <tr class="cart-total">
-                            <th><span class="strong-700">{{__('Grand Total')}}</span></th>
-                            <td class="text-right">
-                                <strong><span>{{ single_price($total) }}</span></strong>
+                        <tr>
+                            <td align="center">
+                                <b>{{__('Grand Total')}}</b>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center">
+                                <div style="border: 1px dashed; border-radius: 10px; padding:10px; width: 100%; text-align: center; background-color: #f9f9f9">
+                                    <h4 class="text-danger strong-700">{{ single_price($total) }}</h4>
+                                </div>
                             </td>
                         </tr>
                     </tfoot>

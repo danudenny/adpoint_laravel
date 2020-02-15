@@ -58,13 +58,6 @@
                         </li>
 
                         <li>
-                            <a href="{{ route('broadcast.index') }}">
-                                <i class="la la-image"></i>
-                                <span>{{__('Broadcast Proof')}}</span>
-                            </a>
-                        </li>
-
-                        <li>
                             <a href="{{ route('wishlists.index') }}">
                                 <i class="la la-heart-o"></i>
                                 <span>{{__('Wishlist')}}</span>
@@ -123,7 +116,13 @@
                                 <i class="la la-shopping-cart"></i>
                                 <span>{{__('Cart')}}</span>
                                 @if(Session::has('cart'))
-                                    <span class="badge" id="cart_items_sidenav">{{ count(Session::get('cart'))}}</span>
+                                    @php
+                                        $count = 0;
+                                        foreach (Session::get('cart') as $key => $c) {
+                                            $count += count($c);
+                                        }
+                                    @endphp
+                                    <span class="badge" id="cart_items_sidenav">{{ $count }}</span>
                                 @else
                                     <span class="badge" id="cart_items_sidenav">0</span>
                                 @endif
@@ -150,12 +149,6 @@
                                 </a>
                             </li>
 
-                            <li>
-                                <a href="{{ route('broadcast_proof.index') }}">
-                                    <i class="la la-image"></i>
-                                    <span>{{__('Bukti Tayang')}}</span>
-                                </a>
-                            </li>
 
                             <li>
                                 <a href="{{ route('reviews.seller') }}">
@@ -177,6 +170,7 @@
                                     <span>{{__('Payment History')}}</span>
                                 </a>
                             </li>
+
                         </ul>
                         <div class="sidebar-widget-title py-0">
                             <span>{{__('Earnings')}}</span>
@@ -185,11 +179,12 @@
                             <div class="text-center">
                                 <div class="heading-4 strong-700 mb-4">
                                     @php
-                                        $orderDetails = \App\OrderDetail::where('seller_id', Auth::user()->id)->where('created_at', '>=', date('-30d'))->get();
+                                        $orders = \App\Order::where('seller_id', Auth::user()->id)->where('created_at', '>=', date('-30d'))->get();
+                                        
                                         $total = 0;
-                                        foreach ($orderDetails as $key => $orderDetail) {
-                                            if($orderDetail->order->payment_status == 'paid'){
-                                                $total += $orderDetail->price;
+                                        foreach ($orders as $key => $o) {
+                                            if($o->approved == 1){
+                                                $total += $o->grand_total-$o->adpoint_earning;
                                             }
                                         }
                                     @endphp
@@ -200,11 +195,11 @@
                                     <tbody>
                                         <tr>
                                             @php
-                                                $orderDetails = \App\OrderDetail::where('seller_id', Auth::user()->id)->get();
+                                                $orders = \App\Order::where('seller_id', Auth::user()->id)->get();
                                                 $total = 0;
-                                                foreach ($orderDetails as $key => $orderDetail) {
-                                                    if($orderDetail->order->payment_status == 'paid'){
-                                                        $total += $orderDetail->price;
+                                                foreach ($orders as $key => $o) {
+                                                    if($o->approved == 1){
+                                                        $total += $o->grand_total-$o->adpoint_earning;
                                                     }
                                                 }
                                             @endphp
@@ -217,11 +212,11 @@
                                         </tr>
                                         <tr>
                                             @php
-                                                $orderDetails = \App\OrderDetail::where('seller_id', Auth::user()->id)->where('created_at', '>=', date('-60d'))->where('created_at', '<=', date('-30d'))->get();
+                                                $orders = \App\Order::where('seller_id', Auth::user()->id)->where('created_at', '>=', date('-60d'))->where('created_at', '<=', date('-30d'))->get();
                                                 $total = 0;
-                                                foreach ($orderDetails as $key => $orderDetail) {
-                                                    if($orderDetail->order->payment_status == 'paid'){
-                                                        $total += $orderDetail->price;
+                                                foreach ($orders as $key => $o) {
+                                                    if($o->approved == 1){
+                                                        $total += $o->grand_total-$o->adpoint_earning;
                                                     }
                                                 }
                                             @endphp
@@ -379,7 +374,7 @@
                                                                                         <span class="dc-price">{{ single_price($cartItem['price']*$cartItem['quantity']) }}</span>
                                                                                     </div>
                                                                                     <div class="dc-actions">
-                                                                                        <button onclick="removeFromCart({{ $seller_id }}, {{ $key }})">
+                                                                                        <button onclick="confirm_delete(event, {{ $seller_id }}, {{ $key }})">
                                                                                             <i class="la la-close"></i>
                                                                                         </button>
                                                                                     </div>
@@ -398,13 +393,13 @@
                                                                 <div class="py-2 text-center dc-btn">
                                                                     <ul class="inline-links inline-links--style-3">
                                                                         <li class="px-1">
-                                                                            <a href="{{ route('cart') }}" class="link link--style-1 text-capitalize btn btn-base-1 px-3 py-1">
+                                                                            <a href="{{ route('cart') }}" class="btn btn-orange btn-circle px-3 py-1 text-white">
                                                                                 <i class="la la-shopping-cart"></i> {{__('View cart')}}
                                                                             </a>
                                                                         </li>
                                                                         @if (Auth::check())
                                                                         <li class="px-1">
-                                                                            <a href="{{ route('checkout.shipping_info') }}" class="link link--style-1 text-capitalize btn btn-base-1 px-3 py-1 light-text">
+                                                                            <a href="{{ route('checkout.shipping_info') }}" class="btn btn-success btn-circle text-white px-3 py-1">
                                                                                 <i class="la la-mail-forward"></i> {{__('Checkout')}}
                                                                             </a>
                                                                         </li>
@@ -537,3 +532,12 @@
         </nav>
     </div>
 </div>
+
+<script>
+    function confirm_delete(e, seller_id, index) {
+        if (confirm('Are you sure delete?')) {
+            removeFromCart(seller_id, index);
+            location.reload();
+        }
+    }
+</script>

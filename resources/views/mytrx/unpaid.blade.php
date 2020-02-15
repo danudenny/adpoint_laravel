@@ -45,7 +45,43 @@
                             </td>
                             @if ($t->status === "confirmed")
                                 <tr>
-                                    <table class="table" style="width: 70%;" align="center">
+                                    <table class="table" style="width: 50%;" align="center">
+                                        <tr>
+                                            <td>
+                                                <div class="row mt-2 bg-pay">
+                                                    <div class="col-12">
+                                                        <div class="text-center">
+                                                            @php
+                                                                $grand_total = 0;
+                                                                foreach ($t->orders as $key => $o) {
+                                                                    $grand_total += $o->grand_total;
+                                                                }
+                                                            @endphp
+                                                            <p>
+                                                                <strong>
+                                                                    The total bill you must pay
+                                                                </strong><br>
+                                                                click <b>Yes</b> to continue or <b>No</b> to cancel the transaction
+                                                            </p>
+                                                            
+                                                            <h4 class="text-danger">{{ single_price($grand_total) }}</h4>
+                                                            <a href="{{ route('continue.payment', encrypt($t->id)) }}" class="btn btn-sm btn-outline-primary btn-circle">
+                                                                <i class="fa fa-check"></i> Yes
+                                                            </a>
+                                                            <a href="" class="btn btn-sm btn-outline-danger btn-circle">
+                                                                <i class="fa fa-times"></i> No
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </tr>
+                            @endif
+                            @if ($t->status === "continue")
+                                <tr>
+                                    <table class="table" style="width: 50%;" align="center">
                                         <tr>
                                             <td>
                                                 <div class="row mt-2 bg-pay">
@@ -54,11 +90,20 @@
                                                             @php
                                                                 $orderdate = date('M d, Y H:i:s', strtotime($t->created_at));
                                                                 $countdown = date('M d, Y H:i:s', strtotime(\Carbon\Carbon::createFromTimestamp(strtotime($t->created_at))->addHour(24)));
+                                                                $grand_total = 0;
+                                                                foreach ($t->orders as $key => $o) {
+                                                                    $grand_total += $o->grand_total;
+                                                                }
                                                             @endphp
-                                                            Silahkan melakukan pembayaran sebelum {{ date('d M Y H:i:s', strtotime(\Carbon\Carbon::createFromTimestamp(strtotime($t->created_at))->addHour(24))) }}
-                                                            <br>
+                                                            
+                                                           
                                                             <input type="hidden" id="od" value="{{ $orderdate  }}">
                                                             <input type="hidden" id="cd" value="{{ $countdown  }}">
+                                                            The total bill you must pay:
+                                                            <h5 class="text-danger strong-700">{{ single_price($grand_total) }}</h5>
+                                                            Please make payment before <br> 
+                                                            {{ date('d M Y H:i:s', strtotime(\Carbon\Carbon::createFromTimestamp(strtotime($t->created_at))->addHour(24))) }}
+                                                            <br>
                                                             <h5 id="demo"></h5>
                                                             <a href="{{ route('confirm.payment.id', encrypt($t->id)) }}" class="btn btn-circle btn-sm btn-outline-warning"><i class="fa fa-money"></i> Pay Now</a>
                                                         </div>
@@ -78,7 +123,9 @@
                                                     <div class="col-12">
                                                         <div class="text-center">
                                                             @if ($t->status === "paid" || $t->payment_status === 1)
-                                                                <h4 class="text-danger">Waiting approval admin...</h4>
+                                                                <h4 class="text-danger">
+                                                                    <i class="fa fa-spin fa-spinner"></i> Waiting approval admin...
+                                                                </h4>
                                                             @endif
                                                         </div>
                                                     </div>

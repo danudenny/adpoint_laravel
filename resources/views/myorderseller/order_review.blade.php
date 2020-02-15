@@ -9,8 +9,8 @@
                             $product = \App\Product::where('id', $od->product_id)->first();
                         @endphp
                         <tr>
-                            <td width="80">
-                                <img src="{{ url(json_decode($product->photos)[0]) }}" class="img-fluid" width="50">
+                            <td width="100">
+                                <img width="150" src="{{ url(json_decode($product->photos)[0]) }}" class="img-fluid" width="50">
                             </td>
                             <td width="250"> 
                                 <a target="_blank" href="{{ route('product', $product->slug) }}">{{ $product->name }}</a><br>
@@ -50,7 +50,7 @@
                                         @endphp
                                         @if ($ap !== null)
                                             @if ($ap->status === 3)
-                                                <button data-toggle="modal" data-target="#active{{$od->id}}" class="btn btn-circle btn-sm btn-outline-primary">
+                                                <button onclick="activateItem({{ $od->id }})" class="btn btn-circle btn-sm btn-outline-primary">
                                                     <i class="fa fa-calendar-check-o"></i> Activate
                                                 </button>
                                             @else 
@@ -80,22 +80,43 @@
                                                     <div class="step-wizard">
                                                         <div class="row">
                                                             <div class="col-4 margin-top d-flex justify-content-center">
-                                                                <label class="checkbox">
-                                                                    <input id="editing" onchange="editingProcess(event, {{ $od->id }})" type="checkbox" @if ($ap->status === 1 || $ap->status === 2 || $ap->status === 3) checked disabled @endif>
-                                                                    <span id="ec" class="checkmark"></span>
-                                                                </label>
+                                                                <div class="btn btn-orange btn-circles" style="top: 3px;">
+                                                                    @if ($ap->status === 1 || $ap->status === 2 || $ap->status === 3)
+                                                                        <div style="margin-top: -3px;">
+                                                                            <i class="fa fa-check text-white"></i>
+                                                                        </div>
+                                                                    @else 
+                                                                        <div style="margin-top: -3px;">
+                                                                            <i class="fa fa-spin fa-spinner text-white"></i>
+                                                                        </div>
+                                                                    @endif
+                                                                </div>
                                                             </div>
                                                             <div class="col-4 margin-top d-flex justify-content-center">
-                                                                <label class="checkbox">
-                                                                    <input id="install" onchange="installationProcess(event, {{ $od->id }})" type="checkbox" @if ($ap->status === 2 || $ap->status === 3) checked disabled @endif>
-                                                                    <span id="ic" class="checkmark"></span>
-                                                                </label>
+                                                                <div class="btn btn-orange btn-circles" style="top: 3px;">
+                                                                    @if ($ap->status === 2 || $ap->status === 3)
+                                                                        <div style="margin-top: -3px;">
+                                                                            <i class="fa fa-check text-white"></i>
+                                                                        </div>
+                                                                    @else 
+                                                                        <div style="margin-top: -3px;">
+                                                                            <i class="fa fa-spin fa-spinner text-white"></i>
+                                                                        </div>
+                                                                    @endif
+                                                                </div>
                                                             </div>
                                                             <div class="col-4 margin-top d-flex justify-content-center">
-                                                                <label class="checkbox">
-                                                                    <input id="done" onchange="doneProcess(event, {{ $od->id }})" type="checkbox" @if ($ap->status === 3) checked disabled @endif>
-                                                                    <span id="dc" class="checkmark"></span>
-                                                                </label>
+                                                                <div class="btn btn-orange btn-circles" style="top: 3px;">
+                                                                    @if ($ap->status === 3)
+                                                                        <div style="margin-top: -3px;">
+                                                                            <i class="fa fa-check text-white"></i>
+                                                                        </div>
+                                                                    @else 
+                                                                        <div style="margin-top: -3px;">
+                                                                            <i class="fa fa-spin fa-spinner text-white"></i>
+                                                                        </div>
+                                                                    @endif
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -109,6 +130,10 @@
                                                                 <b>Editing Process</b><br>
                                                                 @if ($ap->status === 1 || $ap->status === 2 || $ap->status === 3)
                                                                     <p>{{ date('d M Y H:i:s', strtotime($ap->time_1)) }}</p>
+                                                                @else
+                                                                    <button onclick="editingProcess(event, {{ $od->id }})" class="mt-2 mb-2 btn btn-sm btn-circle btn-outline-success">
+                                                                        <i class="fa fa-check-circle"></i> Done
+                                                                    </button>
                                                                 @endif
                                                             </div>
                                                         </div>
@@ -117,6 +142,10 @@
                                                                 <b>Installation Process</b><br>
                                                                 @if ($ap->status === 2 || $ap->status === 3)
                                                                     <p>{{ date('d M Y H:i:s', strtotime($ap->time_2)) }}</p>
+                                                                @else 
+                                                                    <button onclick="installationProcess(event, {{ $od->id }})" class="mt-2 mb-2 btn btn-sm btn-circle btn-outline-success">
+                                                                        <i class="fa fa-check-circle"></i> Done
+                                                                    </button>
                                                                 @endif
                                                             </div>
                                                         </div>
@@ -125,6 +154,10 @@
                                                                 <b>Ready to Aired</b><br>
                                                                 @if ($ap->status === 3)
                                                                     <p>{{ date('d M Y H:i:s', strtotime($ap->time_3)) }}</p>
+                                                                @else 
+                                                                    <button onclick="doneProcess(event, {{ $od->id }})" class="mt-2 mb-2 btn btn-sm btn-circle btn-outline-success">
+                                                                        <i class="fa fa-check-circle"></i> Done
+                                                                    </button>
                                                                 @endif
                                                             </div>
                                                         </div>
@@ -140,27 +173,6 @@
                 </div>
             </article>
         </div>
-        <!-- Modal Approve-->
-        <div class="modal fade" id="active{{ $od->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Are you sure activate ?</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                </div>
-                <div class="modal-body">
-                    <h5>#{{ \App\Product::where('id', $od->product_id)->first()->name }}</h5>
-                    <p>Clik yes to continue activate.</p>
-                </div>
-                <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <a href="{{ route('order.activate', encrypt($od->id)) }}" class="btn btn-primary">Yes</a>
-                </div>
-            </div>
-            </div>
-        </div>
     @endforeach
 @else
     @include('frontend.not_found')
@@ -171,20 +183,34 @@
 </div>
 
 <script>
+    function activateItem(id) {
+        if (confirm('Are you sure to activate?')) {
+            localStorage.setItem('activeTabSeller', '#nav-active');
+            localStorage.setItem('routeTabSeller', '{{ route('orders.active.order') }}');
+            location.reload();
+            $.post('{{ route('order.activate') }}', {_token:'{{ csrf_token() }}', id:id}, function(result) {
+                var activeTab = localStorage.getItem('activeTabSeller');
+                if(activeTab !== null){
+                    var routeTab = localStorage.getItem('routeTabSeller')
+                    $('a[href="'+activeTab+'"]').addClass('active');
+                    $(activeTab).load(routeTab,function(result){
+                        $(activeTab).addClass('show');
+                        $(activeTab).addClass('active');
+                        $('.c-nav-load').hide();
+                    });
+                }
+            });
+        }
+    }
+
     function editingProcess(e, id) {
-        e.preventDefault();
         postStatus(id, 1);
-        $('#editing').prop('disabled', true);
     }
     function installationProcess(e, id) {
-        e.preventDefault();
         postStatus(id, 2);
-        $('#install').prop('disabled', true);
     }
     function doneProcess(e, id) {
-        e.preventDefault();
         postStatus(id, 3);
-        $('#done').prop('disabled', true);
     }
 
     function postStatus(id, status) {
@@ -202,12 +228,15 @@
                     switch (status) {
                         case 1:
                             showFrontendAlert('success', 'Editing process done!');
+                            location.reload();
                             break;
                         case 2:
                             showFrontendAlert('success', 'Installation process done!');
+                            location.reload();
                             break;
                         case 3:
                             showFrontendAlert('success', 'Process done!');
+                            location.reload();
                             break;
                         default:
                             break;

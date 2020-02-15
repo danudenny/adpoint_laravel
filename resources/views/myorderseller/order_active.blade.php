@@ -8,8 +8,8 @@
                             $product = \App\Product::where('id', $od->product_id)->first();
                         @endphp
                         <tr>
-                            <td width="80">
-                                <img src="{{ url(json_decode($product->photos)[0]) }}" class="img-fluid" width="50">
+                            <td width="100">
+                                <img width="150" src="{{ url(json_decode($product->photos)[0]) }}" class="img-fluid" width="50">
                             </td>
                             <td width="250"> 
                                 <a target="_blank" href="{{ route('product', $product->slug) }}">{{ $product->name }}</a><br>
@@ -50,7 +50,10 @@
                                 @endphp
                                 @if ($bt !== null)
                                     <button class="btn btn-outline-success btn-circle btn-sm" onclick="buktiTayang({{ $od->id }})">
-                                        <i class="fa fa-check"></i> Uploaded
+                                        <i class="fa fa-upload"></i> Uploaded
+                                    </button>
+                                    <button data-toggle="modal" data-target="#complete{{$od->id}}" class="btn btn-outline-info btn-circle btn-sm">
+                                        <i class="fa fa-check"></i> Complete
                                     </button>
                                 @else 
                                     <button class="btn btn-outline-secondary btn-circle btn-sm" onclick="buktiTayang({{ $od->id }})">
@@ -62,6 +65,27 @@
                     </table>
                 </div>
             </article>
+        </div>
+        <!-- Modal Complete-->
+        <div class="modal fade" id="complete{{ $od->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Are you sure complete ?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                </div>
+                <div class="modal-body">
+                    <h5>#{{ \App\Product::where('id', $od->product_id)->first()->name }}</h5>
+                    <p>Clik yes to continue complete.</p>
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <a href="{{ route('order.complete', encrypt($od->id)) }}" class="btn btn-primary">Yes</a>
+                </div>
+            </div>
+            </div>
         </div>
     @endforeach
 @else 

@@ -45,7 +45,7 @@
                             <div class="col-md-12">
                                 <nav>
                                     <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                                        <a class="nav-item nav-link active" id="nav-unpaid-tab" data-url="{{ route('trx.unpaid') }}" data-toggle="tab" href="#nav-unpaid" role="tab" aria-controls="nav-unpaid" aria-selected="true">Unpaid</a>
+                                        <a class="nav-item nav-link" id="nav-unpaid-tab" data-url="{{ route('trx.unpaid') }}" data-toggle="tab" href="#nav-unpaid" role="tab" aria-controls="nav-unpaid" aria-selected="true">Unpaid</a>
                                         <a class="nav-item nav-link" id="nav-paid-tab" data-url="{{ route('trx.paid') }}" data-toggle="tab" href="#nav-paid" role="tab" aria-controls="nav-paid" aria-selected="false">Paid</a>
                                     </div>
                                 </nav>
@@ -81,7 +81,7 @@
                                         <i class="fa fa-spin fa-spinner"></i>
                                     </div>
                                     
-                                    <div class="tab-pane fade show active" id="nav-unpaid" role="tabpanel" aria-labelledby="nav-unpaid-tab">
+                                    <div class="tab-pane fade" id="nav-unpaid" role="tabpanel" aria-labelledby="nav-unpaid-tab">
                                         
                                     </div>
                                     <div class="tab-pane fade" id="nav-paid" role="tabpanel" aria-labelledby="nav-paid-tab">
@@ -122,15 +122,14 @@
                 $('#trxDetails-body').html(data);
             });
         }
-        $('#nav-unpaid').load('{{ route('trx.unpaid') }}',function(result){
-            $(this).tab('show');
-            $('.c-nav-load').hide();
-        });
 
         $('#nav-tab a').click(function (e) {
             e.preventDefault();
             var url = $(this).attr("data-url");
             var href = this.hash;
+            localStorage.setItem('activeTabTrx', $(e.target).attr('href'));
+            localStorage.setItem('routeTabTrx', $(e.target).attr('data-url'));
+
             if (href == '#nav-unpaid') {
                 $('.form-unpaid').show();
                 $('.form-paid').hide();
@@ -146,6 +145,24 @@
                 $('.c-nav-load').hide();
             });
         });
+
+        var activeTab = localStorage.getItem('activeTabTrx');
+        if(activeTab !== null){
+            var routeTab = localStorage.getItem('routeTabTrx')
+            $('a[href="'+activeTab+'"]').addClass('active');
+            $(activeTab).load(routeTab,function(result){
+                $(activeTab).addClass('show');
+                $(activeTab).addClass('active');
+                $('.c-nav-load').hide();
+            });
+        }else {
+            $('a[href="#nav-unpaid"]').addClass('active');
+            $('#nav-unpaid').load('{{ route('trx.unpaid') }}',function(result){
+                $('#nav-unpaid').addClass('show');
+                $('#nav-unpaid').addClass('active');
+                $('.c-nav-load').hide();
+            });
+        }
 
         $('#unpaid').on('keyup', function(e) {
             $('.c-nav-load').show();

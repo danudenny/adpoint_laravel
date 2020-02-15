@@ -102,17 +102,20 @@
                                             foreach (json_decode($product->variations) as $key => $variation) {
                                                 $qty += $variation->qty;
                                             }
+                                            $available = $product->available;
                                         @endphp
-                                        @if(count(json_decode($product->variations, true)) >= 1)
-                                            @if ($qty > 0)
-                                                <li>
-                                                    <span class="badge badge-md badge-pill bg-green">{{__('In stock')}}</span>
-                                                </li>
-                                            @else
-                                                <li>
-                                                    <span class="badge badge-md badge-pill bg-red">{{__('Out of stock')}}</span>
-                                                </li>
-                                            @endif
+                                        @if($available === 1)
+                                            <li>
+                                                <span class="badge badge-md badge-pill bg-green">
+                                                    <i class="fa fa-check"></i> {{__('Available')}}
+                                                </span>
+                                            </li>
+                                        @else 
+                                            <li>
+                                                <span class="badge badge-md badge-pill bg-red">
+                                                    <i class="fa fa-times"></i> {{__('Not Available')}}
+                                                </span>
+                                            </li>
                                         @endif
                                     </ul>
                                 </div>
@@ -272,13 +275,13 @@
                                     <!-- Buy Now button -->
                                     @if(count(json_decode($product->variations, true)) >= 1)
                                         @if ($qty > 0)
-                                            <button type="button" id="buynow" class="btn btn-styled btn-base-1 btn-icon-left strong-700 hov-bounce hov-shaddow" onclick="buyNow()">
+                                            <button type="button" id="buynow" class="btn btn-success btn-circle" onclick="buyNow()">
                                                 <i class="fa fa-shopping-cart"></i> {{__('Buy Now')}}
                                             </button>
                                         @endif
                                     @endif
                                     <!-- Add to cart button -->
-                                    <button type="button" id="addtocart" class="btn btn-styled btn-alt-base-1 c-white btn-icon-left strong-700 hov-bounce hov-shaddow ml-2" onclick="addToCart()">
+                                    <button type="button" id="addtocart" class="btn btn-orange btn-circle ml-2" onclick="addToCart()">
                                         <i class="fa fa-cart-plus"></i>
                                         <span class="d-none d-md-inline-block"> {{__('Add to cart')}}</span>
                                     </button>

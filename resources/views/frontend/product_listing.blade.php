@@ -347,6 +347,19 @@
                                                         <span class="product-price strong-600">xxx</span>
                                                     @endif
                                                 </div>
+                                                <div class="mt-1">
+                                                    @if ($product->available === 1)
+                                                        <span class="badge badge-success">
+                                                            <i class="fa fa-check"></i>
+                                                            Available
+                                                        </span>
+                                                    @else 
+                                                        <span class="badge badge-danger">
+                                                            <i class="fa fa-times"></i>
+                                                            Not Available
+                                                        </span>
+                                                    @endif
+                                                </div>
                                             </div>
                                         </div>
                                         <!-- <div class="product-card-1 mb-2">

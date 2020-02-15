@@ -32,6 +32,7 @@ use App\Mail\Order\OrderConfirmation;
 use App\Mail\Order\OrderInvoice;
 use App\Mail\Order\OrderDisapprovedSeller;
 use App\Mail\Order\OrderActive;
+use App\Mail\Order\OrderComplete;
 
 use Notification;
 use App\Notifications\OrderStartPush;
@@ -148,23 +149,23 @@ class OrderController extends Controller
                     Mail::to($user->email)->send(new OrderSold($seller));
 
                     // pushy notif
-                    $query = DB::table('pushy_tokens as pt')
-                            ->join('users as u', 'u.id', '=', 'pt.user_id')
-                            ->where(['u.id' => $o->seller_id])
-                            ->select(['pt.*'])
-                            ->first();
+                    // $query = DB::table('pushy_tokens as pt')
+                    //         ->join('users as u', 'u.id', '=', 'pt.user_id')
+                    //         ->where(['u.id' => $o->seller_id])
+                    //         ->select(['pt.*'])
+                    //         ->first();
                     // dd($query);
-                    $tokenPushy = $query->device_token;
-                    $data = array('message' => 'Selamat!. Orderan telah di review, silahkan di lanjutkan');
-                    $to = array($tokenPushy);
-                    $options = array(
-                        'notification' => array(
-                            'badge' => 1,
-                            'sound' => 'ping.aiff',
-                            'body'  => "Selamat!. Orderan telah di review, silahkan di lanjutkan"
-                        )
-                    );
-                    Pushy::sendPushNotification($data, $to, $options);
+                    // $tokenPushy = $query->device_token;
+                    // $data = array('message' => 'Selamat!. Orderan telah di review, silahkan di lanjutkan');
+                    // $to = array($tokenPushy);
+                    // $options = array(
+                    //     'notification' => array(
+                    //         'badge' => 1,
+                    //         'sound' => 'ping.aiff',
+                    //         'body'  => "Selamat!. Orderan telah di review, silahkan di lanjutkan"
+                    //     )
+                    // );
+                    // Pushy::sendPushNotification($data, $to, $options);
                 }
             }
             $request->session()->flash('message', 'TRX'.' '.$trx->code.' '.'Approved');
@@ -367,6 +368,8 @@ class OrderController extends Controller
     public function continue_payment(Request $request, $trx_id)
     {
         $trx = Transaction::where('id', decrypt($trx_id))->first();
+        $trx->status = "continue";
+        $trx->save();
         $buyer = User::where('id', $trx->user_id)->first();
         Mail::to($buyer->email)->send(new OrderInvoice($trx));
         flash('Order confirmed')->success();
@@ -395,7 +398,15 @@ class OrderController extends Controller
             $trx = Transaction::where('code',  $request->trx_code)->first();
             if ($trx != null) {
                 $trx->status = "paid";
-                $trx->save();
+                if ($trx->save()) {
+                    foreach ($trx->orders as $key => $o) {
+                        foreach ($o->orderDetails as $key => $od) {
+                            $product = Product::where('id', $od->product_id)->first();
+                            $product->available = 0;
+                            $product->save();
+                        }
+                    }
+                }
             }
             $confirm_payment->user_id = $request->user_id;
             $confirm_payment->nama = $request->nama;
@@ -415,14 +426,14 @@ class OrderController extends Controller
 
     }
 
-    public function activate(Request $request, $id)
+    public function activate(Request $request)
     {
-        $item = OrderDetail::where('id', decrypt($id))->first();
+        $item = OrderDetail::where('id', $request->id)->first();
         $query = DB::table('orders as o')
                         ->join('order_details as od', 'od.order_id', '=', 'o.id')
                         ->join('users as b', 'b.id', '=', 'o.user_id')
                         ->join('products as p', 'p.id', '=', 'od.product_id')
-                        ->where('od.id', decrypt($id))
+                        ->where('od.id', $request->id)
                         ->select([
                             'od.*',
                             'b.name as buyer_name',
@@ -435,36 +446,42 @@ class OrderController extends Controller
             $item->save();
             Mail::to($query->buyer_email)->send(new OrderActive($query));
             flash('Item '.$query->product_name.' Activated!')->success();
-            return back();
+            return back()->with('popup', 'open');
         }else {
             flash('Item '.$query->product_name.' Invalid!')->error();
             return back();
         }
     }
 
-    public function order_complete($order_detail_id)
+
+    public function complete(Request $request, $id)
     {
-        $od_id = decrypt($order_detail_id);
-        $orderDetail = OrderDetail::where('id', $od_id)->first();
-        if ($orderDetail) {
-            $orderDetail->complete = 1;
-            $orderDetail->updated_at = time();
-            $orderDetail->save();
-            flash('Order Paid')->success();
-            $order_detail = OrderDetail::where(['order_id' => $orderDetail->order_id])->count();
-            $order_detail_complete = OrderDetail::where(['order_id' => $orderDetail->order_id, 'complete' => 1])->count();
-            if ($order_detail == $order_detail_complete) {
-                $order = Order::where('id', $orderDetail->order_id)->first();
-                if ($order != null) {
-                    $order->status_order = 5;
-                    $order->updated_at = time();
-                    $order->save();
-                }
-            }
-        } else {
-            flash('Something went wrong')->error();
+        $order_detail = OrderDetail::where('id', decrypt($id))->first();
+        $query = DB::table('orders as o')
+                        ->join('order_details as od', 'od.order_id', '=', 'o.id')
+                        ->join('users as b', 'b.id', '=', 'o.user_id')
+                        ->join('products as p', 'p.id', '=', 'od.product_id')
+                        ->where('od.id', decrypt($id))
+                        ->select([
+                            'od.*',
+                            'b.name as buyer_name',
+                            'b.email as buyer_email',
+                            'p.name as product_name',
+                        ])
+                        ->first();
+        if ($order_detail !== null) {
+            $order_detail->status = 4;
+            $product = Product::where('id', $order_detail->product_id)->first();
+            $product->available = 1;
+            $product->save();
+            $order_detail->save();
+            Mail::to($query->buyer_email)->send(new OrderComplete($query));
+            flash('Item '.$query->product_name.' Completed!')->success();
+            return back();
+        }else {
+            flash('Item '.$query->product_name.' Invalid!')->error();
+            return back();
         }
-        return back();
     }
 
     public function store(Request $request)
@@ -553,7 +570,6 @@ class OrderController extends Controller
                         }
 
                         $order_detail->save();
-
                         $product->num_of_sale++;
                         $product->save();
                     }
