@@ -18,11 +18,7 @@ class CategoryController extends Controller
     public function index()
     {
         $categories = Category::all();
-        $query = Cache::remember("categories", 10 * 60, function () {
-            return Category::all();
-        });
-
-        return view('categories.index', compact('categories'), $query );
+        return view('categories.index', compact('categories') );
     }
 
     /**

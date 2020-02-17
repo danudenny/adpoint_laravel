@@ -33,7 +33,7 @@
                                     @endif
                                 </td>
                                 <td>
-                                    <button class="btn btn-info btn-sm" onclick="update_commission(this)"><i class="fa fa-edit"> Edit</i></button>
+                                    <button class="btn btn-info btn-sm" onclick="update_commission(this)"><i class="fa fa-edit"></i> Edit</button>
                                 </td>
                                 <td hidden>{{$s->user_id}}</td>
                                 <td hidden></td>

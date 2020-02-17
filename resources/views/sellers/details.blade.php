@@ -52,7 +52,7 @@
             <div class="row">
                 <label class="col-sm-3 control-label" for="name">{{__('Commission')}}</label>
                 <div class="col-sm-9">
-                    <p>: {{ $seller->commission }}% <a href="#"><i class="fa fa-edit text-danger"></i></a></p>
+                    <p>: {{ $seller->commission }}%</p>
                 </div>
             </div>
             <div class="row">
@@ -60,6 +60,9 @@
                 <div class="col-sm-9">
                     <p>: {{ single_price(abs($seller->admin_to_pay)) }}</p>
                 </div>
+            </div>
+            <div>
+                <a href="{{route('sellers.index')}}" type="button" class="btn btn-warning"><i class="fa fa-retweet"></i> Back</a>
             </div>
         </div>
         <div class="col-md-4">
