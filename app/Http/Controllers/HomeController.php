@@ -304,11 +304,9 @@ class HomeController extends Controller
     public function product($slug)
     {
         $product  = Product::where('slug', $slug)->first();
-        $visitor = Tracker::currentSession();
-        dd($visitor);
         if($product!=null){
             updateCartSetup();
-            return view('frontend.product_details', compact('product'), $visitor);
+            return view('frontend.product_details', compact('product'));
         }
         abort(404);
     }

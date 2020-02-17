@@ -149,6 +149,18 @@ class SellerController extends Controller
         return view('sellers.verification', compact('seller'));
     }
 
+    public function show_details_seller($id)
+    {
+        $seller = Seller::findOrFail($id);
+        return view('sellers.details', compact('seller'));
+    }
+
+    public function assign_seller_product()
+    {
+        $prod = Product::get();
+        return view('sellers.assignproduct', compact('prod'));
+    }
+
     public function approve_seller($id)
     {
         $seller = Seller::findOrFail($id);
