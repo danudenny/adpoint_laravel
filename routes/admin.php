@@ -58,6 +58,8 @@ Route::group(['prefix' =>'admin', 'middleware' => ['auth', 'admin']], function()
 	Route::post('/sellers/payment_modal', 'SellerController@payment_modal')->name('sellers.payment_modal');
 	Route::get('/seller/payments', 'PaymentController@payment_histories')->name('sellers.payment_histories');
 	Route::get('/seller/payments/show/{id}', 'PaymentController@show')->name('sellers.payment_history');
+	Route::get('/seller/details/{id}', 'SellerController@show_details_seller')->name('sellers.details');
+	Route::get('/seller/assign_products', 'SellerController@assign_seller_product')->name('sellers.assignproduct');
 
 	Route::resource('customers','CustomerController');
 	Route::post('/customer/show_customer', 'CustomerController@showCustomer')->name('customer.show_customer');

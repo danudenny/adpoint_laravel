@@ -2,19 +2,12 @@
 
 @section('content')
 
-<div class="row">
-    <div class="col-sm-12">
-        <a href="{{ route('sellers.create')}}" class="btn btn-rounded btn-info pull-right">{{__('Add New Seller')}}</a>
-    </div>
-</div>
-
-<br>
 
 <!-- Basic Data Tables -->
 <!--===================================================-->
 <div class="panel">
     <div class="panel-heading">
-        <h3 class="panel-title">{{__('sellers')}}</h3>
+        <h2 class="panel-title">{{__('All Seller List')}}</h2>
     </div>
     <div class="panel-body">
         <table class="table table-striped table-bordered demo-dt-basic" cellspacing="0" width="100%">
@@ -66,7 +59,8 @@
                                     {{__('Actions')}} <i class="dropdown-caret"></i>
                                 </button>
                                 <ul class="dropdown-menu dropdown-menu-right">
-                                    <li><a onclick="show_seller_payment_modal('{{$seller->id}}');">{{__('Pay Now')}}</a></li>
+                                    <li><a href="{{route('sellers.details', $seller->id)}}">{{__('Seller Details')}}</a></li>
+                                    <li><a onclick="show_seller_payment_modal('{{$seller->id}}');">{{__('Pay To Seller')}}</a></li>
                                     <li><a href="{{route('sellers.payment_history', encrypt($seller->id))}}">{{__('Payment History')}}</a></li>
                                     <li><a href="{{route('sellers.edit', encrypt($seller->id))}}">{{__('Edit')}}</a></li>
                                     <li><a onclick="confirm_modal('{{route('sellers.destroy', $seller->id)}}');">{{__('Delete')}}</a></li>
