@@ -150,12 +150,18 @@
                             }
                         @endphp
                         @if (count($advertising) === $count)
-                            <a href="{{ route('checkout.shipping_info') }}" class="btn btn-styled btn-base-1">{{__('Continue to Billing Details')}}</a>
+                            <a href="{{ route('checkout.shipping_info') }}" class="btn btn-orange btn-circle">
+                                <i class="fa fa-shopping-bag"></i> {{__('Continue to Billing Details')}}
+                            </a>
                         @else 
-                            <button class="btn btn-orange btn-circle" onclick="showFrontendAlert('info', 'You have not uploaded the material')">{{__('Continue to Billing Details')}}</button>
+                            <button class="btn btn-orange btn-circle" onclick="showFrontendAlert('info', 'You have not uploaded the material')">
+                                <i class="fa fa-shopping-bag"></i> {{__('Continue to Billing Details')}}
+                            </button>
                         @endif
                     @else
-                        <button class="btn btn-orange btn-circle" onclick="showCheckoutModal()">{{__('Continue to Billing Details')}}</button>
+                        <button class="btn btn-orange btn-circle" onclick="showCheckoutModal()">
+                            <i class="fa fa-shopping-bag"></i> {{__('Continue to Billing Details')}}
+                        </button>
                     @endif
                 </div>
             </div>

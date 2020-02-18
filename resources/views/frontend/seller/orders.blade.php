@@ -56,7 +56,7 @@
                         <div class="row no-border mt-2">
                             <div class="col-md-12">
                                 <nav class="no-border" style="color: black">
-                                    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                                    <div class="nav nav-tabs nav-justified" id="nav-tab" role="tablist">
                                         <a class="nav-item nav-link" id="nav-order-place-tab" data-url="{{ route('orders.place.order') }}" data-toggle="tab" href="#nav-order-place" role="tab" aria-controls="nav-order-place" aria-selected="true">Order place</a>
                                         <a class="nav-item nav-link" id="nav-onreview-tab" data-url="{{ route('orders.review.order') }}" data-toggle="tab" href="#nav-onreview" role="tab" aria-controls="nav-onreview" aria-selected="false">On review</a>
                                         <a class="nav-item nav-link" id="nav-active-tab" data-url="{{ route('orders.active.order') }}" data-toggle="tab" href="#nav-active" role="tab" aria-controls="nav-active" aria-selected="false">Active</a>

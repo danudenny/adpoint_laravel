@@ -218,13 +218,13 @@
                                             <div class="input-group input-group--style-2 pr-3" style="width: 160px;">
                                                 <span class="input-group-btn">
                                                     <button class="btn btn-number" type="button" data-type="minus" data-field="quantity" disabled="disabled">
-                                                        <i class="la la-minus"></i>
+                                                        <i class="fa fa-minus"></i>
                                                     </button>
                                                 </span>
                                                 <input type="text" name="quantity" class="form-control input-number text-center" placeholder="1" id="quantity" value="1" min="1" max="10">
                                                 <span class="input-group-btn">
                                                     <button class="btn btn-number" type="button" data-type="plus" data-field="quantity">
-                                                        <i class="la la-plus"></i>
+                                                        <i class="fa fa-plus"></i>
                                                     </button>
                                                 </span>
                                             </div>
