@@ -76,7 +76,6 @@ class ProductController extends Controller
             'statistik_masyarakat' => 'required',
             'jumlah_pendengarradio' => 'required',
             'target_pendengarradio' => 'required',
-            'pdf' => 'required',
             'periode' => 'required'
         ]);
         $product = new Product;

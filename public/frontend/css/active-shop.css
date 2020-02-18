@@ -22881,3 +22881,59 @@ ol {
     -ms-transform: rotate(45deg);
     transform: rotate(45deg);
 }
+
+.ribbon {
+    width: 150px;
+    height: 150px;
+    overflow: hidden;
+    position: absolute;
+}
+
+.ribbon::before,
+.ribbon::after {
+    position: absolute;
+    z-index: -1;
+    content: '';
+    display: block;
+    border: 2px solid #2980b9;
+}
+
+.ribbon span {
+    position: absolute;
+    display: block;
+    width: 225px;
+    padding: 2px 0;
+    box-shadow: 0 5px 5px rgba(105, 74, 74, 0.1);
+    color: #fff;
+    text-align: center;
+}
+
+
+/* top left*/
+
+.ribbon-top-left {
+    top: 0px;
+    left: 0px;
+}
+
+.ribbon-top-left::before,
+.ribbon-top-left::after {
+    border-top-color: transparent;
+    border-left-color: transparent;
+}
+
+.ribbon-top-left::before {
+    top: 0;
+    right: 0;
+}
+
+.ribbon-top-left::after {
+    bottom: 0;
+    left: 0;
+}
+
+.ribbon-top-left span {
+    right: -5px;
+    top: 25px;
+    transform: rotate(-45deg);
+}

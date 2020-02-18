@@ -43,7 +43,6 @@
 </style>
 <div class="header bg-white">
     <!-- Top Bar -->
-
     <!-- END Top Bar -->
     @auth
     @php
@@ -92,7 +91,7 @@
                                 <div class="name">{{ Auth::user()->name }}</div>
                         </div>
                         <div class="side-login px-3 pb-3">
-                            <a href="{{ route('logout') }}">{{__('Sign Out')}}</a>
+                            <a href="{{ route('logout') }}" onclick="logoutSession()">{{__('Sign Out')}}</a>
                         </div>
                     @else
                         <div class="widget-profile-box px-3 py-4 d-flex align-items-center">
@@ -126,14 +125,14 @@
                         <li>
                             <a href="{{ route('purchase_history.index') }}">
                                 <i class="la la-file-text"></i>
-                                <span>{{__('Purchase History')}}</span>
+                                <span>{{__('My Order')}}</span>
                             </a>
                         </li>
 
                         <li>
-                            <a href="{{ route('wishlists.index') }}">
-                                <i class="la la-heart-o"></i>
-                                <span>{{__('Wishlist')}}</span>
+                            <a href="{{ route('trx.page.buyer') }}">
+                                <i class="la la-file-text"></i>
+                                <span>{{__('My Transaction')}}</span>
                             </a>
                         </li>
 
@@ -144,6 +143,21 @@
                             </a>
                         </li>
 
+                        <li>
+                            <a href="{{ route('support_ticket.index') }}" class="{{ areActiveRoutesHome(['support_ticket.index', 'support_ticket.show'])}}">
+                                <i class="la la-support"></i>
+                                <span class="category-name">
+                                    {{__('Support Ticket')}}
+                                </span>
+                            </a>
+                        </li>
+                        
+                        <li>
+                            <a href="{{ route('wishlists.index') }}">
+                                <i class="la la-heart-o"></i>
+                                <span>{{__('Wishlist')}}</span>
+                            </a>
+                        </li>
 
                         @if (\App\BusinessSetting::where('type', 'wallet_system')->first()->value == 1)
                             <li>
@@ -164,14 +178,7 @@
                                 </a>
                             </li>
                         @endif
-                        <li>
-                            <a href="{{ route('support_ticket.index') }}" class="{{ areActiveRoutesHome(['support_ticket.index', 'support_ticket.show'])}}">
-                                <i class="la la-support"></i>
-                                <span class="category-name">
-                                    {{__('Support Ticket')}}
-                                </span>
-                            </a>
-                        </li>
+                        
 
                         <li>
                             <a href="{{ route('compare') }}">
@@ -221,7 +228,6 @@
                                     <span>{{__('Orders')}}</span>
                                 </a>
                             </li>
-
 
                             <li>
                                 <a href="{{ route('reviews.seller') }}">
@@ -386,7 +392,10 @@
                                         <a href="{{ route('dashboard') }}" class="login-text">{{__('My Panel')}}</a>
                                     </div>
                                     <div class="d-none d-lg-inline-block topnav-text">
-                                        <a href="{{ route('logout') }}" class="login-text">{{__('Logout')}}</a>
+                                        @php
+                                            $user_type = Auth::user()->user_type;
+                                        @endphp
+                                        <a href="{{ route('logout') }}" onclick="logoutSession()" class="login-text">{{__('Logout')}}</a>
                                     </div>
                                     <div class="d-inline-block" data-hover="dropdown">
                                         <div class="nav-cart-box dropdown" id="cart_items">
@@ -706,5 +715,20 @@
             removeFromCart(seller_id, index);
             location.reload();
         }
+    }
+
+    function logoutSession(){
+        var ls = [
+            'activeTabBuyer',
+            'activeTabSeller',
+            'activeTabTrx',
+            'routeTabBuyer',
+            'routeTabSeller',
+            'routeTabTrx',
+        ];
+
+        ls.forEach(element => {
+            localStorage.removeItem(element);
+        });
     }
 </script>
