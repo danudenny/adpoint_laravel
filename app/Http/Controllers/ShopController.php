@@ -100,7 +100,7 @@ class ShopController extends Controller
             if($shop->save()){
                 auth()->login($user, false);
                 flash(__('Your Shop has been created successfully!'))->success();
-                return redirect()->route('shops.index');
+                return redirect()->route('shop.verify');
             }
             else{
                 $seller->delete();

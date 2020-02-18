@@ -21,8 +21,8 @@ Route::group(['middleware' => 'jsonify'], function () {
 Route::group(['middleware' => ['auth.jwt','jsonify']], function () {
     // User
     Route::get('users', 'Api\UserCtrl@index');
-    Route::get('user/{id}', 'Api\UserCtrl@show');
-
+    Route::get('user', 'Api\UserCtrl@show');
+    Route::get('profile','Api\UserCtrl@profile');
     // Upload Services
     Route::post('upload', 'Api\UploadCtrl@single_upload');
 
@@ -32,7 +32,7 @@ Route::group(['middleware' => ['auth.jwt','jsonify']], function () {
     Route::post('product/add', 'Api\ProductCtrl@store');
     Route::put('product/edit/{id}', 'Api\ProductCtrl@update');
     Route::delete('product/{id}', 'Api\ProductCtrl@destroy');
-    
+
     // Brands
     Route::get('brands', 'Api\BrandCtrl@index');
     Route::get('brand/{id}', 'Api\BrandCtrl@show');
@@ -68,9 +68,17 @@ Route::group(['middleware' => ['auth.jwt','jsonify']], function () {
     Route::get('orders', 'Api\OrderCtrl@index');
     Route::get('order/{id}', 'Api\OrderCtrl@show');
     Route::post('order/add', 'Api\OrderCtrl@store');
+    Route::get('orderplaced', 'Api\OrderCtrl@orderplaced');
+    Route::get('orderonreview', 'Api\OrderCtrl@orderonreview');
+    Route::get('orderactive', 'Api\OrderCtrl@orderactive');
 
+    // Transaction
+    Route::get('transaction', 'Api\TransactionCtrl@index');
+    Route::get('transaction/{id}', 'Api\TransactionCtrl@transaction');
+    Route::get('transaction-details/{id}/{user_id}', 'Api\TransactionCtrl@transactionDetails');
+    Route::post('/upload-buktitransfer/{id}', 'Api\TransactionCtrl@uploadTrx');
 });
 
 // Pushy
 Route::get('pushy_token', 'Api\PushyCtrl@index');
-Route::post('pushy_token/register/device', 'Api\PushyCtrl@store');
+Route::post('pushy_token/register/device', 'Api\PushyCtrl@transaction');

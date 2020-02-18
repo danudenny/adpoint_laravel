@@ -20,7 +20,7 @@
                                         <ul class="breadcrumb">
                                             <li><a href="{{ route('home') }}">{{__('Home')}}</a></li>
                                             <li><a href="{{ route('dashboard') }}">{{__('Dashboard')}}</a></li>
-                                            <li class="active"><a href="{{ route('shops.create') }}">{{__('Create Shop')}}</a></li>
+                                            <li class="active"><a href="{{ route('shops.create') }}">{{__('Become a Media Owner')}}</a></li>
                                         </ul>
                                     </div>
                                 </div>

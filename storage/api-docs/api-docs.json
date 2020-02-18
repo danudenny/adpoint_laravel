@@ -13,11 +13,11 @@
     },
     "servers": [
         {
-            "url": "http://127.0.0.1:8000/api",
+            "url": "http://localhost:8000/api",
             "description": "Laravel Adpoint API"
         },
         {
-            "url": "https://127.0.0.1:8000/api",
+            "url": "https://localhost:8000/api",
             "description": "Laravel Adpoint API"
         }
     ],
@@ -774,6 +774,72 @@
                 ]
             }
         },
+        "/orderplaced": {
+            "get": {
+                "tags": [
+                    "Orders By Current Customer"
+                ],
+                "summary": "Display a listing of the order by current user",
+                "operationId": "list order by current user",
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/orderonreview": {
+            "get": {
+                "tags": [
+                    "Orders By Current User"
+                ],
+                "summary": "Display order on review by current user",
+                "operationId": "list order on review by current user",
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/orderactive": {
+            "get": {
+                "tags": [
+                    "Orders By Current User"
+                ],
+                "summary": "Display order active by current user",
+                "operationId": "list order active by current user",
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/products": {
             "get": {
                 "tags": [
@@ -1219,6 +1285,126 @@
                 ]
             }
         },
+        "/transaction": {
+            "get": {
+                "tags": [
+                    "Transactions"
+                ],
+                "summary": "Display a listing of the transaction",
+                "operationId": "list transaction",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page number",
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/transaction-details/{id}/{user_id}": {
+            "get": {
+                "tags": [
+                    "Transactions"
+                ],
+                "summary": "Display a listing of the transaction details by id and user_id",
+                "operationId": "list transaction details by id and user_id",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of transaction to return",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    },
+                    {
+                        "name": "user_id",
+                        "in": "path",
+                        "description": "User Id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/upload-buktitransfer/{id}": {
+            "post": {
+                "tags": [
+                    "Transactions"
+                ],
+                "summary": "Upload bukti transfer",
+                "operationId": "Upload buktitransfer",
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "file"
+                                ],
+                                "properties": {
+                                    "file": {
+                                        "type": "file",
+                                        "items": {
+                                            "type": "string",
+                                            "format": "binary"
+                                        }
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/upload": {
             "post": {
                 "tags": [
@@ -1323,6 +1509,28 @@
                         }
                     }
                 ],
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/profile": {
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Display a current logged in user",
+                "operationId": "Current User Profile",
                 "responses": {
                     "200": {
                         "description": "ok"
@@ -1837,6 +2045,64 @@
                         "example": "string"
                     },
                     "meta_description": {
+                        "type": "string",
+                        "example": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "TransactionSchema": {
+                "title": "Order",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 0
+                    },
+                    "user_id": {
+                        "type": "string",
+                        "example": "string"
+                    },
+                    "code": {
+                        "type": "string",
+                        "example": "string"
+                    },
+                    "payment_status": {
+                        "type": "string",
+                        "example": "string"
+                    },
+                    "payment_type": {
+                        "type": "string",
+                        "example": "string"
+                    },
+                    "payment_detail": {
+                        "type": "string",
+                        "example": "string"
+                    },
+                    "file_advertising": {
+                        "type": "string",
+                        "example": "string"
+                    },
+                    "description": {
+                        "type": "string",
+                        "example": "string"
+                    },
+                    "viewed": {
+                        "type": "string",
+                        "example": "string"
+                    },
+                    "status": {
+                        "type": "string",
+                        "example": "string"
+                    },
+                    "is_rejected": {
+                        "type": "string",
+                        "example": "string"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "example": "string"
+                    },
+                    "updated_at": {
                         "type": "string",
                         "example": "string"
                     }

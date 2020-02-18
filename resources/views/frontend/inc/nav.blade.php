@@ -1,6 +1,80 @@
+<style>
+    .fa-pulse {
+        color: red;
+        display: inline-block;
+        /*position: relative;*/
+        -moz-animation: pulse 1s infinite linear;
+        -o-animation: pulse 1s infinite linear;
+        -webkit-animation: pulse 1s infinite linear;
+        animation: pulse 1s infinite linear;
+        position: absolute;
+        top: -10px;
+        right: -10px;
+        padding: 2px 4px;
+        border-radius: 50%;
+
+    }
+
+    @-webkit-keyframes pulse {
+        0% { opacity: 1; }
+        50% { opacity: 0; }
+        100% { opacity: 1; }
+    }
+    @-moz-keyframes pulse {
+        0% { opacity: 1; }
+        50% { opacity: 0; }
+        100% { opacity: 1; }
+    }
+    @-o-keyframes pulse {
+        0% { opacity: 1; }
+        50% { opacity: 0; }
+        100% { opacity: 1; }
+    }
+    @-ms-keyframes pulse {
+        0% { opacity: 1; }
+        50% { opacity: 0; }
+        100% { opacity: 1; }
+    }
+    @keyframes pulse {
+        0% { opacity: 1; }
+        50% { opacity: 0; }
+        100% { opacity: 1; }
+    }
+</style>
 <div class="header bg-white">
     <!-- Top Bar -->
     <!-- END Top Bar -->
+    @auth
+    @php
+        $orderPlaced = DB::table('orders as o')
+                    -> join('order_details as od', 'o.seller_id', '=', 'od.seller_id')
+                    -> join('products as p', 'p.id', '=', 'od.product_id')
+                    -> orderBy('od.id', 'desc')
+                    -> where('o.approved', 0)
+                    -> where('od.status', 0)
+                    -> where('o.user_id', Auth::user()->id)
+                    -> groupBy('od.id')
+                    ->get();
+
+        $orderOnReview = DB::table('orders as o')
+                    -> join('order_details as od', 'o.seller_id', '=', 'od.seller_id')
+                    -> join('products as p', 'p.id', '=', 'od.product_id')
+                    -> orderBy('od.id', 'desc')
+                    -> where('od.status', 1)
+                    -> where('o.user_id', Auth::user()->id)
+                    -> groupBy('od.id')
+                    ->get();
+
+        $orderActive = DB::table('orders as o')
+                    -> join('order_details as od', 'o.seller_id', '=', 'od.seller_id')
+                    -> join('products as p', 'p.id', '=', 'od.product_id')
+                    -> orderBy('od.id', 'desc')
+                    -> where('od.status', 3)
+                    -> where('o.user_id', Auth::user()->id)
+                    -> groupBy('od.id')
+                    ->get();
+    @endphp
+    @endauth
     <!-- mobile menu -->
     <div class="mobile-side-menu d-lg-none">
         <div class="side-menu-overlay opacity-0" onclick="sideMenuClose()"></div>
@@ -84,7 +158,6 @@
                                 <span>{{__('Wishlist')}}</span>
                             </a>
                         </li>
-                        
 
                         @if (\App\BusinessSetting::where('type', 'wallet_system')->first()->value == 1)
                             <li>
@@ -186,7 +259,7 @@
                                 <div class="heading-4 strong-700 mb-4">
                                     @php
                                         $orders = \App\Order::where('seller_id', Auth::user()->id)->where('created_at', '>=', date('-30d'))->get();
-                                        
+
                                         $total = 0;
                                         foreach ($orders as $key => $o) {
                                             if($o->approved == 1){
@@ -423,6 +496,100 @@
                                                         @else
                                                             <div class="dc-header">
                                                                 <h3 class="heading heading-6 strong-700">{{__('Your Cart is empty')}}</h3>
+                                                            </div>
+                                                        @endif
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="d-inline-block" data-hover="dropdown">
+                                        <div class="nav-cart-box dropdown" id="cart_items">
+                                            <a href="" class="nav-box-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <i class="la la-bell d-inline-block nav-box-icon"></i>
+                                                @if(count($orderPlaced) > 0)
+                                                    <span class="badge-header fa-pulse"><i class="fa fa-circle"></i></span>
+                                                @endif
+                                            </a>
+                                            <ul class="dropdown-menu dropdown-menu-right px-0">
+                                                <li>
+                                                    <div class="dropdown-cart px-0">
+                                                        @if(count($orderPlaced) > 0)
+                                                            <div class="dc-header" style="background-color: #eaeaea;">
+                                                                <h3 class="heading heading-6 strong-700">{{__('Orders Placed')}}</h3>
+                                                            </div>
+                                                            @foreach($orderPlaced as $key => $val)
+                                                            <div class="dc-item py-3">
+                                                                <div class="dc-image">
+                                                                    <a href="#">
+                                                                        <img src="{{ url($val->thumbnail_img) }}" class="img-fluid" alt="">
+                                                                    </a>
+                                                                </div>
+                                                                <div class="dc-content">
+                                                                    <span class="d-block dc-product-name text-capitalize strong-600 mb-1">
+                                                                        <a href="{{ route('purchase_history.index') }}">
+                                                                            {{ __($val->name) }}
+                                                                        </a>
+                                                                    </span>
+                                                                    <span class="subtotal-text">{{$val->code}}</span><br><br>
+                                                                    <span class="badge badge-primary">Order Placed</span><span class="badge badge-danger">Unpaid</span>
+                                                                </div>
+                                                            </div>
+                                                            @endforeach
+                                                        @endif
+                                                        @if(count($orderOnReview) > 0)
+                                                            <div class="dc-header" style="background-color: #eaeaea;">
+                                                                <h3 class="heading heading-6 strong-700">{{__('Orders On Review')}}</h3>
+                                                            </div>
+                                                            @foreach($orderOnReview as $key => $val)
+                                                            <div class="dc-item py-3">
+                                                                <div class="dc-image">
+                                                                    <a href="#">
+                                                                        <img src="{{ url($val->thumbnail_img) }}" class="img-fluid" alt="">
+                                                                    </a>
+                                                                </div>
+                                                                <div class="dc-content">
+                                                                    <span class="d-block dc-product-name text-capitalize strong-600 mb-1">
+                                                                        <a href="{{ route('purchase_history.index') }}">
+                                                                            {{ __($val->name) }}
+                                                                        </a>
+                                                                    </span>
+                                                                    <span class="subtotal-text">{{$val->code}}</span><br><br>
+                                                                    <span class="badge badge-primary">Order On Review</span><span class="badge badge-danger">Unpaid</span>
+                                                                </div>
+                                                            </div>
+                                                            @endforeach
+                                                        @endif
+                                                        @if(count($orderActive) > 0)
+                                                            <div class="dc-header" style="background-color: #eaeaea;">
+                                                                <h3 class="heading heading-6 strong-700">{{__('Orders Active')}}</h3>
+                                                            </div>
+                                                            @foreach($orderActive as $key => $val)
+                                                            <div class="dc-item py-3">
+                                                                <div class="dc-image">
+                                                                    <a href="#">
+                                                                        <img src="{{ url($val->thumbnail_img) }}" class="img-fluid" alt="">
+                                                                    </a>
+                                                                </div>
+                                                                <div class="dc-content">
+                                                                    <span class="d-block dc-product-name text-capitalize strong-600 mb-1">
+                                                                        <a href="{{ route('purchase_history.index') }}">
+                                                                            {{ __($val->name) }}
+                                                                        </a>
+                                                                    </span>
+                                                                    <span class="subtotal-text">{{$val->code}}</span><br><br>
+                                                                    <span class="badge badge-primary">Order Active</span><span class="badge badge-success">Paid</span>
+                                                                </div>
+                                                            </div>
+                                                            @endforeach
+                                                            <div class="dc-header">
+                                                                <a class="btn btn-block btn-info" href="{{ route('purchase_history.index') }}">
+                                                                    <h3 class="heading heading-6 strong-700">{{__('View All Transaction')}}</h3>
+                                                                </a>
+                                                            </div>
+                                                        @else
+                                                            <div class="dc-header">
+                                                                <h3 class="heading heading-6 strong-700">{{__('No Notifications')}}</h3>
                                                             </div>
                                                         @endif
                                                     </div>

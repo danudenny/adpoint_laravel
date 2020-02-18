@@ -25,7 +25,7 @@ class UserCtrl extends Controller
     {
         $users = User::paginate(10);
         return response()->json($users,200);
-        
+
     }
     /**
     * @OA\Get(
@@ -59,6 +59,21 @@ class UserCtrl extends Controller
                 'message' => 'Data tidak ditemukan'
             ], 401);
         }
-        
+
+    }
+
+    /**
+     * @OA\Get(
+     *     path="/profile",
+     *     operationId="Current User Profile",
+     *     tags={"Users"},
+     *     summary="Display a current logged in user",
+     *     security={{"bearerAuth":{}}},
+     *     @OA\Response(response="200",description="ok"),
+     *     @OA\Response(response="401",description="unauthorized")
+     * )
+     */
+    public function profile() {
+        return auth('api')->user();
     }
 }
