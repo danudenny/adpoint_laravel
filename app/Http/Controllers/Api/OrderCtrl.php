@@ -7,6 +7,8 @@ use App\Http\Controllers\Controller;
 use App\Order;
 use App\OrderDetail;
 use App\Product;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class OrderCtrl extends Controller
 {
@@ -174,6 +176,100 @@ class OrderCtrl extends Controller
         $order = Order::where('id', $id)->first();
         if ($order != null) {
             return response()->json($order, 200);
+        }else{
+            return response()->json([
+                'success' => false,
+                'message' => 'Data tidak ditemukan'
+            ], 401);
+        }
+    }
+
+    /**
+     * @OA\Get(
+     *     path="/orderplaced",
+     *     operationId="list order by current user",
+     *     tags={"Orders By Current Customer"},
+     *     summary="Display a listing of the order by current user",
+     *     security={{"bearerAuth":{}}},
+     *     @OA\Response(response="200",description="ok"),
+     *     @OA\Response(response="401",description="unauthorized")
+     * )
+     */
+    public function orderplaced()
+    {
+        $orderPlaced = DB::table('orders as o')
+            -> join('order_details as od', 'o.seller_id', '=', 'od.seller_id')
+            -> join('products as p', 'p.id', '=', 'od.product_id')
+            -> orderBy('od.id', 'desc')
+            -> where('o.approved', 0)
+            -> where('od.status', 0)
+            -> where('o.user_id', Auth::user()->id)
+            -> groupBy('od.id')
+            ->get();
+        if ($orderPlaced != null) {
+            return response()->json($orderPlaced, 200);
+        }else{
+            return response()->json([
+                'success' => false,
+                'message' => 'Data tidak ditemukan'
+            ], 401);
+        }
+    }
+
+    /**
+     * @OA\Get(
+     *     path="/orderonreview",
+     *     operationId="list order on review by current user",
+     *     tags={"Orders By Current User"},
+     *     summary="Display order on review by current user",
+     *     security={{"bearerAuth":{}}},
+     *     @OA\Response(response="200",description="ok"),
+     *     @OA\Response(response="401",description="unauthorized")
+     * )
+     */
+    public function orderonreview()
+    {
+        $orderOnReview = DB::table('orders as o')
+            -> join('order_details as od', 'o.seller_id', '=', 'od.seller_id')
+            -> join('products as p', 'p.id', '=', 'od.product_id')
+            -> orderBy('od.id', 'desc')
+            -> where('od.status', 1)
+            -> where('o.user_id', Auth::user()->id)
+            -> groupBy('od.id')
+            ->get();
+        if ($orderOnReview != null) {
+            return response()->json($orderOnReview, 200);
+        }else{
+            return response()->json([
+                'success' => false,
+                'message' => 'Data tidak ditemukan'
+            ], 401);
+        }
+    }
+
+    /**
+     * @OA\Get(
+     *     path="/orderactive",
+     *     operationId="list order active by current user",
+     *     tags={"Orders By Current User"},
+     *     summary="Display order active by current user",
+     *     security={{"bearerAuth":{}}},
+     *     @OA\Response(response="200",description="ok"),
+     *     @OA\Response(response="401",description="unauthorized")
+     * )
+     */
+    public function orderactive()
+    {
+        $orderActive = DB::table('orders as o')
+            -> join('order_details as od', 'o.seller_id', '=', 'od.seller_id')
+            -> join('products as p', 'p.id', '=', 'od.product_id')
+            -> orderBy('od.id', 'desc')
+            -> where('od.status', 3)
+            -> where('o.user_id', Auth::user()->id)
+            -> groupBy('od.id')
+            -> get();
+        if ($orderActive != null) {
+            return response()->json($orderActive, 200);
         }else{
             return response()->json([
                 'success' => false,

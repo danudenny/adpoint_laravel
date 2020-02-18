@@ -2,11 +2,17 @@
     .fa-pulse {
         color: red;
         display: inline-block;
-        position: relative;
+        /*position: relative;*/
         -moz-animation: pulse 1s infinite linear;
         -o-animation: pulse 1s infinite linear;
         -webkit-animation: pulse 1s infinite linear;
         animation: pulse 1s infinite linear;
+        position: absolute;
+        top: -10px;
+        right: -10px;
+        padding: 2px 4px;
+        border-radius: 50%;
+
     }
 
     @-webkit-keyframes pulse {
@@ -37,7 +43,7 @@
 </style>
 <div class="header bg-white">
     <!-- Top Bar -->
-    
+
     <!-- END Top Bar -->
     @auth
     @php
@@ -137,7 +143,7 @@
                                 <span>{{__('Manage Profile')}}</span>
                             </a>
                         </li>
-                        
+
 
                         @if (\App\BusinessSetting::where('type', 'wallet_system')->first()->value == 1)
                             <li>
@@ -247,7 +253,7 @@
                                 <div class="heading-4 strong-700 mb-4">
                                     @php
                                         $orders = \App\Order::where('seller_id', Auth::user()->id)->where('created_at', '>=', date('-30d'))->get();
-                                        
+
                                         $total = 0;
                                         foreach ($orders as $key => $o) {
                                             if($o->approved == 1){
@@ -518,7 +524,7 @@
                                                                     </span>
                                                                     <span class="subtotal-text">{{$val->code}}</span><br><br>
                                                                     <span class="badge badge-primary">Order Placed</span><span class="badge badge-danger">Unpaid</span>
-                                                                </div>  
+                                                                </div>
                                                             </div>
                                                             @endforeach
                                                         @endif
@@ -541,7 +547,7 @@
                                                                     </span>
                                                                     <span class="subtotal-text">{{$val->code}}</span><br><br>
                                                                     <span class="badge badge-primary">Order On Review</span><span class="badge badge-danger">Unpaid</span>
-                                                                </div>  
+                                                                </div>
                                                             </div>
                                                             @endforeach
                                                         @endif
@@ -564,9 +570,14 @@
                                                                     </span>
                                                                     <span class="subtotal-text">{{$val->code}}</span><br><br>
                                                                     <span class="badge badge-primary">Order Active</span><span class="badge badge-success">Paid</span>
-                                                                </div>  
+                                                                </div>
                                                             </div>
                                                             @endforeach
+                                                            <div class="dc-header">
+                                                                <a class="btn btn-block btn-info" href="{{ route('purchase_history.index') }}">
+                                                                    <h3 class="heading heading-6 strong-700">{{__('View All Transaction')}}</h3>
+                                                                </a>
+                                                            </div>
                                                         @else
                                                             <div class="dc-header">
                                                                 <h3 class="heading heading-6 strong-700">{{__('No Notifications')}}</h3>

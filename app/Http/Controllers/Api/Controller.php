@@ -1,4 +1,4 @@
-<?php 
+<?php
 namespace App\Http\Controllers\API;
 
 /**
@@ -20,11 +20,11 @@ namespace App\Http\Controllers\API;
  * ),
  * @OA\Server(
  *     description="Laravel Adpoint API",
- *     url="http://192.168.7.94:8283/api"
+ *     url="http://localhost:8000/api"
  * )
  * @OA\Server(
  *     description="Laravel Adpoint API",
- *     url="https://192.168.7.94:8283/api"
+ *     url="https://localhost:8000/api"
  * )
  * @OA\Response(response=200,description="ok")
  * @OA\Response(response=401,description="bad")
