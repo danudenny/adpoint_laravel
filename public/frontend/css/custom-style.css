@@ -357,7 +357,9 @@ input[type="submit"] {
 }
 
 .topnav-text {
-    font-size: 16px;
+    font-size: 14px;
+    position: relative;
+    top: -5px;
     color: white;
 }
 
@@ -803,7 +805,7 @@ select+.select2-container {
 .logo-bar-icons .nav-cart-box .nav-box-number {
     position: absolute;
     top: 0;
-    left: 36px;
+    left: 20px;
     min-width: 25px;
     height: 16px;
     line-height: 16px;
@@ -822,17 +824,18 @@ select+.select2-container {
 }
 
 .nav-cart-box .dropdown-menu {
-    border-color: #ccc;
+    border-radius: 5px;
     margin: 0;
 }
 
 .nav-cart-box .dropdown-menu .dropdown-cart-items {
-    max-height: 195px;
+    max-height: 200px;
     overflow-y: auto;
 }
 
 .dropdown-cart .dc-header {
-    padding: 5px;
+    padding: 1px;
+    padding-bottom: 4px;
     text-align: center;
 }
 
@@ -904,11 +907,6 @@ select+.select2-container {
 
 
 /* category menu area */
-
-section.home-banner-area {
-    background: linear-gradient(39deg, rgba(254, 165, 0, 1) 0%, rgba(254, 165, 0, 1) 29%, rgba(242, 185, 79, 1) 100%);
-    height: 400px;
-}
 
 .category-sidebar {
     background-color: #fff;
@@ -3166,7 +3164,49 @@ ul.seller-brand-list .brand-item {
 
 /* lg */
 
-@media (min-width: 992px) {}
+section.home-banner-area {
+    background: linear-gradient(45deg, rgba(254, 165, 0, 1) 0%, rgb(141, 141, 141) 29%, rgba(242, 185, 79, 1) 100%);
+    height: auto;
+}
+
+.title-head {
+    font-size: 30px;
+}
+
+.button-search {
+    width: 100%;
+}
+
+.main-banner {
+    position: relative;
+    padding: 10px;
+}
+
+.form-filter {
+    padding-bottom: 10px;
+    background-color: #fff;
+}
+
+@media (min-width: 992px) {
+    section.home-banner-area {
+        background: linear-gradient(45deg, rgba(254, 165, 0, 1) 0%, rgb(141, 141, 141) 29%, rgba(242, 185, 79, 1) 100%);
+        height: 400px;
+    }
+    .title-head {
+        font-size: 50px;
+    }
+    .main-banner {
+        position: relative;
+        top: 40px;
+    }
+    .button-search {
+        width: 100%;
+    }
+    .form-filter {
+        padding-bottom: 0%;
+        background-color: #fff;
+    }
+}
 
 
 /* xl */
@@ -3383,9 +3423,6 @@ ul.seller-brand-list .brand-item {
         position: relative;
         top: -4px;
         font-size: 10px;
-    }
-    section.home-banner-area {
-        padding: 30px 0 10px;
     }
     .category-sidebar {
         padding-top: 30px;

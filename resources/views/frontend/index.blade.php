@@ -1,145 +1,74 @@
 @extends('frontend.layouts.app')
 
 @section('content')
-    <section class="home-banner-area mb-4">
+    <section class="home-banner-area">
         <div class="container">
-            <div class="row no-gutters position-relative">
-                <div class="text-home-top">
-                    <h1>Cari space iklan yang sesuai dengan <br> kebutuhan Anda sekarang juga</h1>
-                </div>
-                <div class="form-group select-city">
-                    <select class="form-control">
-                      <option>City</option>
-                      <option>2</option>
-                    </select>
-                </div>
-                <div class="form-group select-address">
-                    <select class="form-control">
-                      <option>Address</option>
-                      <option>2</option>
-                    </select>
-                </div>  
-                <div class="form-group select-media">
-                    <select class="form-control">
-                      <option>Media</option>
-                      <option>2</option>
-                    </select>
-                </div>
-                <button class="button-cari"><i class="fa fa-search"></i> Search</button>
-                {{-- <div class="col-lg-2 position-static order-2 order-lg-0">
-                    <div class="category-sidebar">
-                        <div class="all-category d-none d-lg-block">
-                            <span >{{__('Categories')}}</span>
-                            <a href="{{ route('categories.all') }}">
-                                <span class="d-none d-lg-inline-block">{{__('See All')}} ></span>
-                            </a>
-                        </div>
-                        <ul class="categories no-scrollbar">
-                            <li class="d-lg-none">
-                                <a href="{{ route('categories.all') }}">
-                                    <img class="cat-image" src="{{ asset('frontend/images/icons/list.png') }}" width="30">
-                                    <span class="cat-name">{{__('All')}} <br> {{__('Categories')}}</span>
-                                </a>
-                            </li>
-                            @foreach (\App\Category::all()->take(11) as $key => $category)
-                                @php
-                                    $brands = array();
-                                @endphp
-                                <li>
-                                    <a href="{{ route('products.category', $category->slug) }}">
-                                        <img class="cat-image" src="{{ asset($category->icon) }}" width="30">
-                                        <span class="cat-name">{{ __($category->name) }}</span>
-                                    </a>
-                                    @if(count($category->subcategories)>0)
-                                        <div class="sub-cat-menu c-scrollbar" style="left: 220px;">
-                                            <div class="sub-cat-main row no-gutters">
-                                                <div class="col-7">
-                                                    <div class="sub-cat-content">
-                                                        <div class="sub-cat-list">
-                                                            <div>
-                                                                <label class="sub-cat-name" style="margin-top: 20px; margin-left: 10px;"><b>SUB CATEGORIES</b></label>
-                                                                <hr>
-                                                            </div>
-                                                            <div class="card-columns">
-                                                                @foreach ($category->subcategories as $subcategory)
-                                                                    <div class="card">
-                                                                        <ul class="sub-cat-items">
-                                                                            @php
-                                                                                foreach (json_decode($subcategory->brands) as $brand) {
-                                                                                    if(!in_array($brand, $brands)){
-                                                                                        array_push($brands, $brand);
-                                                                                    }
-                                                                                }
-                                                                            @endphp
-                                                                            <li><a href="{{ route('products.subcategory', $subcategory->slug) }}">{{ __($subcategory->name) }}</a></li>
-                                                                        </ul>
-                                                                    </div>
-                                                                @endforeach
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-5">
-                                                    <div class="sub-cat-brand">
-                                                        <div>
-                                                            <label class="sub-cat-name" style="margin-top: 10px; "><b>MEDIA PARTNERS</b></label>
-                                                            <hr>
-                                                        </div>
-                                                        <ul class="sub-brand-list">
-                                                            @foreach ($brands as $brand_id)
-                                                                @if(\App\Brand::find($brand_id) != null)
-                                                                    <li class="sub-brand-item">
-                                                                        <a href="{{ route('products.brand', \App\Brand::find($brand_id)->slug) }}" ><img src="{{ asset(\App\Brand::find($brand_id)->logo) }}" class="img-fluid"></a>
-                                                                    </li>
-                                                                @endif
-                                                            @endforeach
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    @endif
-                                </li>
-                            @endforeach
-                        </ul>
+            <div class="main-banner">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h1 class="title-head">Cari space iklan yang sesuai dengan <br> kebutuhan Anda sekarang juga</h1>
                     </div>
-                </div> --}}
-
-                {{-- <div class="col-lg-10 order-1 order-lg-0">
-                    <div id="dashboardMap" class="map mb-3" style="height: 455px;"></div>
-                </div> --}}
+                </div>
+                <div class="row form-filter pt-3 mt-2">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <select class="form-control">
+                              <option>City</option>
+                              <option>2</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <select class="form-control">
+                              <option>Address</option>
+                              <option>2</option>
+                            </select>
+                        </div>  
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <select class="form-control">
+                              <option>Media</option>
+                              <option>2</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <button class="btn btn-primary btn-lg button-search"><i class="fa fa-search"></i> Search</button>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
     <section class="mb-4">
         <div class="container">
-            <h2 style="text-align: center">Explore by Media Categories</h2>
-        </div>
-    </section>
-
-
-    <div class="container">
-        <div class="row">
-            @foreach (\App\Category::where('top', 1)->get() as $category)
-                <div class="box-cat">
-                    <img src="{{ asset($category->banner) }}" alt="" class="img-fluid img">
-                    <span class="browse-cat">{{ __($category->name) }}</span>
+            <div class="row mt-5">
+                <div class="col-md-12">
+                    <h2 class="text-center">Explore by Media Categories</h2>
                 </div>
-            @endforeach
-        </div>
-    </div>
+            </div>
 
-    <section class="mb-4">
-        <div class="container">
-            <div style="margin-left: 46%;">
+            <div class="row">
+                @foreach (\App\Category::all() as $category)
+                    <div class="col-3 d-flex justify-content-center">
+                        <div class="box-cat">
+                            <img src="{{ asset($category->icon) }}" alt="" class="img-fluid img">
+                            <span class="browse-cat">{{ __($category->name) }}</span>
+                            <p>{{ $category->products->count() }}</p>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+
+            <div class="row justify-content-center">
                 <button class="btn btn-lg btn-primary"><i class="fa fa-plus"></i> Show All</button>
             </div>
         </div>
     </section>
 
-    <section class="mb-4">
+    <section class="mb-4 mt-4">
         <div class="container card-center">
             <div class="row">
                 <div class="card card-seller-buyer">
