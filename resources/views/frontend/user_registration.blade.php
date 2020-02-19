@@ -37,7 +37,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                
+
                                             <div class="row">
                                                 <div class="col-12">
                                                     <div class="form-group{{ $errors->has('email') ? 'has-error' : ''}}">
@@ -51,7 +51,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                
+
                                             <div class="row">
                                                 <div class="col-12">
                                                     <div class="form-group{{ $errors->has('password') ? 'has-error' : ''}}">
@@ -65,7 +65,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                
+
                                             <div class="row">
                                                 <div class="col-12">
                                                     <div class="form-group">
@@ -108,7 +108,13 @@
                                                     </div>
                                                 </div>
                                             </div>
-            
+                                            <div class="row">
+                                                <div class="col-4">
+                                                    @captcha
+                                                    <input class="form-control" type="text" id="captcha" name="captcha" autocomplete="off">
+                                                    <strong class="text-danger mt-1">{!! $errors->first('captcha', '<p class="help-block">:message</p>') !!}</strong><br>
+                                                </div>
+                                            </div>
                                             <div class="row">
                                                 <div class="col-12">
                                                     <div class="checkbox pad-btm text-left">
@@ -117,7 +123,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                
+
                                             <div class="row align-items-center">
                                                 <div class="col-12 text-right  mt-3">
                                                     <button type="submit" id="btn-submit" disabled class="btn btn-styled btn-base-1 w-100 btn-md">{{ __('Create Account') }}</button>
