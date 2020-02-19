@@ -152,8 +152,8 @@ Route::group(['middleware' => ['user', 'verified']], function(){
 
 	Route::post('find-trx-unpaid', 'TransactionController@find_trx_unpaid')->name('find.trx.unpaid');
 	Route::post('find-trx-paid', 'TransactionController@find_trx_paid')->name('find.trx.paid');
-	
-	
+
+
 	Route::resource('wishlists','WishlistController');
 	Route::post('/wishlists/remove', 'WishlistController@remove')->name('wishlists.remove');
 
@@ -206,7 +206,7 @@ Route::group(['middleware' => ['auth']], function(){
 
 	Route::post('find_orders', 'OrderController@find_orders')->name('find.orders');
 
-	
+
 	Route::get('/orders/destroy/{id}', 'OrderController@destroy')->name('orders.destroy');
 	Route::post('/orders/details', 'OrderController@order_details')->name('orders.details');
 	Route::post('/orders/update_delivery_status', 'OrderController@update_delivery_status')->name('orders.update_delivery_status');
