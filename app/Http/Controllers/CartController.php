@@ -9,6 +9,8 @@ use App\Category;
 use Session;
 use App\Color;
 
+use Auth;
+
 class CartController extends Controller
 {
     public function index(Request $request)
@@ -152,28 +154,32 @@ class CartController extends Controller
         $data['advertising'] = null;
 
         // dd($request->session()->has('cart'));
-        if($request->session()->has('cart')){
-            $cart = $request->session()->get('cart');
-            if (isset($cart[$product->user_id])) {
-                foreach ($cart as $seller_id => $c) {
-                    foreach ($c as $key => $cartItem) {
-                        if ($cartItem['id'] === $data['id']) {
-                            return view('frontend.partials.ItemHashCart');   
-                        }else {
-                            $c[$key+1] = $data;
+        if ($product->user_id !== Auth::user()->id) {
+            if($request->session()->has('cart')){
+                $cart = $request->session()->get('cart');
+                if (isset($cart[$product->user_id])) {
+                    foreach ($cart as $seller_id => $c) {
+                        foreach ($c as $key => $cartItem) {
+                            if ($cartItem['id'] === $data['id']) {
+                                return view('frontend.partials.ItemHashCart');   
+                            }else {
+                                $c[$key+1] = $data;
+                            }
                         }
+                        $cart[$product->user_id] = $c;
                     }
-                    $cart[$product->user_id] = $c;
+                }else {
+                    $cart[$product->user_id][] = $data;
                 }
-            }else {
-                $cart[$product->user_id][] = $data;
+                $request->session()->put('cart', $cart);
+            } else{
+                $result[$product->user_id] = [$data];
+                $request->session()->put('cart', $result);
             }
-            $request->session()->put('cart', $cart);
-        } else{
-            $result[$product->user_id] = [$data];
-            $request->session()->put('cart', $result);
+            return view('frontend.partials.addedToCart', compact('product', 'data'));
+        }else {
+            return view('frontend.partials.same_seller');
         }
-        return view('frontend.partials.addedToCart', compact('product', 'data'));
     }
 
     //removes from Cart

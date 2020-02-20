@@ -338,7 +338,7 @@ class HomeController extends Controller
 
     public function all_categories(Request $request)
     {
-        $categories = Category::with('categories')->all();
+        $categories = Category::all();
         return view('frontend.all_category', compact('categories'));
     }
     public function all_brands(Request $request)

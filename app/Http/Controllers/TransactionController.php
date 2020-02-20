@@ -117,23 +117,23 @@ class TransactionController extends Controller
 
     public function find_trx_unpaid(Request $request)
     {
-        if ($request->value == null || $request->value == "") {
+        if ($request->value == null) {
             $trx = Transaction::where([
                 'payment_status' => 0,
                 'user_id' => Auth::user()->id
             ])->get();
         }else {
             $trx = DB::table('transactions')
-                        ->where('code', 'like', '%'.$request->value.'%')
-                        ->whereIn('payment_status', 0)
-                        ->get();
+                    ->where('code', 'like', '%'.$request->value.'%')
+                    ->where('payment_status', 0)
+                    ->get();
         }
         return view('mytrx.find_unpaid_trx', compact('trx'));
     }
 
     public function find_trx_paid(Request $request)
     {
-        if ($request->value == null || $request->value == "") {
+        if ($request->value == null) {
             $trx = Transaction::where([
                 'payment_status' => 1,
                 'user_id' => Auth::user()->id
