@@ -144,20 +144,23 @@
 
 </head>
 <body>
-    
-    
+
+
     <!-- MAIN WRAPPER -->
     <div class="body-wrap shop-default shop-cards shop-tech gry-bg">
-        
+
         <!-- Header -->
         @include('frontend.inc.nav')
-        
+        <div style="margin-top: 70px;">
+
+        </div>
+
         @yield('content')
-        
+
         @include('frontend.inc.footer')
-        
+
         @include('frontend.partials.modal')
-        
+
         <div class="modal fade" id="addToCart" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-zoom product-modal" id="modal-size" role="document">
                 <div class="modal-content position-relative">
@@ -181,12 +184,12 @@
             <span id="_cs" hidden>{{ \App\BusinessSetting::where('type', 'whatsapp_settings')->first()->value }}</span>
             <div class="cs">
                 <ol class="rounded-list">
-                                
+
                 </ol>
             </div>
         </div>
     </div>
-    
+
     <button id="btn_close" onclick="closeForm()" class="open-button" style="display: none;">
         <i class="fa fa-whatsapp my-float"></i>
     </button>
@@ -247,7 +250,7 @@
 
 <script>
 
-    $(document).ready(function() { 
+    $(document).ready(function() {
         if ($('#lang-change').length > 0) {
             $('#lang-change .dropdown-item a').each(function() {
                 $(this).on('click', function(e){
@@ -260,7 +263,7 @@
 
                 });
             });
-        }   
+        }
 
         if ($('#currency-change').length > 0) {
             $('#currency-change .dropdown-item a').each(function() {
@@ -539,7 +542,7 @@
             $('body').removeClass("typed-search-box-shown");
         }
     }
-   
+
     function updateNavCart(){
         $.post('{{ route('cart.nav_cart') }}', {_token:'{{ csrf_token() }}'}, function(data){
             $('#cart_items').html(data);
@@ -959,7 +962,7 @@
                     marker.setPosition(position)
                 } else {
                     marker = new google.maps.Marker({
-                        position: position, 
+                        position: position,
                         map: map
                     });
                 }
@@ -1071,7 +1074,7 @@
                     marker.setPosition(position)
                 } else {
                     marker = new google.maps.Marker({
-                        position: position, 
+                        position: position,
                         map: map
                     });
                 }
@@ -1139,7 +1142,7 @@
                                     <small class="text-primary">`+alamat+`</small>
                                 </div>
                                 </div>`;
-                
+
                 var infowindow = new google.maps.InfoWindow({
                     content: template,
                     disableAutoPan: true,
@@ -1148,13 +1151,13 @@
                 var lat = Number(latlong[0]);
                 var lng = Number(latlong[1]);
                 var posisi = {lat: lat, lng: lng};
-                
+
 
                 function markerByCategory(category_id){
                     var icon = {
                         url: base_url + '/marker/'+category_id+'.png',
                         scaledSize: new google.maps.Size(40, 40),
-                        origin: new google.maps.Point(0,0), 
+                        origin: new google.maps.Point(0,0),
                         anchor: new google.maps.Point(0,0)
                     };
                     return icon;
@@ -1180,10 +1183,10 @@
 
                 marker.addListener('click', function() {
                     window.open(marker.url);
-                })    
+                })
 
             });
-            
+
             // Try HTML5 geolocation.
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(function(position) {
@@ -1224,7 +1227,7 @@
                                 <strong class="text-primary">`+alamat+`</strong>
                             </div>
                             </div>`;
-                
+
             var infowindow = new google.maps.InfoWindow({
                 content: template
             });
@@ -1293,11 +1296,11 @@
     }
     // end whatsapp
 
-    
+
     $('#table').DataTable();
     $('.dataTables_filter').addClass('pull-right');
     $('#table_paginate').addClass('pull-right');
-    
+
 </script>
 
 @auth
@@ -1331,7 +1334,7 @@ $user = Auth::id();
             .then(res => console.log(res));
     }).catch(function (err) {
         console.error(err);
-    });    
+    });
 </script>
 @endauth
 </body>
