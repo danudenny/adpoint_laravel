@@ -398,13 +398,13 @@ input[type="submit"] {
 
 .box-cat {
     display: inline-block;
-    max-width: 190px;
+    max-width: 150px;
     height: auto;
+    border: 1px solid #ccc;
     position: relative;
     overflow: hidden;
     justify-content: space-between;
     text-align: center;
-    padding: 20px;
     font-size: 16px;
     font-weight: bold;
     margin-bottom: 10px;
@@ -811,9 +811,9 @@ select+.select2-container {
 .logo-bar-icons .nav-wishlist-box .nav-box-number,
 .logo-bar-icons .nav-cart-box .nav-box-number {
     position: absolute;
-    top: 0;
-    left: 20px;
-    min-width: 25px;
+    top: -5px;
+    left: 15px;
+    min-width: 20px;
     height: 16px;
     line-height: 16px;
     text-align: center;
@@ -836,7 +836,7 @@ select+.select2-container {
 }
 
 .nav-cart-box .dropdown-menu .dropdown-cart-items {
-    max-height: 200px;
+    max-height: 300px;
     overflow-y: auto;
 }
 
@@ -4448,7 +4448,7 @@ ul.inline-links>li {
     }
     .sm-fixed-top {
         position: fixed !important;
-        top: -64px;
+        top: -80px;
         background: #fff;
         width: 100%;
         left: 0;

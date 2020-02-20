@@ -12,7 +12,7 @@
                                 $user = \App\User::where('id', $seller_id)->first();
                             @endphp
                             <tr>
-                                <th colspan="7" style="background: #ccc">
+                                <th colspan="7" style="background: #fafafa">
                                     <img class="img-fluid rounded-circle mr-2" width="25" src="{{ url($user->avatar_original) }}" alt="">
                                     {{ $user->name }}
                                 </th>

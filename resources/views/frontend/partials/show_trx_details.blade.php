@@ -32,7 +32,7 @@
                     $product = \App\Product::where('id', $od->product_id)->first();
                     $productRejected = \App\OrderDetail::where('product_id', $od->product_id)->where('status', 0)->first();
                 @endphp
-                @if ($od->status == 0)
+                @if ($od->status == 2)
                     <tr style="text-decoration: line-through">
                         <td>{{ $key+1 }}</td>
                         <td>
@@ -84,7 +84,7 @@
                     </tr>
                 @endif
             @endforeach
-            @if ($od->status == 2 || $od->status == 0)
+            @if ($od->status == 2)
                 <tr style="text-decoration: line-through">
                     <td colspan="5" align="right">Total</td>
                     <td align="right"><strong>{{ single_price($o->total) }}</strong></td>
