@@ -345,7 +345,7 @@
     </div>
     <!-- end mobile menu -->
 
-    <div class="position-relative logo-bar-area">
+    <div class="logo-bar-area" style="position: fixed; top: 0; width: 100%;">
         <div class="p-2">
             <div class="container">
                 <div class="row no-gutters align-items-center">

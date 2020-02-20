@@ -9,7 +9,7 @@
                         <h1 class="title-head">Cari space iklan yang sesuai dengan <br> kebutuhan Anda sekarang juga</h1>
                     </div>
                 </div>
-                <div class="row form-filter pt-3 mt-2">
+                <div class="row form-filter pt-3 mt-5">
                     <div class="col-md-3">
                         <div class="form-group">
                             <select class="form-control">
@@ -24,7 +24,7 @@
                               <option>Address</option>
                               <option>2</option>
                             </select>
-                        </div>  
+                        </div>
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">
@@ -46,17 +46,16 @@
         <div class="container">
             <div class="row mt-5">
                 <div class="col-md-12">
-                    <h2 class="text-center">Explore by Media Categories</h2>
+                    <h2 class="explore-media">Explore by Media Categories</h2>
                 </div>
             </div>
 
             <div class="row">
-                @foreach (\App\Category::all() as $category)
-                    <div class="col-3 d-flex justify-content-center">
+                @foreach (\App\Category::limit(6)->get() as $category)
+                    <div class="col-md-2 d-flex justify-content-center">
                         <div class="box-cat">
                             <img src="{{ asset($category->icon) }}" alt="" class="img-fluid img">
-                            <span class="browse-cat">{{ __($category->name) }}</span>
-                            <p>{{ $category->products->count() }}</p>
+                            <p style="font-size:30px; color: #ffbc01; padding-top: 10px;">{{ $category->products->count() }}</p>
                         </div>
                     </div>
                 @endforeach
@@ -88,7 +87,7 @@
             </div>
         </div>
     </section>
-    
+
     <section class="mb-4">
         <div class="image-block-home">
             <img style="object-fit: cover; height: 400px; width: 100%;" src="{{ asset('img/bg-img/ad-agency-blog-pic.jpg') }}" >

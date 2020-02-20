@@ -5,6 +5,7 @@ RUN docker-php-ext-install pdo mbstring mysqli pdo_mysql
 WORKDIR /app
 COPY . /app
 RUN composer install --ignore-platform-reqs
+#RUN php -d memory_limit=-1 /usr/local/bin/composer install --ignore-platform-reqs
 
 CMD php artisan config:cache; php artisan serve --host=0.0.0.0 --port=8188
 EXPOSE 8188
