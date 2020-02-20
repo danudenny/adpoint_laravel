@@ -44,11 +44,11 @@
 
 
             <div class="panel-heading">
-                <h3 class="text-lg">{{__('Shop Info')}}</h3>
+                <h3 class="text-lg">{{__('Vendor Info')}}</h3>
             </div>
 
             <div class="row">
-                <label class="col-sm-3 control-label" for="name">{{__('Shop Name')}}</label>
+                <label class="col-sm-3 control-label" for="name">{{__('Vendor Name')}}</label>
                 <div class="col-sm-9">
                     <p>{{ $seller->user->shop->name }}</p>
                 </div>

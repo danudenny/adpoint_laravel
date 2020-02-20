@@ -31,28 +31,28 @@
                     <!-- dashboard content -->
                     <div class="">
                         <div class="row">
-                            <div class="col-md-3 col-6">
+                            <div class="col-md-4 col-6">
                                 <div class="dashboard-widget text-center green-widget mt-4 c-pointer">
                                     <a href="javascript:;" class="d-block">
-                                        <i class="fa fa-upload"></i>
+                                        <img src="{{ asset('frontend/images/icons/billboard.png') }}" alt="">
                                         <span class="d-block title heading-6 strong-400">{{ count(\App\Product::where('user_id', Auth::user()->id)->get()) }}</span>
                                         <span class="d-block sub-title">{{__('Products')}}</span>
                                     </a>
                                 </div>
                             </div>
-                            <div class="col-md-3 col-6">
+                            <div class="col-md-4 col-6">
                                 <div class="dashboard-widget text-center red-widget mt-4 c-pointer">
                                     <a href="javascript:;" class="d-block">
-                                        <i class="fa fa-cart-plus"></i>
+                                        <img src="{{ asset('frontend/images/icons/total-sales.png') }}" alt="">
                                         <span class="d-block title heading-6 strong-400">{{ count(\App\OrderDetail::where('seller_id', Auth::user()->id)->where(['status'=>3,'status'=>4])->get()) }}</span>
-                                        <span class="d-block sub-title">{{__('Total sale')}}</span>
+                                        <span class="d-block sub-title">{{__('Total Sales')}}</span>
                                     </a>
                                 </div>
                             </div>
-                            <div class="col-md-3 col-6">
+                            <div class="col-md-4 col-6">
                                 <div class="dashboard-widget text-center blue-widget mt-4 c-pointer">
                                     <a href="javascript:;" class="d-block">
-                                        <i class="fa fa-dollar"></i>
+                                        <img src="{{ asset('frontend/images/icons/payroll.png') }}" alt="">
                                         @php
                                             $orders = \App\Order::where('seller_id', Auth::user()->id)->get();
                                             $total = 0;
@@ -67,65 +67,69 @@
                                     </a>
                                 </div>
                             </div>
-                            <div class="col-md-3 col-6">
-                                <div class="dashboard-widget text-center yellow-widget mt-4 c-pointer">
-                                    <a href="javascript:;" class="d-block">
-                                        <i class="fa fa-check-square-o"></i>
-                                        <span class="d-block title heading-6 strong-400">{{ count(\App\OrderDetail::where('seller_id', Auth::user()->id)->where(['status'=>3,'status'=>4])->get()) }}</span>
-                                        <span class="d-block sub-title">{{__('Successful orders')}}</span>
-                                    </a>
-                                </div>
-                            </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-7">
+                            <div class="col-md-12">
                                 <div class="form-box bg-white mt-4">
                                     <div class="form-box-title px-3 py-2 text-center">
-                                        {{__('Orders')}}
+                                        {{__('Incoming Orders')}}
                                     </div>
-                                    <div class="form-box-content p-3">
-                                        <table class="table mb-0 table-bordered" style="font-size:14px;">
-                                            <tr>
-                                                <td>{{__('Total orders')}}:</td>
-                                                <td><strong class="heading-6">{{ count(\App\OrderDetail::where('seller_id', Auth::user()->id)->get()) }}</strong></td>
-                                            </tr>
-                                            <tr >
-                                                <td>{{__('Pending orders')}}:</td>
-                                                <td><strong class="heading-6">{{ count(\App\OrderDetail::where('seller_id', Auth::user()->id)->where('status', 100)->get()) }}</strong></td>
-                                            </tr>
-                                            <tr >
-                                                <td>{{__('Cancelled orders')}}:</td>
-                                                <td><strong class="heading-6">{{ count(\App\OrderDetail::where('seller_id', Auth::user()->id)->where('status', 100)->get()) }}</strong></td>
-                                            </tr>
-                                            <tr >
-                                                <td>{{__('Successful orders')}}:</td>
-                                                <td><strong class="heading-6">{{ count(\App\OrderDetail::where('seller_id', Auth::user()->id)->where(['status'=>3,'status'=>4])->get()) }}</strong></td>
-                                            </tr>
-                                        </table>
+                                    <div class="row">
+                                        <div class="col-md-3 col-6">
+                                            <div class="dashboard-widget text-center green-widget mt-4 c-pointer">
+                                                <a href="javascript:;" class="d-block">
+                                                    <img src="{{ asset('frontend/images/icons/purchase-order.png') }}" alt="">
+                                                    <span class="d-block title heading-6 strong-400">{{ count(\App\OrderDetail::where('seller_id', Auth::user()->id)->get()) }}</span>
+                                                    <span class="d-block sub-title">{{__('Total Orders')}}</span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3 col-6">
+                                            <div class="dashboard-widget text-center red-widget mt-4 c-pointer">
+                                                <a href="javascript:;" class="d-block">
+                                                    <img src="{{ asset('frontend/images/icons/data-pending.png') }}" alt="">
+                                                    <span class="d-block title heading-6 strong-400">{{ count(\App\OrderDetail::where('seller_id', Auth::user()->id)->where('status', 100)->get()) }}</span>
+                                                    <span class="d-block sub-title">{{__('Pending orders')}}</span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3 col-6">
+                                            <div class="dashboard-widget text-center blue-widget mt-4 c-pointer">
+                                                <a href="javascript:;" class="d-block">
+                                                    <img src="{{ asset('frontend/images/icons/cancel-subscription.png') }}" alt="">
+                                                    <span class="d-block title heading-6 strong-400">{{ count(\App\OrderDetail::where('seller_id', Auth::user()->id)->where('status', 100)->get()) }}</span>
+                                                    <span class="d-block sub-title">{{__('Cancelled Orders')}}</span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3 col-6">
+                                            <div class="dashboard-widget text-center yellow-widget mt-4 c-pointer">
+                                                <a href="javascript:;" class="d-block">
+                                                    <img src="{{ asset('frontend/images/icons/ok.png') }}" alt="">
+                                                    <span class="d-block title heading-6 strong-400">{{ count(\App\OrderDetail::where('seller_id', Auth::user()->id)->where(['status'=>3,'status'=>4])->get()) }}</span>
+                                                    <span class="d-block sub-title">{{__('Successful orders')}}</span>
+                                                </a>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
-                            <div class="col-md-5">
-                                <div class="bg-white mt-4 p-5 text-center">
-                                    <div class="mb-3">
-                                        @if(Auth::user()->seller->verification_status == 0)
-                                            <img src="{{ asset('frontend/images/icons/non_verified.png') }}" alt="" width="130">
-                                        @else
-                                            <img src="{{ asset('frontend/images/icons/verified.png') }}" alt="" width="155">
-                                        @endif
-                                    </div>
-                                    @if(Auth::user()->seller->verification_status == 0)
-                                        <a href="{{ route('shop.verify') }}" class="btn btn-styled btn-base-1">{{__('Verify Now')}}</a>
-                                    @endif
                                 </div>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-8">
+                            <div class="col-md-6">
                                 <div class="form-box bg-white mt-4">
                                     <div class="form-box-title px-3 py-2 text-center">
                                         {{__('Products')}}
                                     </div>
+                                    @php
+                                        $prods = \App\Product::where('user_id', Auth::user()->id)->get();
+                                    @endphp
+                                    @if (count($prods) == 0)
+                                    <div class="text-center mt-2">
+                                        <img src="{{ asset('frontend/images/icons/error.png') }}" alt=""><br>
+                                        <span>No Products Found</span>
+                                    </div>
+                                    @endif
                                     <div class="form-box-content p-3 category-widget">
                                         <ul class="clearfix">
                                             @foreach (\App\Category::all() as $key => $category)
@@ -135,22 +139,43 @@
                                             @endforeach
                                         </ul>
                                         <div class="text-center">
-                                            <a href="{{ route('seller.products.upload')}}" class="btn pt-3 pb-1">{{__('Add New Product')}}</a>
+                                            <a href="{{ route('seller.products.upload')}}" class="btn pt-3 pb-1"><i class="fa fa-plus-circle"></i> {{__('Add New Product')}}</a>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-4">
-                                <div class="bg-white mt-4 p-4 text-center">
-                                    <div class="heading-4 strong-700">{{__('Shop')}}</div>
-                                    <p>{{__('Manage & organize your shop')}}</p>
-                                    <a href="{{ route('shops.index') }}" class="btn btn-styled btn-base-1 btn-outline btn-sm">{{__('Go to setting')}}</a>
+                            <div class="col-md-6">
+                                <div class="form-box bg-white mt-4">
+                                <div class="form-box-title px-3 py-2 text-center">
+                                    {{__('Outgoing Orders & Transactions')}}
                                 </div>
-                                <div class="bg-white mt-4 p-4 text-center">
-                                    <div class="heading-4 strong-700">{{__('Payment')}}</div>
-                                    <p>{{__('Configure your payment method')}}</p>
-                                    <a href="{{ route('profile') }}" class="btn btn-styled btn-base-1 btn-outline btn-sm">{{__('Configure Now')}}</a>
+                                <div class="row">
+                                    @php
+                                        $totalbuyerorders = DB::table('orders as o')
+                                                            -> join('order_details as od', 'o.id', '=', 'od.order_id')
+                                                            -> where('o.user_id', Auth::user()->id)
+                                                            ->get();
+                                    @endphp
+                                    <div class="col-md-6 col-12">
+                                        <div class="dashboard-widget text-center third-widget mt-4 c-pointer">
+                                            <a href="javascript:;" class="d-block">
+                                                <img src="{{ asset('frontend/images/icons/bill.png') }}" alt="">
+                                                <span class="d-block title heading-6 strong-400">{{ count($totalbuyerorders) }}</span>
+                                                <span class="d-block sub-title">{{__('Total Orders')}}</span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-12">
+                                        <div class="dashboard-widget text-center fourth-widget mt-4 c-pointer">
+                                            <a href="javascript:;" class="d-block">
+                                                <img src="{{ asset('frontend/images/icons/transaction.png') }}" alt="">
+                                                <span class="d-block title heading-6 strong-400">{{ count(\App\Transaction::where('user_id', Auth::user()->id)->get()) }}</span>
+                                                <span class="d-block sub-title">{{__('Total Transactions')}}</span>
+                                            </a>
+                                        </div>
+                                    </div>
                                 </div>
+                            </div>
                             </div>
                         </div>
                     </div>

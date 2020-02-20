@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Pushy;
 use Illuminate\Http\Request;
 use App\Product;
 use App\Category;
@@ -235,7 +236,24 @@ class ProductController extends Controller
         saveJSONFile('en', $data);
 
         if($product->save()){
+            $query = DB::table('pushy_tokens as pt')
+                ->join('users as u', 'u.id', '=', 'pt.user_id')
+                ->where(['u.user_type' => 'admin'])
+                ->select(['pt.*'])
+                ->get();
+            $tokenPushy = $query[0]->device_token;
+            $data = array('message' => 'Product Baru telah ditambahkan!');
+            $to = array($tokenPushy);
+            $options = array(
+                'notification' => array(
+                    'badge' => 1,
+                    'sound' => 'ping.aiff',
+                    'body'  => "Product Baru telah ditambahkan!"
+                )
+            );
+
             flash(__('Product has been inserted successfully'))->success();
+            Pushy::sendPushNotification($data, $to, $options);
             if(Auth::user()->user_type == 'admin'){
                 return redirect()->route('products.admin');
             }
@@ -370,7 +388,7 @@ class ProductController extends Controller
             $product->meta_img = $request->meta_img->store('uploads/products/meta');
             //ImageOptimizer::optimize(base_path('public/').$product->meta_img);
         }
-        
+
         $product->latlong = $request->latlong;
         $product->alamat = $request->alamat;
         $product->provinsi = $request->provinsi;

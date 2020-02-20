@@ -100,7 +100,7 @@ class ShopController extends Controller
             if($shop->save()){
                 auth()->login($user, false);
                 flash(__('Your Shop has been created successfully!'))->success();
-                return redirect()->route('shop.verify');
+                return redirect()->route('dashboard.index');
             }
             else{
                 $seller->delete();
@@ -211,7 +211,7 @@ class ShopController extends Controller
             return view('frontend.seller.verify_form', compact('shop'));
         }
         else {
-            flash(__('Sorry! You have sent verification request already.'))->error();
+            flash(__('You have sent verification request already.'))->error();
             return back();
         }
     }
@@ -247,7 +247,7 @@ class ShopController extends Controller
         }
         $seller = Auth::user()->seller;
         $seller->verification_info = json_encode($data);
-        
+
         if($seller->save()){
             flash(__('Your shop verification request has been submitted successfully!'))->success();
             return redirect()->route('dashboard');
