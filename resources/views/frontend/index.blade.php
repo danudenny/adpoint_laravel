@@ -50,38 +50,49 @@
                 </div>
             </div>
 
-            <div class="row">
-                @foreach (\App\Category::limit(6)->get() as $category)
-                    <div class="col-md-2 d-flex justify-content-center">
-                        <div class="box-cat">
-                            <img src="{{ asset($category->icon) }}" alt="" class="img-fluid img">
-                            <p style="font-size:30px; color: #ffbc01; padding-top: 10px;">{{ $category->products->count() }}</p>
-                        </div>
+            <div class="row p-3">
+                @foreach (\App\Category::all() as $category)
+                    <div class="mt-3 col-md-2 d-flex justify-content-center">
+                        <a target="_blank" href="{{ route('products.category', $category->slug) }}">
+                            <div class="card p-3">
+                                <img src="{{ asset($category->icon) }}" alt="" class="img-fluid">
+                                <div class="text-center">
+                                    <i class="text-dark">{{ $category->name }}</i>
+                                    <h4>
+                                        <strong class="strong-400">{{ $category->products->count() }}</strong>
+                                    </h4>
+                                </div>
+                            </div>
+                        </a>
                     </div>
                 @endforeach
             </div>
 
-            <div class="row justify-content-center">
+            <div class="row mt-3 justify-content-center">
                 <button class="btn btn-lg btn-primary"><i class="fa fa-plus"></i> Show All</button>
             </div>
         </div>
     </section>
 
-    <section class="mb-4 mt-4">
-        <div class="container card-center">
+    <section class="pt-5 pb-5 bg-gray">
+        <div class="container">
             <div class="row">
-                <div class="card card-seller-buyer">
-                    <div class="card-body">
-                        <h3 class="card-title">Are You a Seller</h3>
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                        <a href="#" class="btn btn-warning">Sell with us</a>
+                <div class="mt-2 col-md-6 d-flex justify-content-center">
+                    <div class="card">
+                        <div class="card-body">
+                            <h3 class="card-title">Are You a Seller</h3>
+                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                            <a href="#" class="btn btn-warning">Sell with us</a>
+                        </div>
                     </div>
                 </div>
-                <div class="card card-seller-buyer">
-                    <div class="card-body">
-                        <h3 class="card-title">Are You a Buyer</h3>
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                        <a href="#" class="btn btn-success">Buy Ad Space</a>
+                <div class="mt-2 col-md-6 d-flex justify-content-center">
+                    <div class="card">
+                        <div class="card-body">
+                            <h3 class="card-title">Are You a Buyer</h3>
+                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                            <a href="#" class="btn btn-success">Buy Ad Space</a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -89,8 +100,12 @@
     </section>
 
     <section class="mb-4">
-        <div class="image-block-home">
-            <img style="object-fit: cover; height: 400px; width: 100%;" src="{{ asset('img/bg-img/ad-agency-blog-pic.jpg') }}" >
+        <div class="row">
+            <div class="col-md-12">
+                <div class="image-block-home">
+                    <img style="object-fit: cover; height: 400px; width: 100%;" src="{{ asset('img/bg-img/ad-agency-blog-pic.jpg') }}" >
+                </div>
+            </div>
         </div>
     </section>
 

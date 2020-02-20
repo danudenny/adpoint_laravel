@@ -1,5 +1,5 @@
 <a href="" class="nav-box-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-    <i class="la la-shopping-cart d-inline-block nav-box-icon"></i>
+    <i class="fa fa-shopping-cart fa-2x text-dark"></i>
     @if(Session::has('cart'))
         @php
             $count = 0;
