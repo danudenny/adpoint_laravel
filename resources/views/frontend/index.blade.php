@@ -50,20 +50,13 @@
                 </div>
             </div>
 
-            <div class="row p-3">
-                @foreach (\App\Category::all() as $category)
-                    <div class="mt-3 col-md-2 d-flex justify-content-center">
-                        <a target="_blank" href="{{ route('products.category', $category->slug) }}">
-                            <div class="card p-3">
-                                <img src="{{ asset($category->icon) }}" alt="" class="img-fluid">
-                                <div class="text-center">
-                                    <i class="text-dark">{{ $category->name }}</i>
-                                    <h4>
-                                        <strong class="strong-400">{{ $category->products->count() }}</strong>
-                                    </h4>
-                                </div>
-                            </div>
-                        </a>
+            <div class="row">
+                @foreach (\App\Category::limit(6)->get() as $category)
+                    <div class="col-md-2 d-flex justify-content-center">
+                        <div class="box-cat">
+                            <img src="{{ asset($category->icon) }}" alt="" class="img-fluid img">
+                            <p style="font-size:30px; color: #ffbc01; padding-top: 10px;">{{ $category->products->count() }}</p>
+                        </div>
                     </div>
                 @endforeach
             </div>
