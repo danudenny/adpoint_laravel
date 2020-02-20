@@ -221,24 +221,6 @@
 							</div>
 				        </div>
 						<div id="demo-stk-lft-tab-5" class="tab-pane fade">
-							<div class="form-group">
-								<div class="col-lg-2">
-									<input type="text" class="form-control" value="{{__('Colors')}}" disabled>
-								</div>
-								<div class="col-lg-7">
-									<select class="form-control color-var-select" name="colors[]" id="colors" multiple>
-										@foreach (\App\Color::orderBy('name', 'asc')->get() as $key => $color)
-											<option value="{{ $color->code }}" <?php if(in_array($color->code, json_decode($product->colors))) echo 'selected'?> >{{ $color->name }}</option>
-										@endforeach
-									</select>
-								</div>
-								<div class="col-lg-2">
-									<label class="switch" style="margin-top:5px;">
-										<input value="1" type="checkbox" name="colors_active" <?php if(count(json_decode($product->colors)) > 0) echo "checked";?> >
-										<span class="slider round"></span>
-									</label>
-								</div>
-							</div>
 
 							<div class="customer_choice_options" id="customer_choice_options">
 								@foreach (json_decode($product->choice_options) as $key => $choice_option)

@@ -63,13 +63,19 @@
                         </li>
 
                         <!-- Product Menu -->
-                
+
                         @if(Auth::user()->user_type == 'admin')
                             <li>
                                 <a href="#">
                                     <i class="fa fa-shopping-cart"></i>
                                     <span class="menu-title">{{__('Products')}}</span>
                                     <i class="arrow"></i>
+                                    @php
+                                        $newProducts = \App\Product::where('published', '=', '0')->get();
+                                    @endphp
+                                    @if (count($newProducts) > 0)
+                                        <span class="fa-pulse pull-right" style="margin-right: 10px;"><i class="fa fa-circle"></i></span>
+                                    @endif
                                 </a>
                                 <!--Submenu-->
                                 <ul class="collapse">
@@ -84,6 +90,9 @@
                                     </li>
                                     @if(\App\BusinessSetting::where('type', 'vendor_system_activation')->first()->value == 1)
                                     <li class="{{ areActiveRoutes(['products.seller', 'products.seller.edit'])}}">
+                                        @if (count($newProducts) > 0)
+                                            <span class="fa-pulse pull-right" style="margin-right: 10px;"><i class="fa fa-circle"></i></span>
+                                        @endif
                                         <a class="nav-link" href="{{route('products.seller')}}">{{__('List Products')}}</a>
                                     </li>
                                     @endif
@@ -112,7 +121,7 @@
                                     @else
                                     <span class="fa-pulse pull-right" style="display:none;"><i class="fa fa-circle"></i></span>
                                     @endif
-                                    
+
                                 </a>
                                 <ul class="collapse">
                                     <li class="{{ areActiveRoutes(['orders.list.orders','sales.show'])}}">
@@ -143,7 +152,7 @@
                                         <span class="fa-pulse pull-right" style="display:none;"><i class="fa fa-circle"></i></span>
                                     @endif
                                 </a>
-    
+
                                 <!--Submenu-->
                                 <ul class="collapse">
                                     <li class="{{ areActiveRoutes(['sellers.index', 'sellers.create', 'sellers.edit', 'sellers.payment_history'])}}">
@@ -174,7 +183,7 @@
                                         <span class="fa-pulse pull-right" style="display:none;"><i class="fa fa-circle"></i></span>
                                     @endif
                                 </a>
-    
+
                                 <!--Submenu-->
                                 <ul class="collapse">
                                     <li class="{{ areActiveRoutes(['customers.index'])}}">
@@ -188,7 +197,7 @@
                                     <span class="menu-title">{{__('Payments')}}</span>
                                     <i class="arrow"></i>
                                 </a>
-    
+
                                 <!--Submenu-->
                                 <ul class="collapse">
                                     <li class="{{ areActiveRoutes(['admin.payment.index'])}}">
@@ -213,7 +222,7 @@
                                         <span class="fa-pulse pull-right" style="display:none;"><i class="fa fa-circle"></i></span>
                                     @endif
                                 </a>
-    
+
                                 <!--Submenu-->
                                 <ul class="collapse">
                                     <li class="{{ areActiveRoutes(['newsletters.index'])}}">
@@ -237,7 +246,7 @@
                                     <span class="menu-title">{{__('General Settings')}}</span>
                                     <i class="arrow"></i>
                                 </a>
-    
+
                                 <!--Submenu-->
                                 <ul class="collapse">
                                     <li class="{{ areActiveRoutes(['activation.index'])}}">
@@ -257,7 +266,7 @@
                                     <span class="menu-title">{{__('Frontend Settings')}}</span>
                                     <i class="arrow"></i>
                                 </a>
-    
+
                                 <!--Submenu-->
                                 <ul class="collapse">
                                     <li class="{{ areActiveRoutes(['home_settings.index', 'home_banners.index', 'sliders.index', 'home_categories.index', 'home_banners.create', 'home_categories.create', 'home_categories.edit', 'sliders.create'])}}">
@@ -268,10 +277,10 @@
                                             <span class="menu-title">{{__('Policy Pages')}}</span>
                                             <i class="arrow"></i>
                                         </a>
-    
+
                                         <!--Submenu-->
                                         <ul class="collapse">
-    
+
                                             <li class="{{ areActiveRoutes(['sellerpolicy.index'])}}">
                                                 <a class="nav-link" href="{{route('sellerpolicy.index', 'seller_policy')}}">{{__('Seller Policy')}}</a>
                                             </li>
@@ -288,7 +297,7 @@
                                                 <a class="nav-link" href="{{route('privacypolicy.index', 'privacy_policy')}}">{{__('Privacy Policy')}}</a>
                                             </li>
                                         </ul>
-    
+
                                     </li>
                                     <li class="{{ areActiveRoutes(['links.index', 'links.create', 'links.edit'])}}">
                                         <a class="nav-link" href="{{route('links.index')}}">{{__('Useful Link')}}</a>
@@ -307,7 +316,7 @@
                                     <span class="menu-title">{{__('Staffs')}}</span>
                                     <i class="arrow"></i>
                                 </a>
-    
+
                                 <!--Submenu-->
                                 <ul class="collapse">
                                     <li class="{{ areActiveRoutes(['staffs.index', 'staffs.create', 'staffs.edit'])}}">

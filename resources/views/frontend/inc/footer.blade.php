@@ -90,7 +90,7 @@
                             </form>
                         </div>
                     </div>
-                    
+
                 </div>
                 <!-- <div class="col-md-2">
                     <div class="col text-center text-md-left">
@@ -149,7 +149,7 @@
                                     @foreach ($area_covered as $key => $ac)
                                         @if ($key % 2 == 0)
                                             <li><a href="#" title="">{{ $ac }}</a></li>
-                                        @endif        
+                                        @endif
                                     @endforeach
                                 </ul>
                             </div>
@@ -158,7 +158,7 @@
                                     @foreach ($area_covered as $key => $ac)
                                         @if ($key % 2 != 0)
                                             <li><a href="#" title="">{{ $ac }}</a></li>
-                                        @endif        
+                                        @endif
                                     @endforeach
                                 </ul>
                             </div>
@@ -202,18 +202,23 @@
                             </li>
                         </ul>
                     </div>
-                    @if (\App\BusinessSetting::where('type', 'vendor_system_activation')->first()->value == 1)
-                        <div class="col text-center text-md-left">
-                            <div class="mt-4">
-                                <h4 class="heading heading-xs strong-600 text-uppercase mb-2">
-                                    {{__('Be a Seller')}}
-                                </h4>
-                                <a href="{{ route('shops.create') }}" class="btn btn-base-1 btn-icon-left">
-                                    {{__('Apply Now')}}
-                                </a>
+                    @auth
+                        @php
+                            $userSeller = Auth::user()->user_type;
+                        @endphp
+                        @if($userSeller != 'seller')
+                            <div class="col text-center text-md-left">
+                                <div class="mt-4">
+                                    <h4 class="heading heading-xs strong-600 text-uppercase mb-2">
+                                        {{__('Be a Seller')}}
+                                    </h4>
+                                    <a href="{{ route('shops.create') }}" class="btn btn-base-1 btn-icon-left">
+                                        {{__('Apply Now')}}
+                                    </a>
+                                </div>
                             </div>
-                        </div>
-                    @endif
+                        @endif
+                    @endauth
                 </div>
             </div>
         </div>
@@ -277,7 +282,7 @@
                     </ul>
                 </div>
                 <div class="col-md-4">
-                    
+
                 </div>
             </div>
         </div>

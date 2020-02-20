@@ -12,7 +12,7 @@
                             <div class="row align-items-center">
                                 <div class="col-md-6">
                                     <h2 class="heading heading-6 text-capitalize strong-600 mb-0">
-                                        {{__('Shop Informations')}}
+                                        {{__('Vendor Informations')}}
                                     </h2>
                                 </div>
                                 <div class="col-md-6">
@@ -99,10 +99,10 @@
                                 <div class="form-box-content p-3">
                                     <div class="row">
                                         <div class="col-md-2">
-                                            <label>{{__('Shop Name')}} <span class="required-star">*</span></label>
+                                            <label>{{__('Vendor Name')}} <span class="required-star">*</span></label>
                                         </div>
                                         <div class="col-md-10">
-                                            <input type="text" class="form-control mb-3" placeholder="{{__('Shop Name')}}" name="name" required>
+                                            <input type="text" class="form-control mb-3" placeholder="{{__('Vendor Name')}}" name="name" required>
                                         </div>
                                     </div>
                                     <div class="row">

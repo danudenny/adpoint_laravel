@@ -112,6 +112,7 @@
                         -> where('t.status', 'open')
                         -> where('u.user_type', 'customer')
                         ->get();
+            $newProducts = \App\Product::where('published', '=', '0')->get();
         @endphp
 
         <!--Brand logo & name-->
@@ -165,7 +166,7 @@
             </ul>
             <ul class="nav navbar-top-links">
                 <li class="dropdown">
-                    <a href="#" data-toggle="dropdown" class="dropdown-toggle" aria-expanded="true">    
+                    <a href="#" data-toggle="dropdown" class="dropdown-toggle" aria-expanded="true">
                         <i class="demo-pli-mail" title="Ticket Notification"></i>
                         @if(count($ticketNew) > 0 || count($ticketNewCust) > 0 || count($ticketNewOpen) > 0 || count($ticketNewCustOpen) > 0)
                             <span class="badge-header fa-pulse"><i class="fa fa-circle"></i></span>
@@ -253,9 +254,9 @@
                     </div>
                 </li>
                 <li class="dropdown">
-                    <a href="#" data-toggle="dropdown" class="dropdown-toggle" aria-expanded="true">    
+                    <a href="#" data-toggle="dropdown" class="dropdown-toggle" aria-expanded="true">
                         <i class="demo-pli-bell" title="Pending Notifications"></i>
-                        @if(count($customers) > 0 || count($orderNew) > 0 || count($trxNew) > 0 || count($sellerNotif) > 0)
+                        @if(count($customers) > 0 || count($orderNew) > 0 || count($trxNew) > 0 || count($sellerNotif) > 0 || count($newProducts) > 0)
                             <span class="badge-header fa-pulse"><i class="fa fa-circle"></i></span>
                         @endif
                     </a>
@@ -265,6 +266,20 @@
                         <div class="nano scrollable has-scrollbar" style="height: 265px;">
                             <div class="nano-content" tabindex="0" style="right: -17px;">
                                 <ul class="head-list">
+                                    <li>
+                                        @if (count($newProducts) > 0)
+                                            <h4 style="background-color: #84af9b; padding: 10px; border-radius: 5px; color:white;"><i class="fa fa-user"></i> New Products</h4>
+                                            @foreach ($newProducts as $key => $val)
+                                                <a class="media" href="{{ route('products.seller') }}" style="position:relative">
+                                                    <div class="media-body">
+                                                        <p class="mar-no text-nowrap text-main text-semibold">Product Baru Telah Ditambahkan.</p>
+                                                        <p>{{ $val->name }}</p>
+                                                        <label style="font-size:11px;" class="label label-default">{{ $val->created_at }}</label>
+                                                    </div>
+                                                </a>
+                                            @endforeach
+                                        @endif
+                                    </li>
                                     <li>
                                         @if (count($customers) > 0)
                                             <h4 style="background-color: orange; padding: 10px; border-radius: 5px; color:white;"><i class="fa fa-user"></i> New Users</h4>
@@ -339,7 +354,7 @@
                     </div>
                 </li>
 
-                
+
                 <!--User dropdown-->
                 <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
                 <li id="dropdown-user" class="dropdown">

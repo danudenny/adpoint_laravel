@@ -57,7 +57,7 @@
                                                     <th>{{__('Options')}}</th>
                                                 </tr>
                                             </thead>
-        
+
                                             <tbody>
                                                 @foreach ($products as $key => $product)
                                                     <tr>
@@ -65,20 +65,30 @@
                                                         <td><a href="{{ route('product', $product->slug) }}" target="_blank">{{ __($product->name) }}</a></td>
                                                         <td>{{ $product->category->name }}</td>
                                                         <td style="text-align: right">{{ number_format($product->unit_price) }}</td>
-                                                        <td style="text-align: center"><label class="switch">
-                                                            <input onchange="update_published(this)" value="{{ $product->id }}" type="checkbox" <?php if($product->published == 1) echo "checked";?> >
-                                                            <span class="slider round"></span></label>
+                                                        <td style="text-align: center">
+                                                            @if ($product->published = 0)
+                                                                <span class="badge badge-warning" ><i class="fa fa-clock-o"></i> Waiting Approval</span>
+                                                            @else
+                                                                <label class="switch">
+                                                                <input onchange="update_published(this)" value="{{ $product->id }}" type="checkbox" <?php if($product->published == 1) echo "checked";?> >
+                                                                <span class="slider round"></span></label>
+                                                            @endif
                                                         </td>
-                                                        <td style="text-align: center"><label class="switch">
-                                                            <input onchange="update_featured(this)" value="{{ $product->id }}" type="checkbox" <?php if($product->featured == 1) echo "checked";?> >
-                                                            <span class="slider round"></span></label>
+                                                        <td style="text-align: center">
+                                                            @if ($product->published = 0)
+                                                                <span class="badge badge-warning" ><i class="fa fa-clock-o"></i> Waiting Approval</span>
+                                                            @else
+                                                                <label class="switch">
+                                                                <input onchange="update_featured(this)" value="{{ $product->id }}" type="checkbox" <?php if($product->featured == 1) echo "checked";?> >
+                                                                <span class="slider round"></span></label>
+                                                            @endif
                                                         </td>
                                                         <td style="text-align: center">
                                                             <div class="dropdown">
                                                                 <button class="btn" type="button" id="dropdownMenuButton-{{ $key }}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                                     <i class="fa fa-ellipsis-v"></i>
                                                                 </button>
-        
+
                                                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton-{{ $key }}">
                                                                     <a href="{{route('seller.products.edit', encrypt($product->id))}}" class="dropdown-item">{{__('Edit')}}</a>
                                                                     <button onclick="confirm_modal('{{route('products.destroy', $product->id)}}')" class="dropdown-item">{{__('Delete')}}</button>

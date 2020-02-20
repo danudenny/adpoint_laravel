@@ -1,11 +1,30 @@
 <div class="sidebar sidebar--style-3 no-border stickyfill p-0">
     <div class="widget mb-0">
         <div class="widget-profile-box text-center p-3">
-            <div class="image" style="background-image:url('{{ asset(Auth::user()->avatar_original) }}')"></div>
+            <div class="image" style="background-image:url('{{ asset(Auth::user()->avatar_original) }}')">
+                @if(Auth::user()->seller->verification_status == 1)
+                    <img src="{{ asset('frontend/images/icons/verified.png') }}" alt="" width="50" style="position:absolute; top: 60px;">
+                @else
+                    <img src="{{ asset('frontend/images/icons/non_verified.png') }}" alt="" width="50" style="position:absolute; top: 60px;">
+                @endif
+            </div>
             @if(Auth::user()->seller->verification_status == 1)
-                <div class="name mb-0">{{ Auth::user()->name }} <span class="ml-2"><i class="fa fa-check-circle" style="color:green"></i></span></div>
+                <div class="name mb-0">{{ Auth::user()->name }} <img src="{{ asset('frontend/images/icons/verified-account.png') }}" alt=""></div>
             @else
-                <div class="name mb-0">{{ Auth::user()->name }} <span class="ml-2"><i class="fa fa-times-circle" style="color:red"></i></span></div>
+
+                @if (Auth::user()->seller->verification_status == 0)
+                    <div class="name mb-0">{{ Auth::user()->name }}</div>
+                    <div>
+                        <a href="{{ route('shop.verify') }}" type="button" class="btn btn-warning"><i class="fa fa-clock-o text-default"></i> Waiting for Verified</a>
+                    </div>
+                @else
+                    <div class="name mb-0">{{ Auth::user()->name }}
+                        <span class="ml-2"><i class="fa fa-times-circle text-danger"></i></span>
+                    </div>
+                    <div>
+                        <a href="{{ route('shop.verify') }}" type="button" class="btn btn-danger">Verify Account</a>
+                    </div>
+                @endif
             @endif
         </div>
         <div class="sidebar-widget-title py-3">
@@ -31,9 +50,17 @@
                 </li>
                 <li>
                     <a href="{{ route('trx.page.buyer') }}" class="{{ areActiveRoutesHome(['trx.page.buyer'])}}">
-                        <i class="la la-file-text"></i>
+                        <i class="la la-exchange"></i>
                         <span class="category-name">
                             {{__('My Transaction')}}
+                        </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('wishlists.index') }}" class="{{ areActiveRoutesHome(['wishlists.index'])}}">
+                        <i class="la la-heart"></i>
+                        <span class="category-name">
+                            {{__('My Wishlist')}}
                         </span>
                     </a>
                 </li>
@@ -55,74 +82,73 @@
                 </li>
             </ul>
         </div>
-        <div class="sidebar-widget-title py-3">
-            <span>{{__('Seller Menu')}}</span>
-        </div>
-        <div class="widget-profile-menu py3">
-            <ul class="categories categories--style-3">
-                <li>
-                    <a href="{{ route('seller.products') }}" class="{{ areActiveRoutesHome(['seller.products', 'seller.products.upload', 'seller.products.edit'])}}">
-                        <i class="la la-diamond"></i>
-                        <span class="category-name">
-                            {{__('Products')}}
-                        </span>
-                    </a>
-                </li>
-                <li>
-                    <a href="{{ route('orders.index') }}" class="{{ areActiveRoutesHome(['orders.index'])}}">
-                        <i class="la la-file-text"></i>
-                        <span class="category-name">
-                            {{__('Orders')}}
-                        </span>
-                    </a>
-                </li>
-                <li>
-                    <a href="{{ route('reviews.seller') }}" class="{{ areActiveRoutesHome(['reviews.seller'])}}">
-                        <i class="la la-star-o"></i>
-                        <span class="category-name">
-                            {{__('Product Reviews')}}
-                        </span>
-                    </a>
-                </li>
-                <li>
-                    <a href="{{ route('shops.index') }}" class="{{ areActiveRoutesHome(['shops.index'])}}">
-                        <i class="la la-cog"></i>
-                        <span class="category-name">
-                            {{__('Shop Setting')}}
-                        </span>
-                    </a>
-                </li>
-                <li>
-                    <a href="{{ route('payments.index') }}" class="{{ areActiveRoutesHome(['payments.index'])}}">
-                        <i class="la la-cc-mastercard"></i>
-                        <span class="category-name">
-                            {{__('Payment History')}}
-                        </span>
-                    </a>
-                </li>
-                @if (\App\BusinessSetting::where('type', 'wallet_system')->first()->value == 1)
+        @if (Auth::user()->seller->verification_status == 1)
+            <div class="sidebar-widget-title py-3">
+                <span>{{__('Seller Menu')}}</span>
+            </div>
+            <div class="widget-profile-menu py3">
+                <ul class="categories categories--style-3">
                     <li>
-                        <a href="{{ route('wallet.index') }}" class="{{ areActiveRoutesHome(['wallet.index'])}}">
-                            <i class="la la-dollar"></i>
+                        <a href="{{ route('seller.products') }}" class="{{ areActiveRoutesHome(['seller.products', 'seller.products.upload', 'seller.products.edit'])}}">
+                            <i class="la la-diamond"></i>
                             <span class="category-name">
-                                {{__('My Wallet')}}
+                                {{__('Products')}}
                             </span>
                         </a>
                     </li>
-                @endif
-            </ul>
-        </div>
-        
-
-        <div class="sidebar-widget-title py-3">
-            <span>{{__('Earnings')}}</span>
-        </div>
-        <div class="widget-balance pb-3 pt-1">
+                    <li>
+                        <a href="{{ route('orders.index') }}" class="{{ areActiveRoutesHome(['orders.index'])}}">
+                            <i class="la la-file-text"></i>
+                            <span class="category-name">
+                                {{__('Orders')}}
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('reviews.seller') }}" class="{{ areActiveRoutesHome(['reviews.seller'])}}">
+                            <i class="la la-star-o"></i>
+                            <span class="category-name">
+                                {{__('Product Reviews')}}
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('shops.index') }}" class="{{ areActiveRoutesHome(['shops.index'])}}">
+                            <i class="la la-cog"></i>
+                            <span class="category-name">
+                                {{__('Vendor Setting')}}
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('payments.index') }}" class="{{ areActiveRoutesHome(['payments.index'])}}">
+                            <i class="la la-cc-mastercard"></i>
+                            <span class="category-name">
+                                {{__('Payment History')}}
+                            </span>
+                        </a>
+                    </li>
+                    @if (\App\BusinessSetting::where('type', 'wallet_system')->first()->value == 1)
+                        <li>
+                            <a href="{{ route('wallet.index') }}" class="{{ areActiveRoutesHome(['wallet.index'])}}">
+                                <i class="la la-dollar"></i>
+                                <span class="category-name">
+                                    {{__('My Wallet')}}
+                                </span>
+                            </a>
+                        </li>
+                    @endif
+                </ul>
+            </div>
+            <div class="sidebar-widget-title py-3">
+                <span>{{__('Earnings')}}</span>
+            </div>
+            <div class="widget-balance pb-3 pt-1">
             <div class="text-center">
                 <div class="heading-4 strong-700 mb-4">
                     @php
                         $orders = \App\Order::where('seller_id', Auth::user()->id)->where('created_at', '>=', date('-30d'))->get();
-                        
+
                         $total = 0;
                         foreach ($orders as $key => $o) {
                             if($o->approved == 1){
@@ -174,5 +200,7 @@
 
             </table>
         </div>
+        @endif
+
     </div>
 </div>
