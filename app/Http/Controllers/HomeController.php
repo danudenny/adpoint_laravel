@@ -610,4 +610,20 @@ class HomeController extends Controller
         return response()->json(['success' => true],200);
     }
 
+
+    public function notification()
+    {
+        return view('frontend.dropdown.dropdown_notif');
+    }
+
+    public function notif_buyer()
+    {
+        return view('frontend.dropdown.notif_buyer');
+    }
+
+    public function notif_seller()
+    {
+        return view('frontend.dropdown.notif_seller');
+    }
+
 }

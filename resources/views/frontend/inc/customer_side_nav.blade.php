@@ -27,9 +27,17 @@
                 </li>
                 <li>
                     <a href="{{ route('trx.page.buyer') }}" class="{{ areActiveRoutesHome(['trx.page.buyer'])}}">
-                        <i class="la la-file-text"></i>
+                        <i class="la la-exchange"></i>
                         <span class="category-name">
                             {{__('My Transaction')}}
+                        </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('wishlists.index') }}" class="{{ areActiveRoutesHome(['wishlists.index'])}}">
+                        <i class="la la-heart"></i>
+                        <span class="category-name">
+                            {{__('My Wishlist')}}
                         </span>
                     </a>
                 </li>

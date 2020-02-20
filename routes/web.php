@@ -122,6 +122,11 @@ Route::get('/privacypolicy', 'HomeController@privacypolicy')->name('privacypolic
 
 Route::group(['middleware' => ['user', 'verified', 'auth']], function(){
 	Route::get('/dashboard', 'HomeController@dashboard')->name('dashboard');
+
+	Route::get('/notification', 'HomeController@notification')->name('notif.loading');
+	Route::get('/notif-buyer', 'HomeController@notif_buyer')->name('notif.buyer');
+	Route::get('/notif-seller', 'HomeController@notif_seller')->name('notif.seller');
+
 	Route::get('/profile', 'HomeController@profile')->name('profile');
 	Route::post('/customer/update-profile', 'HomeController@customer_update_profile')->name('customer.profile.update');
 	Route::post('/seller/update-profile', 'HomeController@seller_update_profile')->name('seller.profile.update');
