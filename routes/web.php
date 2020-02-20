@@ -175,7 +175,7 @@ Route::group(['prefix' =>'seller', 'middleware' => ['seller', 'verified']], func
 	Route::get('/product/{id}/edit', 'HomeController@show_product_edit_form')->name('seller.products.edit');
 	Route::resource('payments','PaymentController');
 
-	Route::get('/shop/apply_for_verification', 'ShopController@verify_form')->name('shop.verify');
+	Route::get('/shop/apply_for_verification', 'ShopController@verify_form')->name('update_password');
 	Route::post('/shop/apply_for_verification', 'ShopController@verify_form_store')->name('shop.verify.store');
 
 	Route::get('/reviews', 'ReviewController@seller_reviews')->name('reviews.seller');

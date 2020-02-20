@@ -32,6 +32,8 @@ Route::group(['middleware' => ['auth.jwt','jsonify']], function () {
     Route::post('product/add', 'Api\ProductCtrl@store');
     Route::put('product/edit/{id}', 'Api\ProductCtrl@update');
     Route::delete('product/{id}', 'Api\ProductCtrl@destroy');
+    Route::get('product_bycategory/{category_id}', 'Api\ProductCtrl@product_bycategory');
+    Route::get('product_bycategoryseller/{category_id}', 'Api\ProductCtrl@product_bycategoryseller');
 
     // Brands
     Route::get('brands', 'Api\BrandCtrl@index');

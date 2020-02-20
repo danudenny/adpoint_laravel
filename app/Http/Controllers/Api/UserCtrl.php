@@ -74,6 +74,7 @@ class UserCtrl extends Controller
      * )
      */
     public function profile() {
-        return auth('api')->user();
+        $profile = auth('api')->user();
+        return response()->json(array($profile));
     }
 }

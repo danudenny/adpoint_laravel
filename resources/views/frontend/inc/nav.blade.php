@@ -132,7 +132,7 @@
                                 </span>
                             </a>
                         </li>
-                        
+
                         <li>
                             <a href="{{ route('wishlists.index') }}">
                                 <i class="la la-heart-o"></i>
@@ -159,7 +159,7 @@
                                 </a>
                             </li>
                         @endif
-                        
+
 
                         <li>
                             <a href="{{ route('compare') }}">
@@ -311,7 +311,7 @@
     </div>
     <!-- end mobile menu -->
 
-    <div class="position-relative logo-bar-area">
+    <div class="logo-bar-area" style="position: fixed; top: 0; width: 100%;">
         <div class="p-2">
             <div class="container">
                 <div class="row no-gutters align-items-center">
