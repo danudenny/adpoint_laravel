@@ -1,5 +1,5 @@
 <style>
-    @media (max-width: 1440px) {
+    @media (max-width: 1920px) {
         .fa-pulse {
             color: red;
             display: inline-block;
@@ -166,7 +166,7 @@
                                 </span>
                             </a>
                         </li>
-                        
+
                         <li>
                             <a href="{{ route('wishlists.index') }}">
                                 <i class="la la-heart-o"></i>
@@ -193,7 +193,7 @@
                                 </a>
                             </li>
                         @endif
-                        
+
 
                         <li>
                             <a href="{{ route('compare') }}">
