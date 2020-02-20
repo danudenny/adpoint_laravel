@@ -1,9 +1,26 @@
+<style>
+    .nav-hmm {
+        border: none !important;
+        border-top-left-radius: 0 !important;
+        border-top-right-radius: 0 !important;
+        color: black !important;
+    }
+    .nav-hmm:hover {
+        background: orange;
+    }
+    .nav-hmm:active {
+        background: orange !important;
+    }
+    .nav-hmm:focus {
+        background: orange !important;
+    }
+</style>
 <div class="dropdown-cart-items c-scrollbar">
     <div class="dc-item">
         <div class="">
             <div class="nav nav-justified nav-tabs" onclick="changeTab(event)" id="myTab" role="tablist">
-                <a class="nav-link nav-item active" id="notif-buyer-tab" data-url="{{ route('notif.buyer') }}" data-toggle="tab" href="#notif-buyer" role="tab" aria-controls="notif-buyer" aria-selected="true">Buyer</a>
-                <a class="nav-link nav-item" id="notif-seller-tab" data-url="{{ route('notif.seller') }}" data-toggle="tab" href="#notif-seller" role="tab" aria-controls="notif-seller" aria-selected="false">Seller</a>
+                <a class="nav-link nav-hmm nav-item active" id="notif-buyer-tab" data-url="{{ route('notif.buyer') }}" data-toggle="tab" href="#notif-buyer" role="tab" aria-controls="notif-buyer" aria-selected="true">Buyer</a>
+                <a class="nav-link nav-hmm nav-item" id="notif-seller-tab" data-url="{{ route('notif.seller') }}" data-toggle="tab" href="#notif-seller" role="tab" aria-controls="notif-seller" aria-selected="false">Seller</a>
             </div>
             <div class="tab-content" id="myTabContent">
                 <div class="tab-pane fade show active" id="notif-buyer" role="tabpanel" aria-labelledby="notif-buyer-tab">

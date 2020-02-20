@@ -45,23 +45,30 @@
 @endphp
 <ul class="list-group list-group-flush">
     <li class="list-group-item list-group-item-action">
-        <a href=""><i class="fa fa-fw fa-shopping-bag"></i> Order Placed</a>
+        <a href="{{ route('orders.index') }}" onclick="moveTab('#nav-order-place','{{ route('orders.place.order') }}')"><i class="fa fa-fw fa-shopping-bag"></i> Order Placed</a>
         <span class="badge badge-danger badge-pill pull-right">{{ count($orderPlaced) }}</span>
     </li>
     <li class="list-group-item list-group-item-action">
-        <a href=""><i class="fa fa-fw fa-sticky-note-o"></i> Order Reviewed</a>
+        <a href="{{ route('orders.index') }}" onclick="moveTab('#nav-onreview','{{ route('orders.review.order') }}')"><i class="fa fa-fw fa-sticky-note-o"></i> Order Reviewed</a>
         <span class="badge badge-danger badge-pill pull-right">{{ count($orderOnReview) }}</span>
     </li>
     <li class="list-group-item list-group-item-action">
-        <a href=""><i class="fa fa-fw fa-calendar-check-o"></i> Order Actived</a>
+        <a href="{{ route('orders.index') }}" onclick="moveTab('#nav-active','{{ route('orders.active.order') }}')"><i class="fa fa-fw fa-calendar-check-o"></i> Order Actived</a>
         <span class="badge badge-danger badge-pill pull-right">{{ count($orderActive) }}</span>
     </li>
     <li class="list-group-item list-group-item-action">
-        <a href=""><i class="fa fa-fw fa-check"></i> Order Completed</a>
+        <a href="{{ route('orders.index') }}" onclick="moveTab('#nav-complete','{{ route('orders.complete.order') }}')"><i class="fa fa-fw fa-check"></i> Order Completed</a>
         <span class="badge badge-danger badge-pill pull-right">{{ count($orderCompleted) }}</span>
     </li>
     <li class="list-group-item list-group-item-action">
-        <a href=""><i class="fa fa-fw fa-exclamation-triangle"></i> Order Cancelled</a>
+        <a href="{{ route('orders.index') }}" onclick="moveTab('#nav-cancel','{{ route('orders.cancelled.order') }}')"><i class="fa fa-fw fa-exclamation-triangle"></i> Order Cancelled</a>
         <span class="badge badge-danger badge-pill pull-right">{{ count($orderCancelled) }}</span>
     </li>
 </ul>
+
+<script>
+    function moveTab(activeTab, routeTab) {
+        localStorage.setItem('activeTabSeller', activeTab);
+        localStorage.setItem('routeTabSeller', routeTab);
+    }
+</script>

@@ -52,7 +52,7 @@
 
             <div class="row">
                 @foreach (\App\Category::limit(6)->get() as $category)
-                    <div class="col-md-2 d-flex justify-content-center">
+                    <div class="col-md-2 col-lg-2 col-sm-4 col-6 d-flex justify-content-center">
                         <div class="box-cat">
                             <img src="{{ asset($category->icon) }}" alt="" class="img-fluid img">
                             <p style="font-size:30px; color: #ffbc01; padding-top: 10px;">{{ $category->products->count() }}</p>

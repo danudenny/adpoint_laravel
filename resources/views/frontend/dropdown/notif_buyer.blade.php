@@ -60,7 +60,7 @@
         <span class="badge badge-danger badge-pill pull-right">{{ count($orderCompleted) }}</span>
     </li>
     <li class="list-group-item list-group-item-action">
-        <a href="{{ route('purchase_history.index') }}" onclick="moveTab('##nav-cancel','{{ route('myorder.cancelled.order') }}')"><i class="fa fa-fw fa-exclamation-triangle"></i> Order Cancelled</a>
+        <a href="{{ route('purchase_history.index') }}" onclick="moveTab('#nav-cancel','{{ route('myorder.cancelled.order') }}')"><i class="fa fa-fw fa-exclamation-triangle"></i> Order Cancelled</a>
         <span class="badge badge-danger badge-pill pull-right">{{ count($orderCancelled) }}</span>
     </li>
 </ul>
