@@ -5,10 +5,11 @@ namespace App\Http\Controllers\Api;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Product;
+use Illuminate\Support\Facades\Auth;
 
 class ProductCtrl extends Controller
 {
-    
+
     /**
      * @OA\Get(
      *     path="/products",
@@ -45,7 +46,7 @@ class ProductCtrl extends Controller
         //
     }
 
-    
+
     /**
      * @OA\Post(
      *     path="/product/add",
@@ -129,7 +130,7 @@ class ProductCtrl extends Controller
                 'message' => 'Data berhasil disimpan'
             ], 200);
         }
-        
+
     }
 
     /**
@@ -213,7 +214,7 @@ class ProductCtrl extends Controller
             $product->brand_id = $request->brand_id;
 
             // edit photos
-            $photos = json_decode($product->photos);            
+            $photos = json_decode($product->photos);
             if ($photos != null) {
                 foreach ($photos as $key => $p) {
                     $this->delete_file($p);
@@ -252,7 +253,7 @@ class ProductCtrl extends Controller
             $product->discount_type = $request->discount_type;
             $product->meta_title = $request->meta_title;
             $product->meta_description = $request->meta_description;
-            
+
             if ($product->meta_img != null) {
                 $this->delete_file($product->meta_img);
                 $product->meta_img = $request->meta_img;
@@ -292,7 +293,7 @@ class ProductCtrl extends Controller
     {
         $path = public_path().'/'.$filename;
         if (file_exists($path)) {
-            unlink($path);    
+            unlink($path);
         }
     }
 
@@ -321,7 +322,7 @@ class ProductCtrl extends Controller
         $product = Product::where('id',$id)->first();
         if ($product != null) {
             if (Product::destroy($id)) {
-                $photos = json_decode($product->photos);            
+                $photos = json_decode($product->photos);
                 if ($photos != null) {
                     foreach ($photos as $key => $p) {
                         $this->delete_file($p);
@@ -351,6 +352,74 @@ class ProductCtrl extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'Data tidak ada'
+            ], 401);
+        }
+    }
+
+    /**
+     * @OA\Get(
+     *     path="/product_bycategory/{category_id}",
+     *     operationId="list product by category id",
+     *     tags={"Products"},
+     *     summary="Display a listing of the product by category id",
+     *     security={{"bearerAuth":{}}},
+     *     @OA\Parameter(
+     *         description="Category ID of product to return",
+     *         in="path",
+     *         name="category_id",
+     *         required=true,
+     *         @OA\Schema(
+     *           type="integer",
+     *           format="int64"
+     *         )
+     *     ),
+     *     @OA\Response(response="200",description="ok"),
+     *     @OA\Response(response="401",description="unauthorized")
+     * )
+     */
+    public function product_bycategory($category_id)
+    {
+        $product = Product::where('category_id', $category_id)->get();
+        if ($product != null) {
+            return response()->json($product, 200);
+        }else{
+            return response()->json([
+                'success' => false,
+                'message' => 'Data tidak ditemukan'
+            ], 401);
+        }
+    }
+
+    /**
+     * @OA\Get(
+     *     path="/product_bycategoryseller/{category_id}",
+     *     operationId="list product by category id and current user",
+     *     tags={"Products"},
+     *     summary="Display a listing of the product by category id and current user",
+     *     security={{"bearerAuth":{}}},
+     *     @OA\Parameter(
+     *         description="Category ID of product to return",
+     *         in="path",
+     *         name="category_id",
+     *         required=true,
+     *         @OA\Schema(
+     *           type="integer",
+     *           format="int64"
+     *         )
+     *     ),
+     *     @OA\Response(response="200",description="ok"),
+     *     @OA\Response(response="401",description="unauthorized")
+     * )
+     */
+    public function product_bycategoryseller($category_id)
+    {
+        $product = Product::where('category_id', $category_id)->where('user_id', Auth::user()->id)->get();
+        if ($product != null) {
+            return response()->json($product, 200);
+        }else{
+            return response()->json([
+                'success' => false,
+                'message' => 'Data tidak ditemukan'
             ], 401);
         }
     }

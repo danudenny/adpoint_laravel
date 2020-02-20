@@ -27,7 +27,7 @@ class LoginCtrl extends Controller
      *                     property="password",
      *                     type="string"
      *                 ),
-     *                 example={"email": "nazmudin@imaniprima.com", "password": "nazmudin"}
+     *                 example={"email": "nazmudin@imaniprima.com", "password": "polisi86"}
      *             )
      *         )
      *     ),
