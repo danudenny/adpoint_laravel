@@ -1313,7 +1313,7 @@ $user = Auth::id();
 @endphp
 
 <script>
-    Pushy.register({ appId: '5e1d3baf2aef376635ee37a6' }).then(function (deviceToken) {
+    Pushy.register({ appId: '5e2bf22ecc95c3343ee338d8' }).then(function (deviceToken) {
         const url = 'http://127.0.0.1:8000/api/pushy_token/register/device';
 
         const data_token = {

@@ -3181,9 +3181,7 @@ ul.seller-brand-list .brand-item {
 /* lg */
 
 section.home-banner-area {
-    /*background: linear-gradient(45deg, rgba(254, 165, 0, 1) 0%, rgb(141, 141, 141) 29%, rgba(242, 185, 79, 1) 100%);*/
     background-image: url("/uploads/banners/bg-1.png");
-    height: 320px;
     background-size: cover;
 }
 
@@ -3220,7 +3218,7 @@ section.home-banner-area {
     }
     .main-banner {
         position: relative;
-        top: 75px;
+        top: 45px;
     }
     .form-filter {
         padding-bottom: 0%;
@@ -3233,13 +3231,13 @@ section.home-banner-area {
         background-size: cover;
     }
     .title-head {
-        font-size: 40px;
+        font-size: 30px;
         color: white;
         text-shadow: 2px 2px 5px #333542;
     }
     .main-banner {
         position: relative;
-        top: 100px;
+        top: 45px;
     }
     .form-filter {
         padding-bottom: 0%;

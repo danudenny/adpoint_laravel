@@ -1,17 +1,17 @@
 <style>
-    .nav-hmm {
+    .nav-cus {
         border: none !important;
         border-top-left-radius: 0 !important;
         border-top-right-radius: 0 !important;
         color: black !important;
     }
-    .nav-hmm:hover {
+    .nav-cus:hover {
         background: orange;
     }
-    .nav-hmm:active {
+    .nav-cus:active {
         background: orange !important;
     }
-    .nav-hmm:focus {
+    .nav-cus:focus {
         background: orange !important;
     }
 </style>
@@ -19,16 +19,20 @@
     <div class="dc-item">
         <div class="">
             <div class="nav nav-justified nav-tabs" onclick="changeTab(event)" id="myTab" role="tablist">
-                <a class="nav-link nav-hmm nav-item active" id="notif-buyer-tab" data-url="{{ route('notif.buyer') }}" data-toggle="tab" href="#notif-buyer" role="tab" aria-controls="notif-buyer" aria-selected="true">Buyer</a>
-                <a class="nav-link nav-hmm nav-item" id="notif-seller-tab" data-url="{{ route('notif.seller') }}" data-toggle="tab" href="#notif-seller" role="tab" aria-controls="notif-seller" aria-selected="false">Seller</a>
+                <a class="nav-link nav-cus nav-item active" id="notif-buyer-tab" data-url="{{ route('notif.buyer') }}" data-toggle="tab" href="#notif-buyer" role="tab" aria-controls="notif-buyer" aria-selected="true">Purchase</a>
+                @if (Auth::user()->user_type == "seller")
+                    <a class="nav-link nav-cus nav-item" id="notif-seller-tab" data-url="{{ route('notif.seller') }}" data-toggle="tab" href="#notif-seller" role="tab" aria-controls="notif-seller" aria-selected="false">Sales</a>
+                @endif
             </div>
             <div class="tab-content" id="myTabContent">
                 <div class="tab-pane fade show active" id="notif-buyer" role="tabpanel" aria-labelledby="notif-buyer-tab">
 
                 </div>
+                @if (Auth::user()->user_type == "seller")
                 <div class="tab-pane fade" id="notif-seller" role="tabpanel" aria-labelledby="notif-seller-tab">
 
                 </div>
+                @endif
             </div>
         </div>
     </div>
@@ -57,6 +61,7 @@
         var url = $(e.target).attr("data-url");
         var href = e.target.hash;
         var pane = $(e.target);
+
         // ajax load from data-url
 
         $(href).load(url,function(result){

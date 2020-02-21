@@ -1,68 +1,40 @@
 @php
-    $orderPlaced = DB::table('orders as o')
-                -> join('order_details as od', 'o.seller_id', '=', 'od.seller_id')
-                -> join('products as p', 'p.id', '=', 'od.product_id')
-                -> orderBy('od.id', 'desc')
-                -> where('o.approved', 1)
-                -> where('od.status', 0)
-                -> where('o.seller_id', Auth::user()->id)
-                -> groupBy('od.id')
-                ->get();
-
-    $orderOnReview = DB::table('orders as o')
-                -> join('order_details as od', 'o.seller_id', '=', 'od.seller_id')
-                -> join('products as p', 'p.id', '=', 'od.product_id')
-                -> orderBy('od.id', 'desc')
-                -> where('od.status', 1)
-                -> where('o.seller_id', Auth::user()->id)
-                -> groupBy('od.id')
-                ->get();
-
-    $orderActive = DB::table('orders as o')
-                -> join('order_details as od', 'o.seller_id', '=', 'od.seller_id')
-                -> join('products as p', 'p.id', '=', 'od.product_id')
-                -> orderBy('od.id', 'desc')
-                -> where('od.status', 3)
-                -> where('o.seller_id', Auth::user()->id)
-                -> groupBy('od.id')
-                ->get();
-    $orderCompleted = DB::table('orders as o')
-                -> join('order_details as od', 'o.seller_id', '=', 'od.seller_id')
-                -> join('products as p', 'p.id', '=', 'od.product_id')
-                -> orderBy('od.id', 'desc')
-                -> where('od.status', 4)
-                -> where('o.seller_id', Auth::user()->id)
-                -> groupBy('od.id')
-                ->get();
-    $orderCancelled = DB::table('orders as o')
-                -> join('order_details as od', 'o.seller_id', '=', 'od.seller_id')
-                -> join('products as p', 'p.id', '=', 'od.product_id')
-                -> orderBy('od.id', 'desc')
-                -> where('od.status', 2)
-                -> where('o.seller_id', Auth::user()->id)
-                -> groupBy('od.id')
-                ->get();
+    $orderPlaced = counting_notif(Auth::user()->user_type, 0, 'o.seller_id')->count();
+    $orderOnReviewed = counting_notif(Auth::user()->user_type, 1, 'o.seller_id')->count();
+    $orderActived = counting_notif(Auth::user()->user_type, 3, 'o.seller_id')->count();
+    $orderCompleted = counting_notif(Auth::user()->user_type, 4, 'o.seller_id')->count();
+    $orderCancelled = counting_notif(Auth::user()->user_type, 2, 'o.seller_id')->count();
 @endphp
 <ul class="list-group list-group-flush">
     <li class="list-group-item list-group-item-action">
         <a href="{{ route('orders.index') }}" onclick="moveTab('#nav-order-place','{{ route('orders.place.order') }}')"><i class="fa fa-fw fa-shopping-bag"></i> Order Placed</a>
-        <span class="badge badge-danger badge-pill pull-right">{{ count($orderPlaced) }}</span>
+        @if ($orderPlaced > 0)
+            <span class="badge badge-danger badge-pill pull-right">{{ $orderPlaced }}</span> 
+        @endif
     </li>
     <li class="list-group-item list-group-item-action">
         <a href="{{ route('orders.index') }}" onclick="moveTab('#nav-onreview','{{ route('orders.review.order') }}')"><i class="fa fa-fw fa-sticky-note-o"></i> Order Reviewed</a>
-        <span class="badge badge-danger badge-pill pull-right">{{ count($orderOnReview) }}</span>
+        @if ($orderOnReviewed > 0)
+            <span class="badge badge-danger badge-pill pull-right">{{ $orderOnReviewed }}</span>
+        @endif
     </li>
     <li class="list-group-item list-group-item-action">
         <a href="{{ route('orders.index') }}" onclick="moveTab('#nav-active','{{ route('orders.active.order') }}')"><i class="fa fa-fw fa-calendar-check-o"></i> Order Actived</a>
-        <span class="badge badge-danger badge-pill pull-right">{{ count($orderActive) }}</span>
+        @if ($orderActived > 0)
+            <span class="badge badge-danger badge-pill pull-right">{{ $orderActived }}</span>  
+        @endif
     </li>
     <li class="list-group-item list-group-item-action">
         <a href="{{ route('orders.index') }}" onclick="moveTab('#nav-complete','{{ route('orders.complete.order') }}')"><i class="fa fa-fw fa-check"></i> Order Completed</a>
-        <span class="badge badge-danger badge-pill pull-right">{{ count($orderCompleted) }}</span>
+        @if ($orderCompleted > 0)
+            <span class="badge badge-danger badge-pill pull-right">{{ $orderCompleted }}</span>  
+        @endif
     </li>
     <li class="list-group-item list-group-item-action">
         <a href="{{ route('orders.index') }}" onclick="moveTab('#nav-cancel','{{ route('orders.cancelled.order') }}')"><i class="fa fa-fw fa-exclamation-triangle"></i> Order Cancelled</a>
-        <span class="badge badge-danger badge-pill pull-right">{{ count($orderCancelled) }}</span>
+        @if ($orderCancelled > 0)
+            <span class="badge badge-danger badge-pill pull-right">{{ $orderCancelled }}</span> 
+        @endif
     </li>
 </ul>
 
