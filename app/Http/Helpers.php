@@ -158,8 +158,7 @@ if (! function_exists('filter_products')) {
     function filter_products($products) {
         if(BusinessSetting::where('type', 'vendor_system_activation')->first()->value == 1){
             return $products->where('published', '1');
-        }
-        else{
+        } else {
             return $products->where('published', '1')->where('added_by', 'admin');
         }
     }

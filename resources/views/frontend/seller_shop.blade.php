@@ -343,11 +343,15 @@
                                         </div>
                                         <div class="price-bar row no-gutters">
                                             <div class="price col-12">
-                                                @if(home_price($product->id) != home_discounted_price($product->id))
-                                                    <del class="old-product-price strong-600">{{ home_base_price($product->id) }}</del>
-                                                    <span class="product-price strong-600">{{ home_discounted_base_price($product->id) }}</span>
+                                                @if (Auth::check())
+                                                    @if(home_price($product->id) != home_discounted_price($product->id))
+                                                        <del class="old-product-price strong-600">{{ home_base_price($product->id) }}</del>
+                                                        <span class="product-price strong-600">{{ home_discounted_base_price($product->id) }}</span>
+                                                    @else
+                                                        <span class="product-price strong-600">{{ home_discounted_base_price($product->id) }}</span>
+                                                    @endif
                                                 @else
-                                                    <span class="product-price strong-600">{{ home_discounted_base_price($product->id) }}</span>
+                                                <span class="product-price strong-600" title="Please login for show price">xxx</span> 
                                                 @endif
                                                 <div class="row">
                                                         <div class="col-12 col-centered">

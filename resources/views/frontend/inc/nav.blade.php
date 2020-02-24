@@ -321,7 +321,7 @@
                         @foreach (\App\Category::all() as $key => $category)
                             <li>
                                 <a href="{{ route('products.category', $category->slug) }}" class="text-truncate">
-                                    <img class="cat-image" src="{{ asset($category->icon) }}" width="13">
+                                    <img class="cat-image" src="{{ asset($category->banner) }}" width="13">
                                     <span>{{ __($category->name) }}</span>
                                 </a>
                             </li>
@@ -563,7 +563,7 @@
                                     @endphp
                                     <li>
                                         <a href="{{ route('products.category', $category->slug) }}">
-                                            <img class="cat-image" src="{{ asset($category->icon) }}" width="30">
+                                            <img class="cat-image" src="{{ asset($category->banner) }}" width="30">
                                             <span class="cat-name">{{ __($category->name) }}</span>
                                         </a>
                                         @if(count($category->subcategories)>0)

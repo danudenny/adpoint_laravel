@@ -399,9 +399,10 @@ input[type="submit"] {
 .box-cat {
     display: inline-block;
     max-width: 150px;
-    border-radius: 3px;
+    border-radius: 8px;
     height: auto;
-    border: 1px solid #ccc;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+    transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
     position: relative;
     overflow: hidden;
     justify-content: space-between;
@@ -409,6 +410,10 @@ input[type="submit"] {
     font-size: 16px;
     font-weight: bold;
     margin-bottom: 10px;
+}
+
+.box-cat:hover {
+    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
 }
 
 .box-cat img {
@@ -3180,6 +3185,14 @@ ul.seller-brand-list .brand-item {
 
 /* lg */
 
+@media (max-width: 576px) {
+    section.home-banner-area {
+        background-image: url("/uploads/banners/bg-1.png");
+        background-size: cover;
+        height: 400px;
+    }
+}
+
 section.home-banner-area {
     background-image: url("/uploads/banners/bg-1.png");
     background-size: cover;
@@ -4775,4 +4788,14 @@ ul.inline-links>li {
 
 .tab-loader {
     text-align: center;
+}
+
+#overlay-text {
+    font-size: 30px;
+    color: #ff7300;
+    position: absolute;
+    text-shadow: 2px 2px 2px #333;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%)
 }
