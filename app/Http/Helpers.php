@@ -445,13 +445,13 @@ if(! function_exists('renderStarRating')){
     }
 }
 
-if (! function_exists('counting_notif')) {
-    function counting_notif($user_type, $status, $column)
+if (! function_exists('orders_notif')) {
+    function orders_notif($user_type, $status, $column)
     {
         if ($user_type == "customer") {
             switch ($status) {
                 case 0:
-                    $query = order_detail_by_user(0, $column, 0);
+                    $query = order_detail_by_user(0, $column, 0 or 1);
                     break;
                 case 1:
                     $query = order_detail_by_user(1, $column, 1);
@@ -489,6 +489,22 @@ if (! function_exists('counting_notif')) {
                 default:
                     break;
             }
+        }
+        return $query;
+    }
+}
+
+if (! function_exists('trx_notif')) {
+    function trx_notif($payment_status, $user_id){
+        switch ($payment_status) {
+            case 0:
+                $query = Transaction::where(['user_id'=>$user_id,'payment_status'=>0])->get();
+                break;
+            case 1:
+                $query = Transaction::where(['user_id'=>$user_id,'payment_status'=>1])->get();
+                break;
+            default:
+                break;
         }
         return $query;
     }

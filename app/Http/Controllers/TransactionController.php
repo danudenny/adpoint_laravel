@@ -15,6 +15,8 @@ use Mail;
 use Auth;
 use DB;
 
+use PDF;
+
 use App\Pushy;
 
 use App\Mail\Order\OrderNotifPaymentBuyer;
@@ -38,6 +40,13 @@ class TransactionController extends Controller
     {
         $inv = Invoice::where('transaction_id', decrypt($id))->first();
         return view('transactions.show_invoice', compact('inv'));
+    }
+
+    public function pdf_invoice(Request $request, $id)
+    {
+        $inv = Invoice::where('transaction_id', $id)->first();
+        $pdf = PDF::loadview('transactions.pdf_inv', compact('inv'));
+        return $pdf->download($inv->code);
     }
 
     public function show_payment(Request $request, $code)

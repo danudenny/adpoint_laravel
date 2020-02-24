@@ -69,6 +69,7 @@
 <link type="text/css" href="{{ asset('frontend/css/slick.css') }}" rel="stylesheet">
 <link type="text/css" href="{{ asset('frontend/css/xzoom.css') }}" rel="stylesheet">
 <link type="text/css" href="{{ asset('frontend/css/jquery.share.css') }}" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/placeholder-loading/dist/css/placeholder-loading.min.css">
 
 
 <style>
@@ -144,8 +145,6 @@
 
 </head>
 <body>
-
-
     <!-- MAIN WRAPPER -->
     <div class="body-wrap shop-default shop-cards shop-tech gry-bg">
 

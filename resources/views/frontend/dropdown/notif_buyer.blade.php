@@ -1,9 +1,9 @@
 @php    
-    $orderPlaced = counting_notif(Auth::user()->user_type, 0, 'o.user_id')->count();
-    $orderOnreviewed = counting_notif(Auth::user()->user_type, 1, 'o.user_id')->count();
-    $orderActived = counting_notif(Auth::user()->user_type, 3, 'o.user_id')->count();
-    $orderCompleted = counting_notif(Auth::user()->user_type, 4, 'o.user_id')->count();
-    $orderCancelled = counting_notif(Auth::user()->user_type, 2, 'o.user_id')->count();
+    $orderPlaced = orders_notif(Auth::user()->user_type, 0, 'o.user_id')->count();
+    $orderOnreviewed = orders_notif(Auth::user()->user_type, 1, 'o.user_id')->count();
+    $orderActived = orders_notif(Auth::user()->user_type, 3, 'o.user_id')->count();
+    $orderCompleted = orders_notif(Auth::user()->user_type, 4, 'o.user_id')->count();
+    $orderCancelled = orders_notif(Auth::user()->user_type, 2, 'o.user_id')->count();
 @endphp
 <ul class="list-group list-group-flush">
     <li class="list-group-item list-group-item-action">
