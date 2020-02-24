@@ -1,4 +1,4 @@
-<?php
+<?php 
 
 use App\Currency;
 use App\BusinessSetting;
@@ -6,7 +6,11 @@ use App\Product;
 use App\SubSubCategory;
 use App\FlashDealProduct;
 use App\FlashDeal;
-
+use App\Transaction;
+use App\Order;
+use App\OrderDetail;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 //highlights the selected navigation on admin panel
 if (! function_exists('areActiveRoutes')) {
     function areActiveRoutes(Array $routes, $output = "active-link")
@@ -438,6 +442,85 @@ if(! function_exists('renderStarRating')){
         $html .= str_repeat($halfStar,$halfStarCount);
         $html .= str_repeat($emptyStar,$emptyStarCount);
         echo $html;
+    }
+}
+
+if (! function_exists('orders_notif')) {
+    function orders_notif($user_type, $status, $column)
+    {
+        if ($user_type == "customer") {
+            switch ($status) {
+                case 0:
+                    $query = order_detail_by_user(0, $column, 0 or 1);
+                    break;
+                case 1:
+                    $query = order_detail_by_user(1, $column, 1);
+                    break;
+                case 2:
+                    $query = order_detail_by_user(2, $column, 1);
+                    break;
+                case 3:
+                    $query = order_detail_by_user(3, $column, 1);
+                    break;
+                case 4:
+                    $query = order_detail_by_user(4, $column, 1);
+                    break;
+                default:
+                    break;
+            }
+        }
+        if ($user_type == "seller") {
+            switch ($status) {
+                case 0:
+                    $query = order_detail_by_user(0, $column, 1);
+                    break;
+                case 1:
+                    $query = order_detail_by_user(1, $column, 1);
+                    break;
+                case 2:
+                    $query = order_detail_by_user(2, $column, 1);
+                    break;
+                case 3:
+                    $query = order_detail_by_user(3, $column, 1);
+                    break;
+                case 4:
+                    $query = order_detail_by_user(4, $column, 1);
+                    break;
+                default:
+                    break;
+            }
+        }
+        return $query;
+    }
+}
+
+if (! function_exists('trx_notif')) {
+    function trx_notif($payment_status, $user_id){
+        switch ($payment_status) {
+            case 0:
+                $query = Transaction::where(['user_id'=>$user_id,'payment_status'=>0])->get();
+                break;
+            case 1:
+                $query = Transaction::where(['user_id'=>$user_id,'payment_status'=>1])->get();
+                break;
+            default:
+                break;
+        }
+        return $query;
+    }
+}
+
+if (! function_exists('order_detail_by_user')) {
+    function order_detail_by_user($status, $column, $approved){
+        $query = DB::table('order_details as od')
+                ->join('orders as o', 'o.id', '=', 'od.order_id')
+                ->where('o.approved', $approved)
+                ->where($column, Auth::user()->id)
+                ->where('od.status', $status)
+                ->select('od.*')
+                ->orderBy('od.id')
+                ->get();
+        return $query;
     }
 }
 

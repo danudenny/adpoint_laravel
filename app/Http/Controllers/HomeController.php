@@ -285,8 +285,16 @@ class HomeController extends Controller
             return Brand::all();
         });
 
+        if (Auth::check()) {
+            if (Auth::user()->user_type === "admin") {
+                return redirect('/admin');
+            }else {
+                return view('frontend.index');
+            }
+        }else {
+            return view('frontend.index');
+        }
 
-        return view('frontend.index');
     }
 
     public function trackOrder(Request $request)
@@ -624,6 +632,11 @@ class HomeController extends Controller
     public function notif_seller()
     {
         return view('frontend.dropdown.notif_seller');
+    }
+
+    public function notif_trx()
+    {
+        return view('frontend.dropdown.notif_trx');
     }
 
 }

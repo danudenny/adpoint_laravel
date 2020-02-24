@@ -149,23 +149,24 @@ class OrderController extends Controller
                     Mail::to($user->email)->send(new OrderSold($seller));
 
                     // pushy notif
-                    // $query = DB::table('pushy_tokens as pt')
-                    //         ->join('users as u', 'u.id', '=', 'pt.user_id')
-                    //         ->where(['u.id' => $o->seller_id])
-                    //         ->select(['pt.*'])
-                    //         ->first();
-                    // dd($query);
-                    // $tokenPushy = $query->device_token;
-                    // $data = array('message' => 'Selamat!. Orderan telah di review, silahkan di lanjutkan');
-                    // $to = array($tokenPushy);
-                    // $options = array(
-                    //     'notification' => array(
-                    //         'badge' => 1,
-                    //         'sound' => 'ping.aiff',
-                    //         'body'  => "Selamat!. Orderan telah di review, silahkan di lanjutkan"
-                    //     )
-                    // );
-                    // Pushy::sendPushNotification($data, $to, $options);
+                    $push = DB::table('pushy_tokens as pt')
+                            ->join('users as u', 'u.id', '=', 'pt.user_id')
+                            ->where(['u.id' => $user->id])
+                            ->select(['pt.*'])
+                            ->first();
+                    if ($push !== null) {
+                        $tokenPushy = $push->device_token;
+                        $data = array('message' => 'New order has been placed, please continue!');
+                        $to = array($tokenPushy);
+                        $options = array(
+                            'notification' => array(
+                                'badge' => 1,
+                                'sound' => 'ping.aiff',
+                                'body'  => "New order has been placed, please continue!"
+                            )
+                        );
+                        Pushy::sendPushNotification($data, $to, $options);
+                    }
                 }
             }
             $request->session()->flash('message', 'TRX'.' '.$trx->code.' '.'Approved');
@@ -278,7 +279,27 @@ class OrderController extends Controller
                     $trx = Transaction::where('id', $order->transaction_id)->first();
                     $trx->status = "ready";
                     $trx->save();
-                    Notification::send(User::where('user_type','admin')->get(),new OrderApproveSellerPush);
+                    // Notification::send(User::where('user_type','admin')->get(),new OrderApproveSellerPush);
+                    // pushy notif
+                    $push = DB::table('pushy_tokens as pt')
+                            ->join('users as u', 'u.id', '=', 'pt.user_id')
+                            ->where(['u.user_type' => 'admin'])
+                            ->select(['pt.*'])
+                            ->first();
+                    if ($push !== null) {
+                        $tokenPushy = $push->device_token;
+                        $data = array('message' => 'The order has been approved by the seller, please continue!');
+                        $to = array($tokenPushy);
+                        $options = array(
+                            'notification' => array(
+                                'badge' => 1,
+                                'sound' => 'ping.aiff',
+                                'body'  => "The order has been approved by the seller, please continue!"
+                            )
+                        );
+                        Pushy::sendPushNotification($data, $to, $options);
+                    }
+
                 }
                 flash('Item '.$product->name.' Approved')->success();
                 return back();
@@ -342,6 +363,25 @@ class OrderController extends Controller
         if ($trx != null) {
             $buyer = User::where('id', $trx->user_id)->first();
             Mail::to($buyer->email)->send(new OrderConfirmation($trx));
+            // pushy notif
+            $push = DB::table('pushy_tokens as pt')
+                    ->join('users as u', 'u.id', '=', 'pt.user_id')
+                    ->where(['u.id' => $buyer->id])
+                    ->select(['pt.*'])
+                    ->first();
+            if ($push !== null) {
+                $tokenPushy = $push->device_token;
+                $data = array('message' => 'The order has been confirmed. please continue to make payment!');
+                $to = array($tokenPushy);
+                $options = array(
+                    'notification' => array(
+                        'badge' => 1,
+                        'sound' => 'ping.aiff',
+                        'body'  => "The order has been confirmed. please continue to make payment!"
+                    )
+                );
+                Pushy::sendPushNotification($data, $to, $options);
+            }
             flash('Trx confirmed')->success();
             $request->session()->flash('message', 'CODE: '.' '.$trx->code.' '.'Confirmed');
             return back();
@@ -415,7 +455,27 @@ class OrderController extends Controller
             $confirm_payment->bukti = $request->bukti->store('uploads/bukti_transfer');
             $confirm_payment->approved = 0;
             $confirm_payment->save();
-            $trx = Transaction::where('id', $request->trx_id)->first();
+            
+            $user_id = $trx->user_id;
+            $buyer_name = User::where('id', $user_id)->first()->name;
+            $push = DB::table('pushy_tokens as pt')
+                        ->join('users as u', 'u.id', '=', 'pt.user_id')
+                        ->where(['u.user_type' => 'admin'])
+                        ->select(['pt.*'])
+                        ->first();
+            if ($push !== null) {
+                $tokenPushy = $push->device_token;
+                $data = array('message' => 'New payment entered from '.$buyer_name);
+                $to = array($tokenPushy);
+                $options = array(
+                    'notification' => array(
+                        'badge' => 1,
+                        'sound' => 'ping.aiff',
+                        'body'  => "New payment entered from ".$buyer_name
+                    )
+                );
+                Pushy::sendPushNotification($data, $to, $options);
+            }
             flash('Order confirmed')->success();
             $request->session()->flash('message', 'Transaction paid!');
             return redirect('transaction');
@@ -436,6 +496,7 @@ class OrderController extends Controller
                         ->where('od.id', $request->id)
                         ->select([
                             'od.*',
+                            'b.id as buyer_id',
                             'b.name as buyer_name',
                             'b.email as buyer_email',
                             'p.name as product_name',
@@ -445,6 +506,24 @@ class OrderController extends Controller
             $item->status = 3; // activated
             $item->save();
             Mail::to($query->buyer_email)->send(new OrderActive($query));
+            $push = DB::table('pushy_tokens as pt')
+                        ->join('users as u', 'u.id', '=', 'pt.user_id')
+                        ->where(['u.id' => $query->buyer_id])
+                        ->select(['pt.*'])
+                        ->first();
+            if ($push !== null) {
+                $tokenPushy = $push->device_token;
+                $data = array('message' => 'order has been activated');
+                $to = array($tokenPushy);
+                $options = array(
+                    'notification' => array(
+                        'badge' => 1,
+                        'sound' => 'ping.aiff',
+                        'body'  => "order has been activated"
+                    )
+                );
+                Pushy::sendPushNotification($data, $to, $options);
+            }
             flash('Item '.$query->product_name.' Activated!')->success();
             return back()->with('popup', 'open');
         }else {
@@ -464,6 +543,7 @@ class OrderController extends Controller
                         ->where('od.id', decrypt($id))
                         ->select([
                             'od.*',
+                            'b.id as buyer_id',
                             'b.name as buyer_name',
                             'b.email as buyer_email',
                             'p.name as product_name',
@@ -476,6 +556,24 @@ class OrderController extends Controller
             $product->save();
             $order_detail->save();
             Mail::to($query->buyer_email)->send(new OrderComplete($query));
+            $push = DB::table('pushy_tokens as pt')
+                        ->join('users as u', 'u.id', '=', 'pt.user_id')
+                        ->where(['u.id' => $query->buyer_id])
+                        ->select(['pt.*'])
+                        ->first();
+            if ($push !== null) {
+                $tokenPushy = $push->device_token;
+                $data = array('message' => 'order has been completed');
+                $to = array($tokenPushy);
+                $options = array(
+                    'notification' => array(
+                        'badge' => 1,
+                        'sound' => 'ping.aiff',
+                        'body'  => "order has been completed"
+                    )
+                );
+                Pushy::sendPushNotification($data, $to, $options);
+            }
             flash('Item '.$query->product_name.' Completed!')->success();
             return back();
         }else {
@@ -595,10 +693,29 @@ class OrderController extends Controller
                 }
             }
         }
+        $buyer_name = Auth::user()->name;
         $buyer_email = Auth::user()->email;
         $data = Transaction::where('id', $trx->id)->first();
         Mail::to($buyer_email)->send(new OrderStart($data));
         // Notification::send(User::where('user_type','admin')->get(),new OrderStartPush);
+        $push = DB::table('pushy_tokens as pt')
+                ->join('users as u', 'u.id', '=', 'pt.user_id')
+                ->where(['u.user_type' => 'admin'])
+                ->select(['pt.*'])
+                ->first();
+        if ($push !== null) {
+            $tokenPushy = $push->device_token;
+            $data = array('message' => 'New transactions from '.$buyer_name);
+            $to = array($tokenPushy);
+            $options = array(
+                'notification' => array(
+                    'badge' => 1,
+                    'sound' => 'ping.aiff',
+                    'body'  => 'New transactions from '.$buyer_name
+                )
+            );
+            Pushy::sendPushNotification($data, $to, $options);
+        }
     }
 
     public function show($id)
@@ -723,14 +840,63 @@ class OrderController extends Controller
     public function post_process_active(Request $request)
     {
         $ap = ActivatedProces::where('order_detail_id', $request->order_detail_id)->first();
+        $order_id = OrderDetail::where('id', $request->order_detail_id)->first()->order_id;
+        $order = Order::where('id', $order_id)->first();
+        $push = DB::table('pushy_tokens as pt')
+            ->join('users as u', 'u.id', '=', 'pt.user_id')
+            ->where(['u.id' =>  $order->user_id])
+            ->select(['pt.*'])
+            ->first();
         if ($ap !== null) {
             $ap->status = $request->status;
             if ($request->status == "1") {
                 $ap->time_1 = now();
+                // pushy notif
+                if ($push !== null) {
+                    $tokenPushy = $push->device_token;
+                    $data = array('message' => 'material editing process is complete');
+                    $to = array($tokenPushy);
+                    $options = array(
+                        'notification' => array(
+                            'badge' => 1,
+                            'sound' => 'ping.aiff',
+                            'body'  => "material editing process is complete"
+                        )
+                    );
+                    Pushy::sendPushNotification($data, $to, $options);
+                }
             }else if($request->status == "2"){
                 $ap->time_2 = now();
+                // pushy notif
+                if ($push !== null) {
+                    $tokenPushy = $push->device_token;
+                    $data = array('message' => 'media installation process is complete');
+                    $to = array($tokenPushy);
+                    $options = array(
+                        'notification' => array(
+                            'badge' => 1,
+                            'sound' => 'ping.aiff',
+                            'body'  => "media installation process is complete"
+                        )
+                    );
+                    Pushy::sendPushNotification($data, $to, $options);
+                }
             }else if($request->status == "3"){
                 $ap->time_3 = now();
+                // pushy notif
+                if ($push !== null) {
+                    $tokenPushy = $push->device_token;
+                    $data = array('message' => 'process is complete, ready to active or aired');
+                    $to = array($tokenPushy);
+                    $options = array(
+                        'notification' => array(
+                            'badge' => 1,
+                            'sound' => 'ping.aiff',
+                            'body'  => "process is comple, ready to active or airedte"
+                        )
+                    );
+                    Pushy::sendPushNotification($data, $to, $options);
+                }
             }
             $ap->save();
             return 1;

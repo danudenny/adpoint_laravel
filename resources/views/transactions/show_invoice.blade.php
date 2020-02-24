@@ -1,7 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-
     <div class="panel">
     	<div class="panel-body">
     		<div class="invoice-masthead">
@@ -133,7 +132,7 @@
     			</div>
     		</div>
     		<div class="text-right no-print">
-    			<a href="#" class="btn btn-default"><i class="demo-pli-printer icon-lg"></i></a>
+    			<a target="_blank" href="{{ route('transaction.pdf.invoice', $inv->id) }}" class="btn btn-default"><i class="demo-pli-printer icon-lg"></i></a>
     		</div>
     	</div>
     </div>

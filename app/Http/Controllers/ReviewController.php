@@ -8,6 +8,7 @@ use App\Product;
 use App\OrderDetail;
 use Auth;
 use DB;
+use App\Pushy;
 
 class ReviewController extends Controller
 {
@@ -60,6 +61,25 @@ class ReviewController extends Controller
                 $product->rating = 0;
             }
             $product->save();
+            // pushy notif
+            $push = DB::table('pushy_tokens as pt')
+                    ->join('users as u', 'u.id', '=', 'pt.user_id')
+                    ->where(['u.id' => $product->user_id])
+                    ->select(['pt.*'])
+                    ->first();
+            if ($push !== null) {
+                $tokenPushy = $push->device_token;
+                $data = array('message' => 'Your product has been reviewed by the buyer');
+                $to = array($tokenPushy);
+                $options = array(
+                    'notification' => array(
+                        'badge' => 1,
+                        'sound' => 'ping.aiff',
+                        'body'  => "Your product has been reviewed by the buyer"
+                    )
+                );
+                Pushy::sendPushNotification($data, $to, $options);
+            }
             flash('Review has been submitted successfully')->success();
             return back();
         }
