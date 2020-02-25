@@ -64,7 +64,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    
+
                                     <div class="{{ $errors->has('brand_id') ? 'has-error' : ''}}">
                                         <div class="row">
                                             <div class="col-md-2">
@@ -73,7 +73,7 @@
                                             <div class="col-md-10">
                                                 <div class="mb-3">
                                                     <select class="form-control mb-3 selectpicker" data-placeholder="Select a media partner" id="brands" name="brand_id">
-    
+
                                                     </select>
                                                 </div>
                                                 <strong class="text-danger">{!! $errors->first('brand_id', '<p class="help-block">:message</p>') !!}</strong>
@@ -173,7 +173,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    
+
                                     <div class="{{ $errors->has('featured_img') ? 'has-error' : ''}}">
                                         <div class="row">
                                             <div class="col-md-2">
@@ -211,7 +211,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    
+
                                 </div>
                             </div>
                             <div class="form-box bg-white mt-4" hidden>
@@ -241,7 +241,7 @@
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <div class="form-box bg-white mt-4">
                                     <div class="form-box-title px-3 py-2">
                                         {{__('Meta Tags')}}
@@ -258,7 +258,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        
+
                                         <div class="{{ $errors->has('meta_description') ? 'has-error' : ''}}">
                                             <div class="row">
                                                 <div class="col-md-2">
@@ -376,7 +376,7 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody id="body_variations">
-                                                    
+
                                                 </tbody>
                                             </table>
                                         </div>
@@ -437,9 +437,10 @@
                                 <div class="form-box-title px-3 py-2">
                                     {{__('Lokasi')}}
                                 </div>
+                                <input id="pac-input" style="cursor:pointer;" class="form-control" type="text" placeholder="Masukkan alamat yang anda cari disini">
+
                                 <div class="form-box-content p-3">
-                                    
-                                    <input id="pac-input" style="cursor:pointer;" class="controls" type="text" placeholder="Search Box">
+
                                     <div id="addProductMap" class="map mb-3"></div>
                                     <input type="hidden" class="form-control mb-3" name="latlong" id="latlong">
 
@@ -449,12 +450,12 @@
                                                 <label>{{__('Alamat')}}</label>
                                             </div>
                                             <div class="col-md-10">
-                                                <textarea name="alamat" class="form-control mb-3" id="alamat" cols="20" rows="5" autocomplete="off">{{ old('name') }}"</textarea>
+                                                <textarea name="alamat" class="form-control mb-3" id="alamat" cols="20" rows="5" autocomplete="off">{{ old('name') }}</textarea>
                                                 <strong class="text-danger">{!! $errors->first('alamat', '<p class="help-block">:message</p>') !!}</strong>
                                             </div>
                                         </div>
                                     </div>
-                                    
+
                                     <div class="{{ $errors->has('provinsi') ? 'has-error' : ''}}">
                                         <div class="row">
                                             <div class="col-md-2">
@@ -468,7 +469,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    
+
                                     <div class="{{ $errors->has('kota') ? 'has-error' : ''}}">
                                         <div class="row">
                                             <div class="col-md-2">
@@ -476,13 +477,13 @@
                                             </div>
                                             <div class="col-md-10">
                                                 <select name="kota" id="kab" class="form-control mb-3">
-                                                    
+
                                                 </select>
                                                 <strong class="text-danger">{!! $errors->first('kota', '<p class="help-block">:message</p>') !!}</strong>
                                             </div>
                                         </div>
                                     </div>
-                                    
+
                                     <div class="{{ $errors->has('kecamatan') ? 'has-error' : ''}}">
                                         <div class="row">
                                             <div class="col-md-2">
@@ -490,22 +491,22 @@
                                             </div>
                                             <div class="col-md-10">
                                                 <select name="kecamatan" id="kec" class="form-control mb-3">
-                                                    
+
                                                 </select>
                                                 <strong class="text-danger">{!! $errors->first('kecamatan', '<p class="help-block">:message</p>') !!}</strong>
                                             </div>
                                         </div>
                                     </div>
-                                    
+
                                 </div>
                             </div>
-                            
+
                             <div class="form-box bg-white mt-4">
                                 <div class="form-box-title px-3 py-2">
                                     {{__('Demografi Wilayah')}}
                                 </div>
                                 <div class="form-box-content p-3">
-                                    
+
                                     <div class="{{ $errors->has('audien_target') ? 'has-error' : ''}}">
                                         <div class="row">
                                             <div class="col-md-4">
@@ -517,7 +518,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    
+
                                     <div class="{{ $errors->has('statistik_masyarakat') ? 'has-error' : ''}}">
                                         <div class="row">
                                             <div class="col-md-4">
@@ -541,7 +542,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    
+
                                     <div class="{{ $errors->has('target_pendengarradio') ? 'has-error' : ''}}">
                                         <div class="row">
                                             <div class="col-md-4">
@@ -556,7 +557,7 @@
 
                                 </div>
                             </div>
-                            
+
                             <div class="form-box bg-white mt-4">
                                 <div class="form-box-title px-3 py-2">
                                     {{__('PDF Specification')}}
@@ -750,7 +751,7 @@
             var sku_awal = product_name.split(' ');
             var sku_akhir;
             if (sku_awal.length === 1) {
-                sku_akhir = ''; 
+                sku_akhir = '';
             }else{
                 sku_akhir = sku_awal[0][0] + sku_awal[1][0];
             }
@@ -769,7 +770,7 @@
             variations[selected]['qty'] = "10";
             $('#choice_options').attr('value', JSON.stringify(choice_options));
             $('#variations').attr('value', JSON.stringify(variations));
-            
+
             function changeVariations(prop){
                 $('#var_price_'+prop).on('keyup', function(){
                     var value = $(this).val();
@@ -861,7 +862,7 @@
                 delete variations[prop];
                 $('#variations').attr('value', JSON.stringify(variations));
             }
-            
+
         })
 
         // disable scrool input number

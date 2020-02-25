@@ -84,8 +84,10 @@
                 <div class="col-md-2 col-lg-2 col-sm-4 col-6 d-flex justify-content-center">
                     <a href="{{ route('products.category', $les['slug']) }}">
                         <div class="box-cat">
+
                             <img src="{{ asset($les['icon']) }}" alt="" class="img-fluid img">
                             <p id="overlay-text">{{ $les['count'] }}</p>
+
                         </div>
                     </a>
                 </div>

@@ -15,9 +15,11 @@
     <link rel="dns-prefetch" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet" type="text/css">
 
-    
+
     <!--Bootstrap Stylesheet [ REQUIRED ]-->
     <link href="{{ asset('css/bootstrap.min.css')}}" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.2.7/fullcalendar.min.css"/>
 
     <!--active-shop Stylesheet [ REQUIRED ]-->
     <link href="{{ asset('css/active-shop.min.css')}}" rel="stylesheet">
@@ -26,7 +28,7 @@
     <link href="{{ asset('css/demo/active-shop-demo-icons.min.css')}}" rel="stylesheet">
 
     <!--Font Awesome [ OPTIONAL ]-->
-    {{-- <link href="{{ asset('plugins/font-awesome/css/font-awesome.min.css')}}" rel="stylesheet"> --}}
+{{--     <link href="{{ asset('plugins/font-awesome/css/font-awesome.min.css')}}" rel="stylesheet">--}}
     <link rel="stylesheet" href="https://cdnjs.Cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
 
     <!--Switchery [ OPTIONAL ]-->
@@ -59,6 +61,8 @@
     <!--Custom Stylesheet [ REQUIRED ]-->
     <link href="{{ asset('css/custom.css')}}" rel="stylesheet">
 
+    <link rel="stylesheet" href="{{ asset('css/vertical-calendar.css') }}">
+
 
     <!--JAVASCRIPT-->
     <!--=================================================-->
@@ -72,7 +76,7 @@
 
     <!--BootstrapJS [ RECOMMENDED ]-->
     <script src="{{ asset('js/bootstrap.min.js') }}"></script>
-
+    <script src="{{ asset('js/vertical-calendar.js') }}"></script>
 
     <!--active-shop [ RECOMMENDED ]-->
     <script src="{{ asset('js/active-shop.min.js') }}"></script>
@@ -120,6 +124,9 @@
 
     <!--Custom JavaScript [ REQUIRED ]-->
     <script src="{{ asset('js/custom.js')}}"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.2.7/fullcalendar.min.js"></script>
 
     <script type="text/javascript">
 
@@ -193,7 +200,7 @@
                 <div id="addToCart-modal-body" style="margin: 20px; padding: 10px;">
                     <div class="row">
                         <div id="content-body" class="col-md-12 mx-auto">
-                            
+
                         </div>
                     </div>
                 </div>
@@ -229,8 +236,8 @@
     </div>
 
         @yield('script')
-    
-        
+
+
 @auth
 <script src="https://sdk.pushy.me/web/1.0.5/pushy-sdk.js"></script>
 <script src="{{ asset('service-worker.js')}}"></script>
@@ -259,7 +266,7 @@ $user = Auth::id();
             .then(res => console.log(res));
     }).catch(function (err) {
         console.error(err);
-    });    
+    });
 </script>
 @endauth
 
