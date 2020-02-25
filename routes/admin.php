@@ -22,6 +22,7 @@ Route::group(['prefix' =>'admin', 'middleware' => ['auth', 'admin']], function()
 	Route::get('/transaction/show_payment/{id}', 'TransactionController@show_payment')->name('transaction.show.payment');
 	Route::get('/transaction/change_to_paid/{id}', 'TransactionController@change_to_paid')->name('transaction.change.to.paid');
 	Route::get('/transaction/show_invoice/{id}', 'TransactionController@show_invoice')->name('transaction.show.invoice');
+	Route::get('/transaction/pdf_inv/{id}', 'TransactionController@pdf_invoice')->name('transaction.pdf.invoice');
 	Route::get('/transaction/paid_invoice/{id}', 'TransactionController@paid_invoice')->name('transaction.paid.invoice');
 
 	Route::post('/reject/details', 'TransactionController@reject_detail')->name('reject.detail');

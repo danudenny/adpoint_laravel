@@ -9,7 +9,7 @@ use App\OrderDetail;
 use App\Order;
 use Mail;
 use App\Mail\Order\OrderBuktiTayang;
-
+use App\Pushy;
 use DB;
 use Auth;
 
@@ -129,6 +129,7 @@ class EvidenceController extends Controller
                 ->select([
                     'od.*',
                     'b.name as buyer_name',
+                    'b.id as buyer_id',
                     'b.email as buyer_email',
                     'p.name as product_name',
                 ])
@@ -141,6 +142,24 @@ class EvidenceController extends Controller
             if ($order_detail != null) {
                 $order_detail->status = 3; // uploaded
                 Mail::to($query->buyer_email)->send(new OrderBuktiTayang($query));
+                $push = DB::table('pushy_tokens as pt')
+                        ->join('users as u', 'u.id', '=', 'pt.user_id')
+                        ->where(['u.id' => $query->buyer_id])
+                        ->select(['pt.*'])
+                        ->first();
+                if ($push !== null) {
+                    $tokenPushy = $push->device_token;
+                    $data = array('message' => 'bukti tayang has been uploaded');
+                    $to = array($tokenPushy);
+                    $options = array(
+                        'notification' => array(
+                            'badge' => 1,
+                            'sound' => 'ping.aiff',
+                            'body'  => "bukti tayang has been uploaded"
+                        )
+                    );
+                    Pushy::sendPushNotification($data, $to, $options);
+                }
                 $order_detail->save();
             }
             $evidence->no_bukti = $request->no_bukti;

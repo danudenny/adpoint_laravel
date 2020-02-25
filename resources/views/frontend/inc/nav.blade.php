@@ -16,6 +16,21 @@
         }
     }
 
+    .fa-pulse {
+        color: red;
+        display: inline-block;
+        /*position: relative;*/
+        -moz-animation: pulse 1s infinite linear;
+        -o-animation: pulse 1s infinite linear;
+        -webkit-animation: pulse 1s infinite linear;
+        animation: pulse 1s infinite linear;
+        position: absolute;
+        top: -8px;
+        right: -3px;
+        padding: 2px 4px;
+        border-radius: 50%;
+    }
+
     @-webkit-keyframes pulse {
         0% { opacity: 1; }
         50% { opacity: 0; }
@@ -43,18 +58,25 @@
     }
 </style>
 <div class="header bg-white">
-    @auth
-@php
-    $orderPlaced = DB::table('orders as o')
-                -> join('order_details as od', 'o.seller_id', '=', 'od.seller_id')
-                -> join('products as p', 'p.id', '=', 'od.product_id')
-                -> orderBy('od.id', 'desc')
-                -> where('o.approved', 0)
-                -> where('od.status', 0)
-                -> where('o.user_id', Auth::user()->id)
-                -> groupBy('od.id')
-                ->get();
-@endphp
+@auth
+    @php
+        if (Auth::user()->user_type == "customer") {
+            $orderPlaced = orders_notif('customer', 0, 'o.user_id')->count();
+            $orderOnReviewed = orders_notif('customer', 1, 'o.user_id')->count();
+            $orderActived = orders_notif('customer', 3, 'o.user_id')->count();
+            $orderCompleted = orders_notif('customer', 4, 'o.user_id')->count();
+            $orderCancelled = orders_notif('customer', 2, 'o.user_id')->count();
+        }
+        if (Auth::user()->user_type == "seller") {
+            $orderPlaced = orders_notif('seller', 0, 'o.seller_id')->count();
+            $orderOnReviewed = orders_notif('seller', 1, 'o.seller_id')->count();
+            $orderActived = orders_notif('seller', 3, 'o.seller_id')->count();
+            $orderCompleted = orders_notif('seller', 4, 'o.seller_id')->count();
+            $orderCancelled = orders_notif('seller', 2, 'o.seller_id')->count();
+        }
+        $trxUnpaid = trx_notif(0, Auth::user()->id)->count();
+        $trxPaid = trx_notif(1, Auth::user()->id)->count();
+    @endphp
 @endauth
     <!-- mobile menu -->
     <div class="mobile-side-menu d-lg-none">
@@ -484,7 +506,7 @@
                                         <div class="nav-cart-box dropdown" id="head-notif">
                                             <a id="notif-load-btn" class="nav-box-link" style="cursor: pointer">
                                                 <i class="fa fa-bell fa-2x text-dark"></i>
-                                                @if(count($orderPlaced) > 0)
+                                                @if($orderPlaced > 0 || $orderOnReviewed > 0 || $orderActived > 0 || $orderCompleted > 0 || $orderCancelled > 0 || $trxUnpaid > 0 || $trxPaid > 0)
                                                     <span class="badge-header fa-pulse"><i class="fa fa-circle"></i></span>
                                                 @endif
                                             </a>
@@ -633,6 +655,9 @@
 
     function logoutSession(){
         var ls = [
+            'pushyToken',
+            'pushyTokenAppId',
+            'pushyTokenAuth',
             'activeTabBuyer',
             'activeTabSeller',
             'activeTabTrx',

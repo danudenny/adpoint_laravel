@@ -15,6 +15,10 @@ use Mail;
 use Auth;
 use DB;
 
+use PDF;
+
+use App\Pushy;
+
 use App\Mail\Order\OrderNotifPaymentBuyer;
 use App\Mail\Order\OrderNotifPaymentSeller;
 
@@ -38,6 +42,13 @@ class TransactionController extends Controller
         return view('transactions.show_invoice', compact('inv'));
     }
 
+    public function pdf_invoice(Request $request, $id)
+    {
+        $inv = Invoice::where('transaction_id', $id)->first();
+        $pdf = PDF::loadview('transactions.pdf_inv', compact('inv'));
+        return $pdf->download($inv->code);
+    }
+
     public function show_payment(Request $request, $code)
     {
         $confirm_payment = DB::table('confirm_payments as cp')
@@ -58,6 +69,25 @@ class TransactionController extends Controller
             $dataB['buyer_name'] = $buyer->name; 
             $transaction->payment_status = 1;
             $transaction->save();
+            // pushy notif
+            $push = DB::table('pushy_tokens as pt')
+                    ->join('users as u', 'u.id', '=', 'pt.user_id')
+                    ->where(['u.id' => $buyer->id])
+                    ->select(['pt.*'])
+                    ->first();
+            if ($push !== null) {
+                $tokenPushy = $push->device_token;
+                $data = array('message' => 'Thank you for making payment');
+                $to = array($tokenPushy);
+                $options = array(
+                    'notification' => array(
+                        'badge' => 1,
+                        'sound' => 'ping.aiff',
+                        'body'  => "Thank you for making payment"
+                    )
+                );
+                Pushy::sendPushNotification($data, $to, $options);
+            }
             Mail::to($buyer->email)->send(new OrderNotifPaymentBuyer($dataB));
             foreach ($transaction->orders as $key => $o) {
                 $order = Order::where(['id' => $o->id, 'approved' => 1])->first();
@@ -73,6 +103,25 @@ class TransactionController extends Controller
                 }
                 $seller = User::where('id', $o->seller_id)->first();
                 $dataS['seller_name'] = $seller->name;
+                // pushy notif
+                $push = DB::table('pushy_tokens as pt')
+                        ->join('users as u', 'u.id', '=', 'pt.user_id')
+                        ->where(['u.id' => $o->seller_id])
+                        ->select(['pt.*'])
+                        ->first();
+                if ($push !== null) {
+                    $tokenPushy = $push->device_token;
+                    $data = array('message' => 'The order has been paid, please continue');
+                    $to = array($tokenPushy);
+                    $options = array(
+                        'notification' => array(
+                            'badge' => 1,
+                            'sound' => 'ping.aiff',
+                            'body'  => "The order has been paid, please continue"
+                        )
+                    );
+                    Pushy::sendPushNotification($data, $to, $options);
+                }
                 Mail::to($seller->email)->send(new OrderNotifPaymentSeller($dataS));
             }
             $request->session()->flash('message', 'Change to paid success');

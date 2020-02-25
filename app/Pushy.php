@@ -4,7 +4,7 @@ namespace App;
 
 class Pushy {
     static public function sendPushNotification($data, $to, $options) {
-        $apiKey = '6e4669e614e1a5e821acfe880743402cd6c9034c353e8edb6d67ae409b1543aa';
+        $apiKey = '5d469f27c87fcd88ae4b7a15cb3ee3ed7c5dc1b5fd142675b0ec63fb7ccc2eeb';
         $post = $options ?: array();
         $post['to'] = $to;
         $post['data'] = $data;

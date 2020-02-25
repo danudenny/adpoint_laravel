@@ -1,11 +1,12 @@
-self.addEventListener('push', function (e) {
+self.addEventListener('push', function(e) {
 
     if (!(self.Notification && self.Notification.permission === 'granted')) {
         return;
     }
 
     var data = e.data.json() || {};
-    console.log(data)
+
+    console.log(data);
 
     var image = data.image || 'https://sdk.pushy.me/web/assets/img/icon.png';
     var title = data.title || '';
@@ -23,7 +24,7 @@ self.addEventListener('push', function (e) {
     e.waitUntil(self.registration.showNotification(title, options));
 });
 
-self.addEventListener('notificationclick', function (e) {
+self.addEventListener('notificationclick', function(e) {
     e.notification.close();
     var url = e.notification.data.url;
 

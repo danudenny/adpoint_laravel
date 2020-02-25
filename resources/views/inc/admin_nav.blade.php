@@ -62,7 +62,7 @@
             $trxNew = DB::table('transactions')
                         -> orderBy('id', 'desc')
                         -> where('payment_status', 0)
-                        -> whereIn('status', array('confirmed', 'ready'))
+                        -> whereIn('status', array('on proses','confirmed', 'ready'))
                         ->get();
             $ticketNew = DB::table('tickets as t')
                         -> join('users as u', 'u.id', '=', 't.user_id')
@@ -371,7 +371,7 @@
                                 <a href="{{ route('profile.index') }}"><i class="demo-pli-male icon-lg icon-fw"></i> {{__('Profile')}}</a>
                             </li>
                             <li>
-                                <a href="{{ route('logout')}}"><i class="demo-pli-unlock icon-lg icon-fw"></i> {{__('Logout')}}</a>
+                                <a href="{{ route('logout')}}" onclick="logoutSession()"><i class="demo-pli-unlock icon-lg icon-fw"></i> {{__('Logout')}}</a>
                             </li>
                         </ul>
                     </div>
@@ -385,3 +385,17 @@
 
     </div>
 </header>
+
+<script>
+    function logoutSession(){
+        var ls = [
+            'pushyToken',
+            'pushyTokenAppId',
+            'pushyTokenAuth',
+        ];
+
+        ls.forEach(element => {
+            localStorage.removeItem(element);
+        });
+    }
+</script>
