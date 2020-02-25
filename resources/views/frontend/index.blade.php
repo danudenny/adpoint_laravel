@@ -55,7 +55,7 @@
                     <div class="col-md-2 col-lg-2 col-sm-4 col-6 d-flex justify-content-center">
                         <div class="box-cat">
                             <img src="{{ asset($category->icon) }}" alt="" class="img-fluid img">
-                            <p style="font-size:30px; color: #ffbc01; padding-top: 10px;">{{ $category->products->count() }}</p>
+                            <p style="font-size:30px; color: #ffbc01; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">{{ $category->products->count() }}</p>
                         </div>
                     </div>
                 @endforeach

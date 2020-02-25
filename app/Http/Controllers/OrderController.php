@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Category;
 use Illuminate\Http\Request;
 use App\Order;
 use App\User;
@@ -14,6 +15,7 @@ use App\Transaction;
 use App\Invoice;
 use App\Seller;
 use Auth;
+use Calendar;
 use Session;
 use DB;
 use PDF;
@@ -602,7 +604,7 @@ class OrderController extends Controller
                     $order->user_id = Auth::user()->id;
                 }
 
-                $order->address = json_encode($request->session()->get('shipping_info'));               
+                $order->address = json_encode($request->session()->get('shipping_info'));
                 $order->code = 'ODR-'.time().''.$seller_id;
                 $order->transaction_id = $trx->id;
                 $order->seller_id = $seller_id;
@@ -903,6 +905,41 @@ class OrderController extends Controller
         }else {
             return 0;
         }
+    }
+
+    public function slot_available() {
+        $events = [];
+        $data = DB::table('order_details as od')
+                -> join('orders as o', 'o.id', '=', 'od.order_id')
+                -> join('products as p', 'p.id', '=', 'od.product_id')
+                -> where('od.status', 3)
+                -> get();
+//        $data = OrderDetail::all();
+        if($data->count()) {
+            foreach ($data as $key => $value) {
+                $coloraddons = substr($value->code, -3);
+//                if ($value->code) {
+//                    $color = '#33';
+//                } else {
+//                    $color = '#ef0202';
+//                }
+
+                $events[] = Calendar::event(
+                    $value->code .' - '. $value->name,
+                    true,
+                    new \DateTime($value->start_date),
+                    new \DateTime($value->end_date),
+                    null,
+                    [
+                        'color' => '#'.$coloraddons. $value->id,
+                        'url' => 'pass here url and any route',
+                    ]
+                );
+
+            }
+        }
+        $calendar = Calendar::addEvents($events);
+        return view('slot.index', compact('calendar'));
     }
 
 }

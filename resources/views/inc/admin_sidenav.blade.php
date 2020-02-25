@@ -136,6 +136,9 @@
                                         @endif
                                         <a class="nav-link" href="{{ route('transaction.index') }}">{{__('Transaction')}}</a>
                                     </li>
+                                    <li class="{{ areActiveRoutes(['slot.index']) }}">
+                                        <a class="nav-link" href="{{ route('slot.index') }}">{{__('Slot Availability')}}</a>
+                                    </li>
                                 </ul>
                             </li>
                             <li>
