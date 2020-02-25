@@ -77,8 +77,16 @@
                         <div class="row no-border mt-1">
                             <div class="col-md-12">
                                 <div class="tab-content mt-2" id="nav-tabContent">
-                                    <div class="c-nav-load mt-5">
-                                        <i class="fa fa-spin fa-spinner"></i>
+                                    <div class="c-nav-load">
+                                        <div class="ph-item border-0 p-0 mt-3">
+                                            <div class="ph-col-12">
+                                                <div class="ph-row">
+                                                    <div class="ph-col-12 big"></div>
+                                                    <div class="ph-col-12 big"></div>
+                                                    <div class="ph-col-12 big"></div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                     
                                     <div class="tab-pane fade" id="nav-unpaid" role="tabpanel" aria-labelledby="nav-unpaid-tab">

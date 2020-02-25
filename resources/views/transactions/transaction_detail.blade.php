@@ -48,6 +48,8 @@
                                 <i>Checked Seller</i>
                             @elseif ($transaction->status === "confirmed")
                                 <i>Confirmed</i>
+                            @elseif ($transaction->status === "continue")
+                                <i class="text-danger">Waiting pay...</i>
                             @elseif ($transaction->status === "paid")
                                 <i>Paid</i>
                             @elseif ($transaction->status === "cancelled")

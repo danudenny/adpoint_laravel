@@ -1,7 +1,5 @@
 @extends('frontend.layouts.app')
-
 @section('content')
-
     <section class="gry-bg py-4 profile">
         <div class="container">
             <div class="row cols-xs-space cols-sm-space cols-md-space">
@@ -79,8 +77,16 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="tab-content" id="nav-tabContent">
-                                    <div class="c-nav-load mt-5">
-                                        <i class="fa fa-spin fa-spinner"></i>
+                                    <div class="c-nav-load">
+                                        <div class="ph-item border-0 p-0 mt-3">
+                                            <div class="ph-col-12">
+                                                <div class="ph-row">
+                                                    <div class="ph-col-12 big"></div>
+                                                    <div class="ph-col-12 big"></div>
+                                                    <div class="ph-col-12 big"></div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="tab-pane fade" id="nav-order-place" role="tabpanel" aria-labelledby="nav-order-place-tab">
                                         
