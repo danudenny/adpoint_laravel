@@ -288,70 +288,72 @@
                     </form>
                     
                     <div class="row bg-white mt-2">
-                        @if ($products->total() > 0)
-                            <div class="row md-no-gutters gutters-5 p-2">
-                                @foreach ($products as $key => $product)
-                                    <div class="col-md-3 col-6">
-                                        <div class="product-box-2 bg-white alt-box my-2">
-                                            <div class="position-relative overflow-hidden">
-                                                <a href="{{ route('product', $product->slug) }}" class="d-block product-image h-100" style="background-image:url('{{ asset($product->thumbnail_img) }}');" tabindex="0">
-                                                </a>
-                                                <div class="product-btns clearfix">
-                                                    <button class="btn add-wishlist" title="Add to Wishlist" onclick="addToWishList({{ $product->id }})" tabindex="0">
-                                                        <i class="la la-heart-o"></i>
-                                                    </button>
-                                                    <button class="btn add-compare" title="Add to Compare" onclick="addToCompare({{ $product->id }})" tabindex="0">
-                                                        <i class="la la-refresh"></i>
-                                                    </button>
-                                                    <button class="btn quick-view" title="Quick view" onclick="showAddToCartModal({{ $product->id }})" tabindex="0">
-                                                        <i class="la la-eye"></i>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                            <div class="p-3 border-top">
-                                                <h2 class="product-title p-0 text-truncate">
-                                                    <a href="{{ route('product', $product->slug) }}" tabindex="0">{{ __($product->name) }}</a>
-                                                    <a target="_blank" href="{{ route('shop.visit', $product->user->shop->slug) }}">
-                                                        <i class="text-primary">{{ $product->user->shop->name }}</i>
+                        <div class="col-md-12">
+                            @if ($products->total() > 0)
+                                <div class="row md-no-gutters gutters-5 p-2">
+                                    @foreach ($products as $key => $product)
+                                        <div class="col-md-3 col-6">
+                                            <div class="product-box-2 bg-white alt-box my-2">
+                                                <div class="position-relative overflow-hidden">
+                                                    <a href="{{ route('product', $product->slug) }}" class="d-block product-image h-100" style="background-image:url('{{ asset($product->thumbnail_img) }}');" tabindex="0">
                                                     </a>
-                                                </h2>
-                                                <div class="star-rating mb-1">
-                                                    {{ renderStarRating($product->rating) }}
+                                                    <div class="product-btns clearfix">
+                                                        <button class="btn add-wishlist" title="Add to Wishlist" onclick="addToWishList({{ $product->id }})" tabindex="0">
+                                                            <i class="la la-heart-o"></i>
+                                                        </button>
+                                                        <button class="btn add-compare" title="Add to Compare" onclick="addToCompare({{ $product->id }})" tabindex="0">
+                                                            <i class="la la-refresh"></i>
+                                                        </button>
+                                                        <button class="btn quick-view" title="Quick view" onclick="showAddToCartModal({{ $product->id }})" tabindex="0">
+                                                            <i class="la la-eye"></i>
+                                                        </button>
+                                                    </div>
                                                 </div>
-                                                <div class="clearfix">
-                                                    @if (Auth::check())
-                                                        <div class="price-box float-left">
-                                                            @if(home_base_price($product->id) != home_discounted_base_price($product->id))
-                                                                <del class="old-product-price strong-400">{{ home_base_price($product->id) }}</del>
-                                                            @endif
-                                                            <span class="product-price strong-600">{{ home_discounted_base_price($product->id) }}</span>
-                                                        </div>
-                                                    @else 
-                                                        <span class="product-price strong-600" title="Please login for show price">xxx</span>
-                                                    @endif
+                                                <div class="p-3 border-top">
+                                                    <h2 class="product-title p-0 text-truncate">
+                                                        <a href="{{ route('product', $product->slug) }}" tabindex="0">{{ __($product->name) }}</a>
+                                                        <a target="_blank" href="{{ route('shop.visit', $product->user->shop->slug) }}">
+                                                            <i class="text-primary">{{ $product->user->shop->name }}</i>
+                                                        </a>
+                                                    </h2>
+                                                    <div class="star-rating mb-1">
+                                                        {{ renderStarRating($product->rating) }}
+                                                    </div>
+                                                    <div class="clearfix">
+                                                        @if (Auth::check())
+                                                            <div class="price-box float-left">
+                                                                @if(home_base_price($product->id) != home_discounted_base_price($product->id))
+                                                                    <del class="old-product-price strong-400">{{ home_base_price($product->id) }}</del>
+                                                                @endif
+                                                                <span class="product-price strong-600">{{ home_discounted_base_price($product->id) }}</span>
+                                                            </div>
+                                                        @else 
+                                                            <span class="product-price strong-600" title="Please login for show price">xxx</span>
+                                                        @endif
+                                                    </div>
+                                                    <p>
+                                                        {{ substr($product->alamat, 0, 50) }}
+                                                    </p>
                                                 </div>
-                                                <p>
-                                                    {{ substr($product->alamat, 0, 40).' ...' }}
-                                                </p>
                                             </div>
+                                            @if ($product->available === 1)
+                                                <div class="ribbon ribbon-top-left">
+                                                    <span class="bg-success">Available</span>
+                                                </div>
+                                            @else 
+                                                <div class="ribbon ribbon-top-left">
+                                                    <span class="bg-danger">Not Available</span>
+                                                </div>
+                                            @endif
                                         </div>
-                                        @if ($product->available === 1)
-                                            <div class="ribbon ribbon-top-left">
-                                                <span class="bg-success">Available</span>
-                                            </div>
-                                        @else 
-                                            <div class="ribbon ribbon-top-left">
-                                                <span class="bg-danger">Not Available</span>
-                                            </div>
-                                        @endif
-                                    </div>
-                                @endforeach
-                            </div>
-                        @else
-                            <div class="col mt-3 d-flex justify-content-center">
-                                <img src="{{ url('img/not-found.png') }}" alt="">
-                            </div>
-                        @endif
+                                    @endforeach
+                                </div>
+                            @else
+                                <div class="col mt-3 d-flex justify-content-center">
+                                    <img src="{{ url('img/not-found.png') }}" alt="">
+                                </div>
+                            @endif
+                        </div>
                     </div>
                     <div class="row bg-white justify-content-center p-2">
                         <nav aria-label="Center aligned pagination">
@@ -383,6 +385,5 @@
             $('#location').val(encodeURI(e));
             filter();
         }
-        
     </script>
 @endsection

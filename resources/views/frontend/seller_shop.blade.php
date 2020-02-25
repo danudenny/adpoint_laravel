@@ -264,23 +264,19 @@
                                         <div id="category-{{ $key }}" class="collapse">
                                             @foreach (\App\Product::where('user_id', $shop->user->id)->where('category_id', $category->category_id)->select('subcategory_id')->distinct()->get() as $subcategory)
                                                 <div class="single-sub-category">
-                                                    <button class="btn w-100 sub-category-name" type="button" data-toggle="collapse" data-target="#subCategory-{{ $subcategory->subcategory_id }}" aria-expanded="false">
-                                                    {{ App\SubCategory::findOrFail($subcategory->subcategory_id)->name }}
-                                                    </button>
-                                                    <div id="subCategory-{{ $subcategory->subcategory_id }}" class="collapse">
-                                                        <ul class="sub-sub-category-list">
-                                                            @foreach (\App\Product::where('user_id', $shop->user->id)->where('category_id', $category->category_id)->where('subcategory_id', $subcategory->subcategory_id)->select('subcategory_id')->distinct()->get() as $subcategory)
-                                                                @php
-                                                                    $subcategory = App\SubCategory::findOrFail($subcategory->subcategory_id);
-                                                                    foreach (json_decode($subcategory->brands) as $brand) {
-                                                                        if(!in_array($brand, $brands)){
-                                                                            array_push($brands, $brand);
-                                                                        }
+                                                    <ul class="sub-sub-category-list">
+                                                        @foreach (\App\Product::where('user_id', $shop->user->id)->where('category_id', $category->category_id)->where('subcategory_id', $subcategory->subcategory_id)->select('subcategory_id')->distinct()->get() as $subcategory)
+                                                            @php
+                                                                $subcategory = App\SubCategory::findOrFail($subcategory->subcategory_id);
+                                                                foreach (json_decode($subcategory->brands) as $brand) {
+                                                                    if(!in_array($brand, $brands)){
+                                                                        array_push($brands, $brand);
                                                                     }
-                                                                @endphp
-                                                                <li><a href="{{ route('products.subcategory', $subcategory->slug) }}">{{__($subcategory->name) }}</a></li>
-                                                            @endforeach
-                                                    </div>
+                                                                }
+                                                            @endphp
+                                                            <li><a href="{{ route('products.subcategory', $subcategory->slug) }}">{{__($subcategory->name) }}</a></li>
+                                                        @endforeach
+                                                    </ul>
                                                 </div>
                                             @endforeach
                                         </div>

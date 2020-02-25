@@ -59,14 +59,45 @@
                     <h2 class="explore-media">Explore by Media Categories</h2>
                 </div>
             </div>
-
-            <div class="row">
-                @foreach (\App\Category::all() as $key => $category)
+            @php
+                $lessCat = [];
+                $moreCat = [];
+                foreach (\App\Category::all() as $key => $cat) {
+                    if ($key <= 5) {
+                        $lessCat[$key] = [
+                            'icon' => $cat->icon,
+                            'count' => $cat->products->count(),
+                            'slug' => $cat->slug
+                        ];
+                    }else {
+                        $moreCat[$key] = [
+                            'icon' => $cat->icon,
+                            'count' => $cat->products->count(),
+                            'slug' => $cat->slug
+                        ];
+                    }
+                }
+                // dd($lessCat);
+            @endphp
+            <div class="row" id="lessBox">
+                @foreach ($lessCat as $key => $les)
                 <div class="col-md-2 col-lg-2 col-sm-4 col-6 d-flex justify-content-center">
-                    <a href="">
+                    <a href="{{ route('products.category', $les['slug']) }}">
                         <div class="box-cat">
-                            <img src="{{ asset($category->icon) }}" alt="" class="img-fluid img">
-                            <p id="overlay-text">{{ $category->products->count() }}</p>
+                            <img src="{{ asset($les['icon']) }}" alt="" class="img-fluid img">
+                            <p id="overlay-text">{{ $les['count'] }}</p>
+                        </div>
+                    </a>
+                </div>
+                @endforeach
+            </div>
+            <div class="row" id="moreBox" style="display: none">
+                @foreach ($moreCat as $key => $mor)
+                <div class="col-md-2 col-lg-2 col-sm-4 col-6 d-flex justify-content-center">
+                    <a href="{{ route('products.category', $mor['slug']) }}">
+                        <div class="box-cat">
+                            <img src="{{ asset($mor['icon']) }}" alt="" class="img-fluid img">
+                            <p id="overlay-text">{{ $mor['count'] }}</p>
                         </div>
                     </a>
                 </div>
@@ -85,16 +116,16 @@
                 <div class="mt-2 col-md-6 d-flex justify-content-center">
                     <div class="card">
                         <div class="card-body">
-                            <h3 class="card-title">Are You a Seller</h3>
+                            <h3 class="card-title">Are You a Seller?</h3>
                             <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                            <a href="#" class="btn btn-warning">Sell with us</a>
+                            <a href="#" class="btn btn-orange">Sell with us</a>
                         </div>
                     </div>
                 </div>
                 <div class="mt-2 col-md-6 d-flex justify-content-center">
                     <div class="card">
                         <div class="card-body">
-                            <h3 class="card-title">Are You a Buyer</h3>
+                            <h3 class="card-title">Are You a Buyer?</h3>
                             <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
                             <a href="#" class="btn btn-success">Buy Ad Space</a>
                         </div>
@@ -186,7 +217,7 @@
                         </h3>
                     </div>
                     <div class="caorusel-box">
-                        <div class="slick-carousel" data-slick-items="3" data-slick-lg-items="3"  data-slick-md-items="4" data-slick-sm-items="4" data-slick-xs-items="1" data-slick-dots="true" data-slick-rows="4">
+                        <div class="slick-carousel" data-slick-items="3" data-slick-lg-items="3"  data-slick-md-items="2" data-slick-sm-items="1" data-slick-xs-items="1" data-slick-dots="true" data-slick-rows="4">
                             @foreach (filter_products(\App\Product::where('published', 1)->orderBy('num_of_sale', 'desc'))->limit(20)->get() as $key => $product)
                                 <div class="p-2">
                                     <div class="row no-gutters product-box-2 align-items-center">
@@ -212,6 +243,11 @@
                                                 <h2 class="product-title mb-0 p-0 text-truncate-2">
                                                     <a href="{{ route('product', $product->slug) }}">{{ __($product->name) }}</a>
                                                 </h2>
+                                                <div>
+                                                    <a target="_blank" href="{{ route('shop.visit', $product->user->shop->slug) }}">
+                                                        <i class="text-primary">{{ $product->user->shop->name }}</i>
+                                                    </a>
+                                                </div>
                                                 <div class="star-rating star-rating-sm mb-2">
                                                     {{ renderStarRating($product->rating) }}
                                                 </div>
@@ -313,6 +349,13 @@
 
 @section('script')
     <script>
-       
+       $('#moreless-button').on('click', function() {
+            $('#moreBox').slideToggle('fast');
+            if ($('#moreless-button').text() == "Show More") {
+                $(this).text("Show Less");
+            } else {
+                $(this).text("Show More");
+            } 
+       })
     </script>
 @endsection

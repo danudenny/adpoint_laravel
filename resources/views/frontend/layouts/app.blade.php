@@ -869,8 +869,6 @@
             });
             return dataProduct;
         }
-
-        // console.log(getDataProduct());
         var map;
         var key = 'AIzaSyBsVHufr4pDssMKPVCFZO6yXe58oalrtHs';
         var idMap = $('.map').attr('id');
@@ -1293,9 +1291,7 @@
         $('#btn_close').hide();
         $('.triangle-left').hide();
     }
-    // end whatsapp
-
-
+    
     $('#table').DataTable();
     $('.dataTables_filter').addClass('pull-right');
     $('#table_paginate').addClass('pull-right');

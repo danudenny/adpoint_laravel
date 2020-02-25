@@ -153,7 +153,6 @@ class CartController extends Controller
         $data['end_date'] = $request['end_date'];
         $data['advertising'] = null;
 
-        // dd($request->session()->has('cart'));
         if (Auth::check()) {
             if ($product->user_id !== Auth::user()->id) {
                 if($request->session()->has('cart')){
@@ -182,7 +181,7 @@ class CartController extends Controller
                 return view('frontend.partials.same_seller');
             }
         }else{
-            flash(__('Please login!'))->error();
+            return view('frontend.partials.cart_login');
         }
     }
 
