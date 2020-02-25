@@ -118,7 +118,7 @@
                                 <ul class="footer-links">
                                     @foreach (\App\Category::all() as $key => $category)
                                             @if ($key % 2 == 0)
-                                                <li><a href="#" title="">{{ $category->name }}</a></li>
+                                                <li><a href="{{ route('products.category', $category->slug) }}" title="">{{ $category->name }}</a></li>
                                             @endif
                                     @endforeach
                                 </ul>
@@ -127,7 +127,7 @@
                                 <ul class="footer-links">
                                     @foreach (\App\Category::all() as $key => $category)
                                             @if ($key % 2 != 0)
-                                                <li><a href="#" title="">{{ $category->name }}</a></li>
+                                                <li><a href="{{ route('products.category', $category->slug) }}" title="">{{ $category->name }}</a></li>
                                             @endif
                                     @endforeach
                                 </ul>
