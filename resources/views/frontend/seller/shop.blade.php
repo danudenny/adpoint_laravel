@@ -48,19 +48,39 @@
                                         </div>
                                     </div>
                                     <div class="row">
+                                        @php
+                                            $vendor_logo = DB::table('users')
+                                                            -> where('id', Auth::user()->id)
+                                                            ->first();
+                                        @endphp
                                         <div class="col-md-2">
                                             <label>{{__('Logo')}} <small>(120x120)</small></label>
                                         </div>
-                                        <div class="col-md-10">
-                                            <input type="file" name="logo" id="file-2" class="custom-input-file custom-input-file--4" data-multiple-caption="{count} files selected" accept="image/*" />
-                                            <label for="file-2" class="mw-100 mb-3">
-                                                <span></span>
-                                                <strong>
-                                                    <i class="fa fa-upload"></i>
-                                                    {{__('Choose image')}}
-                                                </strong>
-                                            </label>
-                                        </div>
+                                        @if($vendor_logo->avatar_original != null)
+                                            <div class="col-md-10">
+                                                <img src="{{ url($vendor_logo->avatar_original) }}" class="img-fluid img-thumbnail" width="120" alt="">
+                                                <input type="file" name="logo" id="file-2" class="custom-input-file custom-input-file--4" data-multiple-caption="{count} files selected" accept="image/*" />
+                                                <label for="file-2" class="mw-100 mb-3">
+                                                    <span></span>
+                                                    <strong>
+                                                        <i class="fa fa-upload"></i>
+                                                        {{__('Change image')}}
+                                                    </strong>
+                                                </label>
+                                            </div>
+                                        @else
+                                            <div class="col-md-10">
+                                                <input type="file" name="logo" id="file-2" class="custom-input-file custom-input-file--4" data-multiple-caption="{count} files selected" accept="image/*" />
+                                                <label for="file-2" class="mw-100 mb-3">
+                                                    <span></span>
+                                                    <strong>
+                                                        <i class="fa fa-upload"></i>
+                                                        {{__('Choose image')}}
+                                                    </strong>
+                                                </label>
+                                            </div>
+                                        @endif
+
                                     </div>
                                     <div class="row">
                                         <div class="col-md-2">

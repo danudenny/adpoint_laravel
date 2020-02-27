@@ -40,7 +40,9 @@
                         <td width="25%">{{$customer->address}}</td>
                         <td>{{$customer->city}}</td>
                         @if ($customer->verified == 1)
-                            <td><span class="badge badge-success">Verified</span></td>
+                            <td><span class="badge badge-success" title="User approved"><i class="fa fa-check"></i> Verified</span></td>
+                        @elseif($customer->verified == 0 && $customer->is_rejected == 1)
+                            <td><a class="badge badge-danger" title="User has been rejected"><i class="fa fa-times"></i> Rejected</a></td>
                         @else
                             <td><span class="badge badge-danger" onclick="verifyUser({{$customer->id}})" data-toggle="tooltip" data-placement="top" style="cursor: pointer;" title="Verified Now">Not Verified</span></td>
                         @endif
@@ -142,10 +144,11 @@
                 }
                 if (data[0].npwp == '') {
                     $('#npwp').html(`<span class="badge badge-warning">NPWP Tidak ada</span>`);
-                }                
+                }
             }
         })
     }
+
 </script>
 
 @endsection

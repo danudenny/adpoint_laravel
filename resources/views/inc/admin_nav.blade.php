@@ -43,6 +43,7 @@
             $customers = DB::table('users')
                         -> orderBy('id', 'desc')
                         -> where('verified', 0)
+                        -> where('is_rejected', 0)
                         ->get();
             $sellerNotif = DB::table('sellers as s')
                         -> join('users as u', 'u.id', '=', 's.user_id')
