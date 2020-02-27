@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Product;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class ProductCtrl extends Controller
 {
@@ -32,7 +33,11 @@ class ProductCtrl extends Controller
     */
     public function index()
     {
-        $products = Product::paginate(10);
+        $products = DB::table('products as p')
+                    -> join('users as u', 'p.user_id', '=', 'u.id')
+                    -> select('p.*', 'u.name as sellerName', 'u.id as userID', 'u.avatar_original', 'u.city', 'u.address')
+                    -> where('u.user_type', 'seller')
+                    -> paginate(10);
         return response()->json($products, 200);
     }
 
