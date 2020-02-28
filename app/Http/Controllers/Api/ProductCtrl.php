@@ -161,7 +161,12 @@ class ProductCtrl extends Controller
     */
     public function show($id)
     {
-        $product = Product::where('id', $id)->first();
+        $product = DB::table('products as p')
+            -> join('users as u', 'p.user_id', '=', 'u.id')
+            -> select('p.*', 'u.name as sellerName', 'u.id as userID', 'u.avatar_original', 'u.city', 'u.address')
+            -> where('u.user_type', 'seller')
+            -> where('p.id', '=',$id)
+            -> get();
         if ($product != null) {
             return response()->json($product, 200);
         }else{
@@ -384,7 +389,12 @@ class ProductCtrl extends Controller
      */
     public function product_bycategory($category_id)
     {
-        $product = Product::where('category_id', $category_id)->get();
+        $product = DB::table('products as p')
+            -> join('users as u', 'p.user_id', '=', 'u.id')
+            -> select('p.*', 'u.name as sellerName', 'u.id as userID', 'u.avatar_original', 'u.city', 'u.address')
+            -> where('u.user_type', 'seller')
+            -> where('p.category_id', $category_id)
+            -> paginate(10);
         if ($product != null) {
             return response()->json($product, 200);
         }else{
