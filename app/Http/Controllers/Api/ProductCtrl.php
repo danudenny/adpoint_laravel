@@ -410,15 +410,6 @@ class ProductCtrl extends Controller
      *     tags={"Products"},
      *     summary="Display a listing of the product by category id",
      *     security={{"bearerAuth":{}}},
-     *     @OA\Parameter(
-     *         description="category id",
-     *         in="path",
-     *         name="id",
-     *         @OA\Schema(
-     *           type="integer",
-     *           format="int64"
-     *         )
-     *     ),
      *     @OA\Response(response="200",description="ok"),
      *     @OA\Response(response="401",description="unauthorized")
      * )
@@ -448,15 +439,6 @@ class ProductCtrl extends Controller
      *     tags={"Products"},
      *     summary="Display a listing of the product by category id and current user",
      *     security={{"bearerAuth":{}}},
-     *     @OA\Parameter(
-     *         description="category id",
-     *         in="path",
-     *         name="id",
-     *         @OA\Schema(
-     *           type="integer",
-     *           format="int64"
-     *         )
-     *     ),
      *     @OA\Response(response="200",description="ok"),
      *     @OA\Response(response="401",description="unauthorized")
      * )
