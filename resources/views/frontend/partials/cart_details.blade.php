@@ -36,7 +36,11 @@
                                 </td>
                                 <td>
                                     <small>Name:</small><br>
-                                    <strong>{{ $product_name_with_choice }}</strong><br>
+                                    <strong>
+                                        <a href="{{ route('product', $product->slug) }}">
+                                            {{ $product_name_with_choice }}
+                                        </a>    
+                                    </strong><br>
                                     @php
                                         if ($cartItem['Periode'] === 'Harian') {
                                             $end_date = date('d M Y', strtotime($cartItem['start_date']. ' + '.$cartItem['quantity'].' days'));

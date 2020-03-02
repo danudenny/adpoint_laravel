@@ -21,14 +21,19 @@ Route::group(['middleware' => 'jsonify'], function () {
 Route::group(['middleware' => ['auth.jwt','jsonify']], function () {
     // User
     Route::get('users', 'Api\UserCtrl@index');
-    Route::get('user', 'Api\UserCtrl@show');
+    Route::get('user/{id}', 'Api\UserCtrl@show');
     Route::get('profile','Api\UserCtrl@profile');
     // Upload Services
     Route::post('upload', 'Api\UploadCtrl@single_upload');
 
+    // Seller
+    Route::get('sellers', 'Api\SellerCtrl@index');
+    Route::get('visit_shop/{id}', 'Api\SellerCtrl@visit_shop');
+
     // Product
     Route::get('products', 'Api\ProductCtrl@index');
     Route::get('product/{id}', 'Api\ProductCtrl@show');
+    Route::get('product_review/{id}', 'Api\ProductCtrl@product_review');
     Route::post('product/add', 'Api\ProductCtrl@store');
     Route::put('product/edit/{id}', 'Api\ProductCtrl@update');
     Route::delete('product/{id}', 'Api\ProductCtrl@destroy');

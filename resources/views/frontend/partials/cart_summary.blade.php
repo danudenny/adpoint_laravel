@@ -29,7 +29,12 @@
                     $user = \App\User::where('id', $seller_id)->first();
                 @endphp
                 <div data-toggle="collapse" href="#headSeller{{$user->id}}" role="button" aria-expanded="false" aria-controls="headSeller{{$user->id}}" style="height: 40px; background: #FBFBFB; border-bottom: 1px solid #ccc; cursor: pointer;">
-                    <b style="line-height: 40px; margin-left: 10px"># {{ $user->name }}</b>
+                    <b style="line-height: 40px;" class="ml-2">
+                        # {{ $user->name }} 
+                        <span class="pull-right mr-2 text-primary">
+                            <i class="fa fa-eye"></i> Detail
+                        </span>
+                    </b>
                 </div>
                 <div class="collapse" id="headSeller{{$user->id}}">
                     <div class="card-body">
@@ -113,7 +118,7 @@
                         @endphp
                         <tr>
                             <td align="center">
-                                <b>{{__('Grand Total')}}</b>
+                                <b>{{__('GRAND TOTAL')}}</b>
                             </td>
                         </tr>
                         <tr>

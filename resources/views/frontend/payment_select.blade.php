@@ -96,7 +96,7 @@
                                     </a>
                                 </div>
                                 <div class="col-6 text-right">
-                                    <button type="submit" id="complete" style="cursor: not-allowed" class="btn btn-orange btn-circle" disabled>
+                                    <button type="submit" onclick="moveTab('#nav-unpaid','{{ route('trx.unpaid') }}')" id="complete" style="cursor: not-allowed" class="btn btn-orange btn-circle" disabled>
                                         <i class="fa fa-location-arrow"></i> {{__('Place Order')}}
                                     </button>
                                 </div>
@@ -147,5 +147,10 @@
                         </div>`
             $('#detailbank').html(body);
         })
+        
+        function moveTab(activeTab, routeTab) {
+            localStorage.setItem('activeTabTrx', activeTab);
+            localStorage.setItem('routeTabTrx', routeTab);
+        }
     </script>
 @endsection
