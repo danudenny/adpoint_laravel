@@ -29,6 +29,13 @@ namespace App\Http\Controllers\API;
  * @OA\Response(response=200,description="ok")
  * @OA\Response(response=401,description="bad")
  */
+
+//  local 
+//  http://localhost:8000/api
+//  https://localhost:8000/api
+//  public
+//  http://192.168.7.94:8188/api
+//  https://192.168.7.94:8188/api
 class Controller extends \App\Http\Controllers\Controller
 {
 }

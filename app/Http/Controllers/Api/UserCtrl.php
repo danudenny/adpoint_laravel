@@ -62,6 +62,7 @@ class UserCtrl extends Controller
 
     }
 
+
     /**
      * @OA\Get(
      *     path="/profile",
@@ -75,6 +76,6 @@ class UserCtrl extends Controller
      */
     public function profile() {
         $profile = auth('api')->user();
-        return response()->json(array($profile));
+        return response()->json([$profile]);
     }
 }
