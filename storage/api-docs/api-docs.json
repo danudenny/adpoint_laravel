@@ -29,17 +29,6 @@
                 ],
                 "summary": "Display a listing of the brands",
                 "operationId": "list brands",
-                "parameters": [
-                    {
-                        "name": "page",
-                        "in": "query",
-                        "description": "Page number",
-                        "schema": {
-                            "type": "integer",
-                            "format": "int64"
-                        }
-                    }
-                ],
                 "responses": {
                     "200": {
                         "description": "ok"
@@ -234,17 +223,6 @@
                 ],
                 "summary": "Display a listing of the categories",
                 "operationId": "list categories",
-                "parameters": [
-                    {
-                        "name": "page",
-                        "in": "query",
-                        "description": "Page number",
-                        "schema": {
-                            "type": "integer",
-                            "format": "int64"
-                        }
-                    }
-                ],
                 "responses": {
                     "200": {
                         "description": "ok"
@@ -406,17 +384,6 @@
                 ],
                 "summary": "Display a listing of the flashdeal",
                 "operationId": "list flashdeal",
-                "parameters": [
-                    {
-                        "name": "page",
-                        "in": "query",
-                        "description": "Page number",
-                        "schema": {
-                            "type": "integer",
-                            "format": "int64"
-                        }
-                    }
-                ],
                 "responses": {
                     "200": {
                         "description": "ok"
@@ -535,17 +502,6 @@
                 ],
                 "summary": "Display a listing of the flashdeal products",
                 "operationId": "list flashdeal products",
-                "parameters": [
-                    {
-                        "name": "page",
-                        "in": "query",
-                        "description": "Page number",
-                        "schema": {
-                            "type": "integer",
-                            "format": "int64"
-                        }
-                    }
-                ],
                 "responses": {
                     "200": {
                         "description": "ok"
@@ -683,17 +639,6 @@
                 ],
                 "summary": "Display a listing of the orders",
                 "operationId": "list orders",
-                "parameters": [
-                    {
-                        "name": "page",
-                        "in": "query",
-                        "description": "Page number",
-                        "schema": {
-                            "type": "integer",
-                            "format": "int64"
-                        }
-                    }
-                ],
                 "responses": {
                     "200": {
                         "description": "ok"
@@ -847,17 +792,6 @@
                 ],
                 "summary": "Display a listing of the products",
                 "operationId": "list products",
-                "parameters": [
-                    {
-                        "name": "page",
-                        "in": "query",
-                        "description": "Page number",
-                        "schema": {
-                            "type": "integer",
-                            "format": "int64"
-                        }
-                    }
-                ],
                 "responses": {
                     "200": {
                         "description": "ok"
@@ -1053,18 +987,6 @@
                 ],
                 "summary": "Display a listing of the product by category id",
                 "operationId": "list product by category id",
-                "parameters": [
-                    {
-                        "name": "category_id",
-                        "in": "path",
-                        "description": "Category ID of product to return",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "format": "int64"
-                        }
-                    }
-                ],
                 "responses": {
                     "200": {
                         "description": "ok"
@@ -1087,18 +1009,6 @@
                 ],
                 "summary": "Display a listing of the product by category id and current user",
                 "operationId": "list product by category id and current user",
-                "parameters": [
-                    {
-                        "name": "category_id",
-                        "in": "path",
-                        "description": "Category ID of product to return",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "format": "int64"
-                        }
-                    }
-                ],
                 "responses": {
                     "200": {
                         "description": "ok"
@@ -1121,17 +1031,6 @@
                 ],
                 "summary": "Display a listing of the pushy token devices",
                 "operationId": "list pushy token devices",
-                "parameters": [
-                    {
-                        "name": "page",
-                        "in": "query",
-                        "description": "Page number",
-                        "schema": {
-                            "type": "integer",
-                            "format": "int64"
-                        }
-                    }
-                ],
                 "responses": {
                     "200": {
                         "description": "ok"
@@ -1278,17 +1177,6 @@
                 ],
                 "summary": "Display a listing of the subcategories",
                 "operationId": "list subcategories",
-                "parameters": [
-                    {
-                        "name": "page",
-                        "in": "query",
-                        "description": "Page number",
-                        "schema": {
-                            "type": "integer",
-                            "format": "int64"
-                        }
-                    }
-                ],
                 "responses": {
                     "200": {
                         "description": "ok"
@@ -1450,17 +1338,6 @@
                 ],
                 "summary": "Display a listing of the transaction",
                 "operationId": "list transaction",
-                "parameters": [
-                    {
-                        "name": "page",
-                        "in": "query",
-                        "description": "Page number",
-                        "schema": {
-                            "type": "integer",
-                            "format": "int64"
-                        }
-                    }
-                ],
                 "responses": {
                     "200": {
                         "description": "ok"

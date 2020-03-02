@@ -16,22 +16,13 @@ class SubCategoryCtrl extends Controller
      *     tags={"Sub Categories"},
      *     summary="Display a listing of the subcategories",
      *     security={{"bearerAuth":{}}},
-     *     @OA\Parameter(
-     *         description="Page number",
-     *         in="query",
-     *         name="page",
-     *         @OA\Schema(
-     *           type="integer",
-     *           format="int64"
-     *         )
-     *     ),
      *     @OA\Response(response="200",description="ok"),
      *     @OA\Response(response="401",description="unauthorized")
      * )
     */
     public function index()
     {
-        $subcategories = SubCategory::paginate(10);
+        $subcategories = SubCategory::orderBy('id', 'desc')->get();
         return response()->json($subcategories, 200);
     }
 
@@ -108,7 +99,7 @@ class SubCategoryCtrl extends Controller
     */
     public function show($id)
     {
-        $subcategory = SubCategory::where('id', $id)->first();
+        $subcategory = SubCategory::where('id', $id)->get();
         if ($subcategory != null) {
             return response()->json($subcategory, 200);
         }else{
