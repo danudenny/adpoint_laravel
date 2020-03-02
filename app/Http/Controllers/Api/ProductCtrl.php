@@ -5,8 +5,11 @@ namespace App\Http\Controllers\Api;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Product;
+use App\Review;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+
+use DB;
 
 class ProductCtrl extends Controller
 {
@@ -170,6 +173,50 @@ class ProductCtrl extends Controller
         if ($product != null) {
             return response()->json($product, 200);
         }else{
+            return response()->json([
+                'success' => false,
+                'message' => 'Data tidak ditemukan'
+            ], 401);
+        }
+    }
+
+    /**
+    * @OA\Get(
+    *     path="/product_review/{id}",
+    *     operationId="list product review by id",
+    *     tags={"Products"},
+    *     summary="Display a listing of the product review by id",
+    *     security={{"bearerAuth":{}}},
+    *     @OA\Parameter(
+    *         description="ID of product review to return",
+    *         in="path",
+    *         name="id",
+    *         required=true,
+    *         @OA\Schema(
+    *           type="integer",
+    *           format="int64"
+    *         )
+    *     ),
+    *     @OA\Response(response="200",description="ok"),
+    *     @OA\Response(response="401",description="unauthorized")
+    * )
+    */
+
+    public function product_review($id)
+    {
+        $review = DB::table('reviews as r')
+                    ->join('users as b', 'b.id', '=', 'r.user_id')
+                    ->where('r.product_id', $id)
+                    ->select([
+                        'r.*',
+                        'b.name as buyer_name',
+                        'b.email as buyer_email',
+                        'b.avatar_original as buyer_avatar'
+                    ])
+                    ->get();
+        if (count($review) > 0) {
+            return response()->json($review, 200);
+        }else {
             return response()->json([
                 'success' => false,
                 'message' => 'Data tidak ditemukan'
@@ -438,4 +485,6 @@ class ProductCtrl extends Controller
             ], 401);
         }
     }
+
+    
 }
