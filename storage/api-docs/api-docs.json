@@ -987,6 +987,17 @@
                 ],
                 "summary": "Display a listing of the product by category id",
                 "operationId": "list product by category id",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "category id",
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "ok"
@@ -1009,6 +1020,17 @@
                 ],
                 "summary": "Display a listing of the product by category id and current user",
                 "operationId": "list product by category id and current user",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "category id",
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "ok"
