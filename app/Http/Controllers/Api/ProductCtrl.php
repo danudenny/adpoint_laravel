@@ -9,8 +9,6 @@ use App\Review;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
-use DB;
-
 class ProductCtrl extends Controller
 {
 
@@ -441,7 +439,7 @@ class ProductCtrl extends Controller
             -> select('p.*', 'u.name as sellerName', 'u.id as userID', 'u.avatar_original', 'u.city', 'u.address')
             -> where('u.user_type', 'seller')
             -> where('p.category_id', $category_id)
-            -> paginate(10);
+            -> get();
         if ($product != null) {
             return response()->json($product, 200);
         }else{
@@ -486,5 +484,5 @@ class ProductCtrl extends Controller
         }
     }
 
-    
+
 }

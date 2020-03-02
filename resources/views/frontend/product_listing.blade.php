@@ -37,7 +37,7 @@
     <meta property="og:title" content="{{ $meta_title }}" />
     <meta property="og:description" content="{{ $meta_description }}" />
 
-    
+
 @endsection
 
 @section('content')
@@ -115,7 +115,8 @@
                                         @else
                                             data-range-value-low="0"
                                         @endif
-                                        id="input-slider-range-value-low">
+                                          id="input-slider-range-value-low">
+                                    </span>
                                 </div>
 
                                 <div class="col-6 text-right">
@@ -128,6 +129,7 @@
                                             data-range-value-high="0"
                                         @endif
                                         id="input-slider-range-value-high">
+                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -229,7 +231,7 @@
                                 </div>
                             </div>
                         </div> --}}
-                        
+
                         <div class="row bg-white pt-0">
                             <div class="col-md-4">
                                 <div class="form-group">
@@ -286,7 +288,7 @@
                         <input type="hidden" name="min_price" value="">
                         <input type="hidden" name="max_price" value="">
                     </form>
-                    
+
                     <div class="row bg-white mt-2">
                         <div class="col-md-12">
                             @if ($products->total() > 0)
@@ -312,12 +314,23 @@
                                                 <div class="p-3 border-top">
                                                     <h2 class="product-title p-0 text-truncate">
                                                         <a href="{{ route('product', $product->slug) }}" tabindex="0">{{ __($product->name) }}</a>
-                                                        <a target="_blank" href="{{ route('shop.visit', $product->user->shop->slug) }}">
-                                                            <i class="text-primary">{{ $product->user->shop->name }}</i>
-                                                        </a>
+
                                                     </h2>
-                                                    <div class="star-rating mb-1">
-                                                        {{ renderStarRating($product->rating) }}
+                                                    <div class="d-flex justify-content-between">
+                                                        <div>
+                                                            <div>
+                                                                <a target="_blank" href="{{ route('shop.visit', $product->user->shop->slug) }}">
+                                                                    <i class="text-primary">{{ $product->user->shop->name }}</i>
+                                                                </a>
+                                                            </div>
+                                                            <div class="star-rating mb-1">
+                                                                {{ renderStarRating($product->rating) }}
+                                                            </div>
+                                                        </div>
+                                                        <div>
+{{--                                                            @dd($product->user->shop->logo);--}}
+                                                            <img src="{{ url($product->user->shop->logo) }}" alt="" width="50">
+                                                        </div>
                                                     </div>
                                                     <div class="clearfix">
                                                         @if (Auth::check())
@@ -327,7 +340,7 @@
                                                                 @endif
                                                                 <span class="product-price strong-600">{{ home_discounted_base_price($product->id) }}</span>
                                                             </div>
-                                                        @else 
+                                                        @else
                                                             <span class="product-price strong-600" title="Please login for show price">xxx</span>
                                                         @endif
                                                     </div>
@@ -340,7 +353,7 @@
                                                 <div class="ribbon ribbon-top-left">
                                                     <span class="bg-success">Available</span>
                                                 </div>
-                                            @else 
+                                            @else
                                                 <div class="ribbon ribbon-top-left">
                                                     <span class="bg-danger">Not Available</span>
                                                 </div>
@@ -367,9 +380,9 @@
             </div>
         </div>
     </section>
-    
+
 @endsection
-    
+
 @section('script')
     <script type="text/javascript">
         function filter(){

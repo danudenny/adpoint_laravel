@@ -99,6 +99,9 @@
                                     <li class="{{ areActiveRoutes(['reviews.index'])}}">
                                         <a class="nav-link" href="{{route('reviews.index')}}">{{__('Product Reviews')}}</a>
                                     </li>
+                                    <li class="{{ areActiveRoutes(['products.bundle.index'])}}">
+                                        <a class="nav-link" href="{{route('products.bundle.index')}}">{{__('Product Bundle')}}</a>
+                                    </li>
                                 </ul>
                             </li>
                             <li class="{{ areActiveRoutes(['flash_deals.index', 'flash_deals.create', 'flash_deals.edit'])}}">
