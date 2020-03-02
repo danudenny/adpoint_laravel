@@ -65,27 +65,27 @@
                                     <div class="nav nav-tabs nav-justified" id="nav-tab" role="tablist">
                                         <a class="nav-item nav-link" id="nav-order-place-tab" data-url="{{ route('orders.place.order') }}" data-toggle="tab" href="#nav-order-place" role="tab" aria-controls="nav-order-place" aria-selected="true">Order place
                                             @if ($orderPlaced > 0)
-                                                <span class="badge badge-danger badge-pill pull-right">{{ $orderPlaced }}</span>
+                                                <b>({{ $orderPlaced }})</b>
                                             @endif
                                         </a>
                                         <a class="nav-item nav-link" id="nav-onreview-tab" data-url="{{ route('orders.review.order') }}" data-toggle="tab" href="#nav-onreview" role="tab" aria-controls="nav-onreview" aria-selected="false">On review
                                             @if ($orderOnReviewed > 0)
-                                                <span class="badge badge-danger badge-pill pull-right">{{ $orderOnReviewed }}</span>
+                                                <b>({{ $orderOnReviewed }})</b>
                                             @endif
                                         </a>
                                         <a class="nav-item nav-link" id="nav-active-tab" data-url="{{ route('orders.active.order') }}" data-toggle="tab" href="#nav-active" role="tab" aria-controls="nav-active" aria-selected="false">Active
                                             @if ($orderActived > 0)
-                                                <span class="badge badge-danger badge-pill pull-right">{{ $orderActived }}</span>
+                                                <b>({{ $orderActived }})</b>
                                             @endif
                                         </a>
                                         <a class="nav-item nav-link" id="nav-complete-tab" data-url="{{ route('orders.complete.order') }}" data-toggle="tab" href="#nav-complete" role="tab" aria-controls="nav-complete" aria-selected="false">Complete
                                             @if ($orderCompleted > 0)
-                                                <span class="badge badge-danger badge-pill pull-right">{{ $orderCompleted }}</span>
+                                                <b>({{ $orderCompleted }})</span>
                                             @endif
                                         </a>
                                         <a class="nav-item nav-link" id="nav-cancel-tab" data-url="{{ route('orders.cancelled.order') }}" data-toggle="tab" href="#nav-cancel" role="tab" aria-controls="nav-cancel" aria-selected="false">Cancelled
                                             @if ($orderCancelled > 0)
-                                                <span class="badge badge-danger badge-pill pull-right">{{ $orderCancelled }}</span>
+                                                <b>({{ $orderCancelled }})</span>
                                             @endif
                                         </a>
                                     </div>
