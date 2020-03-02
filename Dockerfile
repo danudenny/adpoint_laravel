@@ -14,5 +14,6 @@ FROM adpoint:v4
 WORKDIR /app
 COPY . /app
 
+RUN compose
 CMD php artisan config:cache; php artisan serve --host=0.0.0.0 --port=8188
 EXPOSE 8188

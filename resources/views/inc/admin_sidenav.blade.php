@@ -178,7 +178,7 @@
                                     <span class="menu-title">{{__('Customers')}}</span>
                                     <i class="arrow pull-right"></i>
                                     @php
-                                        $customers = \App\User::where('verified', 0)->count();
+                                        $customers = \App\User::where('verified', 0)->where('is_rejected', 0)->count();
                                     @endphp
                                     @if ($customers > 0)
                                         <span class="fa-pulse pull-right" style="margin-right: 10px;"><i class="fa fa-circle"></i></span>

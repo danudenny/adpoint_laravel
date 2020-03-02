@@ -67,6 +67,7 @@ class CustomerController extends Controller
         $id = $request->id;
         $customer = User::findOrFail($id);
         $customer->verified = 1;
+        $customer->is_rejected = 0;
         if ($customer->save()) {
             Mail::to($customer->email)->queue(new AcceptUser($customer));
             return redirect()->route('customers.index');
@@ -78,6 +79,7 @@ class CustomerController extends Controller
         $id = $request->id;
         $customer = User::findOrFail($id);
         $customer->verified = 0;
+        $customer->is_rejected = 1;
         if ($customer->save()) {
             Mail::to($customer->email)->queue(new RejectUser($customer));
             return redirect()->route('customers.index');

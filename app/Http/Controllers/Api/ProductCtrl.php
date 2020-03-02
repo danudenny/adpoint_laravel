@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Product;
 use App\Review;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 use DB;
 
@@ -35,7 +36,11 @@ class ProductCtrl extends Controller
     */
     public function index()
     {
-        $products = Product::paginate(10);
+        $products = DB::table('products as p')
+                    -> join('users as u', 'p.user_id', '=', 'u.id')
+                    -> select('p.*', 'u.name as sellerName', 'u.id as userID', 'u.avatar_original', 'u.city', 'u.address')
+                    -> where('u.user_type', 'seller')
+                    -> paginate(10);
         return response()->json($products, 200);
     }
 
@@ -160,15 +165,13 @@ class ProductCtrl extends Controller
     public function show($id)
     {
         $product = DB::table('products as p')
-                        ->join('users as s', 's.id', '=', 'p.user_id')
-                        ->where('p.id', $id)
-                        ->select([
-                            'p.*',
-                            's.name as seller_name',
-                            's.avatar_original as seller_avatar',
-                        ])->first();
-        if ($product !== null) {
-            return response()->json([$product], 200);
+            -> join('users as u', 'p.user_id', '=', 'u.id')
+            -> select('p.*', 'u.name as sellerName', 'u.id as userID', 'u.avatar_original', 'u.city', 'u.address')
+            -> where('u.user_type', 'seller')
+            -> where('p.id', '=',$id)
+            -> get();
+        if ($product != null) {
+            return response()->json($product, 200);
         }else{
             return response()->json([
                 'success' => false,
@@ -433,7 +436,12 @@ class ProductCtrl extends Controller
      */
     public function product_bycategory($category_id)
     {
-        $product = Product::where('category_id', $category_id)->get();
+        $product = DB::table('products as p')
+            -> join('users as u', 'p.user_id', '=', 'u.id')
+            -> select('p.*', 'u.name as sellerName', 'u.id as userID', 'u.avatar_original', 'u.city', 'u.address')
+            -> where('u.user_type', 'seller')
+            -> where('p.category_id', $category_id)
+            -> paginate(10);
         if ($product != null) {
             return response()->json($product, 200);
         }else{

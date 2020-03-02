@@ -17,5 +17,5 @@ yarn-error.log
 .idea/
 
 updates/
-.env
+Dockerfile
 app/Http/Controllers/Api/Controller.php
