@@ -413,7 +413,7 @@ class ProductCtrl extends Controller
      *     @OA\Parameter(
      *         description="category id",
      *         in="path",
-     *         name="id",
+     *         name="category_id",
      *         @OA\Schema(
      *           type="integer",
      *           format="int64"
@@ -430,8 +430,9 @@ class ProductCtrl extends Controller
             -> select('p.*', 'u.name as sellerName', 'u.id as userID', 'u.avatar_original', 'u.city', 'u.address')
             -> where('u.user_type', 'seller')
             -> where('p.category_id', $category_id)
-            -> orderBy('p.id', 'desc');
-        if ($product != null) {
+            -> orderBy('p.id', 'desc')
+            -> get();
+        if (count($product) > 0) {
             return response()->json($product, 200);
         }else{
             return response()->json([
@@ -451,7 +452,7 @@ class ProductCtrl extends Controller
      *     @OA\Parameter(
      *         description="category id",
      *         in="path",
-     *         name="id",
+     *         name="category_id",
      *         @OA\Schema(
      *           type="integer",
      *           format="int64"
@@ -464,7 +465,7 @@ class ProductCtrl extends Controller
     public function product_bycategoryseller($category_id)
     {
         $product = Product::where('category_id', $category_id)->where('user_id', Auth::user()->id)->get();
-        if ($product != null) {
+        if (count($product) > 0) {
             return response()->json($product, 200);
         }else{
             return response()->json([

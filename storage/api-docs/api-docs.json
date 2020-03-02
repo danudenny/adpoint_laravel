@@ -989,7 +989,7 @@
                 "operationId": "list product by category id",
                 "parameters": [
                     {
-                        "name": "id",
+                        "name": "category_id",
                         "in": "path",
                         "description": "category id",
                         "schema": {
@@ -1022,7 +1022,7 @@
                 "operationId": "list product by category id and current user",
                 "parameters": [
                     {
-                        "name": "id",
+                        "name": "category_id",
                         "in": "path",
                         "description": "category id",
                         "schema": {
