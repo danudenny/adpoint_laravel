@@ -410,6 +410,15 @@ class ProductCtrl extends Controller
      *     tags={"Products"},
      *     summary="Display a listing of the product by category id",
      *     security={{"bearerAuth":{}}},
+     *     @OA\Parameter(
+     *         description="category id",
+     *         in="path",
+     *         name="category_id",
+     *         @OA\Schema(
+     *           type="integer",
+     *           format="int64"
+     *         )
+     *     ),
      *     @OA\Response(response="200",description="ok"),
      *     @OA\Response(response="401",description="unauthorized")
      * )
@@ -421,8 +430,9 @@ class ProductCtrl extends Controller
             -> select('p.*', 'u.name as sellerName', 'u.id as userID', 'u.avatar_original', 'u.city', 'u.address')
             -> where('u.user_type', 'seller')
             -> where('p.category_id', $category_id)
-            -> orderBy('p.id', 'desc');
-        if ($product != null) {
+            -> orderBy('p.id', 'desc')
+            -> get();
+        if (count($product) > 0) {
             return response()->json($product, 200);
         }else{
             return response()->json([
@@ -439,6 +449,15 @@ class ProductCtrl extends Controller
      *     tags={"Products"},
      *     summary="Display a listing of the product by category id and current user",
      *     security={{"bearerAuth":{}}},
+     *     @OA\Parameter(
+     *         description="category id",
+     *         in="path",
+     *         name="category_id",
+     *         @OA\Schema(
+     *           type="integer",
+     *           format="int64"
+     *         )
+     *     ),
      *     @OA\Response(response="200",description="ok"),
      *     @OA\Response(response="401",description="unauthorized")
      * )
@@ -446,7 +465,7 @@ class ProductCtrl extends Controller
     public function product_bycategoryseller($category_id)
     {
         $product = Product::where('category_id', $category_id)->where('user_id', Auth::user()->id)->get();
-        if ($product != null) {
+        if (count($product) > 0) {
             return response()->json($product, 200);
         }else{
             return response()->json([
