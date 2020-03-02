@@ -13,11 +13,11 @@
     },
     "servers": [
         {
-            "url": "http://localhost:8000/api",
+            "url": "http://192.168.7.226/api",
             "description": "Laravel Adpoint API"
         },
         {
-            "url": "https://localhost:8000/api",
+            "url": "https://192.168.7.226/api",
             "description": "Laravel Adpoint API"
         }
     ],
@@ -1143,40 +1143,6 @@
                 ],
                 "summary": "Display a listing of the seller",
                 "operationId": "list seller",
-                "responses": {
-                    "200": {
-                        "description": "ok"
-                    },
-                    "401": {
-                        "description": "unauthorized"
-                    }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
-            }
-        },
-        "/visit_shop/{id}": {
-            "get": {
-                "tags": [
-                    "Sellers"
-                ],
-                "summary": "Display a listing of the seller by id",
-                "operationId": "list seller by id seller",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "description": "ID of seller to return",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "format": "int64"
-                        }
-                    }
-                ],
                 "responses": {
                     "200": {
                         "description": "ok"
