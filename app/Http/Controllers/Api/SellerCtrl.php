@@ -25,7 +25,7 @@ class SellerCtrl extends Controller
     */
     public function index()
     {
-        $sellers = User::where('user_type','seller')->paginate(10);
+        $sellers = User::where('user_type','seller')->orderBy('id', 'desc')->get();
         return response()->json($sellers,200);
     }
 
