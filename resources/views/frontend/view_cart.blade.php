@@ -220,9 +220,9 @@
         @else
             <div class="dc-header text-center p-5">
                 <h3 class="heading heading-6 strong-700">{{__('Your Cart is empty')}}</h3>
-                <h2>
-                    <i class="la la-meh-o"></i>
-                </h2>
+                <div class="col mt-3 d-flex justify-content-center">
+                    <img src="{{ url('img/not-found.png') }}" alt="">
+                </div>
             </div>
         @endif
     </section>
