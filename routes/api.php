@@ -88,4 +88,4 @@ Route::group(['middleware' => ['auth.jwt','jsonify']], function () {
 
 // Pushy
 Route::get('pushy_token', 'Api\PushyCtrl@index');
-Route::post('pushy_token/register/device', 'Api\PushyCtrl@store');
+Route::post('pushy_token/register/device', 'Api\PushyCtrl@store')->name('token.register');

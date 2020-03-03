@@ -19,15 +19,6 @@ class ProductCtrl extends Controller
      *     tags={"Products"},
      *     summary="Display a listing of the products",
      *     security={{"bearerAuth":{}}},
-     *     @OA\Parameter(
-     *         description="Page number",
-     *         in="query",
-     *         name="page",
-     *         @OA\Schema(
-     *           type="integer",
-     *           format="int64"
-     *         )
-     *     ),
      *     @OA\Response(response="200",description="ok"),
      *     @OA\Response(response="401",description="unauthorized")
      * )
@@ -38,7 +29,7 @@ class ProductCtrl extends Controller
                     -> join('users as u', 'p.user_id', '=', 'u.id')
                     -> select('p.*', 'u.name as sellerName', 'u.id as userID', 'u.avatar_original', 'u.city', 'u.address')
                     -> where('u.user_type', 'seller')
-                    -> paginate(10);
+                    -> orderBy('p.id', 'desc')->get();
         return response()->json($products, 200);
     }
 
@@ -419,10 +410,9 @@ class ProductCtrl extends Controller
      *     summary="Display a listing of the product by category id",
      *     security={{"bearerAuth":{}}},
      *     @OA\Parameter(
-     *         description="Category ID of product to return",
+     *         description="category id",
      *         in="path",
      *         name="category_id",
-     *         required=true,
      *         @OA\Schema(
      *           type="integer",
      *           format="int64"
@@ -439,8 +429,9 @@ class ProductCtrl extends Controller
             -> select('p.*', 'u.name as sellerName', 'u.id as userID', 'u.avatar_original', 'u.city', 'u.address')
             -> where('u.user_type', 'seller')
             -> where('p.category_id', $category_id)
+            -> orderBy('p.id', 'desc')
             -> get();
-        if ($product != null) {
+        if (count($product) > 0) {
             return response()->json($product, 200);
         }else{
             return response()->json([
@@ -458,10 +449,9 @@ class ProductCtrl extends Controller
      *     summary="Display a listing of the product by category id and current user",
      *     security={{"bearerAuth":{}}},
      *     @OA\Parameter(
-     *         description="Category ID of product to return",
+     *         description="category id",
      *         in="path",
      *         name="category_id",
-     *         required=true,
      *         @OA\Schema(
      *           type="integer",
      *           format="int64"
@@ -474,7 +464,7 @@ class ProductCtrl extends Controller
     public function product_bycategoryseller($category_id)
     {
         $product = Product::where('category_id', $category_id)->where('user_id', Auth::user()->id)->get();
-        if ($product != null) {
+        if (count($product) > 0) {
             return response()->json($product, 200);
         }else{
             return response()->json([

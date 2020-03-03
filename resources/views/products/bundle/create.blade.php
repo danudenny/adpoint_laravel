@@ -22,7 +22,7 @@
                     <div class="form-group">
                         <label class="col-sm-3 control-label" for="name">{{__('Products')}}</label>
                         <div class="col-sm-9">
-                            <select name="products[]" id="products" class="form-control demo-select2" multiple required data-placeholder="Choose Products">
+                            <select name="products[]" id="products" class="form-control demo-select2" multiple="multiple" required data-placeholder="Choose Products">
                                 @foreach($products as $prod)
                                     <option value="{{$prod->id}}">{{$prod->name}} ( {{single_price($prod->unit_price)}} )</option>
                                 @endforeach
@@ -32,7 +32,7 @@
                     <div class="form-group">
                         <label class="col-sm-3 control-label">{{__('Total Price')}}</label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control" name="meta_title" placeholder="{{__('Total Price')}}">
+                            <input type="text" class="form-control" name="meta_title" placeholder="{{__('Total Price')}}" disabled>
                         </div>
                     </div>
                     <div class="form-group">
@@ -61,7 +61,7 @@
                 <table class="table table-striped table-bordered demo-dt-basic" cellspacing="0" width="100%">
                     <thead>
                     <tr>
-                        <th>#</th>
+                        <th>No</th>
                         <th>{{__('Product Name')}}</th>
                         <th>{{__('Seller')}}</th>
                         <th>{{__('Category')}}</th>
@@ -70,6 +70,7 @@
                     </tr>
                     </thead>
                     <tbody>
+
                     </tbody>
                 </table>
             </div>
@@ -77,4 +78,10 @@
         </div>
     </div>
 
+@endsection
+
+@section('scripts')
+    <script type="text/javascript">
+        alert($("#products").val())
+    </script>
 @endsection

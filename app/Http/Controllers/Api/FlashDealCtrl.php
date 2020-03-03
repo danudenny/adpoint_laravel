@@ -16,22 +16,13 @@ class FlashDealCtrl extends Controller
      *     tags={"Flash Deals"},
      *     summary="Display a listing of the flashdeal",
      *     security={{"bearerAuth":{}}},
-     *     @OA\Parameter(
-     *         description="Page number",
-     *         in="query",
-     *         name="page",
-     *         @OA\Schema(
-     *           type="integer",
-     *           format="int64"
-     *         )
-     *     ),
      *     @OA\Response(response="200",description="ok"),
      *     @OA\Response(response="401",description="unauthorized")
      * )
     */
     public function index()
     {
-        $flash_deals = FlashDeal::paginate(10);
+        $flash_deals = FlashDeal::orderBy('id', 'desc')->get();
         return response()->json($flash_deals, 200);
     }
 
@@ -105,7 +96,7 @@ class FlashDealCtrl extends Controller
     */
     public function show($id)
     {
-        $flash_deal = FlashDeal::where('id', $id)->first();
+        $flash_deal = FlashDeal::where('id', $id)->get();
         if ($flash_deal != null) {
             return response()->json($flash_deal, 200);
         }else{
@@ -124,22 +115,13 @@ class FlashDealCtrl extends Controller
      *     tags={"Flash Deals"},
      *     summary="Display a listing of the flashdeal products",
      *     security={{"bearerAuth":{}}},
-     *     @OA\Parameter(
-     *         description="Page number",
-     *         in="query",
-     *         name="page",
-     *         @OA\Schema(
-     *           type="integer",
-     *           format="int64"
-     *         )
-     *     ),
      *     @OA\Response(response="200",description="ok"),
      *     @OA\Response(response="401",description="unauthorized")
      * )
     */
     public function get_all_flashdeal_product()
     {
-        $flash_deal_product = FlashDealProduct::paginate(10);
+        $flash_deal_product = FlashDealProduct::orderBy('id', 'desc')->get();
         return response()->json($flash_deal_product, 200);
     }
 
@@ -166,7 +148,7 @@ class FlashDealCtrl extends Controller
     */
     public function get_flashdeal_prouduct_by_id($id)
     {
-        $flash_deal_product = FlashDealProduct::where('id', $id)->first();
+        $flash_deal_product = FlashDealProduct::where('id', $id)->get();
         if ($flash_deal_product != null) {
             return response()->json($flash_deal_product, 200);
         }else{

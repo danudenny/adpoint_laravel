@@ -1,5 +1,12 @@
 @extends('frontend.layouts.app')
 @section('content')
+    @php    
+        $orderPlaced = orders_notif(Auth::user()->user_type, 0, 'o.user_id')->count();
+        $orderOnreviewed = orders_notif(Auth::user()->user_type, 1, 'o.user_id')->count();
+        $orderActived = orders_notif(Auth::user()->user_type, 3, 'o.user_id')->count();
+        $orderCompleted = orders_notif(Auth::user()->user_type, 4, 'o.user_id')->count();
+        $orderCancelled = orders_notif(Auth::user()->user_type, 2, 'o.user_id')->count();
+    @endphp
     <section class="gry-bg py-4 profile">
         <div class="container">
             <div class="row cols-xs-space cols-sm-space cols-md-space">
@@ -64,11 +71,36 @@
                             <div class="col-md-12">
                                 <nav class="no-border" style="color: black">
                                     <div class="nav nav-tabs nav-justified" id="nav-tab" role="tablist">
-                                        <a class="nav-item nav-link" id="nav-order-place-tab" data-url="{{ route('myorder.place.order') }}" data-toggle="tab" href="#nav-order-place" role="tab" aria-controls="nav-order-place" aria-selected="true">Order place</a>
-                                        <a class="nav-item nav-link" id="nav-onreview-tab" data-url="{{ route('myorder.review.order') }}" data-toggle="tab" href="#nav-onreview" role="tab" aria-controls="nav-onreview" aria-selected="false">On review</a>
-                                        <a class="nav-item nav-link" id="nav-active-tab" data-url="{{ route('myorder.active.order') }}" data-toggle="tab" href="#nav-active" role="tab" aria-controls="nav-active" aria-selected="false">Active</a>
-                                        <a class="nav-item nav-link" id="nav-complete-tab" data-url="{{ route('myorder.complete.order') }}" data-toggle="tab" href="#nav-complete" role="tab" aria-controls="nav-complete" aria-selected="false">Complete</a>
-                                        <a class="nav-item nav-link" id="nav-cancel-tab" data-url="{{ route('myorder.cancelled.order') }}" data-toggle="tab" href="#nav-cancel" role="tab" aria-controls="nav-cancel" aria-selected="false">Cancelled</a>
+                                        <a class="nav-item nav-link" id="nav-order-place-tab" data-url="{{ route('myorder.place.order') }}" data-toggle="tab" href="#nav-order-place" role="tab" aria-controls="nav-order-place" aria-selected="true">
+                                            Order place
+                                            @if ($orderPlaced > 0)
+                                                <b>({{ $orderPlaced }})</b>
+                                            @endif
+                                        </a>
+                                        <a class="nav-item nav-link" id="nav-onreview-tab" data-url="{{ route('myorder.review.order') }}" data-toggle="tab" href="#nav-onreview" role="tab" aria-controls="nav-onreview" aria-selected="false">
+                                            On review
+                                            @if ($orderOnreviewed > 0)
+                                                <b>({{ $orderOnreviewed }})</b>
+                                            @endif
+                                        </a>
+                                        <a class="nav-item nav-link" id="nav-active-tab" data-url="{{ route('myorder.active.order') }}" data-toggle="tab" href="#nav-active" role="tab" aria-controls="nav-active" aria-selected="false">
+                                            Active
+                                            @if ($orderActived > 0)
+                                                <b>({{ $orderActived }})</b>
+                                            @endif
+                                        </a>
+                                        <a class="nav-item nav-link" id="nav-complete-tab" data-url="{{ route('myorder.complete.order') }}" data-toggle="tab" href="#nav-complete" role="tab" aria-controls="nav-complete" aria-selected="false">
+                                            Complete
+                                            @if ($orderCompleted > 0)
+                                                <b>({{ $orderCompleted }})</b>
+                                            @endif
+                                        </a>
+                                        <a class="nav-item nav-link" id="nav-cancel-tab" data-url="{{ route('myorder.cancelled.order') }}" data-toggle="tab" href="#nav-cancel" role="tab" aria-controls="nav-cancel" aria-selected="false">
+                                            Cancelled
+                                            @if ($orderCancelled > 0)
+                                                <b>({{ $orderCancelled }})</b>
+                                            @endif
+                                        </a>
                                     </div>
                                 </nav>
                             </div>
