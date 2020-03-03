@@ -660,4 +660,13 @@ class ProductController extends Controller
         return view('partials.sku_combinations_edit', compact('combinations', 'unit_price', 'colors_active', 'product_name', 'product'));
     }
 
+    public function bundleProduct() {
+        return view('products.bundle.index');
+    }
+
+    public function create_bundleProduct() {$categories = Category::all();
+        $products = Product::all();
+        return view('products.bundle.create', compact('products'));
+    }
+
 }

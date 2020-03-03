@@ -9,7 +9,6 @@ use App\Review;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
-
 class ProductCtrl extends Controller
 {
 
@@ -475,5 +474,5 @@ class ProductCtrl extends Controller
         }
     }
 
-    
+
 }
