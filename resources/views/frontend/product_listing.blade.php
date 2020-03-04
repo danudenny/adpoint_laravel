@@ -207,30 +207,7 @@
                         @isset($subsubcategory_id)
                             <input type="hidden" name="subsubcategory" value="{{ \App\SubSubCategory::find($subsubcategory_id)->slug }}">
                         @endisset
-                        {{-- <div class="row bg-white py-2">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <div class="input-group mb-3">
-                                        <input type="text" class="form-control" name="q" placeholder="{{__('Search products')}}" @isset($query) value="{{ $query }}" @endisset>
-                                        <div class="input-group-append">
-                                            <button type="submit" class="btn btn-orange">
-                                                <i class="fa fa-search"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <select name="category" data-placeholder="{{__('Media')}}" class="form-control" onchange="filter()">
-                                        <option value="" selected disabled>{{__('Media')}}</option>
-                                        @foreach (\App\Category::all() as $category)
-                                            <option value="{{ $category->slug }}" @isset($category_id) @if ($category_id == $category->id) selected @endif @endisset>{{ $category->name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-                        </div> --}}
+                        
 
                         <div class="row bg-white pt-0">
                             <div class="col-md-4">
@@ -242,6 +219,17 @@
                                             <option value="{{ urlencode($state->name) }}" @isset($states) @if ($states == $state->name) selected @endif @endisset>{{ $state->name }}</option>
                                         @endforeach
                                     </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Display</label><br>
+                                    <div class="btn-group" role="group" aria-label="Basic example">
+                                        <button type="button" id="grid" class="p-2 btn btn-secondary active" title="Grid View">
+                                            <i class="fa fa-th"></i> Grid
+                                        </button>
+                                        <button type="button" id="list" class="p-2 btn btn-secondary" title="List View">
+                                            <i class="fa fa-list"></i> List
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-md-8">
@@ -294,7 +282,7 @@
                             @if ($products->total() > 0)
                                 <div class="row md-no-gutters gutters-5 p-2">
                                     @foreach ($products as $key => $product)
-                                        <div class="col-md-3 col-6">
+                                        <div id="product_view" class="col-md-3 col-6">
                                             <div class="product-box-2 bg-white alt-box my-2">
                                                 <div class="position-relative overflow-hidden">
                                                     <a href="{{ route('product', $product->slug) }}" class="d-block product-image h-100" style="background-image:url('{{ asset($product->thumbnail_img) }}');" tabindex="0">
@@ -328,7 +316,6 @@
                                                             </div>
                                                         </div>
                                                         <div>
-{{--                                                            @dd($product->user->shop->logo);--}}
                                                             <img src="{{ url($product->user->shop->logo) }}" alt="" width="50">
                                                         </div>
                                                     </div>
@@ -385,6 +372,28 @@
 
 @section('script')
     <script type="text/javascript">
+        $('#list').on('click', function() {
+            var productList = document.querySelectorAll('#product_view');
+            productList.forEach(element => {
+                $(element).removeClass('col-md-3');
+                $(element).removeClass('col-6');
+                $(element).addClass('col-md-12')
+                $(element).addClass('col-12')
+            });
+            $(this).addClass('active');
+            $('#grid').removeClass('active');
+        });
+        $('#grid').on('click', function() {
+            var productList = document.querySelectorAll('#product_view');
+            productList.forEach(element => {
+                $(element).removeClass('col-md-12');
+                $(element).removeClass('col-12');
+                $(element).addClass('col-md-3')
+                $(element).addClass('col-6')
+            });
+            $(this).addClass('active');
+            $('#list').removeClass('active');
+        });
         function filter(){
             $('#search-form').submit();
         }

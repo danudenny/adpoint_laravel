@@ -69,7 +69,7 @@
                         
                         <div class="row no-border mt-2">
                             <div class="col-md-12">
-                                <nav class="no-border" style="color: black">
+                                <nav class="tabs tabs--style-2" style="color: black">
                                     <div class="nav nav-tabs nav-justified" id="nav-tab" role="tablist">
                                         <a class="nav-item nav-link" id="nav-order-place-tab" data-url="{{ route('myorder.place.order') }}" data-toggle="tab" href="#nav-order-place" role="tab" aria-controls="nav-order-place" aria-selected="true">
                                             Order place

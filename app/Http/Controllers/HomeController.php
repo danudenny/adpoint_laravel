@@ -641,4 +641,10 @@ class HomeController extends Controller
         return view('frontend.dropdown.notif_trx');
     }
 
+
+    public function how_to_buy()
+    {
+        return view('frontend.howtobuy');
+    }
+
 }

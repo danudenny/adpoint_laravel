@@ -380,7 +380,7 @@ input[type="submit"] {
 }
 
 .login-text {
-    color: white
+    color: black;
 }
 
 .login-text:hover {
