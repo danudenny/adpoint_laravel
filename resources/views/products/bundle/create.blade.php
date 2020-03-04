@@ -10,7 +10,7 @@
 
             <!--Horizontal Form-->
             <!--===================================================-->
-            <form class="form-horizontal" action="{{ route('subcategories.store') }}" method="POST" enctype="multipart/form-data">
+            <form class="form-horizontal" action="{{ route('bundle.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="panel-body">
                     <div class="form-group">
@@ -30,15 +30,9 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-3 control-label">{{__('Total Price')}}</label>
-                        <div class="col-sm-9">
-                            <input type="text" class="form-control" name="meta_title" placeholder="{{__('Total Price')}}" disabled>
-                        </div>
-                    </div>
-                    <div class="form-group">
                         <label class="col-sm-3 control-label">{{__('Description')}}</label>
                         <div class="col-sm-9">
-                            <textarea name="meta_description"  class="form-control"></textarea>
+                            <textarea name="description"  class="form-control"></textarea>
                         </div>
                     </div>
                 </div>
@@ -80,8 +74,13 @@
 
 @endsection
 
-@section('scripts')
+@section('script')
     <script type="text/javascript">
-        alert($("#products").val())
+        $( "#products" ).change(function() {
+            $( "#products" ).each(function() {
+               $item = $(this).val();
+               console.log($item);
+            })
+        });
     </script>
 @endsection

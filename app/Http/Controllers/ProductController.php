@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Bundle;
 use App\Pushy;
 use Illuminate\Http\Request;
 use App\Product;
@@ -661,12 +662,33 @@ class ProductController extends Controller
     }
 
     public function bundleProduct() {
-        return view('products.bundle.index');
+        $bundles = Bundle::all();
+        return view('products.bundle.index', compact('bundles'));
     }
 
-    public function create_bundleProduct() {$categories = Category::all();
+    public function create_bundleProduct() {
         $products = Product::all();
         return view('products.bundle.create', compact('products'));
+    }
+
+    public function save_bundle(Request $request) {
+        $bundle = new Bundle;
+        $bundle->name = $request->name;
+        $bundle->brands = json_encode($request->products);
+        $bundle->meta_description = $request->meta_description;
+
+        $data = openJSONFile('en');
+        $data[$bundle->name] = $bundle->name;
+        saveJSONFile('en', $data);
+
+        if($bundle->save()){
+            flash(__('Subcategory has been inserted successfully'))->success();
+            return redirect()->route('products.bundle.index');
+        }
+        else{
+            flash(__('Something went wrong'))->error();
+            return back();
+        }
     }
 
 }
