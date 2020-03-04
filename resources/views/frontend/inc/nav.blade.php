@@ -101,7 +101,7 @@
                                 <div class="image " style="background-image:url('{{ asset('frontend/images/icons/user-placeholder.jpg') }}')"></div>
                         </div>
                         <div class="side-login px-3 pb-3">
-                            <a href="{{ route('user.login') }}">{{__('Sign In')}}</a>
+                            <a data-toggle="modal" data-target="#sign-in-modal" class="c-pointer">{{__('Sign In')}}</a>
                             <a href="{{ route('user.registration') }}">{{__('Registration')}}</a>
                         </div>
                     @endauth
@@ -535,10 +535,10 @@
                                     </div>
                                 @else
                                 <div class="d-none d-lg-inline-block topnav-text">
-                                    <a href="{{ route('user.login') }}" class="login-text"> Login</a>
+                                    <a data-toggle="modal" data-target="#sign-in-modal" class="login-text c-pointer"> Login</a>
                                 </div>
                                 <div class="d-none d-lg-inline-block topnav-text">
-                                    <a href="{{ route('user.registration') }}" class="icon-nav"> Register</a>
+                                    <a href="{{ route('user.registration') }}" class="btn btn-dark btn-circle"> Create Account</a>
                                 </div>
                                 @endauth
                             </div>
@@ -547,6 +547,7 @@
                 </div>
             </div>
         </div>
+        
         <div class="hover-category-menu" id="hover-category-menu">
             <div class="container">
                 <div class="row no-gutters position-relative">
@@ -642,6 +643,76 @@
                 </div>
             </div>
         </nav>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="sign-in-modal" tabindex="-1" role="dialog" aria-labelledby="sign-in-modalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+        <h5 class="modal-title" id="sign-in-modalTitle">Sign In</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        </div>
+        <form action="{{ route('login.user') }}" method="POST">
+            @csrf
+            <div class="modal-body">
+                <div class="container p-3">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="form-group{{ $errors->has('email') ? 'has-error' : ''}}">
+                                <div class="input-group input-group--style-1">
+                                    <input type="email" class="form-control form-control-sm" value="{{ old('email') }}" placeholder="{{__('Email')}}" name="email" id="email">
+                                    <span class="input-group-addon bg-dark">
+                                        <i class="text-md text-white la la-user"></i>
+                                    </span>
+                                </div>
+                                <strong class="text-danger mt-1">{!! $errors->first('email', '<p class="help-block">:message</p>') !!}</strong>
+                            </div>
+                        </div>
+                    </div>
+    
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="form-group{{ $errors->has('password') ? 'has-error' : ''}}">
+                                <div class="input-group input-group--style-1">
+                                    <input type="password" class="form-control" placeholder="{{__('Password')}}" name="password" id="password">
+                                    <span class="input-group-addon bg-dark">
+                                        <i class="text-md text-white la la-lock"></i>
+                                    </span>
+                                </div>
+                                <strong class="text-danger mt-1">{!! $errors->first('password', '<p class="help-block">:message</p>') !!}</strong>
+                            </div>
+                        </div>
+                    </div>
+    
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="form-group">
+                                <div class="checkbox pad-btm text-left">
+                                    <input id="demo-form-checkbox" class="magic-checkbox" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
+                                    <label for="demo-form-checkbox" class="text-sm">
+                                        {{ __('Remember Me') }}
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6 text-right">
+                            <a href="{{ route('reset.password') }}" class="link link-xs link--style-3">{{__('Forgot password?')}}</a>
+                        </div>
+                    </div>
+    
+                    <div class="row">
+                        <div class="col text-center">
+                            <button type="submit" class="btn btn-dark btn-block btn-md">{{ __('Login') }}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
     </div>
 </div>
 

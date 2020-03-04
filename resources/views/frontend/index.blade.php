@@ -44,7 +44,7 @@
                         </div>
                         
                         <div class="col-md-3">
-                            <button type="submit" class="btn btn-primary btn-lg button-search"><i class="fa fa-search"></i> Search</button>
+                            <button type="submit" class="btn btn-dark btn-lg button-search"><i class="fa fa-search"></i> Search</button>
                         </div>
                     </div>
                 </form>
@@ -107,7 +107,7 @@
             </div>
 
             <div class="row mt-3 justify-content-center">
-                <button class="btn btn-lg btn-primary" id="moreless-button">Show More</button>
+                <button class="btn btn-lg btn-dark" id="moreless-button">Show More</button>
             </div>
         </div>
     </section>
@@ -117,7 +117,7 @@
             <div class="row">
                 <div class="mt-2 col-md-6 d-flex justify-content-center">
                     <div class="card">
-                        <div class="card-body">
+                        <div class="card-body text-center">
                             <h3 class="card-title">Are You a Seller?</h3>
                             <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
                             <a href="#" class="btn btn-orange">Sell with us</a>
@@ -126,7 +126,7 @@
                 </div>
                 <div class="mt-2 col-md-6 d-flex justify-content-center">
                     <div class="card">
-                        <div class="card-body">
+                        <div class="card-body text-center">
                             <h3 class="card-title">Are You a Buyer?</h3>
                             <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
                             <a href="#" class="btn btn-success">Buy Ad Space</a>
@@ -138,10 +138,15 @@
     </section>
 
     <section class="mb-4">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="image-block-home">
-                    <img style="object-fit: cover; height: 400px; width: 100%;" src="{{ asset('img/bg-img/ad-agency-blog-pic.jpg') }}" >
+        <div class="container">
+            <div class="row mt-3">
+                <div class="col-md-12">
+                    <img class="img-responsive img-fluid" src="{{ asset('img/bg-img/mid-banner.png') }}" >
+                    <div class="row tag-line">
+                        <div class="col-5">
+                            <h2 class="heading-tag">Memasang iklan lebih mudah dan nyaman, dengan pilihan media</h2>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

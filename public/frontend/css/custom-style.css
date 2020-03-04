@@ -366,7 +366,7 @@ input[type="submit"] {
 .topnav-text {
     font-size: 14px;
     position: relative;
-    top: -5px;
+    top: -1px;
     color: white;
 }
 
@@ -467,10 +467,11 @@ input[type="submit"] {
     left: 50%;
 }
 
-.image-block-home {
-    max-height: 400px;
-    width: 100%;
-    position: relative;
+.tag-line {
+    position: absolute;
+    top: 20%;
+    left: 40px;
+    color: white;
 }
 
 .box-partner {
@@ -675,7 +676,8 @@ select+.select2-container {
 .logo-bar-area {
     padding: 10px;
     z-index: 101;
-    background: linear-gradient(39deg, rgba(254, 165, 0, 1) 0%, rgba(254, 165, 0, 1) 29%, rgba(242, 185, 79, 1) 100%);
+    background: #e9dd27;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
 }
 
 .logo-bar-area .navbar-brand {
@@ -1500,7 +1502,7 @@ select+.select2-container {
 }
 
 .select2-container--default .select2-selection--multiple .select2-selection__choice {
-    background-color: #F79F1F;
+    background-color: #E9DD27;
     padding: 2px;
     color: white;
     margin-top: 4px;
@@ -1903,7 +1905,8 @@ button.paction.add-compare:hover {
 }
 
 .footer {
-    background: #26262f;
+    background: #fafafa;
+    color: black;
 }
 
 .footer .footer-bottom {
@@ -3192,6 +3195,9 @@ ul.seller-brand-list .brand-item {
         background-size: cover;
         height: 400px;
     }
+    .heading-tag {
+        font-size: 12px;
+    }
 }
 
 section.home-banner-area {
@@ -3318,8 +3324,7 @@ section.home-banner-area {
 @media (max-width: 991px) {
     .logo-bar-area {
         padding: 12px 0;
-        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-        background-color: #0f355a;
+        background: #e9dd27;
     }
     .mobile-menu-icon-box {
         padding: 8px 0;
