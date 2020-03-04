@@ -53,6 +53,8 @@ Route::group(['prefix' =>'admin', 'middleware' => ['auth', 'admin']], function()
     Route::get('/products/bundle','ProductController@bundleProduct')->name('products.bundle.index');
     Route::get('/products/bundle/create','ProductController@create_bundleProduct')->name('products.bundle.create');
 
+    Route::resource('bundle', 'BundleController');
+
 	Route::resource('sellers','SellerController');
 	Route::get('/sellers/destroy/{id}', 'SellerController@destroy')->name('sellers.destroy');
 	Route::get('/sellers/view/{id}/verification', 'SellerController@show_verification_request')->name('sellers.show_verification_request');
