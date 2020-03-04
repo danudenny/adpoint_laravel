@@ -367,7 +367,7 @@ input[type="submit"] {
     font-size: 14px;
     position: relative;
     top: -1px;
-    color: white;
+    color: black;
 }
 
 .icon-nav {
@@ -3233,8 +3233,7 @@ section.home-banner-area {
     }
     .title-head {
         font-size: 50px;
-        color: white;
-        text-shadow: 2px 2px 5px #333542;
+        color: black;
     }
     .main-banner {
         position: relative;
@@ -3252,8 +3251,7 @@ section.home-banner-area {
     }
     .title-head {
         font-size: 30px;
-        color: white;
-        text-shadow: 2px 2px 5px #333542;
+        color: black;
     }
     .main-banner {
         position: relative;
@@ -3271,8 +3269,7 @@ section.home-banner-area {
     }
     .title-head {
         font-size: 25px;
-        color: white;
-        text-shadow: 2px 2px 5px #333542;
+        color: black;
     }
     .main-banner {
         position: relative;
