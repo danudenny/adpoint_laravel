@@ -61,7 +61,7 @@
 
                         <div class="row no-border mt-2">
                             <div class="col-md-12">
-                                <nav class="no-border" style="color: black">
+                                <nav class="tabs tabs--style-2" style="color: black">
                                     <div class="nav nav-tabs nav-justified" id="nav-tab" role="tablist">
                                         <a class="nav-item nav-link" id="nav-order-place-tab" data-url="{{ route('orders.place.order') }}" data-toggle="tab" href="#nav-order-place" role="tab" aria-controls="nav-order-place" aria-selected="true">Order place
                                             @if ($orderPlaced > 0)
@@ -80,12 +80,12 @@
                                         </a>
                                         <a class="nav-item nav-link" id="nav-complete-tab" data-url="{{ route('orders.complete.order') }}" data-toggle="tab" href="#nav-complete" role="tab" aria-controls="nav-complete" aria-selected="false">Complete
                                             @if ($orderCompleted > 0)
-                                                <b>({{ $orderCompleted }})</span>
+                                                <b>({{ $orderCompleted }})</b>
                                             @endif
                                         </a>
                                         <a class="nav-item nav-link" id="nav-cancel-tab" data-url="{{ route('orders.cancelled.order') }}" data-toggle="tab" href="#nav-cancel" role="tab" aria-controls="nav-cancel" aria-selected="false">Cancelled
                                             @if ($orderCancelled > 0)
-                                                <b>({{ $orderCancelled }})</span>
+                                                <b>({{ $orderCancelled }})</b>
                                             @endif
                                         </a>
                                     </div>

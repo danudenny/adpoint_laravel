@@ -25,10 +25,10 @@
     $trxUnpaid = trx_notif(0, Auth::user()->id)->count();
     $trxPaid = trx_notif(1, Auth::user()->id)->count();
 @endphp
-<div class="dropdown-cart-items c-scrollbar">
-    <div class="dc-item">
+<div class="dropdown-cart-items no-border c-scrollbar">
+    <div class="tabs tabs--style-2">
         <div class="nav nav-justified nav-tabs" onclick="changeTab(event)" id="myTab" role="tablist">
-            <a class="nav-link nav-cus nav-item active" id="notif-buyer-tab" data-url="{{ route('notif.buyer') }}" data-toggle="tab" href="#notif-buyer" role="tab" aria-controls="notif-buyer" aria-selected="true">
+            <a class="nav-link nav-item active" id="notif-buyer-tab" data-url="{{ route('notif.buyer') }}" data-toggle="tab" href="#notif-buyer" role="tab" aria-controls="notif-buyer" aria-selected="true">
                 Purchase 
                 @if (Auth::user()->user_type == "customer")
                     @if($orderPlacedB > 0 || $orderOnReviewedB > 0 || $orderActivedB > 0 || $orderCompletedB > 0 || $orderCancelledB > 0)
@@ -39,7 +39,7 @@
                 @endif
             </a>
             @if (Auth::user()->user_type == "seller")
-                <a class="nav-link nav-cus nav-item" id="notif-seller-tab" data-url="{{ route('notif.seller') }}" data-toggle="tab" href="#notif-seller" role="tab" aria-controls="notif-seller" aria-selected="false">
+                <a class="nav-link nav-item" id="notif-seller-tab" data-url="{{ route('notif.seller') }}" data-toggle="tab" href="#notif-seller" role="tab" aria-controls="notif-seller" aria-selected="false">
                     Sales
                     @if($orderPlacedS > 0 || $orderOnReviewedS > 0 || $orderActivedS > 0 || $orderCompletedS > 0 || $orderCancelledS > 0)
                         <span class="badge badge-danger badge-pill">
@@ -48,7 +48,7 @@
                     @endif
                 </a>
             @endif
-            <a class="nav-link nav-cus nav-item" id="notif-trx-tab" data-url="{{ route('notif.trx') }}" data-toggle="tab" href="#notif-trx" role="tab" aria-controls="notif-trx" aria-selected="false">
+            <a class="nav-link nav-item" id="notif-trx-tab" data-url="{{ route('notif.trx') }}" data-toggle="tab" href="#notif-trx" role="tab" aria-controls="notif-trx" aria-selected="false">
                 Transaction
                 @if ($trxUnpaid > 0 || $trxPaid > 0)
                     <span class="badge badge-danger badge-pill">
@@ -57,7 +57,7 @@
                 @endif
             </a>
         </div>
-        <div class="tab-content" id="myTabContent">
+        <div class="tab-content p-0" id="myTabContent">
             <div class="tab-pane fade show active" id="notif-buyer" role="tabpanel" aria-labelledby="notif-buyer-tab">
                 <div class="c-notif-load">
                     <div class="ph-item border-0 p-0 mt-3">

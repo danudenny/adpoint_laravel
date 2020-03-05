@@ -50,6 +50,10 @@ Route::get('/sitemap.xml', function(){
 	return base_path('sitemap.xml');
 });
 
+// How To
+Route::get('/how-to-buy', 'HomeController@how_to_buy')->name('how.to.buy');
+Route::get('/how-to-sell', 'HomeController@how_to_sell')->name('how.to.sell');
+
 // push notif
 Route::post('/push','HomeController@push');
 

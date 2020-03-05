@@ -13827,7 +13827,7 @@ section.ss-slice::after {
 .tabs--style-2 .nav-tabs .nav-item.show .nav-link,
 .tabs--style-2 .nav-tabs .nav-link.active,
 .tabs--style-2 .nav-tabs .nav-link:hover {
-    border-bottom: 1px solid transparent;
+    border-bottom: 4px solid transparent;
     background: transparent !important;
 }
 
