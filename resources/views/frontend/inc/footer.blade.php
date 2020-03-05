@@ -97,7 +97,7 @@
                                                 {{__('Seller')}}
                                             </h4>
                                             <ul class="footer-links">
-                                                <li><a href="#" title="">How to sell</a></li>
+                                                <li><a href="{{ route('how.to.sell') }}" title="">How to sell</a></li>
                                                 <li><a href="#" title="">Benefit</a></li>
                                             </ul>
                                         </div>

@@ -647,4 +647,9 @@ class HomeController extends Controller
         return view('frontend.howtobuy');
     }
 
+    public function how_to_sell()
+    {
+        return view('frontend.howtosell');
+    }
+
 }
