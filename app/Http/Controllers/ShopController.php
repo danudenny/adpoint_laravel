@@ -10,6 +10,10 @@ use App\BusinessSetting;
 use Auth;
 use Hash;
 
+use DB;
+
+use App\Pushy;
+
 class ShopController extends Controller
 {
 
@@ -100,7 +104,7 @@ class ShopController extends Controller
             if($shop->save()){
                 auth()->login($user, false);
                 flash(__('Your Shop has been created successfully!'))->success();
-                return redirect()->route('dashboard.index');
+                return redirect()->route('shop.verify');
             }
             else{
                 $seller->delete();
@@ -249,6 +253,26 @@ class ShopController extends Controller
         $seller->verification_info = json_encode($data);
 
         if($seller->save()){
+            // pushy notif
+            $push = DB::table('pushy_tokens as pt')
+                    ->join('users as u', 'u.id', '=', 'pt.user_id')
+                    ->where(['u.user_type' => 'admin'])
+                    ->select(['pt.*'])
+                    ->first();
+            if ($push !== null) {
+                $tokenPushy = $push->device_token;
+                $data = array('message' => 'New Seller has been created!, please check!');
+                $to = array($tokenPushy);
+                $options = array(
+                    'notification' => array(
+                        'badge' => 1,
+                        'sound' => 'ping.aiff',
+                        'body'  => "New Seller has been created!, please check!"
+                    )
+                );
+                Pushy::sendPushNotification($data, $to, $options);
+            }
+
             flash(__('Your shop verification request has been submitted successfully!'))->success();
             return redirect()->route('dashboard');
         }else {
