@@ -29,33 +29,29 @@
                         <td>{{$key+1}}</td>
                         <td>{{$bundle->name}}</td>
                         <td>
+                            <div class="row">
                             @foreach(json_decode($bundle->products) as $product_id)
                                 @if (\App\Product::find($product_id) != null)
-                                    <div style="text-align: left; padding: 15px; margin: 5px; border: 1px solid #879f9d; background-color: white; color: #0a1520; border-radius: 10px;">
-                                        <div class="row">
-                                            @php
-                                                $userID = \App\Product::find($product_id)->user_id;
-                                            @endphp
-                                            <div class="col-md-2">
-                                                <img src="{{ url(\App\User::find($userID)->avatar_original) }}" width="60">
-                                            </div>
-                                            <div class="col-md-8">
-                                                <div style="margin-bottom: 5px; font-weight: bold;">
-                                                    {{\App\Product::find($product_id)->name}}
+                                    <div class="col-md-6">
+                                        @php
+                                            $userID = \App\Product::find($product_id)->user_id;
+                                        @endphp
+                                        <div style="border-radius: 3px; border: 1px solid #ccc; padding: 3px; margin-top:5px;">
+                                            <div class="row">
+                                                <div class="col-md-3">
+                                                    <img src="{{ url(\App\User::find($userID)->avatar_original) }}" width="60">
                                                 </div>
-                                                <div style="margin-bottom: 5px;">
-                                                    {{single_price(\App\Product::find($product_id)->unit_price)}}
-                                                </div>
-                                                <div class="justify-content-between">
-                                                    {{\App\User::find($userID)->name}}
+                                                <div class="col-md-9">
+                                                    <b>{{\App\Product::find($product_id)->name}}</b> <br>
+                                                    {{single_price(\App\Product::find($product_id)->unit_price)}} <br>
+                                                    <i class="text-warning">{{\App\User::find($userID)->name}}</i>
                                                 </div>
                                             </div>
-
                                         </div>
-
                                     </div>
                                 @endif
                             @endforeach
+                            </div>
                         </td>
                         <td>{{single_price($bundle->total_price)}}</td>
                         <td><label class="switch">
