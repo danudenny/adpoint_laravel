@@ -499,13 +499,17 @@ class ProductCtrl extends Controller
 
     public function productImage($id)
     {
-        $products = Product::where('id', $id)->get();
-        foreach($products as $key => $value) {
-            $images = json_decode($value->photos, true);
+        $products = Product::where('id', $id)->first();
+        
+        $photos = json_decode($products->photos);
+
+        $result = [];
+        foreach($photos as $key => $p) {
+            array_push($result, ['value'=>$p]);
         }
 
-        if (count($images) > 0) {
-            return response()->json($images, 200);
+        if (count($result) > 0) {
+            return response()->json($result, 200);
         }else {
             return response()->json([
                 'success' => false,
