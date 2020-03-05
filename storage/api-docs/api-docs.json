@@ -1046,6 +1046,40 @@
                 ]
             }
         },
+        "/product_image/{id}": {
+            "get": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Display a listing of the product image by id",
+                "operationId": "list product image by id",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of product image to return",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/pushy_token": {
             "get": {
                 "tags": [
