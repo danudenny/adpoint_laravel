@@ -11,6 +11,13 @@ use App\Order;
 use App\OrderDetail;
 use Illuminate\Support\Facades\Hash;
 
+use DB;
+
+use App\Pushy;
+use Mail;
+use App\Mail\Shop\ShopApproved;
+use App\Mail\Shop\ShopRejected;
+
 class SellerController extends Controller
 {
     /**
@@ -166,6 +173,28 @@ class SellerController extends Controller
         $seller = Seller::findOrFail($id);
         $seller->verification_status = 1;
         if($seller->save()){
+            $owner = User::where('id', $seller->user_id)->first();
+            Mail::to($owner->email)->send(new ShopApproved($owner));
+
+            // pushy notif
+            $push = DB::table('pushy_tokens as pt')
+                    ->join('users as u', 'u.id', '=', 'pt.user_id')
+                    ->where(['u.id' => $owner->id])
+                    ->select(['pt.*'])
+                    ->first();
+            if ($push !== null) {
+                $tokenPushy = $push->device_token;
+                $data = array('message' => 'Congratulations, your shop has been approved!');
+                $to = array($tokenPushy);
+                $options = array(
+                    'notification' => array(
+                        'badge' => 1,
+                        'sound' => 'ping.aiff',
+                        'body'  => "Congratulations, your shop has been approved!"
+                    )
+                );
+                Pushy::sendPushNotification($data, $to, $options);
+            }
             flash(__('Seller has been approved successfully'))->success();
             return redirect()->route('sellers.index');
         }
@@ -179,6 +208,28 @@ class SellerController extends Controller
         $seller->verification_status = 0;
         $seller->verification_info = null;
         if($seller->save()){
+            $owner = User::where('id', $seller->user_id)->first();
+            Mail::to($owner->email)->send(new ShopRejected($owner));
+
+            // pushy notif
+            $push = DB::table('pushy_tokens as pt')
+                    ->join('users as u', 'u.id', '=', 'pt.user_id')
+                    ->where(['u.id' => $owner->id])
+                    ->select(['pt.*'])
+                    ->first();
+            if ($push !== null) {
+                $tokenPushy = $push->device_token;
+                $data = array('message' => 'Sorry, your registration as seller has been rejected!');
+                $to = array($tokenPushy);
+                $options = array(
+                    'notification' => array(
+                        'badge' => 1,
+                        'sound' => 'ping.aiff',
+                        'body'  => "Sorry, your registration as seller has been rejected!"
+                    )
+                );
+                Pushy::sendPushNotification($data, $to, $options);
+            }
             flash(__('Seller verification request has been rejected successfully'))->success();
             return redirect()->route('sellers.index');
         }
