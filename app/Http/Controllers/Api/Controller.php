@@ -20,19 +20,11 @@ namespace App\Http\Controllers\API;
  * ),
  * @OA\Server(
  *     description="Laravel Adpoint API",
-<<<<<<< HEAD
  *     url="http://localhost:8000/api"
  * )
  * @OA\Server(
  *     description="Laravel Adpoint API",
  *     url="https://localhost:8000/api"
-=======
- *     url="http://192.168.7.226/api"
- * )
- * @OA\Server(
- *     description="Laravel Adpoint API",
- *     url="https://192.168.7.226/api"
->>>>>>> ac5ad0dd48d4f661d2370e3a94ebf7e2ececf759
  * )
  * @OA\Response(response=200,description="ok")
  * @OA\Response(response=401,description="bad")
