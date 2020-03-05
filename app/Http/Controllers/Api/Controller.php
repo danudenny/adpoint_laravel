@@ -36,6 +36,8 @@ namespace App\Http\Controllers\API;
 //  public
 //  http://192.168.7.94:8188/api
 //  https://192.168.7.94:8188/api
+
+
 class Controller extends \App\Http\Controllers\Controller
 {
 }
