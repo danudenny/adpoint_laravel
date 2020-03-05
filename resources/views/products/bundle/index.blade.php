@@ -63,7 +63,7 @@
                                     {{__('Actions')}} <i class="dropdown-caret"></i>
                                 </button>
                                 <ul class="dropdown-menu dropdown-menu-right">
-                                    <li><a href="{{route('subcategories.edit', encrypt($bundle->id))}}">{{__('Edit')}}</a></li>
+                                    <li><a href="{{route('bundle.edit', encrypt($bundle->id))}}">{{__('Edit')}}</a></li>
                                     <li><a onclick="confirm_modal('{{route('subcategories.destroy', $bundle->id)}}');">{{__('Delete')}}</a></li>
                                 </ul>
                             </div>

@@ -475,4 +475,44 @@ class ProductCtrl extends Controller
     }
 
 
+    /**
+     * @OA\Get(
+     *     path="/product_image/{id}",
+     *     operationId="list product image by id",
+     *     tags={"Products"},
+     *     summary="Display a listing of the product image by id",
+     *     security={{"bearerAuth":{}}},
+     *     @OA\Parameter(
+     *         description="ID of product image to return",
+     *         in="path",
+     *         name="id",
+     *         required=true,
+     *         @OA\Schema(
+     *           type="integer",
+     *           format="int64"
+     *         )
+     *     ),
+     *     @OA\Response(response="200",description="ok"),
+     *     @OA\Response(response="401",description="unauthorized")
+     * )
+     */
+
+    public function productImage($id)
+    {
+        $products = Product::where('id', $id)->get();
+        foreach($products as $key => $value) {
+            $images = json_decode($value->photos, true);
+        }
+
+        if (count($images) > 0) {
+            return response()->json($images, 200);
+        }else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Data tidak ditemukan'
+            ], 401);
+        }
+    }
+
+
 }
