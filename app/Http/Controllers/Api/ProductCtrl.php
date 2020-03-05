@@ -501,15 +501,22 @@ class ProductCtrl extends Controller
     {
         $products = Product::where('id', $id)->first();
         
-        $photos = json_decode($products->photos);
-
-        $result = [];
-        foreach($photos as $key => $p) {
-            array_push($result, ['value'=>$p]);
-        }
-
-        if (count($result) > 0) {
-            return response()->json($result, 200);
+        if ($products !== null) {
+            $photos = json_decode($products->photos);
+    
+            $result = [];
+            foreach($photos as $key => $p) {
+                array_push($result, ['value'=>$p]);
+            }
+    
+            if (count($result) > 0) {
+                return response()->json($result, 200);
+            }else {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Data tidak ditemukan'
+                ], 401);
+            }
         }else {
             return response()->json([
                 'success' => false,
