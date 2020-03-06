@@ -61,7 +61,7 @@ class RegisterController extends Controller
             'password' => 'required|string|min:6|confirmed',
             'ktp' => 'required',
             'npwp' => 'required',
-            'captcha' => 'required|captcha'
+            'captcha' => 'captcha'
         ]);
     }
     /**
