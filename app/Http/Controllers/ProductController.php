@@ -13,6 +13,8 @@ use App\SubSubCategory;
 use Session;
 use ImageOptimizer;
 
+use DB;
+
 class ProductController extends Controller
 {
     /**
@@ -237,24 +239,27 @@ class ProductController extends Controller
         saveJSONFile('en', $data);
 
         if($product->save()){
-            $query = DB::table('pushy_tokens as pt')
-                ->join('users as u', 'u.id', '=', 'pt.user_id')
-                ->where(['u.user_type' => 'admin'])
-                ->select(['pt.*'])
-                ->get();
-            $tokenPushy = $query[0]->device_token;
-            $data = array('message' => 'Product Baru telah ditambahkan!');
-            $to = array($tokenPushy);
-            $options = array(
-                'notification' => array(
-                    'badge' => 1,
-                    'sound' => 'ping.aiff',
-                    'body'  => "Product Baru telah ditambahkan!"
-                )
-            );
+            // pushy notif
+            $push = DB::table('pushy_tokens as pt')
+                    ->join('users as u', 'u.id', '=', 'pt.user_id')
+                    ->where(['u.user_type' => 'admin'])
+                    ->select(['pt.*'])
+                    ->first();
+            if ($push !== null) {
+                $tokenPushy = $push->device_token;
+                $data = array('message' => 'New product has been added!');
+                $to = array($tokenPushy);
+                $options = array(
+                    'notification' => array(
+                        'badge' => 1,
+                        'sound' => 'ping.aiff',
+                        'body'  => "New product has been added!"
+                    )
+                );
+                Pushy::sendPushNotification($data, $to, $options);
+            }
 
             flash(__('Product has been inserted successfully'))->success();
-            Pushy::sendPushNotification($data, $to, $options);
             if(Auth::user()->user_type == 'admin'){
                 return redirect()->route('products.admin');
             }

@@ -107,6 +107,7 @@ Route::group(['prefix' =>'admin', 'middleware' => ['auth', 'admin']], function()
 
 	Route::get('/frontend_settings/home', 'HomeController@home_settings')->name('home_settings.index');
 	Route::post('/frontend_settings/home/top_10', 'HomeController@top_10_settings')->name('top_10_settings.store');
+	Route::post('/frontend_settings/home/how_to', 'HomeController@how_to_settings')->name('how_to_settings');
 	Route::get('/sellerpolicy/{type}', 'PolicyController@index')->name('sellerpolicy.index');
 	Route::get('/returnpolicy/{type}', 'PolicyController@index')->name('returnpolicy.index');
 	Route::get('/supportpolicy/{type}', 'PolicyController@index')->name('supportpolicy.index');

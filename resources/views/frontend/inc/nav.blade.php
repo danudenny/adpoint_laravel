@@ -564,7 +564,7 @@
                                     @endphp
                                     <li>
                                         <a href="{{ route('products.category', $category->slug) }}">
-                                            <img class="cat-image" src="{{ asset($category->banner) }}" width="30">
+                                            <img class="cat-image" src="{{ asset($category->icon) }}" width="30">
                                             <span class="cat-name">{{ __($category->name) }}</span>
                                         </a>
                                         @if(count($category->subcategories)>0)
@@ -742,7 +742,7 @@
         });
     }
 
-    $('#notif-load-btn').on('mouseenter', function(e) {
+    $('#notif-load-btn').on('click', function(e) {
         $('#head-notif').addClass('show');
         $('#content-notif').addClass('show');
         $.get('{{ route('notif.loading') }}', function(result) {

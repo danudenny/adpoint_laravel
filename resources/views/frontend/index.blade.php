@@ -65,13 +65,13 @@
                 foreach (\App\Category::all() as $key => $cat) {
                     if ($key <= 5) {
                         $lessCat[$key] = [
-                            'icon' => $cat->icon,
+                            'icon' => $cat->banner,
                             'count' => $cat->products->count(),
                             'slug' => $cat->slug
                         ];
                     }else {
                         $moreCat[$key] = [
-                            'icon' => $cat->icon,
+                            'icon' => $cat->banner,
                             'count' => $cat->products->count(),
                             'slug' => $cat->slug
                         ];
@@ -115,24 +115,34 @@
     <section class="pt-5 pb-5 bg-gray">
         <div class="container">
             <div class="row">
-                <div class="mt-2 col-md-6 d-flex justify-content-center">
-                    <div class="card">
-                        <div class="card-body text-center">
-                            <h3 class="card-title">Are You a Seller?</h3>
-                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                            <a href="#" class="btn btn-orange">Sell with us</a>
+                @php
+                    $bs = \App\BusinessSetting::where('type', 'how_to')->first();
+                    $result = json_decode($bs->value);
+                @endphp
+                @foreach ($result as $key => $r)
+                    @if ($key == "buy")
+                        <div class="mt-2 col-md-6 d-flex justify-content-center">
+                            <div class="card">
+                                <div class="card-body text-center">
+                                    <h3 class="card-title">Are You a Buyer</h3>
+                                    <p class="card-text">{{ $r }}</p>
+                                    <a href="#" class="btn btn-success">Buy with us</a>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-                <div class="mt-2 col-md-6 d-flex justify-content-center">
-                    <div class="card">
-                        <div class="card-body text-center">
-                            <h3 class="card-title">Are You a Buyer?</h3>
-                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                            <a href="#" class="btn btn-success">Buy Ad Space</a>
+                    @else 
+                        <div class="mt-2 col-md-6 d-flex justify-content-center">
+                            <div class="card">
+                                <div class="card-body text-center">
+                                    <h3 class="card-title">Are You a Seller</h3>
+                                    <p class="card-text">{{ $r }}</p>
+                                    <a href="#" class="btn btn-orange">Sell with us</a>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
+                    @endif
+                    
+                @endforeach
             </div>
         </div>
     </section>
@@ -140,14 +150,23 @@
     <section class="mb-4">
         <div class="container">
             <div class="row mt-3">
-                <div class="col-md-12">
-                    <img class="img-responsive img-fluid" src="{{ asset('img/bg-img/mid-banner.png') }}" >
-                    <div class="row tag-line">
-                        <div class="col-5">
-                            <h2 class="heading-tag">Memasang iklan lebih mudah dan nyaman, dengan pilihan media</h2>
+                <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+                    <div class="carousel-inner">
+                      @foreach (\App\Slider::all() as $key => $slider)
+                        <div @if ($key == 0) class="carousel-item active" @endif class="carousel-item">
+                            <img class="d-block w-100" src="{{ url($slider->photo) }}" alt="{{$key}} slide">
                         </div>
+                      @endforeach
                     </div>
-                </div>
+                    <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                      <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                      <span class="sr-only">Next</span>
+                    </a>
+                  </div>
             </div>
         </div>
     </section>
