@@ -87,7 +87,6 @@
                     <div class="side-menu-close" onclick="sideMenuClose()">
                         <i class="la la-close"></i>
                     </div>
-
                     @auth
                         <div class="widget-profile-box px-3 py-4 d-flex align-items-center">
                                 <div class="image " style="background-image:url('{{ Auth::user()->avatar_original }}')"></div>
@@ -522,7 +521,7 @@
                                                     <div class="row loading-notif">
                                                         <div class="col-md-12">
                                                             <h3 class="text-center">
-                                                                <i class="fa fa-spin fa-spinner"></i>   
+                                                                <i class="fa fa-spin fa-spinner"></i>
                                                             </h3>
                                                         </div>
                                                     </div>
@@ -547,7 +546,7 @@
                 </div>
             </div>
         </div>
-        
+
         <div class="hover-category-menu" id="hover-category-menu">
             <div class="container">
                 <div class="row no-gutters position-relative">
@@ -673,7 +672,7 @@
                             </div>
                         </div>
                     </div>
-    
+
                     <div class="row">
                         <div class="col-12">
                             <div class="form-group{{ $errors->has('password') ? 'has-error' : ''}}">
@@ -687,7 +686,7 @@
                             </div>
                         </div>
                     </div>
-    
+
                     <div class="row">
                         <div class="col-6">
                             <div class="form-group">
@@ -703,7 +702,7 @@
                             <a href="{{ route('reset.password') }}" class="link link-xs link--style-3">{{__('Forgot password?')}}</a>
                         </div>
                     </div>
-    
+
                     <div class="row">
                         <div class="col text-center">
                             <button type="submit" class="btn btn-dark btn-block btn-md">{{ __('Login') }}</button>
