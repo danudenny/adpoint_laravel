@@ -1,7 +1,8 @@
-<?php 
+<?php
 
 namespace App\Http\Controllers\Api;
 
+use App\Seller;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\User;
@@ -32,7 +33,7 @@ class SellerCtrl extends Controller
     /**
     * @OA\Get(
     *     path="/visit_shop/{id}",
-    *     operationId="list seller by id seller",
+    *     operationId="list product by id seller",
     *     tags={"Sellers"},
     *     summary="Display a listing of the seller by id",
     *     security={{"bearerAuth":{}}},
@@ -69,6 +70,43 @@ class SellerCtrl extends Controller
 
         if ($shop != null) {
             return response()->json($shop,200);
+        }else{
+            return response()->json([
+                'success' => false,
+                'message' => 'Data tidak ditemukan'
+            ], 401);
+        }
+    }
+
+    /**
+     * @OA\Get(
+     *     path="/seller_byid/{id}",
+     *     operationId="list seller by id seller",
+     *     tags={"Sellers"},
+     *     summary="Display a seller information by id",
+     *     security={{"bearerAuth":{}}},
+     *     @OA\Parameter(
+     *         description="ID of seller to return information",
+     *         in="path",
+     *         name="id",
+     *         required=true,
+     *         @OA\Schema(
+     *           type="integer",
+     *           format="int64"
+     *         )
+     *     ),
+     *     @OA\Response(response="200",description="ok"),
+     *     @OA\Response(response="401",description="unauthorized")
+     * )
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function seller_byid($id)
+    {
+        $seller = User::where('id', $id)->get();
+
+        if ($seller != null) {
+            return response()->json($seller,200);
         }else{
             return response()->json([
                 'success' => false,

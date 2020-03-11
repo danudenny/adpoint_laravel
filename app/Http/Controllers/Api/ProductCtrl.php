@@ -404,7 +404,7 @@ class ProductCtrl extends Controller
 
     /**
      * @OA\Get(
-     *     path="/product_bycategory/{category_id}",
+     *     path="/product_bycategory/{category_id}/{sort}",
      *     operationId="list product by category id",
      *     tags={"Products"},
      *     summary="Display a listing of the product by category id",
@@ -418,19 +418,31 @@ class ProductCtrl extends Controller
      *           format="int64"
      *         )
      *     ),
+     *      @OA\Parameter(
+     *         description="sort by id",
+     *         in="path",
+     *         name="sort",
+     *         @OA\Schema(
+     *           type="string",
+     *         )
+     *     ),
      *     @OA\Response(response="200",description="ok"),
      *     @OA\Response(response="401",description="unauthorized")
      * )
+     * @param $category_id
+     * @param $sort
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function product_bycategory($category_id)
+    public function product_bycategory($category_id, $sort)
     {
         $product = DB::table('products as p')
             -> join('users as u', 'p.user_id', '=', 'u.id')
             -> select('p.*', 'u.name as sellerName', 'u.id as userID', 'u.avatar_original', 'u.city', 'u.address')
             -> where('u.user_type', 'seller')
             -> where('p.category_id', $category_id)
-            -> orderBy('p.id', 'desc')
+            -> orderBy('p.id', $sort)
             -> get();
+
         if (count($product) > 0) {
             return response()->json($product, 200);
         }else{
@@ -500,15 +512,15 @@ class ProductCtrl extends Controller
     public function productImage($id)
     {
         $products = Product::where('id', $id)->first();
-        
+
         if ($products !== null) {
             $photos = json_decode($products->photos);
-    
+
             $result = [];
             foreach($photos as $key => $p) {
                 array_push($result, ['value'=>$p]);
             }
-    
+
             if (count($result) > 0) {
                 return response()->json($result, 200);
             }else {
