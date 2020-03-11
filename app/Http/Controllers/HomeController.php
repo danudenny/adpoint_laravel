@@ -523,6 +523,17 @@ class HomeController extends Controller
         return redirect()->route('home_settings.index');
     }
 
+    public function how_to_settings(Request $request)
+    {
+        $bs = BusinessSetting::where('type', 'how_to')->first();
+        $result['buy'] = $request->buy;
+        $result['sell'] = $request->sell;
+
+        $bs->value = json_encode($result);
+        $bs->save();
+        return back();
+    }
+
     public function variant_price(Request $request)
     {
         $product = Product::find($request->id);

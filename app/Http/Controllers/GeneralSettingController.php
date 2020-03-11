@@ -17,9 +17,7 @@ class GeneralSettingController extends Controller
     public function index()
     {
         $generalsetting = GeneralSetting::first();
-        return view('general_settings.index', [
-            'general_settings' => $general_settings,
-        ]);
+        return view('general_settings.index', compact('generalsetting'));
     }
 
     public function logo()

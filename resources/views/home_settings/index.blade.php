@@ -21,6 +21,9 @@
             <li class="">
                 <a data-toggle="tab" href="#demo-lft-tab-5" aria-expanded="false">{{ __('Top 10') }}</a>
             </li>
+            <li class="">
+                <a data-toggle="tab" href="#demo-lft-tab-6" aria-expanded="false">{{ __('How To') }}</a>
+            </li>
         </ul>
 
         <!--Tabs Content-->
@@ -270,6 +273,39 @@
                                         @endforeach
                                     </select>
                                 </div>
+                            </div>
+                        </div>
+                        <div class="panel-footer text-right">
+                            <button class="btn btn-purple" type="submit">{{__('Save')}}</button>
+                        </div>
+                    </form>
+                    <!--===================================================-->
+                    <!--End Horizontal Form-->
+
+                </div>
+            </div>
+            <div id="demo-lft-tab-6" class="tab-pane fade">
+                <div class="panel">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">{{__('How To')}}</h3>
+                    </div>
+
+                    <!--Horizontal Form-->
+                    <!--===================================================-->
+                    <form class="form-horizontal" action="{{ route('how_to_settings') }}" method="POST">
+                        @csrf
+                        @php
+                            $bs = \App\BusinessSetting::where('type', 'how_to')->first();
+                            $how_to = json_decode($bs->value);
+                        @endphp
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <label>How To Buy</label>
+                                <textarea class="form-control" name="buy" id="" cols="30" rows="10">@if ($how_to->buy) {{ $how_to->buy }} @endif</textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>How To Sell</label>
+                                <textarea class="form-control" name="sell" id="" cols="30" rows="10">@if ($how_to->sell) {{ $how_to->sell }} @endif</textarea>
                             </div>
                         </div>
                         <div class="panel-footer text-right">

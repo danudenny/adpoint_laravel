@@ -131,7 +131,7 @@
                                                                 @if ($ap->status === 1 || $ap->status === 2 || $ap->status === 3)
                                                                     <p>{{ date('d M Y H:i:s', strtotime($ap->time_1)) }}</p>
                                                                 @else
-                                                                    <button onclick="editingProcess(event, {{ $od->id }})" class="mt-2 mb-2 btn btn-sm btn-circle btn-outline-success">
+                                                                    <button onclick="editingProcess(event, {{ $od->id }})" class="mt-2 mb-2 btn btn-sm btn-circle btn-outline-success" @if ($ap->status !== 0) disabled style="cursor:not-allowed" @endif>
                                                                         <i class="fa fa-check-circle"></i> Done
                                                                     </button>
                                                                 @endif
@@ -143,7 +143,7 @@
                                                                 @if ($ap->status === 2 || $ap->status === 3)
                                                                     <p>{{ date('d M Y H:i:s', strtotime($ap->time_2)) }}</p>
                                                                 @else 
-                                                                    <button onclick="installationProcess(event, {{ $od->id }})" class="mt-2 mb-2 btn btn-sm btn-circle btn-outline-success">
+                                                                    <button onclick="installationProcess(event, {{ $od->id }})" class="mt-2 mb-2 btn btn-sm btn-circle btn-outline-success" @if ($ap->status !== 1) disabled style="cursor:not-allowed" @endif>
                                                                         <i class="fa fa-check-circle"></i> Done
                                                                     </button>
                                                                 @endif
@@ -155,7 +155,7 @@
                                                                 @if ($ap->status === 3)
                                                                     <p>{{ date('d M Y H:i:s', strtotime($ap->time_3)) }}</p>
                                                                 @else 
-                                                                    <button onclick="doneProcess(event, {{ $od->id }})" class="mt-2 mb-2 btn btn-sm btn-circle btn-outline-success">
+                                                                    <button onclick="doneProcess(event, {{ $od->id }})" class="mt-2 mb-2 btn btn-sm btn-circle btn-outline-success" @if ($ap->status !== 2) disabled style="cursor:not-allowed" @endif>
                                                                         <i class="fa fa-check-circle"></i> Done
                                                                     </button>
                                                                 @endif

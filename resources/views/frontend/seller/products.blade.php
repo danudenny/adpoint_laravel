@@ -66,7 +66,7 @@
                                                         <td>{{ $product->category->name }}</td>
                                                         <td style="text-align: right">{{ number_format($product->unit_price) }}</td>
                                                         <td style="text-align: center">
-                                                            @if ($product->published = 0)
+                                                            @if ($product->published == 0)
                                                                 <span class="badge badge-warning" ><i class="fa fa-clock-o"></i> Waiting Approval</span>
                                                             @else
                                                                 <label class="switch">
@@ -75,7 +75,7 @@
                                                             @endif
                                                         </td>
                                                         <td style="text-align: center">
-                                                            @if ($product->published = 0)
+                                                            @if ($product->published == 0)
                                                                 <span class="badge badge-warning" ><i class="fa fa-clock-o"></i> Waiting Approval</span>
                                                             @else
                                                                 <label class="switch">
