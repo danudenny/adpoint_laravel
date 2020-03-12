@@ -67,6 +67,7 @@ class HomeController extends Controller
             'npwp' => 'required',
             'captcha' => 'required|captcha'
         ]);
+        
         $register = new User;
         $register->name = $request->name;
         $register->email = $request->email;

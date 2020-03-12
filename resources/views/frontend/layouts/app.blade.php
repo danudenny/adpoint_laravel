@@ -1478,7 +1478,7 @@ $user = Auth::id();
 @endphp
 
 <script>
-    Pushy.register({ appId: '5e2bf22ecc95c3343ee338d8' }).then(function (deviceToken) {
+    Pushy.register({ appId: '5e68a08102c9bc5414aad613' }).then(function (deviceToken) {
         const url = '{{ route('token.register') }}';
 
         const data_token = {
@@ -1500,6 +1500,17 @@ $user = Auth::id();
     }).catch(function (err) {
         console.error(err);
     });
+
+    // // Check if the device is registered
+    // if (Pushy.isRegistered()) {
+    //     // Subscribe the device to a topic
+    //     console.log('registered');
+    //     Pushy.subscribe('testing').catch(function (err) {
+    //         // Handle subscription errors
+    //         console.error('Subscribe failed:', err);
+    //     });
+    // }
+
 </script>
 @endauth
 </body>
