@@ -65,7 +65,7 @@ class HomeController extends Controller
             'password' => 'required|string|min:6|confirmed',
             'ktp' => 'required',
             'npwp' => 'required',
-            'captcha' => 'required|captcha'
+            'captcha' => 'captcha'
         ]);
         
         $register = new User;
@@ -439,11 +439,11 @@ class HomeController extends Controller
         if($seller_id != null){
             $conditions = array_merge($conditions, ['user_id' => Seller::findOrFail($seller_id)->user->id]);
         }
-    
+
         // if ($alamat) {
         //     $products = Product::where($conditions)->where('alamat', 'LIKE', '%'.$alamat.'%');
         // }
-        
+
         $products = Product::where($conditions);
         if($min_price != null && $max_price != null){
             $products = $products->where('unit_price', '>=', $min_price)->where('unit_price', '<=', $max_price);
