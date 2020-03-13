@@ -125,7 +125,7 @@
                                 <h4 class="heading heading-xs strong-600 text-uppercase mb-2" style="color: black">
                                     {{__('Payment Options')}}
                                 </h4>
-        
+
                                 <div class="row justify-content-center">
                                     <div class="col-md-6 w-25">
                                         <img src="{{ asset('frontend/images/icons/cards/bca.png')}}" class="img-fluid">
@@ -141,7 +141,7 @@
                             <h4 class="heading heading-xs strong-600 text-uppercase mb-2" style="color: black">
                                 {{__('Folow us on')}}
                             </h4>
-    
+
                             <ul class="my-3 my-md-0 social-nav model-2">
                                 @if ($generalsetting->facebook != null)
                                     <li>
@@ -179,6 +179,35 @@
                                     </li>
                                 @endif
                             </ul>
+                       </div>
+                       <div class="row mt-3">
+                           <div class="col">
+                               <h4 class="heading heading-xs strong-600 text-uppercase mb-2" style="color: black">
+                                   {{__('Switch Languages')}}
+                               </h4>
+                               <ul class="inline-links d-lg-inline-block d-flex justify-content-between">
+                                   <li class="dropdown" id="lang-change">
+                                       @php
+                                           if(Session::has('locale')){
+                                               $locale = Session::get('locale', Config::get('app.locale'));
+                                           }
+                                           else{
+                                               $locale = 'en';
+                                           }
+                                       @endphp
+                                       <a href="" class="dropdown-toggle top-bar-item" data-toggle="dropdown">
+                                           <img src="{{ asset('frontend/images/icons/flags/'.$locale.'.png') }}" class="flag"><span class="language">{{ \App\Language::where('code', $locale)->first()->name }}</span>
+                                       </a>
+                                       <ul class="dropdown-menu">
+                                           @foreach (\App\Language::all() as $key => $language)
+                                               <li class="dropdown-item @if($locale == $language) active @endif">
+                                                   <a href="#" data-flag="{{ $language->code }}"><img src="{{ asset('frontend/images/icons/flags/'.$language->code.'.png') }}" class="flag"><span class="language">{{ $language->name }}</span></a>
+                                               </li>
+                                           @endforeach
+                                       </ul>
+                                   </li>
+                               </ul>
+                           </div>
                        </div>
                    </div>
                     </div>

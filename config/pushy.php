@@ -10,7 +10,7 @@ return [
       | API authentication tab of the application section in the Pushy dashboard
       | https://dashboard.pushy.me/apps/<YOUR_APP_ID>/auth
      */
-    'api_key' => env('PUSHY_API_KEY'),
+    'api_key' => '971d1b24487afaeb333f545ad23c5cba43a2f8f4f3403f36eabc94a8b4d140ea',
     /*
       |--------------------------------------------------------------------------
       | Is Channel Active
@@ -34,5 +34,5 @@ return [
       |
       | Specifies the default ttl for a pending notificacion.
      */
-    'time_to_live' => env('PUSHY_NOTIFICATION_TTL', 2592000),
+    'time_to_live' => 2592000,
 ];

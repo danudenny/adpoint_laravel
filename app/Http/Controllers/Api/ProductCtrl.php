@@ -8,6 +8,7 @@ use App\Product;
 use App\Review;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use stdClass;
 
 class ProductCtrl extends Controller
 {
@@ -25,12 +26,31 @@ class ProductCtrl extends Controller
     */
     public function index()
     {
-        $products = DB::table('products as p')
-                    -> join('users as u', 'p.user_id', '=', 'u.id')
-                    -> select('p.*', 'u.name as sellerName', 'u.id as userID', 'u.avatar_original', 'u.city', 'u.address')
-                    -> where('u.user_type', 'seller')
-                    -> orderBy('p.id', 'desc')->get();
-        return response()->json($products, 200);
+//        $products = DB::table('products as p')
+//                    -> join('users as u', 'p.user_id', '=', 'u.id')
+//                    -> select('p.*', 'u.name as sellerName', 'u.id as userID', 'u.avatar_original', 'u.city', 'u.address')
+//                    -> where('u.user_type', 'seller')
+//                    -> orderBy('p.id', 'desc')->get()->toArray();
+        $products = Product::get()->toArray();
+        $variants = Product::get()->pluck('variations');
+        $variant_array = [];
+        $harian = array('Periode' => 'Harian');
+        foreach ($variants as $variant => $values) {
+            $decode = json_decode($values);
+            $periode_values = array_values((array)$decode);
+            array_push($variant_array, ['variasi'=>$periode_values]);
+        }
+        if ($products != null) {
+            $merged = array_replace_recursive($products, $variant_array);
+            if (count($merged) > 0) {
+                return response()->json($merged, 200);
+            }else {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Data tidak ditemukan'
+                ], 401);
+            }
+        }
     }
 
     /**
