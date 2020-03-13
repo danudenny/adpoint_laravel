@@ -105,4 +105,9 @@ class User extends Authenticatable implements JWTSubject
         'password'  => $this->password,
       ];
   }
+
+  public function routeNotificationForPushy($notification)
+  {
+        return $this->device_token;
+  }
 }

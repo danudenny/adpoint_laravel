@@ -16,7 +16,6 @@
         "geoip2/geoip2": "^2.10",
         "gonoware/laravel-maps": "^1.0",
         "instamojo/instamojo-php": "^0.4.0",
-        "jlorente/laravel-pushy": "^1.0",
         "kartik-v/bootstrap-fileinput": "@dev",
         "laracasts/flash": "^3.0",
         "laravel-notification-channels/webpush": "^5.0",
@@ -61,7 +60,7 @@
     "extra": {
         "laravel": {
             "dont-discover": [
-                
+
             ]
         }
     },
