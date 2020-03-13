@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a821bea93bbec7978c29c1b45295f581",
+    "content-hash": "43d260585e92a06eddf98e79ce3e2298",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -1931,6 +1931,102 @@
                 "useragent"
             ],
             "time": "2019-01-19T21:32:55+00:00"
+        },
+        {
+            "name": "jlorente/laravel-pushy",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/jlorente/laravel-pushy.git",
+                "reference": "c700d67ad805c12a688063c9a4b160a5ea34a39e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/jlorente/laravel-pushy/zipball/c700d67ad805c12a688063c9a4b160a5ea34a39e",
+                "reference": "c700d67ad805c12a688063c9a4b160a5ea34a39e",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "^5.5",
+                "jlorente/pushy-php-sdk": "^1.0",
+                "php": ">=7.1.3"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Jlorente\\Laravel\\Pushy\\PushyServiceProvider"
+                    ],
+                    "aliases": {
+                        "Pushy": "Jlorente\\Laravel\\Pushy\\Facades\\Pushy"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Jlorente\\Laravel\\Pushy\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "José Lorente",
+                    "email": "jose.lorente.martin@gmail.com"
+                }
+            ],
+            "description": "Laravel integration for the Pushy SDK including a notification channel",
+            "keywords": [
+                "jlorente",
+                "laravel",
+                "php",
+                "pushy"
+            ],
+            "time": "2019-12-02T19:39:22+00:00"
+        },
+        {
+            "name": "jlorente/pushy-php-sdk",
+            "version": "1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/jlorente/pushy-php-sdk.git",
+                "reference": "386c2b3cfec576b79bc54e645c9f4af33d5f9a5c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/jlorente/pushy-php-sdk/zipball/386c2b3cfec576b79bc54e645c9f4af33d5f9a5c",
+                "reference": "386c2b3cfec576b79bc54e645c9f4af33d5f9a5c",
+                "shasum": ""
+            },
+            "require": {
+                "guzzlehttp/guzzle": "~6.0",
+                "php": ">=5.6"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Jlorente\\Pushy\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "José Lorente",
+                    "email": "jose.lorente.martin@gmail.com"
+                }
+            ],
+            "description": "A PHP package to access the Pushy API by a comprehensive way.",
+            "keywords": [
+                "jlorente",
+                "php",
+                "pushy"
+            ],
+            "time": "2019-12-02T19:52:38+00:00"
         },
         {
             "name": "kartik-v/bootstrap-fileinput",
@@ -7473,6 +7569,54 @@
                 "instantiate"
             ],
             "time": "2019-10-21T16:45:58+00:00"
+        },
+        {
+            "name": "fawzanm/laravel-pushy-notification",
+            "version": "1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/fawzanm/laravel-pushy-notification.git",
+                "reference": "65415c6ca398a7fffa9647b06239750b285eae85"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/fawzanm/laravel-pushy-notification/zipball/65415c6ca398a7fffa9647b06239750b285eae85",
+                "reference": "65415c6ca398a7fffa9647b06239750b285eae85",
+                "shasum": ""
+            },
+            "require": {
+                "guzzlehttp/guzzle": "^6.2",
+                "illuminate/config": "~5.5|^6.0",
+                "illuminate/notifications": "~5.5 || ~6.0",
+                "illuminate/queue": "~5.5|^6.0",
+                "illuminate/support": "~5.5 || ~6.0",
+                "php": ">=7.2"
+            },
+            "require-dev": {
+                "mockery/mockery": "^1.0",
+                "phpunit/phpunit": "^8.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Fawzanm\\Pushy\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Mohamed Fawzan",
+                    "email": "fawzanm@gmail.com",
+                    "homepage": "https://fawzan.xyz",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Laravel Pushy Notification Channel",
+            "homepage": "http://salfade.com/blog",
+            "time": "2020-01-05T09:53:51+00:00"
         },
         {
             "name": "filp/whoops",

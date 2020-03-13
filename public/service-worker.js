@@ -5,6 +5,7 @@ self.addEventListener('push', function(e) {
     }
 
     var data = e.data.json() || {};
+    console.log(data);
 
     var image = data.image || 'https://sdk.pushy.me/web/assets/img/icon.png';
     var title = data.title || '';
