@@ -5,8 +5,7 @@
         "This file is @generated automatically"
     ],
     "content-hash": "43d260585e92a06eddf98e79ce3e2298",
-    "packages": [
-        {
+    "packages": [{
             "name": "asm89/stack-cors",
             "version": "1.3.0",
             "source": {
@@ -44,12 +43,10 @@
             "license": [
                 "MIT"
             ],
-            "authors": [
-                {
-                    "name": "Alexander",
-                    "email": "iam.asm89@gmail.com"
-                }
-            ],
+            "authors": [{
+                "name": "Alexander",
+                "email": "iam.asm89@gmail.com"
+            }],
             "description": "Cross-origin resource sharing library and stack middleware",
             "homepage": "https://github.com/asm89/stack-cors",
             "keywords": [
@@ -105,12 +102,10 @@
             "license": [
                 "MIT"
             ],
-            "authors": [
-                {
-                    "name": "Barry vd. Heuvel",
-                    "email": "barryvdh@gmail.com"
-                }
-            ],
+            "authors": [{
+                "name": "Barry vd. Heuvel",
+                "email": "barryvdh@gmail.com"
+            }],
             "description": "Adds CORS (Cross-Origin Resource Sharing) headers support in your Laravel application",
             "keywords": [
                 "api",
@@ -162,12 +157,10 @@
             "license": [
                 "MIT"
             ],
-            "authors": [
-                {
-                    "name": "Barry vd. Heuvel",
-                    "email": "barryvdh@gmail.com"
-                }
-            ],
+            "authors": [{
+                "name": "Barry vd. Heuvel",
+                "email": "barryvdh@gmail.com"
+            }],
             "description": "A DOMPDF Wrapper for Laravel",
             "keywords": [
                 "dompdf",
@@ -222,12 +215,10 @@
             "license": [
                 "MIT"
             ],
-            "authors": [
-                {
-                    "name": "Saleem Hadad",
-                    "email": "saleem@binary-torch.com"
-                }
-            ],
+            "authors": [{
+                "name": "Saleem Hadad",
+                "email": "saleem@binary-torch.com"
+            }],
             "description": "Generate gorgeous recipes for your Laravel applications using MarkDown",
             "keywords": [
                 "api",
@@ -283,12 +274,10 @@
             "license": [
                 "MIT"
             ],
-            "authors": [
-                {
-                    "name": "Dmitriy Igoshev",
-                    "email": "dmitry.igo@gmail.com"
-                }
-            ],
+            "authors": [{
+                "name": "Dmitriy Igoshev",
+                "email": "dmitry.igo@gmail.com"
+            }],
             "description": "Captcha integration for Laravel",
             "homepage": "https://github.com/igoshev/laravel-captcha",
             "keywords": [
@@ -336,13 +325,11 @@
             "license": [
                 "MIT"
             ],
-            "authors": [
-                {
-                    "name": "Jordi Boggiano",
-                    "email": "j.boggiano@seld.be",
-                    "homepage": "http://seld.be"
-                }
-            ],
+            "authors": [{
+                "name": "Jordi Boggiano",
+                "email": "j.boggiano@seld.be",
+                "homepage": "http://seld.be"
+            }],
             "description": "Lets you find a path to the system CA bundle, and includes a fallback to the Mozilla CA bundle.",
             "keywords": [
                 "cabundle",
@@ -403,12 +390,10 @@
             "license": [
                 "MIT"
             ],
-            "authors": [
-                {
-                    "name": "Darius Matulionis",
-                    "email": "darius@matulionis.lt"
-                }
-            ],
+            "authors": [{
+                "name": "Darius Matulionis",
+                "email": "darius@matulionis.lt"
+            }],
             "description": "Swagger integration to Laravel 5",
             "keywords": [
                 "api",
@@ -487,8 +472,7 @@
             "license": [
                 "MIT"
             ],
-            "authors": [
-                {
+            "authors": [{
                     "name": "Guilherme Blanco",
                     "email": "guilhermeblanco@gmail.com"
                 },
@@ -563,8 +547,7 @@
             "license": [
                 "MIT"
             ],
-            "authors": [
-                {
+            "authors": [{
                     "name": "Guilherme Blanco",
                     "email": "guilhermeblanco@gmail.com"
                 },
@@ -649,8 +632,7 @@
             "license": [
                 "MIT"
             ],
-            "authors": [
-                {
+            "authors": [{
                     "name": "Guilherme Blanco",
                     "email": "guilhermeblanco@gmail.com"
                 },
@@ -731,8 +713,7 @@
             "license": [
                 "MIT"
             ],
-            "authors": [
-                {
+            "authors": [{
                     "name": "Guilherme Blanco",
                     "email": "guilhermeblanco@gmail.com"
                 },
@@ -803,8 +784,7 @@
             "license": [
                 "MIT"
             ],
-            "authors": [
-                {
+            "authors": [{
                     "name": "Guilherme Blanco",
                     "email": "guilhermeblanco@gmail.com"
                 },
@@ -872,8 +852,7 @@
             "license": [
                 "MIT"
             ],
-            "authors": [
-                {
+            "authors": [{
                     "name": "Guilherme Blanco",
                     "email": "guilhermeblanco@gmail.com"
                 },
@@ -945,8 +924,7 @@
             "license": [
                 "LGPL-2.1"
             ],
-            "authors": [
-                {
+            "authors": [{
                     "name": "Fabien Ménager",
                     "email": "fabien.menager@gmail.com"
                 },
@@ -998,8 +976,7 @@
             "license": [
                 "MIT"
             ],
-            "authors": [
-                {
+            "authors": [{
                     "name": "Michael Dowling",
                     "email": "mtdowling@gmail.com",
                     "homepage": "https://github.com/mtdowling"
@@ -1059,11 +1036,9 @@
             "license": [
                 "MIT"
             ],
-            "authors": [
-                {
-                    "name": "Eduardo Gulias Davis"
-                }
-            ],
+            "authors": [{
+                "name": "Eduardo Gulias Davis"
+            }],
             "description": "A library for validating emails against several RFCs",
             "homepage": "https://github.com/egulias/EmailValidator",
             "keywords": [
@@ -1106,13 +1081,11 @@
             "license": [
                 "MIT"
             ],
-            "authors": [
-                {
-                    "name": "Emanuil Rusev",
-                    "email": "hello@erusev.com",
-                    "homepage": "http://erusev.com"
-                }
-            ],
+            "authors": [{
+                "name": "Emanuil Rusev",
+                "email": "hello@erusev.com",
+                "homepage": "http://erusev.com"
+            }],
             "description": "Parser for Markdown.",
             "homepage": "http://parsedown.org",
             "keywords": [
@@ -1151,13 +1124,11 @@
             "license": [
                 "MIT"
             ],
-            "authors": [
-                {
-                    "name": "Emanuil Rusev",
-                    "email": "hello@erusev.com",
-                    "homepage": "http://erusev.com"
-                }
-            ],
+            "authors": [{
+                "name": "Emanuil Rusev",
+                "email": "hello@erusev.com",
+                "homepage": "http://erusev.com"
+            }],
             "description": "An extension of Parsedown that adds support for Markdown Extra.",
             "homepage": "https://github.com/erusev/parsedown-extra",
             "keywords": [
@@ -1208,8 +1179,7 @@
             "license": [
                 "MIT"
             ],
-            "authors": [
-                {
+            "authors": [{
                     "name": "Friedrich Große",
                     "email": "friedrich.grosse@gmail.com",
                     "homepage": "https://github.com/FGrosse",
@@ -1277,12 +1247,10 @@
             "license": [
                 "MIT"
             ],
-            "authors": [
-                {
-                    "name": "Chris Fidao",
-                    "email": "fideloper@gmail.com"
-                }
-            ],
+            "authors": [{
+                "name": "Chris Fidao",
+                "email": "fideloper@gmail.com"
+            }],
             "description": "Set trusted proxies for Laravel",
             "keywords": [
                 "load balancing",
@@ -1331,8 +1299,7 @@
             "license": [
                 "MIT"
             ],
-            "authors": [
-                {
+            "authors": [{
                     "name": "Sebastien Vergnes",
                     "email": "sebastien@vergnes.eu"
                 },
@@ -1403,13 +1370,11 @@
             "license": [
                 "Apache-2.0"
             ],
-            "authors": [
-                {
-                    "name": "Gregory J. Oschwald",
-                    "email": "goschwald@maxmind.com",
-                    "homepage": "https://www.maxmind.com/"
-                }
-            ],
+            "authors": [{
+                "name": "Gregory J. Oschwald",
+                "email": "goschwald@maxmind.com",
+                "homepage": "https://www.maxmind.com/"
+            }],
             "description": "MaxMind GeoIP2 PHP API",
             "homepage": "https://github.com/maxmind/GeoIP2-php",
             "keywords": [
@@ -1463,8 +1428,7 @@
             "license": [
                 "MIT"
             ],
-            "authors": [
-                {
+            "authors": [{
                     "name": "Emanuel Mutschlechner",
                     "email": "em@gonoware.com"
                 },
@@ -1540,13 +1504,11 @@
             "license": [
                 "MIT"
             ],
-            "authors": [
-                {
-                    "name": "Michael Dowling",
-                    "email": "mtdowling@gmail.com",
-                    "homepage": "https://github.com/mtdowling"
-                }
-            ],
+            "authors": [{
+                "name": "Michael Dowling",
+                "email": "mtdowling@gmail.com",
+                "homepage": "https://github.com/mtdowling"
+            }],
             "description": "Guzzle is a PHP HTTP client library",
             "homepage": "http://guzzlephp.org/",
             "keywords": [
@@ -1598,13 +1560,11 @@
             "license": [
                 "MIT"
             ],
-            "authors": [
-                {
-                    "name": "Michael Dowling",
-                    "email": "mtdowling@gmail.com",
-                    "homepage": "https://github.com/mtdowling"
-                }
-            ],
+            "authors": [{
+                "name": "Michael Dowling",
+                "email": "mtdowling@gmail.com",
+                "homepage": "https://github.com/mtdowling"
+            }],
             "description": "Guzzle promises library",
             "keywords": [
                 "promise"
@@ -1658,8 +1618,7 @@
             "license": [
                 "MIT"
             ],
-            "authors": [
-                {
+            "authors": [{
                     "name": "Michael Dowling",
                     "email": "mtdowling@gmail.com",
                     "homepage": "https://github.com/mtdowling"
@@ -1709,13 +1668,11 @@
             "license": [
                 "MIT"
             ],
-            "authors": [
-                {
-                    "name": "Instamojo and contributors",
-                    "email": "dev@instamojo.com",
-                    "homepage": "https://github.com/instamojo/instamojo-php/contributors"
-                }
-            ],
+            "authors": [{
+                "name": "Instamojo and contributors",
+                "email": "dev@instamojo.com",
+                "homepage": "https://github.com/instamojo/instamojo-php/contributors"
+            }],
             "description": "This is composer wrapper for instamojo-php",
             "homepage": "https://github.com/instamojo/instamojo-php/",
             "keywords": [
@@ -1760,12 +1717,10 @@
             "license": [
                 "BSD-2-Clause"
             ],
-            "authors": [
-                {
-                    "name": "Jakub Onderka",
-                    "email": "jakub.onderka@gmail.com"
-                }
-            ],
+            "authors": [{
+                "name": "Jakub Onderka",
+                "email": "jakub.onderka@gmail.com"
+            }],
             "time": "2018-09-29T17:23:10+00:00"
         },
         {
@@ -1804,13 +1759,11 @@
             "license": [
                 "MIT"
             ],
-            "authors": [
-                {
-                    "name": "Jakub Onderka",
-                    "email": "acci@acci.cz",
-                    "homepage": "http://www.acci.cz/"
-                }
-            ],
+            "authors": [{
+                "name": "Jakub Onderka",
+                "email": "acci@acci.cz",
+                "homepage": "http://www.acci.cz/"
+            }],
             "description": "Highlight PHP code in terminal",
             "time": "2018-09-29T18:48:56+00:00"
         },
@@ -1845,13 +1798,11 @@
             "license": [
                 "MIT"
             ],
-            "authors": [
-                {
-                    "name": "Mark Beech",
-                    "email": "m@rkbee.ch",
-                    "role": "Developer"
-                }
-            ],
+            "authors": [{
+                "name": "Mark Beech",
+                "email": "m@rkbee.ch",
+                "role": "Developer"
+            }],
             "description": "CrawlerDetect is a PHP class for detecting bots/crawlers/spiders via the user agent",
             "homepage": "https://github.com/JayBizzle/Crawler-Detect/",
             "keywords": [
@@ -1912,12 +1863,10 @@
             "license": [
                 "MIT"
             ],
-            "authors": [
-                {
-                    "name": "Jens Segers",
-                    "homepage": "https://jenssegers.com"
-                }
-            ],
+            "authors": [{
+                "name": "Jens Segers",
+                "homepage": "https://jenssegers.com"
+            }],
             "description": "Desktop/mobile user agent parser with support for Laravel, based on Mobiledetect",
             "homepage": "https://github.com/jenssegers/agent",
             "keywords": [
@@ -1931,102 +1880,6 @@
                 "useragent"
             ],
             "time": "2019-01-19T21:32:55+00:00"
-        },
-        {
-            "name": "jlorente/laravel-pushy",
-            "version": "1.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/jlorente/laravel-pushy.git",
-                "reference": "c700d67ad805c12a688063c9a4b160a5ea34a39e"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/jlorente/laravel-pushy/zipball/c700d67ad805c12a688063c9a4b160a5ea34a39e",
-                "reference": "c700d67ad805c12a688063c9a4b160a5ea34a39e",
-                "shasum": ""
-            },
-            "require": {
-                "illuminate/support": "^5.5",
-                "jlorente/pushy-php-sdk": "^1.0",
-                "php": ">=7.1.3"
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "providers": [
-                        "Jlorente\\Laravel\\Pushy\\PushyServiceProvider"
-                    ],
-                    "aliases": {
-                        "Pushy": "Jlorente\\Laravel\\Pushy\\Facades\\Pushy"
-                    }
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Jlorente\\Laravel\\Pushy\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "authors": [
-                {
-                    "name": "José Lorente",
-                    "email": "jose.lorente.martin@gmail.com"
-                }
-            ],
-            "description": "Laravel integration for the Pushy SDK including a notification channel",
-            "keywords": [
-                "jlorente",
-                "laravel",
-                "php",
-                "pushy"
-            ],
-            "time": "2019-12-02T19:39:22+00:00"
-        },
-        {
-            "name": "jlorente/pushy-php-sdk",
-            "version": "1.0.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/jlorente/pushy-php-sdk.git",
-                "reference": "386c2b3cfec576b79bc54e645c9f4af33d5f9a5c"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/jlorente/pushy-php-sdk/zipball/386c2b3cfec576b79bc54e645c9f4af33d5f9a5c",
-                "reference": "386c2b3cfec576b79bc54e645c9f4af33d5f9a5c",
-                "shasum": ""
-            },
-            "require": {
-                "guzzlehttp/guzzle": "~6.0",
-                "php": ">=5.6"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Jlorente\\Pushy\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "authors": [
-                {
-                    "name": "José Lorente",
-                    "email": "jose.lorente.martin@gmail.com"
-                }
-            ],
-            "description": "A PHP package to access the Pushy API by a comprehensive way.",
-            "keywords": [
-                "jlorente",
-                "php",
-                "pushy"
-            ],
-            "time": "2019-12-02T19:52:38+00:00"
         },
         {
             "name": "kartik-v/bootstrap-fileinput",
@@ -2057,13 +1910,11 @@
             "license": [
                 "BSD-3-Clause"
             ],
-            "authors": [
-                {
-                    "name": "Kartik Visweswaran",
-                    "email": "kartikv2@gmail.com",
-                    "homepage": "http://www.krajee.com/"
-                }
-            ],
+            "authors": [{
+                "name": "Kartik Visweswaran",
+                "email": "kartikv2@gmail.com",
+                "homepage": "http://www.krajee.com/"
+            }],
             "description": "An enhanced HTML 5 file input for Bootstrap 3.x with features for file preview for many file types, multiple selection, ajax uploads, and more.",
             "homepage": "https://github.com/kartik-v/bootstrap-fileinput",
             "keywords": [
@@ -2126,12 +1977,10 @@
             "license": [
                 "MIT"
             ],
-            "authors": [
-                {
-                    "name": "Jeffrey Way",
-                    "email": "jeffrey@laracasts.com"
-                }
-            ],
+            "authors": [{
+                "name": "Jeffrey Way",
+                "email": "jeffrey@laracasts.com"
+            }],
             "description": "Easy flash notifications",
             "time": "2019-09-03T18:59:42+00:00"
         },
@@ -2177,14 +2026,12 @@
             "license": [
                 "MIT"
             ],
-            "authors": [
-                {
-                    "name": "Cretu Eusebiu",
-                    "email": "me@cretueusebiu.com",
-                    "homepage": "http://cretueusebiu.com",
-                    "role": "Developer"
-                }
-            ],
+            "authors": [{
+                "name": "Cretu Eusebiu",
+                "email": "me@cretueusebiu.com",
+                "homepage": "http://cretueusebiu.com",
+                "role": "Developer"
+            }],
             "description": "Web Push Notifications driver for Laravel.",
             "homepage": "https://github.com/laravel-notification-channels/webpush",
             "time": "2020-01-24T07:29:30+00:00"
@@ -2323,12 +2170,10 @@
             "license": [
                 "MIT"
             ],
-            "authors": [
-                {
-                    "name": "Taylor Otwell",
-                    "email": "taylor@laravel.com"
-                }
-            ],
+            "authors": [{
+                "name": "Taylor Otwell",
+                "email": "taylor@laravel.com"
+            }],
             "description": "The Laravel Framework.",
             "homepage": "https://laravel.com",
             "keywords": [
@@ -2386,12 +2231,10 @@
             "license": [
                 "MIT"
             ],
-            "authors": [
-                {
-                    "name": "Taylor Otwell",
-                    "email": "taylor@laravel.com"
-                }
-            ],
+            "authors": [{
+                "name": "Taylor Otwell",
+                "email": "taylor@laravel.com"
+            }],
             "description": "Laravel wrapper around OAuth 1 & OAuth 2 libraries.",
             "homepage": "https://laravel.com",
             "keywords": [
@@ -2448,12 +2291,10 @@
             "license": [
                 "MIT"
             ],
-            "authors": [
-                {
-                    "name": "Taylor Otwell",
-                    "email": "taylor@laravel.com"
-                }
-            ],
+            "authors": [{
+                "name": "Taylor Otwell",
+                "email": "taylor@laravel.com"
+            }],
             "description": "Powerful REPL for the Laravel framework.",
             "keywords": [
                 "REPL",
@@ -2504,13 +2345,11 @@
             "license": [
                 "BSD-3-Clause"
             ],
-            "authors": [
-                {
-                    "name": "Luís Otávio Cobucci Oblonczyk",
-                    "email": "lcobucci@gmail.com",
-                    "role": "Developer"
-                }
-            ],
+            "authors": [{
+                "name": "Luís Otávio Cobucci Oblonczyk",
+                "email": "lcobucci@gmail.com",
+                "role": "Developer"
+            }],
             "description": "A simple library to work with JSON Web Token and JSON Web Signature",
             "keywords": [
                 "JWS",
@@ -2574,12 +2413,10 @@
             "license": [
                 "MIT"
             ],
-            "authors": [
-                {
-                    "name": "Frank de Jonge",
-                    "email": "info@frenky.net"
-                }
-            ],
+            "authors": [{
+                "name": "Frank de Jonge",
+                "email": "info@frenky.net"
+            }],
             "description": "Filesystem abstraction: Many filesystems, one API.",
             "keywords": [
                 "Cloud Files",
@@ -2640,14 +2477,12 @@
             "license": [
                 "MIT"
             ],
-            "authors": [
-                {
-                    "name": "Ben Corlett",
-                    "email": "bencorlett@me.com",
-                    "homepage": "http://www.webcomm.com.au",
-                    "role": "Developer"
-                }
-            ],
+            "authors": [{
+                "name": "Ben Corlett",
+                "email": "bencorlett@me.com",
+                "homepage": "http://www.webcomm.com.au",
+                "role": "Developer"
+            }],
             "description": "OAuth 1.0 Client Library",
             "keywords": [
                 "Authentication",
@@ -2703,12 +2538,10 @@
             "license": [
                 "MIT"
             ],
-            "authors": [
-                {
-                    "name": "Shawn Tunney",
-                    "email": "shawn.tunney@gmail.com"
-                }
-            ],
+            "authors": [{
+                "name": "Shawn Tunney",
+                "email": "shawn.tunney@gmail.com"
+            }],
             "description": "Laravel helper for FullCalendar.io",
             "time": "2017-09-18T17:54:18+00:00"
         },
@@ -2754,13 +2587,11 @@
             "license": [
                 "Apache-2.0"
             ],
-            "authors": [
-                {
-                    "name": "Gregory J. Oschwald",
-                    "email": "goschwald@maxmind.com",
-                    "homepage": "https://www.maxmind.com/"
-                }
-            ],
+            "authors": [{
+                "name": "Gregory J. Oschwald",
+                "email": "goschwald@maxmind.com",
+                "homepage": "https://www.maxmind.com/"
+            }],
             "description": "MaxMind DB Reader API",
             "homepage": "https://github.com/maxmind/MaxMind-DB-Reader-php",
             "keywords": [
@@ -2808,12 +2639,10 @@
             "license": [
                 "Apache-2.0"
             ],
-            "authors": [
-                {
-                    "name": "Gregory Oschwald",
-                    "email": "goschwald@maxmind.com"
-                }
-            ],
+            "authors": [{
+                "name": "Gregory Oschwald",
+                "email": "goschwald@maxmind.com"
+            }],
             "description": "Internal MaxMind Web Service API",
             "homepage": "https://github.com/maxmind/web-service-common-php",
             "time": "2019-12-12T15:56:05+00:00"
@@ -2864,8 +2693,7 @@
             "license": [
                 "MIT"
             ],
-            "authors": [
-                {
+            "authors": [{
                     "name": "unicodeveloper",
                     "email": "prosperotemuyiwa@gmail.com"
                 },
@@ -2919,8 +2747,7 @@
             "license": [
                 "GPL-3.0"
             ],
-            "authors": [
-                {
+            "authors": [{
                     "name": "Andri Setiawan",
                     "email": "andri.setiawan@veritrans.co.id"
                 },
@@ -2975,13 +2802,11 @@
             "license": [
                 "MIT"
             ],
-            "authors": [
-                {
-                    "name": "Louis Lagrange",
-                    "email": "lagrange.louis@gmail.com",
-                    "homepage": "https://github.com/Minishlink"
-                }
-            ],
+            "authors": [{
+                "name": "Louis Lagrange",
+                "email": "lagrange.louis@gmail.com",
+                "homepage": "https://github.com/Minishlink"
+            }],
             "description": "Web Push library for PHP",
             "homepage": "https://github.com/web-push-libs/web-push-php",
             "keywords": [
@@ -3026,14 +2851,12 @@
             "license": [
                 "MIT"
             ],
-            "authors": [
-                {
-                    "name": "Serban Ghita",
-                    "email": "serbanghita@gmail.com",
-                    "homepage": "http://mobiledetect.net",
-                    "role": "Developer"
-                }
-            ],
+            "authors": [{
+                "name": "Serban Ghita",
+                "email": "serbanghita@gmail.com",
+                "homepage": "http://mobiledetect.net",
+                "role": "Developer"
+            }],
             "description": "Mobile_Detect is a lightweight PHP class for detecting mobile devices. It uses the User-Agent string combined with specific HTTP headers to detect the mobile environment.",
             "homepage": "https://github.com/serbanghita/Mobile-Detect",
             "keywords": [
@@ -3107,13 +2930,11 @@
             "license": [
                 "MIT"
             ],
-            "authors": [
-                {
-                    "name": "Jordi Boggiano",
-                    "email": "j.boggiano@seld.be",
-                    "homepage": "http://seld.be"
-                }
-            ],
+            "authors": [{
+                "name": "Jordi Boggiano",
+                "email": "j.boggiano@seld.be",
+                "homepage": "http://seld.be"
+            }],
             "description": "Sends your logs to files, sockets, inboxes, databases and various web services",
             "homepage": "http://github.com/Seldaek/monolog",
             "keywords": [
@@ -3165,8 +2986,7 @@
             "license": [
                 "MIT"
             ],
-            "authors": [
-                {
+            "authors": [{
                     "name": "Alessandro Nadalin",
                     "email": "alessandro.nadalin@gmail.com"
                 },
@@ -3236,8 +3056,7 @@
             "license": [
                 "MIT"
             ],
-            "authors": [
-                {
+            "authors": [{
                     "name": "Brian Nesbitt",
                     "email": "brian@nesbot.com",
                     "homepage": "http://nesbot.com"
@@ -3290,12 +3109,10 @@
             "license": [
                 "BSD-2-Clause"
             ],
-            "authors": [
-                {
-                    "name": "Boyan Balkanski",
-                    "email": "balkanski@outlook.com"
-                }
-            ],
+            "authors": [{
+                "name": "Boyan Balkanski",
+                "email": "balkanski@outlook.com"
+            }],
             "description": "Laravel-Paypal is simple package help you process direct credit card payments, stored credit card payments and PayPal account payments with your Laravel 5 projects using paypal REST API SDK.",
             "time": "2019-04-03T23:00:23+00:00"
         },
@@ -3339,11 +3156,9 @@
             "license": [
                 "BSD-3-Clause"
             ],
-            "authors": [
-                {
-                    "name": "Nikita Popov"
-                }
-            ],
+            "authors": [{
+                "name": "Nikita Popov"
+            }],
             "description": "A PHP parser written in PHP",
             "keywords": [
                 "parser",
@@ -3390,8 +3205,7 @@
             "license": [
                 "MIT"
             ],
-            "authors": [
-                {
+            "authors": [{
                     "name": "Marius Sarca",
                     "email": "marius.sarca@gmail.com"
                 },
@@ -3441,13 +3255,11 @@
             "license": [
                 "MIT"
             ],
-            "authors": [
-                {
-                    "name": "Paragon Initiative Enterprises",
-                    "email": "security@paragonie.com",
-                    "homepage": "https://paragonie.com"
-                }
-            ],
+            "authors": [{
+                "name": "Paragon Initiative Enterprises",
+                "email": "security@paragonie.com",
+                "homepage": "https://paragonie.com"
+            }],
             "description": "PHP 5.x polyfill for random_bytes() and random_int() from PHP 7",
             "keywords": [
                 "csprng",
@@ -3492,8 +3304,7 @@
             "license": [
                 "ISC"
             ],
-            "authors": [
-                {
+            "authors": [{
                     "name": "Paragon Initiative Enterprises",
                     "email": "security@paragonie.com"
                 },
@@ -3572,12 +3383,10 @@
             "license": [
                 "Apache-2.0"
             ],
-            "authors": [
-                {
-                    "name": "PayPal",
-                    "homepage": "https://github.com/paypal/rest-api-sdk-php/contributors"
-                }
-            ],
+            "authors": [{
+                "name": "PayPal",
+                "homepage": "https://github.com/paypal/rest-api-sdk-php/contributors"
+            }],
             "description": "PayPal's PHP SDK for REST APIs",
             "homepage": "http://paypal.github.io/PayPal-PHP-SDK/",
             "keywords": [
@@ -3615,12 +3424,10 @@
             "license": [
                 "LGPL-3.0"
             ],
-            "authors": [
-                {
-                    "name": "Fabien Ménager",
-                    "email": "fabien.menager@gmail.com"
-                }
-            ],
+            "authors": [{
+                "name": "Fabien Ménager",
+                "email": "fabien.menager@gmail.com"
+            }],
             "description": "A library to read, parse, export and make subsets of different types of font files.",
             "homepage": "https://github.com/PhenX/php-font-lib",
             "time": "2017-09-13T16:14:37+00:00"
@@ -3655,12 +3462,10 @@
             "license": [
                 "LGPL-3.0"
             ],
-            "authors": [
-                {
-                    "name": "Fabien Ménager",
-                    "email": "fabien.menager@gmail.com"
-                }
-            ],
+            "authors": [{
+                "name": "Fabien Ménager",
+                "email": "fabien.menager@gmail.com"
+            }],
             "description": "A library to read, parse and export to PDF SVG files.",
             "homepage": "https://github.com/PhenX/php-svg-lib",
             "time": "2019-09-11T20:02:13+00:00"
@@ -3701,8 +3506,7 @@
             "license": [
                 "Apache-2.0"
             ],
-            "authors": [
-                {
+            "authors": [{
                     "name": "Johannes M. Schmitt",
                     "email": "schmittjoh@gmail.com"
                 },
@@ -3759,12 +3563,10 @@
             "license": [
                 "MIT"
             ],
-            "authors": [
-                {
-                    "name": "Bilal Gultekin",
-                    "email": "bilal@bilal.im"
-                }
-            ],
+            "authors": [{
+                "name": "Bilal Gultekin",
+                "email": "bilal@bilal.im"
+            }],
             "description": "Server-side handler of DataTables Jquery Plugin for Laravel 4",
             "keywords": [
                 "datatable",
@@ -3813,13 +3615,11 @@
             "license": [
                 "BSD-3-Clause"
             ],
-            "authors": [
-                {
-                    "name": "Antonio Carlos Ribeiro",
-                    "email": "acr@antoniocarlosribeiro.com",
-                    "role": "Creator"
-                }
-            ],
+            "authors": [{
+                "name": "Antonio Carlos Ribeiro",
+                "email": "acr@antoniocarlosribeiro.com",
+                "role": "Creator"
+            }],
             "description": "PragmaRX components support package",
             "keywords": [
                 "laravel",
@@ -3884,13 +3684,11 @@
             "license": [
                 "MIT"
             ],
-            "authors": [
-                {
-                    "name": "Antonio Carlos Ribeiro",
-                    "email": "acr@antoniocarlosribeiro.com",
-                    "role": "Creator & Designer"
-                }
-            ],
+            "authors": [{
+                "name": "Antonio Carlos Ribeiro",
+                "email": "acr@antoniocarlosribeiro.com",
+                "role": "Creator & Designer"
+            }],
             "description": "A Laravel Visitor Tracker",
             "keywords": [
                 "laravel",
@@ -3936,12 +3734,10 @@
             "license": [
                 "MIT"
             ],
-            "authors": [
-                {
-                    "name": "PHP-FIG",
-                    "homepage": "http://www.php-fig.org/"
-                }
-            ],
+            "authors": [{
+                "name": "PHP-FIG",
+                "homepage": "http://www.php-fig.org/"
+            }],
             "description": "Common Container Interface (PHP FIG PSR-11)",
             "homepage": "https://github.com/php-fig/container",
             "keywords": [
@@ -3985,12 +3781,10 @@
             "license": [
                 "MIT"
             ],
-            "authors": [
-                {
-                    "name": "PHP-FIG",
-                    "homepage": "http://www.php-fig.org/"
-                }
-            ],
+            "authors": [{
+                "name": "PHP-FIG",
+                "homepage": "http://www.php-fig.org/"
+            }],
             "description": "Common interface for HTTP messages",
             "homepage": "https://github.com/php-fig/http-message",
             "keywords": [
@@ -4035,12 +3829,10 @@
             "license": [
                 "MIT"
             ],
-            "authors": [
-                {
-                    "name": "PHP-FIG",
-                    "homepage": "http://www.php-fig.org/"
-                }
-            ],
+            "authors": [{
+                "name": "PHP-FIG",
+                "homepage": "http://www.php-fig.org/"
+            }],
             "description": "Common interface for logging libraries",
             "homepage": "https://github.com/php-fig/log",
             "keywords": [
@@ -4082,12 +3874,10 @@
             "license": [
                 "MIT"
             ],
-            "authors": [
-                {
-                    "name": "PHP-FIG",
-                    "homepage": "http://www.php-fig.org/"
-                }
-            ],
+            "authors": [{
+                "name": "PHP-FIG",
+                "homepage": "http://www.php-fig.org/"
+            }],
             "description": "Common interfaces for simple caching",
             "keywords": [
                 "cache",
@@ -4155,13 +3945,11 @@
             "license": [
                 "MIT"
             ],
-            "authors": [
-                {
-                    "name": "Justin Hileman",
-                    "email": "justin@justinhileman.info",
-                    "homepage": "http://justinhileman.com"
-                }
-            ],
+            "authors": [{
+                "name": "Justin Hileman",
+                "email": "justin@justinhileman.info",
+                "homepage": "http://justinhileman.com"
+            }],
             "description": "An interactive shell for modern PHP.",
             "homepage": "http://psysh.org",
             "keywords": [
@@ -4203,12 +3991,10 @@
             "license": [
                 "MIT"
             ],
-            "authors": [
-                {
-                    "name": "Ralph Khattar",
-                    "email": "ralph.khattar@gmail.com"
-                }
-            ],
+            "authors": [{
+                "name": "Ralph Khattar",
+                "email": "ralph.khattar@gmail.com"
+            }],
             "description": "A polyfill for getallheaders.",
             "time": "2019-03-08T08:55:37+00:00"
         },
@@ -4275,8 +4061,7 @@
             "license": [
                 "MIT"
             ],
-            "authors": [
-                {
+            "authors": [{
                     "name": "Ben Ramsey",
                     "email": "ben@benramsey.com",
                     "homepage": "https://benramsey.com"
@@ -4332,8 +4117,7 @@
             "license": [
                 "MIT"
             ],
-            "authors": [
-                {
+            "authors": [{
                     "name": "Abhay Rana",
                     "email": "nemo@razorpay.com",
                     "homepage": "https://captnemo.in",
@@ -4385,12 +4169,10 @@
             "license": [
                 "ISC"
             ],
-            "authors": [
-                {
-                    "name": "Ryan McCue",
-                    "homepage": "http://ryanmccue.info"
-                }
-            ],
+            "authors": [{
+                "name": "Ryan McCue",
+                "homepage": "http://ryanmccue.info"
+            }],
             "description": "A HTTP library written in PHP, for human beings.",
             "homepage": "http://github.com/rmccue/Requests",
             "keywords": [
@@ -4435,11 +4217,9 @@
             "license": [
                 "MIT"
             ],
-            "authors": [
-                {
-                    "name": "Raphael Schweikert"
-                }
-            ],
+            "authors": [{
+                "name": "Raphael Schweikert"
+            }],
             "description": "Parser for CSS Files written in PHP",
             "homepage": "http://www.sabberworm.com/blog/2010/6/10/php-css-parser",
             "keywords": [
@@ -4480,12 +4260,10 @@
             "license": [
                 "MIT"
             ],
-            "authors": [
-                {
-                    "name": "Lars Strojny",
-                    "email": "lars@strojny.net"
-                }
-            ],
+            "authors": [{
+                "name": "Lars Strojny",
+                "email": "lars@strojny.net"
+            }],
             "description": "Snowplow Refer(r)er parser for PHP",
             "time": "2016-01-29T16:43:00+00:00"
         },
@@ -4523,14 +4301,12 @@
             "license": [
                 "MIT"
             ],
-            "authors": [
-                {
-                    "name": "Freek Van der Herten",
-                    "email": "freek@spatie.be",
-                    "homepage": "https://spatie.be",
-                    "role": "Developer"
-                }
-            ],
+            "authors": [{
+                "name": "Freek Van der Herten",
+                "email": "freek@spatie.be",
+                "homepage": "https://spatie.be",
+                "role": "Developer"
+            }],
             "description": "Easily optimize images using PHP",
             "homepage": "https://github.com/spatie/image-optimizer",
             "keywords": [
@@ -4582,14 +4358,12 @@
             "license": [
                 "MIT"
             ],
-            "authors": [
-                {
-                    "name": "Freek Van der Herten",
-                    "email": "freek@spatie.be",
-                    "homepage": "https://spatie.be",
-                    "role": "Developer"
-                }
-            ],
+            "authors": [{
+                "name": "Freek Van der Herten",
+                "email": "freek@spatie.be",
+                "homepage": "https://spatie.be",
+                "role": "Developer"
+            }],
             "description": "Optimize images in your Laravel app",
             "homepage": "https://github.com/spatie/laravel-image-optimizer",
             "keywords": [
@@ -4634,12 +4408,10 @@
             "license": [
                 "MIT"
             ],
-            "authors": [
-                {
-                    "name": "Florent Morselli",
-                    "homepage": "https://github.com/Spomky-Labs/base64url/contributors"
-                }
-            ],
+            "authors": [{
+                "name": "Florent Morselli",
+                "homepage": "https://github.com/Spomky-Labs/base64url/contributors"
+            }],
             "description": "Base 64 URL Safe Encoding/Decoding PHP Library",
             "homepage": "https://github.com/Spomky-Labs/base64url",
             "keywords": [
@@ -4691,12 +4463,10 @@
             "license": [
                 "MIT"
             ],
-            "authors": [
-                {
-                    "name": "Stripe and contributors",
-                    "homepage": "https://github.com/stripe/stripe-php/contributors"
-                }
-            ],
+            "authors": [{
+                "name": "Stripe and contributors",
+                "homepage": "https://github.com/stripe/stripe-php/contributors"
+            }],
             "description": "Stripe PHP Library",
             "homepage": "https://stripe.com/",
             "keywords": [
@@ -4725,8 +4495,7 @@
             "license": [
                 "Apache-2.0"
             ],
-            "authors": [
-                {
+            "authors": [{
                     "name": "Anna Bodnia",
                     "email": "anna.bodnia@gmail.com"
                 },
@@ -4807,8 +4576,7 @@
             "license": [
                 "MIT"
             ],
-            "authors": [
-                {
+            "authors": [{
                     "name": "Chris Corbyn"
                 },
                 {
@@ -4887,8 +4655,7 @@
             "license": [
                 "MIT"
             ],
-            "authors": [
-                {
+            "authors": [{
                     "name": "Fabien Potencier",
                     "email": "fabien@symfony.com"
                 },
@@ -4936,8 +4703,7 @@
             "license": [
                 "MIT"
             ],
-            "authors": [
-                {
+            "authors": [{
                     "name": "Fabien Potencier",
                     "email": "fabien@symfony.com"
                 },
@@ -4996,8 +4762,7 @@
             "license": [
                 "MIT"
             ],
-            "authors": [
-                {
+            "authors": [{
                     "name": "Fabien Potencier",
                     "email": "fabien@symfony.com"
                 },
@@ -5057,8 +4822,7 @@
             "license": [
                 "MIT"
             ],
-            "authors": [
-                {
+            "authors": [{
                     "name": "Fabien Potencier",
                     "email": "fabien@symfony.com"
                 },
@@ -5113,8 +4877,7 @@
             "license": [
                 "MIT"
             ],
-            "authors": [
-                {
+            "authors": [{
                     "name": "Fabien Potencier",
                     "email": "fabien@symfony.com"
                 },
@@ -5183,8 +4946,7 @@
             "license": [
                 "MIT"
             ],
-            "authors": [
-                {
+            "authors": [{
                     "name": "Fabien Potencier",
                     "email": "fabien@symfony.com"
                 },
@@ -5233,8 +4995,7 @@
             "license": [
                 "MIT"
             ],
-            "authors": [
-                {
+            "authors": [{
                     "name": "Nicolas Grekas",
                     "email": "p@tchwork.com"
                 },
@@ -5290,8 +5051,7 @@
             "license": [
                 "MIT"
             ],
-            "authors": [
-                {
+            "authors": [{
                     "name": "Fabien Potencier",
                     "email": "fabien@symfony.com"
                 },
@@ -5345,8 +5105,7 @@
             "license": [
                 "MIT"
             ],
-            "authors": [
-                {
+            "authors": [{
                     "name": "Fabien Potencier",
                     "email": "fabien@symfony.com"
                 },
@@ -5435,8 +5194,7 @@
             "license": [
                 "MIT"
             ],
-            "authors": [
-                {
+            "authors": [{
                     "name": "Fabien Potencier",
                     "email": "fabien@symfony.com"
                 },
@@ -5493,8 +5251,7 @@
             "license": [
                 "MIT"
             ],
-            "authors": [
-                {
+            "authors": [{
                     "name": "Fabien Potencier",
                     "email": "fabien@symfony.com"
                 },
@@ -5549,8 +5306,7 @@
             "license": [
                 "MIT"
             ],
-            "authors": [
-                {
+            "authors": [{
                     "name": "Gert de Pagter",
                     "email": "BackEndTea@gmail.com"
                 },
@@ -5607,8 +5363,7 @@
             "license": [
                 "MIT"
             ],
-            "authors": [
-                {
+            "authors": [{
                     "name": "Nicolas Grekas",
                     "email": "p@tchwork.com"
                 },
@@ -5668,8 +5423,7 @@
             "license": [
                 "MIT"
             ],
-            "authors": [
-                {
+            "authors": [{
                     "name": "Laurent Bassin",
                     "email": "laurent@bassin.info"
                 },
@@ -5728,8 +5482,7 @@
             "license": [
                 "MIT"
             ],
-            "authors": [
-                {
+            "authors": [{
                     "name": "Nicolas Grekas",
                     "email": "p@tchwork.com"
                 },
@@ -5785,8 +5538,7 @@
             "license": [
                 "MIT"
             ],
-            "authors": [
-                {
+            "authors": [{
                     "name": "Nicolas Grekas",
                     "email": "p@tchwork.com"
                 },
@@ -5840,8 +5592,7 @@
             "license": [
                 "MIT"
             ],
-            "authors": [
-                {
+            "authors": [{
                     "name": "Nicolas Grekas",
                     "email": "p@tchwork.com"
                 },
@@ -5898,8 +5649,7 @@
             "license": [
                 "MIT"
             ],
-            "authors": [
-                {
+            "authors": [{
                     "name": "Nicolas Grekas",
                     "email": "p@tchwork.com"
                 },
@@ -5950,8 +5700,7 @@
             "license": [
                 "MIT"
             ],
-            "authors": [
-                {
+            "authors": [{
                     "name": "Nicolas Grekas",
                     "email": "p@tchwork.com"
                 },
@@ -6005,8 +5754,7 @@
             "license": [
                 "MIT"
             ],
-            "authors": [
-                {
+            "authors": [{
                     "name": "Fabien Potencier",
                     "email": "fabien@symfony.com"
                 },
@@ -6075,8 +5823,7 @@
             "license": [
                 "MIT"
             ],
-            "authors": [
-                {
+            "authors": [{
                     "name": "Fabien Potencier",
                     "email": "fabien@symfony.com"
                 },
@@ -6131,8 +5878,7 @@
             "license": [
                 "MIT"
             ],
-            "authors": [
-                {
+            "authors": [{
                     "name": "Nicolas Grekas",
                     "email": "p@tchwork.com"
                 },
@@ -6215,8 +5961,7 @@
             "license": [
                 "MIT"
             ],
-            "authors": [
-                {
+            "authors": [{
                     "name": "Fabien Potencier",
                     "email": "fabien@symfony.com"
                 },
@@ -6264,8 +6009,7 @@
             "license": [
                 "MIT"
             ],
-            "authors": [
-                {
+            "authors": [{
                     "name": "Nicolas Grekas",
                     "email": "p@tchwork.com"
                 },
@@ -6344,8 +6088,7 @@
             "license": [
                 "MIT"
             ],
-            "authors": [
-                {
+            "authors": [{
                     "name": "Nicolas Grekas",
                     "email": "p@tchwork.com"
                 },
@@ -6407,8 +6150,7 @@
             "license": [
                 "MIT"
             ],
-            "authors": [
-                {
+            "authors": [{
                     "name": "Fabien Potencier",
                     "email": "fabien@symfony.com"
                 },
@@ -6459,13 +6201,11 @@
             "license": [
                 "BSD-3-Clause"
             ],
-            "authors": [
-                {
-                    "name": "Tijs Verkoyen",
-                    "email": "css_to_inline_styles@verkoyen.eu",
-                    "role": "Developer"
-                }
-            ],
+            "authors": [{
+                "name": "Tijs Verkoyen",
+                "email": "css_to_inline_styles@verkoyen.eu",
+                "role": "Developer"
+            }],
             "description": "CssToInlineStyles is a class that enables you to convert HTML-pages/files into HTML-pages/files with inline styles. This is very useful when you're sending emails.",
             "homepage": "https://github.com/tijsverkoyen/CssToInlineStyles",
             "time": "2019-10-24T08:53:34+00:00"
@@ -6526,14 +6266,12 @@
             "license": [
                 "MIT"
             ],
-            "authors": [
-                {
-                    "name": "Sean Tymon",
-                    "email": "tymon148@gmail.com",
-                    "homepage": "https://tymon.xyz",
-                    "role": "Developer"
-                }
-            ],
+            "authors": [{
+                "name": "Sean Tymon",
+                "email": "tymon148@gmail.com",
+                "homepage": "https://tymon.xyz",
+                "role": "Developer"
+            }],
             "description": "JSON Web Token Authentication for Laravel and Lumen",
             "homepage": "https://github.com/tymondesigns/jwt-auth",
             "keywords": [
@@ -6589,8 +6327,7 @@
             "license": [
                 "MIT"
             ],
-            "authors": [
-                {
+            "authors": [{
                     "name": "Dave Olsen",
                     "email": "dmolsen@gmail.com"
                 },
@@ -6633,8 +6370,7 @@
             "license": [
                 "GPL-3.0"
             ],
-            "authors": [
-                {
+            "authors": [{
                     "name": "Andri Setiawan",
                     "email": "andri.setiawan@veritrans.co.id"
                 },
@@ -6688,8 +6424,7 @@
             "license": [
                 "BSD-3-Clause"
             ],
-            "authors": [
-                {
+            "authors": [{
                     "name": "Graham Campbell",
                     "email": "graham@alt-three.com",
                     "homepage": "https://gjcampbell.co.uk/"
@@ -6737,12 +6472,10 @@
             "license": [
                 "MIT"
             ],
-            "authors": [
-                {
-                    "name": "Dwight Watson",
-                    "email": "dwight@studiousapp.com"
-                }
-            ],
+            "authors": [{
+                "name": "Dwight Watson",
+                "email": "dwight@studiousapp.com"
+            }],
             "description": "Query caching for Laravel 5",
             "keywords": [
                 "caching",
@@ -6795,8 +6528,7 @@
             "license": [
                 "MIT"
             ],
-            "authors": [
-                {
+            "authors": [{
                     "name": "Florent Morselli",
                     "homepage": "https://github.com/Spomky"
                 },
@@ -6872,8 +6604,7 @@
             "license": [
                 "MIT"
             ],
-            "authors": [
-                {
+            "authors": [{
                     "name": "Florent Morselli",
                     "homepage": "https://github.com/Spomky"
                 },
@@ -6952,8 +6683,7 @@
             "license": [
                 "MIT"
             ],
-            "authors": [
-                {
+            "authors": [{
                     "name": "Florent Morselli",
                     "homepage": "https://github.com/Spomky"
                 },
@@ -7019,8 +6749,7 @@
             "license": [
                 "MIT"
             ],
-            "authors": [
-                {
+            "authors": [{
                     "name": "Florent Morselli",
                     "homepage": "https://github.com/Spomky"
                 },
@@ -7086,8 +6815,7 @@
             "license": [
                 "MIT"
             ],
-            "authors": [
-                {
+            "authors": [{
                     "name": "Florent Morselli",
                     "homepage": "https://github.com/Spomky"
                 },
@@ -7153,8 +6881,7 @@
             "license": [
                 "MIT"
             ],
-            "authors": [
-                {
+            "authors": [{
                     "name": "Florent Morselli",
                     "homepage": "https://github.com/Spomky"
                 },
@@ -7220,8 +6947,7 @@
             "license": [
                 "MIT"
             ],
-            "authors": [
-                {
+            "authors": [{
                     "name": "Florent Morselli",
                     "homepage": "https://github.com/Spomky"
                 },
@@ -7287,8 +7013,7 @@
             "license": [
                 "MIT"
             ],
-            "authors": [
-                {
+            "authors": [{
                     "name": "Florent Morselli",
                     "homepage": "https://github.com/Spomky"
                 },
@@ -7356,8 +7081,7 @@
             "license": [
                 "MIT"
             ],
-            "authors": [
-                {
+            "authors": [{
                     "name": "Florent Morselli",
                     "homepage": "https://github.com/Spomky"
                 },
@@ -7429,8 +7153,7 @@
             "license": [
                 "Apache-2.0"
             ],
-            "authors": [
-                {
+            "authors": [{
                     "name": "Robert Allen",
                     "email": "zircote@gmail.com",
                     "homepage": "http://www.zircote.com"
@@ -7452,8 +7175,7 @@
             "time": "2019-11-30T13:35:44+00:00"
         }
     ],
-    "packages-dev": [
-        {
+    "packages-dev": [{
             "name": "beyondcode/laravel-dump-server",
             "version": "1.3.0",
             "source": {
@@ -7498,14 +7220,12 @@
             "license": [
                 "MIT"
             ],
-            "authors": [
-                {
-                    "name": "Marcel Pociot",
-                    "email": "marcel@beyondco.de",
-                    "homepage": "https://beyondco.de",
-                    "role": "Developer"
-                }
-            ],
+            "authors": [{
+                "name": "Marcel Pociot",
+                "email": "marcel@beyondco.de",
+                "homepage": "https://beyondco.de",
+                "role": "Developer"
+            }],
             "description": "Symfony Var-Dump Server for Laravel",
             "homepage": "https://github.com/beyondcode/laravel-dump-server",
             "keywords": [
@@ -7555,13 +7275,11 @@
             "license": [
                 "MIT"
             ],
-            "authors": [
-                {
-                    "name": "Marco Pivetta",
-                    "email": "ocramius@gmail.com",
-                    "homepage": "http://ocramius.github.com/"
-                }
-            ],
+            "authors": [{
+                "name": "Marco Pivetta",
+                "email": "ocramius@gmail.com",
+                "homepage": "http://ocramius.github.com/"
+            }],
             "description": "A small, lightweight utility to instantiate objects in PHP without invoking their constructors",
             "homepage": "https://www.doctrine-project.org/projects/instantiator.html",
             "keywords": [
@@ -7569,54 +7287,6 @@
                 "instantiate"
             ],
             "time": "2019-10-21T16:45:58+00:00"
-        },
-        {
-            "name": "fawzanm/laravel-pushy-notification",
-            "version": "1.0.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/fawzanm/laravel-pushy-notification.git",
-                "reference": "65415c6ca398a7fffa9647b06239750b285eae85"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/fawzanm/laravel-pushy-notification/zipball/65415c6ca398a7fffa9647b06239750b285eae85",
-                "reference": "65415c6ca398a7fffa9647b06239750b285eae85",
-                "shasum": ""
-            },
-            "require": {
-                "guzzlehttp/guzzle": "^6.2",
-                "illuminate/config": "~5.5|^6.0",
-                "illuminate/notifications": "~5.5 || ~6.0",
-                "illuminate/queue": "~5.5|^6.0",
-                "illuminate/support": "~5.5 || ~6.0",
-                "php": ">=7.2"
-            },
-            "require-dev": {
-                "mockery/mockery": "^1.0",
-                "phpunit/phpunit": "^8.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Fawzanm\\Pushy\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Mohamed Fawzan",
-                    "email": "fawzanm@gmail.com",
-                    "homepage": "https://fawzan.xyz",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Laravel Pushy Notification Channel",
-            "homepage": "http://salfade.com/blog",
-            "time": "2020-01-05T09:53:51+00:00"
         },
         {
             "name": "filp/whoops",
@@ -7660,13 +7330,11 @@
             "license": [
                 "MIT"
             ],
-            "authors": [
-                {
-                    "name": "Filipe Dobreira",
-                    "homepage": "https://github.com/filp",
-                    "role": "Developer"
-                }
-            ],
+            "authors": [{
+                "name": "Filipe Dobreira",
+                "homepage": "https://github.com/filp",
+                "role": "Developer"
+            }],
             "description": "php error handling for cool kids",
             "homepage": "https://filp.github.io/whoops/",
             "keywords": [
@@ -7716,11 +7384,9 @@
             "license": [
                 "MIT"
             ],
-            "authors": [
-                {
-                    "name": "François Zaninotto"
-                }
-            ],
+            "authors": [{
+                "name": "François Zaninotto"
+            }],
             "description": "Faker is a PHP library that generates fake data for you.",
             "keywords": [
                 "data",
@@ -7814,8 +7480,7 @@
             "license": [
                 "BSD-3-Clause"
             ],
-            "authors": [
-                {
+            "authors": [{
                     "name": "Pádraic Brady",
                     "email": "padraic.brady@gmail.com",
                     "homepage": "http://blog.astrumfutura.com"
@@ -7933,12 +7598,10 @@
             "license": [
                 "MIT"
             ],
-            "authors": [
-                {
-                    "name": "Nuno Maduro",
-                    "email": "enunomaduro@gmail.com"
-                }
-            ],
+            "authors": [{
+                "name": "Nuno Maduro",
+                "email": "enunomaduro@gmail.com"
+            }],
             "description": "Cli error handling for console/command-line PHP applications.",
             "keywords": [
                 "artisan",
@@ -7989,8 +7652,7 @@
             "license": [
                 "BSD-3-Clause"
             ],
-            "authors": [
-                {
+            "authors": [{
                     "name": "Arne Blankerts",
                     "email": "arne@blankerts.de",
                     "role": "Developer"
@@ -8036,8 +7698,7 @@
             "license": [
                 "BSD-3-Clause"
             ],
-            "authors": [
-                {
+            "authors": [{
                     "name": "Arne Blankerts",
                     "email": "arne@blankerts.de",
                     "role": "Developer"
@@ -8091,12 +7752,10 @@
             "license": [
                 "MIT"
             ],
-            "authors": [
-                {
-                    "name": "Jaap van Otterdijk",
-                    "email": "opensource@ijaap.nl"
-                }
-            ],
+            "authors": [{
+                "name": "Jaap van Otterdijk",
+                "email": "opensource@ijaap.nl"
+            }],
             "description": "Common reflection classes used by phpdocumentor to reflect the code structure",
             "homepage": "http://www.phpdoc.org",
             "keywords": [
@@ -8148,8 +7807,7 @@
             "license": [
                 "MIT"
             ],
-            "authors": [
-                {
+            "authors": [{
                     "name": "Mike van Riel",
                     "email": "me@mikevanriel.com"
                 },
@@ -8199,12 +7857,10 @@
             "license": [
                 "MIT"
             ],
-            "authors": [
-                {
-                    "name": "Mike van Riel",
-                    "email": "me@mikevanriel.com"
-                }
-            ],
+            "authors": [{
+                "name": "Mike van Riel",
+                "email": "me@mikevanriel.com"
+            }],
             "description": "A PSR-5 based resolver of Class names, Types and Structural Element Names",
             "time": "2019-08-22T18:11:29+00:00"
         },
@@ -8248,8 +7904,7 @@
             "license": [
                 "MIT"
             ],
-            "authors": [
-                {
+            "authors": [{
                     "name": "Konstantin Kudryashov",
                     "email": "ever.zet@gmail.com",
                     "homepage": "http://everzet.com"
@@ -8318,13 +7973,11 @@
             "license": [
                 "BSD-3-Clause"
             ],
-            "authors": [
-                {
-                    "name": "Sebastian Bergmann",
-                    "email": "sebastian@phpunit.de",
-                    "role": "lead"
-                }
-            ],
+            "authors": [{
+                "name": "Sebastian Bergmann",
+                "email": "sebastian@phpunit.de",
+                "role": "lead"
+            }],
             "description": "Library that provides collection, processing, and rendering functionality for PHP code coverage information.",
             "homepage": "https://github.com/sebastianbergmann/php-code-coverage",
             "keywords": [
@@ -8369,13 +8022,11 @@
             "license": [
                 "BSD-3-Clause"
             ],
-            "authors": [
-                {
-                    "name": "Sebastian Bergmann",
-                    "email": "sebastian@phpunit.de",
-                    "role": "lead"
-                }
-            ],
+            "authors": [{
+                "name": "Sebastian Bergmann",
+                "email": "sebastian@phpunit.de",
+                "role": "lead"
+            }],
             "description": "FilterIterator implementation that filters files based on a list of suffixes.",
             "homepage": "https://github.com/sebastianbergmann/php-file-iterator/",
             "keywords": [
@@ -8411,13 +8062,11 @@
             "license": [
                 "BSD-3-Clause"
             ],
-            "authors": [
-                {
-                    "name": "Sebastian Bergmann",
-                    "email": "sebastian@phpunit.de",
-                    "role": "lead"
-                }
-            ],
+            "authors": [{
+                "name": "Sebastian Bergmann",
+                "email": "sebastian@phpunit.de",
+                "role": "lead"
+            }],
             "description": "Simple template engine.",
             "homepage": "https://github.com/sebastianbergmann/php-text-template/",
             "keywords": [
@@ -8460,13 +8109,11 @@
             "license": [
                 "BSD-3-Clause"
             ],
-            "authors": [
-                {
-                    "name": "Sebastian Bergmann",
-                    "email": "sebastian@phpunit.de",
-                    "role": "lead"
-                }
-            ],
+            "authors": [{
+                "name": "Sebastian Bergmann",
+                "email": "sebastian@phpunit.de",
+                "role": "lead"
+            }],
             "description": "Utility class for timing",
             "homepage": "https://github.com/sebastianbergmann/php-timer/",
             "keywords": [
@@ -8510,12 +8157,10 @@
             "license": [
                 "BSD-3-Clause"
             ],
-            "authors": [
-                {
-                    "name": "Sebastian Bergmann",
-                    "email": "sebastian@phpunit.de"
-                }
-            ],
+            "authors": [{
+                "name": "Sebastian Bergmann",
+                "email": "sebastian@phpunit.de"
+            }],
             "description": "Wrapper around PHP's tokenizer extension.",
             "homepage": "https://github.com/sebastianbergmann/php-token-stream/",
             "keywords": [
@@ -8591,13 +8236,11 @@
             "license": [
                 "BSD-3-Clause"
             ],
-            "authors": [
-                {
-                    "name": "Sebastian Bergmann",
-                    "email": "sebastian@phpunit.de",
-                    "role": "lead"
-                }
-            ],
+            "authors": [{
+                "name": "Sebastian Bergmann",
+                "email": "sebastian@phpunit.de",
+                "role": "lead"
+            }],
             "description": "The PHP Unit Testing framework.",
             "homepage": "https://phpunit.de/",
             "keywords": [
@@ -8642,12 +8285,10 @@
             "license": [
                 "BSD-3-Clause"
             ],
-            "authors": [
-                {
-                    "name": "Sebastian Bergmann",
-                    "email": "sebastian@phpunit.de"
-                }
-            ],
+            "authors": [{
+                "name": "Sebastian Bergmann",
+                "email": "sebastian@phpunit.de"
+            }],
             "description": "Looks up which function or method a line of code belongs to",
             "homepage": "https://github.com/sebastianbergmann/code-unit-reverse-lookup/",
             "time": "2017-03-04T06:30:41+00:00"
@@ -8689,8 +8330,7 @@
             "license": [
                 "BSD-3-Clause"
             ],
-            "authors": [
-                {
+            "authors": [{
                     "name": "Jeff Welch",
                     "email": "whatthejeff@gmail.com"
                 },
@@ -8752,8 +8392,7 @@
             "license": [
                 "BSD-3-Clause"
             ],
-            "authors": [
-                {
+            "authors": [{
                     "name": "Kore Nordmann",
                     "email": "mail@kore-nordmann.de"
                 },
@@ -8810,12 +8449,10 @@
             "license": [
                 "BSD-3-Clause"
             ],
-            "authors": [
-                {
-                    "name": "Sebastian Bergmann",
-                    "email": "sebastian@phpunit.de"
-                }
-            ],
+            "authors": [{
+                "name": "Sebastian Bergmann",
+                "email": "sebastian@phpunit.de"
+            }],
             "description": "Provides functionality to handle HHVM/PHP environments",
             "homepage": "http://www.github.com/sebastianbergmann/environment",
             "keywords": [
@@ -8862,8 +8499,7 @@
             "license": [
                 "BSD-3-Clause"
             ],
-            "authors": [
-                {
+            "authors": [{
                     "name": "Sebastian Bergmann",
                     "email": "sebastian@phpunit.de"
                 },
@@ -8930,12 +8566,10 @@
             "license": [
                 "BSD-3-Clause"
             ],
-            "authors": [
-                {
-                    "name": "Sebastian Bergmann",
-                    "email": "sebastian@phpunit.de"
-                }
-            ],
+            "authors": [{
+                "name": "Sebastian Bergmann",
+                "email": "sebastian@phpunit.de"
+            }],
             "description": "Snapshotting of global state",
             "homepage": "http://www.github.com/sebastianbergmann/global-state",
             "keywords": [
@@ -8980,12 +8614,10 @@
             "license": [
                 "BSD-3-Clause"
             ],
-            "authors": [
-                {
-                    "name": "Sebastian Bergmann",
-                    "email": "sebastian@phpunit.de"
-                }
-            ],
+            "authors": [{
+                "name": "Sebastian Bergmann",
+                "email": "sebastian@phpunit.de"
+            }],
             "description": "Traverses array structures and object graphs to enumerate all referenced objects",
             "homepage": "https://github.com/sebastianbergmann/object-enumerator/",
             "time": "2017-08-03T12:35:26+00:00"
@@ -9025,12 +8657,10 @@
             "license": [
                 "BSD-3-Clause"
             ],
-            "authors": [
-                {
-                    "name": "Sebastian Bergmann",
-                    "email": "sebastian@phpunit.de"
-                }
-            ],
+            "authors": [{
+                "name": "Sebastian Bergmann",
+                "email": "sebastian@phpunit.de"
+            }],
             "description": "Allows reflection of object attributes, including inherited and non-public ones",
             "homepage": "https://github.com/sebastianbergmann/object-reflector/",
             "time": "2017-03-29T09:07:27+00:00"
@@ -9070,8 +8700,7 @@
             "license": [
                 "BSD-3-Clause"
             ],
-            "authors": [
-                {
+            "authors": [{
                     "name": "Jeff Welch",
                     "email": "whatthejeff@gmail.com"
                 },
@@ -9120,12 +8749,10 @@
             "license": [
                 "BSD-3-Clause"
             ],
-            "authors": [
-                {
-                    "name": "Sebastian Bergmann",
-                    "email": "sebastian@phpunit.de"
-                }
-            ],
+            "authors": [{
+                "name": "Sebastian Bergmann",
+                "email": "sebastian@phpunit.de"
+            }],
             "description": "Provides a list of PHP built-in functions that operate on resources",
             "homepage": "https://www.github.com/sebastianbergmann/resource-operations",
             "time": "2018-10-04T04:07:39+00:00"
@@ -9162,13 +8789,11 @@
             "license": [
                 "BSD-3-Clause"
             ],
-            "authors": [
-                {
-                    "name": "Sebastian Bergmann",
-                    "email": "sebastian@phpunit.de",
-                    "role": "lead"
-                }
-            ],
+            "authors": [{
+                "name": "Sebastian Bergmann",
+                "email": "sebastian@phpunit.de",
+                "role": "lead"
+            }],
             "description": "Library that helps with managing the version number of Git-hosted PHP projects",
             "homepage": "https://github.com/sebastianbergmann/version",
             "time": "2016-10-03T07:35:21+00:00"
@@ -9203,13 +8828,11 @@
             "license": [
                 "BSD-3-Clause"
             ],
-            "authors": [
-                {
-                    "name": "Arne Blankerts",
-                    "email": "arne@blankerts.de",
-                    "role": "Developer"
-                }
-            ],
+            "authors": [{
+                "name": "Arne Blankerts",
+                "email": "arne@blankerts.de",
+                "role": "Developer"
+            }],
             "description": "A small library for converting tokenized PHP source code into XML and potentially other formats",
             "time": "2019-06-13T22:48:21+00:00"
         },
@@ -9247,12 +8870,10 @@
             "license": [
                 "MIT"
             ],
-            "authors": [
-                {
-                    "name": "Bernhard Schussek",
-                    "email": "bschussek@gmail.com"
-                }
-            ],
+            "authors": [{
+                "name": "Bernhard Schussek",
+                "email": "bschussek@gmail.com"
+            }],
             "description": "Assertions to validate method input/output with nice error messages.",
             "keywords": [
                 "assert",

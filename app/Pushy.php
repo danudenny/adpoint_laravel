@@ -26,7 +26,7 @@ class Pushy {
         curl_close($ch);
         $response = @json_decode($result);
         if (isset($response) && isset($response->error)) {
-            throw new Exception('Pushy API returned an error: ' . $response->error);
+            throw new \Exception('Pushy API returned an error: ' . $response->error);
         }
     }
 }
