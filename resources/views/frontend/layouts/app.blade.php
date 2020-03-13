@@ -1,9 +1,5 @@
 <!DOCTYPE html>
-@if(\App\Language::where('code', Session::get('locale', Config::get('app.locale')))->first()->rtl == 1)
-    <html dir="rtl">
-@else
-    <html>
-@endif
+<html>
 <head>
 
 
@@ -103,11 +99,6 @@
 <link href="{{ asset('css/spectrum.css')}}" rel="stylesheet">
 <!-- Custom style -->
 <link type="text/css" href="{{ asset('frontend/css/custom-style.css') }}" rel="stylesheet">
-
-@if(\App\Language::where('code', Session::get('locale', Config::get('app.locale')))->first()->rtl == 1)
-<!-- RTL -->
-<link type="text/css" href="{{ asset('frontend/css/active.rtl.css') }}" rel="stylesheet">
-@endif
 
 <!-- Facebook Chat style -->
 <link href="{{ asset('frontend/css/fb-style.css')}}" rel="stylesheet">
@@ -1461,7 +1452,7 @@
         $('#btn_close').hide();
         $('.triangle-left').hide();
     }
-    
+
     $('#table').DataTable();
     $('.dataTables_filter').addClass('pull-right');
     $('#table_paginate').addClass('pull-right');

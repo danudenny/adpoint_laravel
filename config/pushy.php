@@ -34,5 +34,5 @@ return [
       |
       | Specifies the default ttl for a pending notificacion.
      */
-    'time_to_live' => env('PUSHY_NOTIFICATION_TTL', 2592000),
+    'time_to_live' => 2592000,
 ];
