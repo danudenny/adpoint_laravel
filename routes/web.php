@@ -11,12 +11,6 @@
 |
 */
 
-use Illuminate\Support\Facades\Redis;
-Route::get('/redis', function () {
-    $p = Redis::incr('p');
-    return $p;
-});
-
 Auth::routes(['verify' => true]);
 Route::get('/logout', '\App\Http\Controllers\Auth\LoginController@logout');
 Route::post('/language', 'LanguageController@changeLanguage')->name('language.change');

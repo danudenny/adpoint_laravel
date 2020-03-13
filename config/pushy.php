@@ -10,7 +10,7 @@ return [
       | API authentication tab of the application section in the Pushy dashboard
       | https://dashboard.pushy.me/apps/<YOUR_APP_ID>/auth
      */
-    'api_key' => '971d1b24487afaeb333f545ad23c5cba43a2f8f4f3403f36eabc94a8b4d140ea',
+    'api_key' => env('PUSHY_API_KEY', '3d8ceb0686df3285dde7576d23bb65feb8d9e95f93f7f354054024bf35a32a99'),
     /*
       |--------------------------------------------------------------------------
       | Is Channel Active
