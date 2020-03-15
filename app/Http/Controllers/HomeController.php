@@ -25,9 +25,7 @@ use App\Pushy;
 use Tracker;
 
 use Mail;
-use Notification;
 use App\Mail\User\RegistUser;
-use App\Notifications\UserRegistPush;
 use Illuminate\Support\Facades\Cache;
 
 class HomeController extends Controller

@@ -36,12 +36,6 @@ use App\Mail\Order\OrderDisapprovedSeller;
 use App\Mail\Order\OrderActive;
 use App\Mail\Order\OrderComplete;
 
-use Notification;
-use App\Notifications\OrderStartPush;
-use App\Notifications\OrderApproveAdminPush;
-use App\Notifications\OrderSoldPush;
-use App\Notifications\OrderApproveSellerPush;
-
 use App\Pushy;
 
 use App\Jobs\PaymentDuration;
@@ -281,7 +275,6 @@ class OrderController extends Controller
                     $trx = Transaction::where('id', $order->transaction_id)->first();
                     $trx->status = "ready";
                     $trx->save();
-                    // Notification::send(User::where('user_type','admin')->get(),new OrderApproveSellerPush);
                     // pushy notif
                     $push = DB::table('pushy_tokens as pt')
                             ->join('users as u', 'u.id', '=', 'pt.user_id')
@@ -699,7 +692,6 @@ class OrderController extends Controller
         $buyer_email = Auth::user()->email;
         $data = Transaction::where('id', $trx->id)->first();
         Mail::to($buyer_email)->send(new OrderStart($data));
-        // Notification::send(User::where('user_type','admin')->get(),new OrderStartPush);
         $push = DB::table('pushy_tokens as pt')
                 ->join('users as u', 'u.id', '=', 'pt.user_id')
                 ->where(['u.user_type' => 'admin'])
