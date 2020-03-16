@@ -38,7 +38,7 @@ class ProductCtrl extends Controller
         foreach ($variants as $variant => $values) {
             $decode = json_decode($values);
             $periode_values = array_values((array)$decode);
-            array_push($variant_array, ['variasi'=>$periode_values]);
+            array_push($variant_array, ['variasi'=>[$decode]]);
         }
         if ($products != null) {
             $merged = array_replace_recursive($products, $variant_array);

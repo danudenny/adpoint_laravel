@@ -42,7 +42,7 @@
                                 </select>
                             </div>
                         </div>
-                        
+
                         <div class="col-md-3">
                             <button type="submit" class="btn btn-dark btn-lg button-search"><i class="fa fa-search"></i> Search</button>
                         </div>
@@ -130,7 +130,7 @@
                                 </div>
                             </div>
                         </div>
-                    @else 
+                    @else
                         <div class="mt-2 col-md-6 d-flex justify-content-center">
                             <div class="card">
                                 <div class="card-body text-center">
@@ -141,7 +141,7 @@
                             </div>
                         </div>
                     @endif
-                    
+
                 @endforeach
             </div>
         </div>
@@ -284,7 +284,7 @@
                                                                 <del class="old-product-price strong-400">{{ home_base_price($product->id) }}</del>
                                                             @endif<br>
                                                             <span class="product-price strong-600">{{ home_discounted_base_price($product->id) }}</span>
-                                                        @else 
+                                                        @else
                                                             <span class="product-price strong-600" title="Please login for show price">xxx</span>
                                                         @endif
                                                     </div>
@@ -381,7 +381,7 @@
                 $(this).text("Show Less");
             } else {
                 $(this).text("Show More");
-            } 
+            }
        })
     </script>
 @endsection
