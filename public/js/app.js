@@ -14213,7 +14213,16 @@ var app = new Vue({
 /* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
-
+window.Echo = new Echo({
+    broadcaster: 'socket.io',
+    host: window.location.hostname + ':6001'
+});
+//skrip yang menghandle respon server, kita buat untuk menampilkan pesan pada consol browser
+window.Echo.channel('registerChannel') // Broadcast channel name
+.listen('UserRegisterEvent', function (e) {
+    // Message name
+    console.log(e); // kita buat untuk menampilkan pesan pada console browser
+});
 window._ = __webpack_require__(14);
 window.Popper = __webpack_require__(3).default;
 
@@ -14224,9 +14233,9 @@ window.Popper = __webpack_require__(3).default;
  */
 
 try {
-  window.$ = window.jQuery = __webpack_require__(4);
+    window.$ = window.jQuery = __webpack_require__(4);
 
-  __webpack_require__(16);
+    __webpack_require__(16);
 } catch (e) {}
 
 /**
@@ -14248,9 +14257,9 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 var token = document.head.querySelector('meta[name="csrf-token"]');
 
 if (token) {
-  window.axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
+    window.axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
 } else {
-  console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
+    console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
 }
 
 /**

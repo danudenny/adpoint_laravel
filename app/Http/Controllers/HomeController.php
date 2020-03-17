@@ -24,12 +24,37 @@ use ImageOptimizer;
 use App\Pushy;
 use Tracker;
 
+
+use Notification;
+use App\Notifications\UserRegister;
+
+
+
 use Mail;
 use App\Mail\User\RegistUser;
 use Illuminate\Support\Facades\Cache;
 
+
 class HomeController extends Controller
 {
+    public function mark_as_read($id) {
+        $user = Auth::user();
+        foreach ($user->unreadNotifications as $notif) {
+            if ($notif->id === $id) {
+                $notif->markAsRead();
+            }
+        }
+        return back();
+    }
+
+    public function mark_all_as_read() {
+        $user = Auth::user();
+        foreach ($user->unreadNotifications as $notif) {
+            $notif->markAsRead();
+        }
+        return back();
+    }
+
     public function login()
     {
         if(Auth::check()){
@@ -79,21 +104,22 @@ class HomeController extends Controller
                     ->join('users as u', 'u.id', '=', 'pt.user_id')
                     ->where(['u.user_type' => 'admin'])
                     ->select(['pt.*'])
-                    ->get();
-            $tokenPushy = $query[0]->device_token;
-            $data = array('message' => 'User Baru telah terdaftar!');
+                    ->first();
+            $tokenPushy = $query->device_token;
+            $data = array('message' => 'New user has registered');
             $to = array($tokenPushy);
             $options = array(
                 'notification' => array(
                     'badge' => 1,
                     'sound' => 'ping.aiff',
-                    'body'  => "User Baru telah terdaftar!"
+                    'body'  => "New user has registered"
                 )
             );
 
             $register->verified = 0;
             $request->session()->flash('message', 'Thanks for your registration, please check your email!.');
             Pushy::sendPushNotification($data, $to, $options);
+            Notification::send(User::where('user_type','admin')->first(), new UserRegister());
             Mail::to($request->email)->send(new RegistUser($user));
             return back();
         }
@@ -649,6 +675,11 @@ class HomeController extends Controller
     public function notif_trx()
     {
         return view('frontend.dropdown.notif_trx');
+    }
+
+    public function notif_update()
+    {
+        return view('frontend.dropdown.notif_update');
     }
 
 

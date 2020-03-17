@@ -505,7 +505,10 @@
                                         <div class="nav-cart-box dropdown" id="head-notif">
                                             <a id="notif-load-btn" class="nav-box-link" style="cursor: pointer">
                                                 <i class="fa fa-bell fa-2x text-dark"></i>
-                                                @if($orderPlaced > 0 || $orderOnReviewed > 0 || $orderActived > 0 || $orderCompleted > 0 || $orderCancelled > 0 || $trxUnpaid > 0 || $trxPaid > 0)
+                                                @php
+                                                    $user = Auth::user();
+                                                @endphp
+                                                @if($user->unreadNotifications->count() > 0)
                                                     <span class="badge-header fa-pulse"><i class="fa fa-circle"></i></span>
                                                 @endif
                                             </a>

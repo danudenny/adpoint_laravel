@@ -6,6 +6,8 @@
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <script src="//{{ Request::getHost() }}:6001/socket.io/socket.io.js"></script>
+    
 
     <link name="favicon" type="image/x-icon" href="{{ asset(\App\GeneralSetting::first()->favicon) }}" rel="shortcut icon" />
 
@@ -216,8 +218,7 @@
 
         <div class="boxed">
 
-            <!--CONTENT CONTAINER-->
-            <!--===================================================-->
+           
             <div id="content-container">
                 <div id="page-content">
 
@@ -266,18 +267,7 @@ $user = Auth::id();
     }).catch(function (err) {
         console.error(err);
     });
-
-    // // Check if the device is registered
-    // if (Pushy.isRegistered()) {
-    //     // Subscribe the device to a topic
-    //     console.log('registered');
-    //     Pushy.subscribe('admin').catch(function (err) {
-    //         // Handle subscription errors
-    //         console.error('Subscribe failed:', err);
-    //     });
-    // }
 </script>
 @endauth
-
 </body>
 </html>

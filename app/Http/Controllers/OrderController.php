@@ -38,7 +38,14 @@ use App\Mail\Order\OrderComplete;
 
 use App\Pushy;
 
-use App\Jobs\PaymentDuration;
+use Notification;
+use App\Notifications\OrderProses;
+use App\Notifications\OrderApproveAdminBuyer;
+use App\Notifications\OrderApproveAdminSeller;
+use App\Notifications\OrderApproveSellerAdmin;
+use App\Notifications\OrderConfirmByAdmin;
+use App\Notifications\OrderPay;
+
 
 
 class OrderController extends Controller
@@ -134,6 +141,8 @@ class OrderController extends Controller
             $trx->status = "approved"; // approve admin
             if($trx->save()) {
                 Mail::to($buyer->email)->send(new OrderApprovedAdmin($data));
+                Notification::send($buyer, new OrderApproveAdminBuyer());
+
                 foreach ($trx->orders as $key => $o) {
                     $order = Order::where('id', $o->id)->first();
                     $order->approved = 1;
@@ -143,6 +152,7 @@ class OrderController extends Controller
                     $seller['seller_name'] = $user->name;
                     // email
                     Mail::to($user->email)->send(new OrderSold($seller));
+                    Notification::send($user, new OrderApproveAdminSeller());
 
                     // pushy notif
                     $push = DB::table('pushy_tokens as pt')
@@ -276,6 +286,7 @@ class OrderController extends Controller
                     $trx->status = "ready";
                     $trx->save();
                     // pushy notif
+                    Notification::send(User::where('user_type', 'admin')->first(), new OrderApproveSellerAdmin());
                     $push = DB::table('pushy_tokens as pt')
                             ->join('users as u', 'u.id', '=', 'pt.user_id')
                             ->where(['u.user_type' => 'admin'])
@@ -353,11 +364,11 @@ class OrderController extends Controller
             }
             $trx->status = "confirmed";
             $trx->save();
-            // PaymentDuration::dispatch($trx)->delay($order_date); // job expire date
         }
         if ($trx != null) {
             $buyer = User::where('id', $trx->user_id)->first();
             Mail::to($buyer->email)->send(new OrderConfirmation($trx));
+            Notification::send($buyer, new OrderConfirmByAdmin());
             // pushy notif
             $push = DB::table('pushy_tokens as pt')
                     ->join('users as u', 'u.id', '=', 'pt.user_id')
@@ -453,6 +464,7 @@ class OrderController extends Controller
             
             $user_id = $trx->user_id;
             $buyer_name = User::where('id', $user_id)->first()->name;
+            Notification::send(User::where('user_type','admin')->first(), new OrderPay($buyer_name));
             $push = DB::table('pushy_tokens as pt')
                         ->join('users as u', 'u.id', '=', 'pt.user_id')
                         ->where(['u.user_type' => 'admin'])
@@ -692,6 +704,7 @@ class OrderController extends Controller
         $buyer_email = Auth::user()->email;
         $data = Transaction::where('id', $trx->id)->first();
         Mail::to($buyer_email)->send(new OrderStart($data));
+        Notification::send(User::where('user_type','admin')->first(), new OrderProses($buyer_name));
         $push = DB::table('pushy_tokens as pt')
                 ->join('users as u', 'u.id', '=', 'pt.user_id')
                 ->where(['u.user_type' => 'admin'])

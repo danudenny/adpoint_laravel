@@ -48,11 +48,22 @@
                     @endif
                 </a>
             @endif
-            <a class="nav-link nav-item" id="notif-trx-tab" data-url="{{ route('notif.trx') }}" data-toggle="tab" href="#notif-trx" role="tab" aria-controls="notif-trx" aria-selected="false">
+            {{-- <a class="nav-link nav-item" id="notif-trx-tab" data-url="{{ route('notif.trx') }}" data-toggle="tab" href="#notif-trx" role="tab" aria-controls="notif-trx" aria-selected="false">
                 Transaction
                 @if ($trxUnpaid > 0 || $trxPaid > 0)
                     <span class="badge badge-danger badge-pill">
                         {{ $trxUnpaid+$trxPaid }}
+                    </span>
+                @endif
+            </a> --}}
+            <a class="nav-link nav-item" id="notif-update-tab" data-url="{{ route('notif.update') }}" data-toggle="tab" href="#notif-update" role="tab" aria-controls="notif-trx" aria-selected="false">
+                Update
+                @php
+                    $user = Auth::user();
+                @endphp
+                @if ($user->unreadNotifications->count() > 0)
+                    <span class="badge badge-danger badge-pill">
+                        {{ $user->unreadNotifications->count() }}
                     </span>
                 @endif
             </a>
@@ -90,7 +101,19 @@
                 </div>
             </div>
             @endif
-            <div class="tab-pane fade" id="notif-trx" role="tabpanel" aria-labelledby="notif-trx-tab">
+            {{-- <div class="tab-pane fade" id="notif-trx" role="tabpanel" aria-labelledby="notif-trx-tab">
+                <div class="c-notif-load">
+                    <div class="ph-item border-0 p-0 mt-3">
+                        <div class="ph-col-12">
+                            <div class="ph-row">
+                                <div class="ph-col-12 big"></div>
+                                <div class="ph-col-12 big"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div> --}}
+            <div class="tab-pane fade" id="notif-update" role="tabpanel" aria-labelledby="notif-update-tab">
                 <div class="c-notif-load">
                     <div class="ph-item border-0 p-0 mt-3">
                         <div class="ph-col-12">

@@ -18,9 +18,12 @@ use DB;
 use PDF;
 
 use App\Pushy;
-
 use App\Mail\Order\OrderNotifPaymentBuyer;
 use App\Mail\Order\OrderNotifPaymentSeller;
+
+use Notification;
+use App\Notifications\OrderChangeToPaidBuyer;
+use App\Notifications\OrderChangeToPaidSeller;
 
 class TransactionController extends Controller
 {
@@ -88,6 +91,7 @@ class TransactionController extends Controller
                 );
                 Pushy::sendPushNotification($data, $to, $options);
             }
+            Notification::send($buyer, new OrderChangeToPaidBuyer());
             Mail::to($buyer->email)->send(new OrderNotifPaymentBuyer($dataB));
             foreach ($transaction->orders as $key => $o) {
                 $order = Order::where(['id' => $o->id, 'approved' => 1])->first();
@@ -122,6 +126,7 @@ class TransactionController extends Controller
                     );
                     Pushy::sendPushNotification($data, $to, $options);
                 }
+                Notification::send($seller, new OrderChangeToPaidSeller());
                 Mail::to($seller->email)->send(new OrderNotifPaymentSeller($dataS));
             }
             $request->session()->flash('message', 'Change to paid success');

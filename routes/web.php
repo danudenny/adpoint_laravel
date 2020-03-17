@@ -11,6 +11,9 @@
 |
 */
 
+Route::get('/mark-as-read/{id}', 'HomeController@mark_as_read')->name('mark.as.read');
+Route::get('/mark-all-as-read', 'HomeController@mark_all_as_read')->name('mark.all.as.read');
+
 Auth::routes(['verify' => true]);
 Route::get('/logout', '\App\Http\Controllers\Auth\LoginController@logout');
 Route::post('/language', 'LanguageController@changeLanguage')->name('language.change');
@@ -126,6 +129,7 @@ Route::group(['middleware' => ['user', 'verified', 'auth']], function(){
 	Route::get('/notif-buyer', 'HomeController@notif_buyer')->name('notif.buyer');
 	Route::get('/notif-seller', 'HomeController@notif_seller')->name('notif.seller');
 	Route::get('/notif-trx', 'HomeController@notif_trx')->name('notif.trx');
+	Route::get('/notif-update', 'HomeController@notif_update')->name('notif.update');
 
 	Route::get('/profile', 'HomeController@profile')->name('profile');
 	Route::post('/customer/update-profile', 'HomeController@customer_update_profile')->name('customer.profile.update');

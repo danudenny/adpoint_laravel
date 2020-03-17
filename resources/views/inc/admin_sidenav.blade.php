@@ -1,5 +1,14 @@
 <!--MAIN NAVIGATION-->
 <!--===================================================-->
+@php
+    $user = Auth::user();
+    $userRegister = [];
+    foreach ($user->unreadNotifications as $notif) {
+        if ($notif->type === "App\Notifications\UserRegister") {
+            array_push($userRegister, $user->type);
+        }
+    }
+@endphp
 <nav id="mainnav-container">
     <div id="mainnav">
 
@@ -70,12 +79,6 @@
                                     <i class="fa fa-shopping-cart"></i>
                                     <span class="menu-title">{{__('Products')}}</span>
                                     <i class="arrow"></i>
-                                    @php
-                                        $newProducts = \App\Product::where('published', '=', '0')->get();
-                                    @endphp
-                                    @if (count($newProducts) > 0)
-                                        <span class="fa-pulse pull-right" style="margin-right: 10px;"><i class="fa fa-circle"></i></span>
-                                    @endif
                                 </a>
                                 <!--Submenu-->
                                 <ul class="collapse">
@@ -90,9 +93,6 @@
                                     </li>
                                     @if(\App\BusinessSetting::where('type', 'vendor_system_activation')->first()->value == 1)
                                     <li class="{{ areActiveRoutes(['products.seller', 'products.seller.edit'])}}">
-                                        @if (count($newProducts) > 0)
-                                            <span class="fa-pulse pull-right" style="margin-right: 10px;"><i class="fa fa-circle"></i></span>
-                                        @endif
                                         <a class="nav-link" href="{{route('products.seller')}}">{{__('List Products')}}</a>
                                     </li>
                                     @endif
@@ -115,28 +115,12 @@
                                     <i class="fa fa-fw fa-dollar"></i>
                                     <span class="menu-title">{{__('Sales')}}</span>
                                     <i class="arrow pull-right"></i>
-                                    @php
-                                        $sales =  \App\Order::where('approved', 0)->count();
-                                        $transaction = \App\Transaction::where('payment_status', 0)->whereIn('status', array('confirmed', 'ready'))->count();
-                                    @endphp
-                                    @if ($sales > 0 || $transaction > 0)
-                                        <span class="fa-pulse pull-right" style="margin-right: 10px;"><i class="fa fa-circle"></i></span>
-                                    @else
-                                    <span class="fa-pulse pull-right" style="display:none;"><i class="fa fa-circle"></i></span>
-                                    @endif
-
                                 </a>
                                 <ul class="collapse">
                                     <li class="{{ areActiveRoutes(['orders.list.orders','sales.show'])}}">
-                                        @if ($sales > 0)
-                                            <span class="badge badge-danger pull-right" style="margin: 5px;">{{$sales}}</span>
-                                        @endif
                                         <a class="nav-link" href="{{ route('orders.list.orders') }}">{{__('Order List')}}</a>
                                     </li>
                                     <li class="{{ areActiveRoutes(['transaction.index','transaction.details','transaction.show.payment','transaction.show.invoice']) }}">
-                                        @if ($transaction > 0)
-                                            <span class="badge badge-danger pull-right" style="margin: 5px;">{{$transaction}}</span>
-                                        @endif
                                         <a class="nav-link" href="{{ route('transaction.index') }}">{{__('Transaction')}}</a>
                                     </li>
                                     <li class="{{ areActiveRoutes(['slot.index']) }}">
@@ -149,20 +133,12 @@
                                     <i class="fa fa-user-plus"></i>
                                     <span class="menu-title">{{__('Sellers')}}</span>
                                     <i class="arrow"></i>
-                                    @php
-                                        $sellers = \App\Seller::where('verification_status', 0)->where('verification_info', '!=', null)->count();
-                                    @endphp
-                                    @if ($sellers > 0)
-                                        <span class="fa-pulse pull-right" style="margin-right: 10px;"><i class="fa fa-circle"></i></span>
-                                    @else
-                                        <span class="fa-pulse pull-right" style="display:none;"><i class="fa fa-circle"></i></span>
-                                    @endif
                                 </a>
 
                                 <!--Submenu-->
                                 <ul class="collapse">
                                     <li class="{{ areActiveRoutes(['sellers.index', 'sellers.create', 'sellers.edit', 'sellers.payment_history'])}}">
-                                        <a class="nav-link" href="{{route('sellers.index')}}">{{__('Seller List')}} @if($sellers > 0)<span class="pull-right badge badge-danger">{{ $sellers }}</span> @endif</a>
+                                        <a class="nav-link" href="{{route('sellers.index')}}">{{__('Seller List')}}</a>
                                     </li>
                                     <li class="{{ areActiveRoutes(['sellers.payment_histories'])}}">
                                         <a class="nav-link" href="{{ route('sellers.payment_histories') }}">{{__('Seller Payments')}}</a>
@@ -180,20 +156,15 @@
                                     <i class="fa fa-user-plus"></i>
                                     <span class="menu-title">{{__('Customers')}}</span>
                                     <i class="arrow pull-right"></i>
-                                    @php
-                                        $customers = \App\User::where('verified', 0)->where('is_rejected', 0)->count();
-                                    @endphp
-                                    @if ($customers > 0)
+                                    @if (count($userRegister) > 0)
                                         <span class="fa-pulse pull-right" style="margin-right: 10px;"><i class="fa fa-circle"></i></span>
-                                    @else
-                                        <span class="fa-pulse pull-right" style="display:none;"><i class="fa fa-circle"></i></span>
                                     @endif
                                 </a>
 
                                 <!--Submenu-->
                                 <ul class="collapse">
                                     <li class="{{ areActiveRoutes(['customers.index'])}}">
-                                        <a class="nav-link" href="{{ route('customers.index') }}">{{__('Customer list')}} @if($customers > 0)<span class="pull-right badge badge-danger">{{ $customers }}</span> @endif</a>
+                                        <a class="nav-link" href="{{ route('customers.index') }}">{{__('Customer list')}}</a>
                                     </li>
                                 </ul>
                             </li>
@@ -219,14 +190,6 @@
                                     <i class="fa fa-envelope"></i>
                                     <span class="menu-title">{{__('Messaging')}}</span>
                                     <i class="arrow"></i>
-                                    @php
-                                        $ticket = \App\Ticket::where('status', 'open')->orWhere('status', 'pending')->count();
-                                    @endphp
-                                    @if ($ticket > 0)
-                                        <span class="fa-pulse pull-right" style="margin-right: 10px;"><i class="fa fa-circle"></i></span>
-                                    @else
-                                        <span class="fa-pulse pull-right" style="display:none;"><i class="fa fa-circle"></i></span>
-                                    @endif
                                 </a>
 
                                 <!--Submenu-->
@@ -235,15 +198,10 @@
                                         <a class="nav-link" href="{{route('newsletters.index')}}">{{__('Newsletters')}}</a>
                                     </li>
                                     <li class="{{ areActiveRoutes(['support_ticket.admin_index', 'support_ticket.admin_show'])}}">
-                                        @if ($ticket > 0)
-                                            <span class="badge badge-danger pull-right" style="margin: 7px;">{{$ticket}}</span>
-                                        @else
-                                            <span class="badge badge-danger pull-right" style="display: none">{{$ticket}}</span>
-                                        @endif
-                                    <a class="nav-link" href="{{ route('support_ticket.admin_index') }}">
-                                        <span class="menu-title">{{__('Support Tickets')}}</span>
-                                    </a>
-                                </li>
+                                        <a class="nav-link" href="{{ route('support_ticket.admin_index') }}">
+                                            <span class="menu-title">{{__('Support Tickets')}}</span>
+                                        </a>
+                                    </li>
                                 </ul>
                             </li>
                             <li>

@@ -63,18 +63,19 @@
                                             <div class="row">
                                                 @if(\App\BusinessSetting::where('type', 'cash_payment')->first()->value == 1)
                                                     <div class="col-md-6">
-                                                        <label class="payment_option mb-4" data-toggle="tooltip" data-title="Bank Mandiri">
-                                                            <input type="radio" id="mandiri" name="payment_option" value="Mandiri">
-                                                            <span style="width: 150px;">
-                                                                <img src="{{ asset('frontend/images/icons/cards/mandiri.png')}}" class="img-fluid">
-                                                            </span>
-                                                        </label>
-                                                        <label class="payment_option mb-4" data-toggle="tooltip" data-title="Bank BCA">
-                                                            <input type="radio" id="bca" name="payment_option" value="BCA">
-                                                            <span style="width: 150px;">
-                                                                <img src="{{ asset('frontend/images/icons/cards/bca.png')}}" class="img-fluid">
-                                                            </span>
-                                                        </label>
+                                                        <div class="form-group">
+                                                            <label>
+                                                                <input type="radio" id="mandiri" name="payment_option" value="Mandiri">
+                                                                <img src="{{ asset('frontend/images/icons/cards/mandiri.png')}}" class="img-fluid w-25">
+                                                            </label>
+                                                        </div>
+                                                        
+                                                        <div class="form-group">
+                                                            <label>
+                                                                <input type="radio" id="bca" name="payment_option" value="BCA">
+                                                                <img src="{{ asset('frontend/images/icons/cards/bca.png')}}" class="img-fluid w-25">
+                                                            </label>
+                                                        </div>
                                                     </div>
                                                     <div class="col-md-6">
                                                         <div id="detailbank">
