@@ -76,7 +76,7 @@
                     </div>
                 </li>
 
-                <li class="dropdown">
+                {{-- <li class="dropdown">
                     <a href="#" data-toggle="dropdown" class="dropdown-toggle" aria-expanded="true">
                         <i class="demo-pli-bell" title="Pending Notifications"></i>
                         @if (Auth::user()->unreadNotifications->count() > 0)
@@ -122,6 +122,26 @@
                             </div>
                         </div>
                     </div>
+                </li> --}}
+
+                <li class="dropdown dropdown-notifications">
+                    <a href="#notifications-panel" class="dropdown-toggle" data-toggle="dropdown">
+                      <i data-count="0" class="glyphicon glyphicon-bell notification-icon"></i>
+                    </a>
+      
+                    <div class="dropdown-container dropdown-menu dropdown-menu-sm dropdown-menu-right panel-default">
+                      <div class="dropdown-toolbar">
+                        <div class="dropdown-toolbar-actions">
+                          <a href="#" onclick="markAllAssRead(event)">Mark all as read</a>
+                        </div>
+                        <h3 class="dropdown-toolbar-title">Notifications (<span class="notif-count">0</span>)</h3>
+                      </div>
+                      <ul class="dropdown-menu">
+                      </ul>
+                      <div class="dropdown-footer text-center">
+                        <a href="#">View All</a>
+                      </div>
+                    </div>
                 </li>
 
 
@@ -166,6 +186,23 @@
 
         ls.forEach(element => {
             localStorage.removeItem(element);
+        });
+    }
+
+    function markAllAssRead(e) {
+        e.stopPropagation();
+        $.get('{{ route('mark.all.as.read') }}');
+        var notificationsWrapper   = $('.dropdown-notifications');
+        var notificationsToggle    = notificationsWrapper.find('a[data-toggle]');
+        var notificationsCountElem = notificationsToggle.find('i[data-count]');
+        var notificationsCount     = parseInt(notificationsCountElem.data('count'));
+        var notifications          = notificationsWrapper.find('ul.dropdown-menu');
+
+        $.get('{{ route('notif.admin') }}', function(result) {
+            notifications.html(result);
+            countNotif = '{{ Auth::user()->unreadNotifications->count() }}';
+            notificationsCountElem.attr('data-count', parseInt(countNotif));
+            notificationsWrapper.find('.notif-count').text(parseInt(countNotif));
         });
     }
 </script>

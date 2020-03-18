@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -11,10 +12,24 @@
 |
 */
 
+Route::get('test', function () {
+    event(new App\Events\StatusLiked('hai'));
+    return "Event has been sent!";
+});
+
+Route::get('reg', function () {
+    event(new App\Events\UserRegisterEvent('nazmudin'));
+    return "register";
+});
+
+Route::get('/all-notif-admin', 'HomeController@get_all_notif_admin')->name('notif.admin');
+Route::get('/count-notif-admin', 'HomeController@count_notif_admin')->name('count.notif.admin');
+
 Route::get('/mark-as-read/{id}', 'HomeController@mark_as_read')->name('mark.as.read');
 Route::get('/mark-all-as-read', 'HomeController@mark_all_as_read')->name('mark.all.as.read');
 
 Auth::routes(['verify' => true]);
+
 Route::get('/logout', '\App\Http\Controllers\Auth\LoginController@logout');
 Route::post('/language', 'LanguageController@changeLanguage')->name('language.change');
 Route::post('/currency', 'CurrencyController@changeCurrency')->name('currency.change');
@@ -123,6 +138,7 @@ Route::get('/terms', 'HomeController@terms')->name('terms');
 Route::get('/privacypolicy', 'HomeController@privacypolicy')->name('privacypolicy');
 
 Route::group(['middleware' => ['user', 'verified', 'auth']], function(){
+	
 	Route::get('/dashboard', 'HomeController@dashboard')->name('dashboard');
 
 	Route::get('/notification', 'HomeController@notification')->name('notif.loading');

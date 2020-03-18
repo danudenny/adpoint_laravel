@@ -3,36 +3,26 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
     <!-- CSRF Token -->
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <script src="//{{ Request::getHost() }}:6001/socket.io/socket.io.js"></script>
-    
-
+    <meta name="csrf-token" content="{{ csrf_token() }}">    
     <link name="favicon" type="image/x-icon" href="{{ asset(\App\GeneralSetting::first()->favicon) }}" rel="shortcut icon" />
-
     <title>{{ config('app.name', 'Laravel') }}</title>
-
     <!-- Fonts -->
     <link rel="dns-prefetch" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet" type="text/css">
-
 
     <!--Bootstrap Stylesheet [ REQUIRED ]-->
     <link href="{{ asset('css/bootstrap.min.css')}}" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.2.7/fullcalendar.min.css"/>
-
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-notifications@1.0.3/dist/stylesheets/bootstrap-notifications.min.css">
     <!--active-shop Stylesheet [ REQUIRED ]-->
     <link href="{{ asset('css/active-shop.min.css')}}" rel="stylesheet">
-
     <!--active-shop Premium Icon [ DEMONSTRATION ]-->
     <link href="{{ asset('css/demo/active-shop-demo-icons.min.css')}}" rel="stylesheet">
 
     <!--Font Awesome [ OPTIONAL ]-->
-{{--     <link href="{{ asset('plugins/font-awesome/css/font-awesome.min.css')}}" rel="stylesheet">--}}
     <link rel="stylesheet" href="https://cdnjs.Cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
-
     <!--Switchery [ OPTIONAL ]-->
     <link href="{{ asset('plugins/switchery/switchery.min.css')}}" rel="stylesheet">
 
@@ -46,7 +36,6 @@
 
     <!--Chosen [ OPTIONAL ]-->
     {{-- <link href="{{ asset('plugins/chosen/chosen.min.css')}}" rel="stylesheet"> --}}
-
     <!--Bootstrap Tags Input [ OPTIONAL ]-->
     <link href="{{ asset('plugins/bootstrap-tagsinput/bootstrap-tagsinput.min.css') }}" rel="stylesheet">
 
@@ -54,7 +43,6 @@
     <link href="{{ asset('css/jodit.min.css') }}" rel="stylesheet">
 
     <!--Theme [ DEMONSTRATION ]-->
-    <!-- <link href="{{ asset('css/themes/type-full/theme-dark-full.min.css') }}" rel="stylesheet"> -->
     <link href="{{ asset('css/themes/type-c/theme-navy.min.css') }}" rel="stylesheet">
 
     <!--Spectrum Stylesheet [ REQUIRED ]-->
@@ -66,6 +54,7 @@
     <link rel="stylesheet" href="{{ asset('css/vertical-calendar.css') }}">
 
 
+
     <!--JAVASCRIPT-->
     <!--=================================================-->
 
@@ -73,7 +62,7 @@
     <script src=" {{asset('js/jquery.min.js') }}"></script>
     <script src="{{ asset('frontend/js/bootstrap-select.min.js') }}"></script>
     <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
-<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+    <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
 
 
     <!--BootstrapJS [ RECOMMENDED ]-->
@@ -130,6 +119,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.2.7/fullcalendar.min.js"></script>
 
+
     <script type="text/javascript">
 
         $( document ).ready(function() {
@@ -165,17 +155,18 @@
 
     </script>
 
+
     <!-- Global site tag (gtag.js) - Google Analytics -->
-    @if (\App\BusinessSetting::where('type', 'google_analytics')->first()->value == 1)
+    {{-- @if (\App\BusinessSetting::where('type', 'google_analytics')->first()->value == 1)
         <script async src="https://www.googletagmanager.com/gtag/js?id=UA-133955404-1"></script>
 
         <script>
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js', new Date());
-          gtag('config', @php env('TRACKING_ID') @endphp);
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', @php env('TRACKING_ID') @endphp);
         </script>
-    @endif
+    @endif --}}
 
 
 </head>
@@ -236,38 +227,90 @@
 
     </div>
 
-        @yield('script')
+    @yield('script')
 
+    {{-- Pusher --}}
+    <script src="https://js.pusher.com/5.1/pusher.min.js"></script>
+    <script type="text/javascript">
+        var notificationsWrapper   = $('.dropdown-notifications');
+        var notificationsToggle    = notificationsWrapper.find('a[data-toggle]');
+        var notificationsCountElem = notificationsToggle.find('i[data-count]');
+        var notificationsCount     = parseInt(notificationsCountElem.data('count'));
+        var notifications          = notificationsWrapper.find('ul.dropdown-menu');
 
-@auth
-<script src="https://sdk.pushy.me/web/1.0.5/pushy-sdk.js"></script>
-<script src="{{ asset('service-worker.js')}}"></script>
-@php
-$user = Auth::id();
-@endphp
-<script>
-    Pushy.register({ appId: '5e68a08102c9bc5414aad613' }).then(function (deviceToken) {
-        const url = '{{ route('token.register') }}';
-        const data_token = {
-            user_id: {{Auth::id()}},
-            device_token: deviceToken
-        };
+        $.get('{{ route('notif.admin') }}', function(result) {
+            notifications.html(result);
+            countNotif = '{{ Auth::user()->unreadNotifications->count() }}';
+            notificationsCount += parseInt(countNotif);
+            notificationsCountElem.attr('data-count', notificationsCount);
+            notificationsWrapper.find('.notif-count').text(notificationsCount);
+        });
 
-        const options = {
-            method: 'POST',
-            body: JSON.stringify(data_token),
-            headers: {
-                'Content-Type': 'application/json'
+        // Enable pusher logging - don't include this in production
+        // Pusher.logToConsole = true;
+
+        var pusher = new Pusher('71b68429916df972419b', {
+            cluster: 'ap1',
+            forceTLS: true
+        });
+
+        var events = [
+            {
+                channel : 'user-register-channel',
+                event : 'user-register-event'
+            },
+            {
+                channel : 'status-liked',
+                event : 'event-liked'
             }
-        }
+        ];
+        events.forEach(e => {
+            var channel = pusher.subscribe(e.channel);
+            channel.bind(e.event, function(data) {
+                $.get('{{ route('notif.admin') }}', function(result) {
+                    notifications.html(result);
+                });
+                
+                notificationsCount += 1;
+                notificationsCountElem.attr('data-count', notificationsCount);
+                notificationsWrapper.find('.notif-count').text(notificationsCount);
+                notificationsWrapper.show();
+            });
+        }); 
+        
+    </script>
 
-        fetch(url, options)
-            .then(res => res.json())
-            .then(res => console.log(res));
-    }).catch(function (err) {
-        console.error(err);
-    });
-</script>
-@endauth
+
+    {{-- Pushy --}}
+    @auth
+        <script src="https://sdk.pushy.me/web/1.0.5/pushy-sdk.js"></script>
+        <script src="{{ asset('service-worker.js')}}"></script>
+        @php
+            $user = Auth::id();
+        @endphp
+        <script>
+            Pushy.register({ appId: '5e68a08102c9bc5414aad613' }).then(function (deviceToken) {
+                const url = '{{ route('token.register') }}';
+                const data_token = {
+                    user_id: {{Auth::id()}},
+                    device_token: deviceToken
+                };
+
+                const options = {
+                    method: 'POST',
+                    body: JSON.stringify(data_token),
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                }
+
+                fetch(url, options)
+                    .then(res => res.json())
+                    .then(res => console.log(res));
+            }).catch(function (err) {
+                console.error(err);
+            });
+        </script>
+    @endauth
 </body>
 </html>

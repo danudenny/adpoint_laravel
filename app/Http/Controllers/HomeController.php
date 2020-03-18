@@ -24,12 +24,13 @@ use ImageOptimizer;
 use App\Pushy;
 use Tracker;
 
-
+// Notif
 use Notification;
 use App\Notifications\UserRegister;
+use App\Events\UserRegisterEvent;
 
 
-
+// Mail
 use Mail;
 use App\Mail\User\RegistUser;
 use Illuminate\Support\Facades\Cache;
@@ -37,6 +38,17 @@ use Illuminate\Support\Facades\Cache;
 
 class HomeController extends Controller
 {
+    public function get_all_notif_admin()
+    {
+        return view('real-notif.admin_notif');
+    }
+
+    public function count_notif_admin()
+    {
+        $user = Auth::user();
+        return $user->unreadNotifications->count();
+    }
+
     public function mark_as_read($id) {
         $user = Auth::user();
         foreach ($user->unreadNotifications as $notif) {
@@ -120,6 +132,7 @@ class HomeController extends Controller
             $request->session()->flash('message', 'Thanks for your registration, please check your email!.');
             Pushy::sendPushNotification($data, $to, $options);
             Notification::send(User::where('user_type','admin')->first(), new UserRegister());
+            event(new UserRegisterEvent('New user has registered '.$request->name));
             Mail::to($request->email)->send(new RegistUser($user));
             return back();
         }
