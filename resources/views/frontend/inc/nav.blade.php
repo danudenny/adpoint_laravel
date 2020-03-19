@@ -501,7 +501,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="d-inline-block">
+                                    {{-- <div class="d-inline-block">
                                         <div class="nav-cart-box dropdown" id="head-notif">
                                             <a id="notif-load-btn" class="nav-box-link" style="cursor: pointer">
                                                 <i class="fa fa-bell fa-2x text-dark"></i>
@@ -534,6 +534,27 @@
                                                 </li>
                                             </ul>
                                         </div>
+                                    </div> --}}
+                                    <div class="d-inline-block">
+                                        <li class="dropdown dropdown-notifications d-inline-block">
+                                            <a href="#notifications-panel" class="dropdown-toggle" data-toggle="dropdown">
+                                              <i data-count="0" class="fa fa-bell fa-2x text-dark notification-icon"></i>
+                                            </a>
+                              
+                                            <div class="dropdown-container dropdown-menu dropdown-menu-sm dropdown-menu-right panel-default">
+                                              <div class="dropdown-toolbar">
+                                                <div class="dropdown-toolbar-actions">
+                                                  <a href="#" onclick="markAllAssRead(event)">Mark all as read</a>
+                                                </div>
+                                                <h3 class="dropdown-toolbar-title">Notifications (<span class="notif-count">0</span>)</h3>
+                                              </div>
+                                              <ul class="dropdown-menu">
+                                              </ul>
+                                              <div class="dropdown-footer text-center">
+                                                <a href="#">View All</a>
+                                              </div>
+                                            </div>
+                                        </li>
                                     </div>
                                 @else
                                 <div class="d-none d-lg-inline-block topnav-text">

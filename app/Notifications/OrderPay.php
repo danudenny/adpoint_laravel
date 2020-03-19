@@ -10,15 +10,16 @@ use Illuminate\Notifications\Messages\MailMessage;
 class OrderPay extends Notification
 {
     use Queueable;
-    public $name;
+    public $name, $trx_id;
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct($name)
+    public function __construct($name, $id)
     {
+        $this->trx_id = $id;
         $this->name = $name;
     }
 
@@ -58,7 +59,7 @@ class OrderPay extends Notification
         return [
             'title' => 'New payment entered from '. $this->name,
             'body' => 'New payment entered from '. $this->name,
-            'url' => url('/admin/transaction')
+            'url' => url('/admin/transaction/details/'.encrypt($this->trx_id))
         ];
     }
 }

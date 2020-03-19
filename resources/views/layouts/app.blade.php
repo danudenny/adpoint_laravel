@@ -232,19 +232,25 @@
     {{-- Pusher --}}
     <script src="https://js.pusher.com/5.1/pusher.min.js"></script>
     <script type="text/javascript">
-        var notificationsWrapper   = $('.dropdown-notifications');
-        var notificationsToggle    = notificationsWrapper.find('a[data-toggle]');
-        var notificationsCountElem = notificationsToggle.find('i[data-count]');
-        var notificationsCount     = parseInt(notificationsCountElem.data('count'));
-        var notifications          = notificationsWrapper.find('ul.dropdown-menu');
 
-        $.get('{{ route('notif.admin') }}', function(result) {
-            notifications.html(result);
-            countNotif = '{{ Auth::user()->unreadNotifications->count() }}';
-            notificationsCount += parseInt(countNotif);
-            notificationsCountElem.attr('data-count', notificationsCount);
-            notificationsWrapper.find('.notif-count').text(notificationsCount);
-        });
+        
+        function getCountNotif() {
+            $.get('{{ route('count.notif.admin') }}', function(result) {
+                $('.notification-icon').attr('data-count', result);
+                $('.notif-count').text(result);
+            })
+        }
+        
+        function getDataNotif() {
+            var notificationsWrapper   = $('.dropdown-notifications');
+            var notifications          = notificationsWrapper.find('ul.dropdown-menu');
+            $.get('{{ route('notif.admin') }}', function(result) {
+                notifications.html(result);
+            });
+        }
+
+        getCountNotif();
+        getDataNotif();
 
         // Enable pusher logging - don't include this in production
         // Pusher.logToConsole = true;
@@ -260,23 +266,37 @@
                 event : 'user-register-event'
             },
             {
-                channel : 'status-liked',
-                event : 'event-liked'
-            }
+                channel : 'order-proses-channel',
+                event : 'order-proses-event'
+            },
+            {
+                channel : 'order-approve-seller-admin-channel',
+                event : 'order-approve-seller-admin-event'
+            },
+            {
+                channel : 'order-pay-channel',
+                event : 'order-pay-event'
+            },
+            {
+                channel : 'order-continue-buyer-channel',
+                event : 'order-continue-buyer-event'
+            },
         ];
         events.forEach(e => {
             var channel = pusher.subscribe(e.channel);
             channel.bind(e.event, function(data) {
-                $.get('{{ route('notif.admin') }}', function(result) {
-                    notifications.html(result);
-                });
-                
-                notificationsCount += 1;
-                notificationsCountElem.attr('data-count', notificationsCount);
-                notificationsWrapper.find('.notif-count').text(notificationsCount);
-                notificationsWrapper.show();
+                getCountNotif();
+                getDataNotif();
             });
-        }); 
+        });
+
+        
+        function markAllAssRead(e) {
+            e.stopPropagation();
+            $.get('{{ route('mark.all.as.read') }}');
+            getCountNotif();
+            getDataNotif();
+        } 
         
     </script>
 

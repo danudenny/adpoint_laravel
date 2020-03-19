@@ -12,18 +12,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('test', function () {
-    event(new App\Events\StatusLiked('hai'));
-    return "Event has been sent!";
-});
-
-Route::get('reg', function () {
-    event(new App\Events\UserRegisterEvent('nazmudin'));
-    return "register";
-});
-
 Route::get('/all-notif-admin', 'HomeController@get_all_notif_admin')->name('notif.admin');
+Route::get('/all-notif-member', 'HomeController@get_all_notif_member')->name('notif.member');
 Route::get('/count-notif-admin', 'HomeController@count_notif_admin')->name('count.notif.admin');
+Route::get('/count-notif-member', 'HomeController@count_notif_member')->name('count.notif.member');
 
 Route::get('/mark-as-read/{id}', 'HomeController@mark_as_read')->name('mark.as.read');
 Route::get('/mark-all-as-read', 'HomeController@mark_all_as_read')->name('mark.all.as.read');

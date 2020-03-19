@@ -6,7 +6,6 @@
 @endif
 <head>
 
-
 @php
     $seosetting = \App\SeoSetting::first();
     $product = \App\Product::first();
@@ -114,6 +113,7 @@
 
 <!-- color theme -->
 <link href="{{ asset('frontend/css/colors/'.\App\GeneralSetting::first()->frontend_color.'.css')}}" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-notifications@1.0.3/dist/stylesheets/bootstrap-notifications.min.css">
 
 <!-- jQuery -->
 <script src="{{ asset('frontend/js/vendor/jquery-3.3.1.js') }}"></script>
@@ -125,23 +125,23 @@
 <script src="{{ asset('frontend/js/bootstrap-select.min.js') }}"></script>
 
 
+
 <link rel="stylesheet" href="{{ asset('css/dropzone.css') }}">
 
 
-@if (\App\BusinessSetting::where('type', 'google_analytics')->first()->value == 1)
-<!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-133955404-1"></script>
+{{-- @if (\App\BusinessSetting::where('type', 'google_analytics')->first()->value == 1)
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-133955404-1"></script>
 
-<script>
-      window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', @php env('TRACKING_ID') @endphp);
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', @php env('TRACKING_ID') @endphp);
     </script>
-@endif
-{{-- Datepicker css --}}
+@endif --}}
+
 <link href="{{ asset('frontend/css/gijgo.min.css')}}" rel="stylesheet">
-<!-- Latest compiled and minified JavaScript -->
 
 </head>
 <body>
@@ -294,7 +294,6 @@
             return result;
         }
 
-        // var token = 'ZG0MysXFq2utuYL96oPI3P08EMl8E7i1IVDw3MHOdedBgrRoik';
         var token = getToken();
         var url = 'https://x.rajaapi.com/MeP7c5ne'+ token +'/m/wilayah/';
 
@@ -854,7 +853,7 @@
 
 
 <script>
-
+    // Map
     $(document).ready(function(){
         function getDataProduct(){
             var dataProduct = [];
@@ -1427,9 +1426,8 @@
                 handleLocationError(false, map.getCenter());
             }
         }
-
     });
-
+    // end map
 
     // whatsapp chat
     var url_send_wa = 'https://api.whatsapp.com/send?phone=';
@@ -1468,50 +1466,120 @@
 
 </script>
 
-@auth
+    {{-- Pusher --}}
+    <script src="https://js.pusher.com/5.1/pusher.min.js"></script>
+    <script type="text/javascript">
 
-<script src="https://sdk.pushy.me/web/1.0.5/pushy-sdk.js"></script>
-<script src="{{ asset('service-worker.js')}}"></script>
-
-@php
-$user = Auth::id();
-@endphp
-
-<script>
-    Pushy.register({ appId: '5e68a08102c9bc5414aad613' }).then(function (deviceToken) {
-        const url = '{{ route('token.register') }}';
-
-        const data_token = {
-            user_id: {{Auth::id()}},
-            device_token: deviceToken
-        };
-
-        const options = {
-            method: 'POST',
-            body: JSON.stringify(data_token),
-            headers: {
-                'Content-Type': 'application/json'
-            }
+        
+        function getCountNotif() {
+            $.get('{{ route('count.notif.member') }}', function(result) {
+                $('.notification-icon').attr('data-count', result);
+                $('.notif-count').text(result);
+            })
+        }
+        
+        function getDataNotif() {
+            var notificationsWrapper   = $('.dropdown-notifications');
+            var notifications          = notificationsWrapper.find('ul.dropdown-menu');
+            $.get('{{ route('notif.member') }}', function(result) {
+                notifications.html(result);
+            });
         }
 
-        fetch(url, options)
-            .then(res => res.json())
-            .then(res => console.log(res));
-    }).catch(function (err) {
-        console.error(err);
-    });
+        getCountNotif();
+        getDataNotif();
 
-    // // Check if the device is registered
-    // if (Pushy.isRegistered()) {
-    //     // Subscribe the device to a topic
-    //     console.log('registered');
-    //     Pushy.subscribe('testing').catch(function (err) {
-    //         // Handle subscription errors
-    //         console.error('Subscribe failed:', err);
-    //     });
-    // }
+        // Enable pusher logging - don't include this in production
+        // Pusher.logToConsole = true;
 
-</script>
-@endauth
+        var pusher = new Pusher('71b68429916df972419b', {
+            cluster: 'ap1',
+            forceTLS: true
+        });
+
+        var events = [
+            {
+                channel : 'order-approve-admin-buyer-channel',
+                event : 'order-approve-admin-buyer-event'
+            },
+            {
+                channel : 'order-approve-admin-seller-channel',
+                event : 'order-approve-admin-seller-event'
+            },
+            {
+                channel : 'order-confirm-by-admin-channel',
+                event : 'order-confirm-by-admin-event'
+            },
+            {
+                channel : 'order-change-to-paid-buyer-channel',
+                event : 'order-change-to-paid-buyer-event'
+            },
+            {
+                channel : 'order-change-to-paid-seller-channel',
+                event : 'order-change-to-paid-seller-event'
+            },
+            {
+                channel : 'item-proses-edit-channel',
+                event : 'item-proses-edit-event'
+            },
+            {
+                channel : 'item-proses-install-channel',
+                event : 'item-proses-install-event'
+            },
+            {
+                channel : 'item-ready-active-channel',
+                event : 'item-ready-active-event'
+            },
+        ];
+        events.forEach(e => {
+            var channel = pusher.subscribe(e.channel);
+            channel.bind(e.event, function(data) {
+                getCountNotif();
+                getDataNotif();
+            });
+        });
+
+        
+        function markAllAssRead(e) {
+            e.stopPropagation();
+            $.get('{{ route('mark.all.as.read') }}');
+            getCountNotif();
+            getDataNotif();
+        } 
+        
+    </script>
+    {{-- Pushy --}}
+    @auth
+        <script src="https://sdk.pushy.me/web/1.0.5/pushy-sdk.js"></script>
+        <script src="{{ asset('service-worker.js')}}"></script>
+        @php
+            $user = Auth::id();
+        @endphp
+        <script>
+            Pushy.register({ appId: '5e68a08102c9bc5414aad613' }).then(function (deviceToken) {
+                const url = '{{ route('token.register') }}';
+
+                const data_token = {
+                    user_id: {{Auth::id()}},
+                    device_token: deviceToken
+                };
+
+                const options = {
+                    method: 'POST',
+                    body: JSON.stringify(data_token),
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                }
+
+                fetch(url, options)
+                    .then(res => res.json())
+                    .then(res => console.log(res));
+            }).catch(function (err) {
+                console.error(err);
+            });
+
+        </script>
+    @endauth
 </body>
 </html>

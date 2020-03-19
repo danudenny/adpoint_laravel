@@ -10,15 +10,15 @@ use Illuminate\Notifications\Messages\MailMessage;
 class OrderConfirmByAdmin extends Notification
 {
     use Queueable;
-
+    public $trx_code;
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($code)
     {
-        //
+        $this->trx_code = $code;
     }
 
     /**
@@ -55,8 +55,8 @@ class OrderConfirmByAdmin extends Notification
     public function toArray($notifiable)
     {
         return [
-            'title' => 'The order has been confirmed. please continue to make payment!',
-            'body' => 'The order has been confirmed. please continue to make payment!',
+            'title' => 'Transaction '.$this->trx_code.' has been confirmed. please continue to make payment!',
+            'body' => 'Transaction '.$this->trx_code.' has been confirmed. please continue to make payment!',
             'url' => url('/transaction')
         ];
     }

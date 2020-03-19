@@ -10,15 +10,15 @@ use Illuminate\Notifications\Messages\MailMessage;
 class OrderApproveAdminSeller extends Notification
 {
     use Queueable;
-
+    public $order_code;
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($code)
     {
-        //
+        $this->order_code = $code;
     }
 
     /**
@@ -55,8 +55,8 @@ class OrderApproveAdminSeller extends Notification
     public function toArray($notifiable)
     {
         return [
-            'title' => 'New order has been placed, please continue!',
-            'body' => 'New order has been placed, please continue!',
+            'title' => 'Order '.$this->order_code.' has been placed, please continue!',
+            'body' => 'Order '.$this->order_code.' has been placed, please continue!',
             'url' => url('/orders')
         ];
     }

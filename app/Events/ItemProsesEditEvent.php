@@ -10,19 +10,18 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
-class StatusLiked implements ShouldBroadcast
+class ItemProsesEditEvent implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
-    public $message, $username;
+    public $message;
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct($username)
+    public function __construct($message)
     {
-        $this->username = $username;
-        $this->message = "{$username} like your status";
+        $this->message = $message;
     }
 
     /**
@@ -32,11 +31,11 @@ class StatusLiked implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return 'status-liked';
+        return 'item-proses-edit-channel';
     }
 
     public function broadcastAs()
     {
-        return 'event-liked';
+        return 'item-proses-edit-event';
     }
 }

@@ -57,7 +57,7 @@ class OrderChangeToPaidBuyer extends Notification
         return [
             'title' => 'Thank you for making payment',
             'body' => 'Thank you for making payment',
-            'url' => url('/transaction')
+            'url' => url('/purchase_history')
         ];
     }
 }

@@ -189,20 +189,4 @@
         });
     }
 
-    function markAllAssRead(e) {
-        e.stopPropagation();
-        $.get('{{ route('mark.all.as.read') }}');
-        var notificationsWrapper   = $('.dropdown-notifications');
-        var notificationsToggle    = notificationsWrapper.find('a[data-toggle]');
-        var notificationsCountElem = notificationsToggle.find('i[data-count]');
-        var notificationsCount     = parseInt(notificationsCountElem.data('count'));
-        var notifications          = notificationsWrapper.find('ul.dropdown-menu');
-
-        $.get('{{ route('notif.admin') }}', function(result) {
-            notifications.html(result);
-            countNotif = '{{ Auth::user()->unreadNotifications->count() }}';
-            notificationsCountElem.attr('data-count', parseInt(countNotif));
-            notificationsWrapper.find('.notif-count').text(parseInt(countNotif));
-        });
-    }
 </script>

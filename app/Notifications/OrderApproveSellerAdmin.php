@@ -10,15 +10,17 @@ use Illuminate\Notifications\Messages\MailMessage;
 class OrderApproveSellerAdmin extends Notification
 {
     use Queueable;
+    public $trx_id, $trx_code;
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($id, $code)
     {
-        //
+        $this->trx_id = $id;
+        $this->trx_code = $code;
     }
 
     /**
@@ -55,9 +57,9 @@ class OrderApproveSellerAdmin extends Notification
     public function toArray($notifiable)
     {
         return [
-            'title' => 'The order has been approved by the seller, please continue!',
-            'body' => 'The order has been approved by the seller, please continue!',
-            'url' => url('/admin/transaction')
+            'title' => 'Order '.$this->trx_code.' has been approved by the seller, please continue!',
+            'body' => 'Order '.$this->trx_code.' has been approved by the seller, please continue!',
+            'url' => url('/admin/transaction/details/'.encrypt($this->trx_id))
         ];
     }
 }

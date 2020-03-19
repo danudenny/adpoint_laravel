@@ -188,7 +188,9 @@
                                                 <td>{{ $key+1 }}</td>
                                                 <td>
                                                     <i class="fa fa-fw fa-times text-danger"></i>
-                                                    <strong>{{ $product->name }}</strong> ( <strong>{{ $od->quantity }}</strong> <i><strong>{{ $od->variation }}</strong></i>) 
+                                                    <a target="_blank" href="{{ route('product', $product->slug) }}">
+                                                        <strong>{{ $product->name }}</strong> ( <strong>{{ $od->quantity }}</strong> <i><strong>{{ $od->variation }}</strong></i>) 
+                                                    </a>
                                                 </td>
                                                 <td>
                                                     @php
@@ -226,7 +228,9 @@
                                                 <td>{{ $key+1 }}</td>
                                                 <td>
                                                     <i class="fa fa-fw fa-check text-success"></i>
-                                                    <strong>{{ $product->name }}</strong> ( <strong>{{ $od->quantity }}</strong> <i><strong>{{ $od->variation }}</strong></i>) 
+                                                    <a target="_blank" href="{{ route('product', $product->slug) }}">
+                                                        <strong>{{ $product->name }}</strong> ( <strong>{{ $od->quantity }}</strong> <i><strong>{{ $od->variation }}</strong></i>) 
+                                                    </a>
                                                 </td>
                                                 <td>
                                                     @php

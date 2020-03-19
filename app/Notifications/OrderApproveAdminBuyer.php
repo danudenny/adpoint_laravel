@@ -10,15 +10,16 @@ use Illuminate\Notifications\Messages\MailMessage;
 class OrderApproveAdminBuyer extends Notification
 {
     use Queueable;
+    public $trx_code;
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($code)
     {
-        //
+        $this->trx_code = $code;
     }
 
     /**
@@ -55,8 +56,8 @@ class OrderApproveAdminBuyer extends Notification
     public function toArray($notifiable)
     {
         return [
-            'title' => 'The order has been reviewed by the admin',
-            'body' => 'The order has been reviewed by the admin',
+            'title' => 'Transaction '.$this->trx_code.' has been reviewed by the admin',
+            'body' => 'Transaction '.$this->trx_code.' has been reviewed by the admin',
             'url' => url('/purchase_history')
         ];
     }

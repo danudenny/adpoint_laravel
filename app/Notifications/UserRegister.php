@@ -10,15 +10,15 @@ use Illuminate\Notifications\Messages\MailMessage;
 class UserRegister extends Notification
 {
     use Queueable;
-
+    public $name;
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($name)
     {
-
+        $this->name = $name;
     }
 
     /**
@@ -55,8 +55,8 @@ class UserRegister extends Notification
     public function toArray($notifiable)
     {
         return [
-            'title' => 'New user has registered',
-            'body' => 'New user has registered',
+            'title' => 'New user has registered ('.$this->name.')',
+            'body' => 'New user has registered ('.$this->name.')',
             'url' => url('/admin/customers')
         ];
     }

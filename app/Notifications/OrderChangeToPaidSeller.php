@@ -10,15 +10,16 @@ use Illuminate\Notifications\Messages\MailMessage;
 class OrderChangeToPaidSeller extends Notification
 {
     use Queueable;
+    public $order_code;
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($code)
     {
-        //
+        $this->order_code = $code;
     }
 
     /**
@@ -55,8 +56,8 @@ class OrderChangeToPaidSeller extends Notification
     public function toArray($notifiable)
     {
         return [
-            'title' => 'The order has been paid, please continue',
-            'body' => 'The order has been paid, please continue',
+            'title' => 'Order '.$this->order_code.' has been paid, please continue',
+            'body' => 'Order '.$this->order_code.' has been paid, please continue',
             'url' => url('/orders')
         ];
     }

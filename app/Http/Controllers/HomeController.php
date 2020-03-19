@@ -43,10 +43,25 @@ class HomeController extends Controller
         return view('real-notif.admin_notif');
     }
 
+    public function get_all_notif_member()
+    {
+        return view('real-notif.member_notif');
+    }
+
     public function count_notif_admin()
     {
         $user = Auth::user();
         return $user->unreadNotifications->count();
+    }
+
+    public function count_notif_member()
+    {
+        $user = Auth::user();
+        if ($user->user_type == "customer") {
+            return $user->unreadNotifications->count();
+        }else if($user->user_type == "seller") {
+            return $user->unreadNotifications->count();
+        }
     }
 
     public function mark_as_read($id) {
@@ -131,7 +146,7 @@ class HomeController extends Controller
             $register->verified = 0;
             $request->session()->flash('message', 'Thanks for your registration, please check your email!.');
             Pushy::sendPushNotification($data, $to, $options);
-            Notification::send(User::where('user_type','admin')->first(), new UserRegister());
+            Notification::send(User::where('user_type','admin')->first(), new UserRegister($request->name));
             event(new UserRegisterEvent('New user has registered '.$request->name));
             Mail::to($request->email)->send(new RegistUser($user));
             return back();

@@ -9,15 +9,16 @@
         <div class="media">
             <div class="media-left">
                 <div class="media-object">
-                  <img src="{{ url('img/logo_shop.png') }}" class="img-circle" alt="50x50" style="width: 50px; height: 50px;">
+                  <i class="fa fa-bell fa-3x"></i>
                 </div>
             </div>
             <div class="media-body">
-            <strong class="notification-title">{{ $data->title }}</strong>
-            <!--p class="notification-desc">Extra description can go here</p-->
-            <div class="notification-meta">
-                <small class="timestamp">{{ $notif->created_at }}</small>
-            </div>
+                <a href="{{ url($data->url) }}">
+                    <strong class="notification-title">{{ $data->title }}</strong>
+                </a>
+                <div class="notification-meta">
+                    <small class="timestamp">{{ $notif->created_at->diffForHumans() }}</small>
+                </div>
             </div>
         </div>
     </li>

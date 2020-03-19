@@ -10,16 +10,18 @@ use Illuminate\Notifications\Messages\MailMessage;
 class OrderProses extends Notification
 {
     use Queueable;
-    public $name;
+    public $name, $trx_id, $trx_code;
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct($name)
+    public function __construct($name, $id, $code)
     {
         $this->name = $name;
+        $this->trx_id = $id;
+        $this->trx_code = $code;
     }
 
     /**
@@ -56,9 +58,9 @@ class OrderProses extends Notification
     public function toArray($notifiable)
     {
         return [
-            'title' => 'New transactions from '. $this->name,
-            'body' => 'New transactions from '. $this->name,
-            'url' => url('/admin/transaction')
+            'title' => 'New transactions '.$this->trx_code.' from '. $this->name,
+            'body' => 'New transactions '.$this->trx_code.' from '. $this->name,
+            'url' => url('/admin/transaction/details/'.encrypt($this->trx_id))
         ];
     }
 }

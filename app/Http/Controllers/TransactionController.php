@@ -23,7 +23,9 @@ use App\Mail\Order\OrderNotifPaymentSeller;
 
 use Notification;
 use App\Notifications\OrderChangeToPaidBuyer;
+use App\Events\OrderChangeToPaidBuyerEvent;
 use App\Notifications\OrderChangeToPaidSeller;
+use App\Events\OrderChangeToPaidSellerEvent;
 
 class TransactionController extends Controller
 {
@@ -91,8 +93,9 @@ class TransactionController extends Controller
                 );
                 Pushy::sendPushNotification($data, $to, $options);
             }
-            Notification::send($buyer, new OrderChangeToPaidBuyer());
             Mail::to($buyer->email)->send(new OrderNotifPaymentBuyer($dataB));
+            Notification::send($buyer, new OrderChangeToPaidBuyer());
+            event(new OrderChangeToPaidBuyerEvent('Thank you for making payment'));
             foreach ($transaction->orders as $key => $o) {
                 $order = Order::where(['id' => $o->id, 'approved' => 1])->first();
                 foreach ($order->orderDetails as $key => $od) {
@@ -115,19 +118,20 @@ class TransactionController extends Controller
                         ->first();
                 if ($push !== null) {
                     $tokenPushy = $push->device_token;
-                    $data = array('message' => 'The order has been paid, please continue');
+                    $data = array('message' => 'Order '.$o->code.' has been paid, please continue');
                     $to = array($tokenPushy);
                     $options = array(
                         'notification' => array(
                             'badge' => 1,
                             'sound' => 'ping.aiff',
-                            'body'  => "The order has been paid, please continue"
+                            'body'  => "Order '.$o->code.' has been paid, please continue"
                         )
                     );
                     Pushy::sendPushNotification($data, $to, $options);
                 }
-                Notification::send($seller, new OrderChangeToPaidSeller());
                 Mail::to($seller->email)->send(new OrderNotifPaymentSeller($dataS));
+                Notification::send($seller, new OrderChangeToPaidSeller($o->code));
+                event(new OrderChangeToPaidSellerEvent('Order '.$o->code.' has been paid, please continue'));
             }
             $request->session()->flash('message', 'Change to paid success');
             return redirect('admin/transaction');
