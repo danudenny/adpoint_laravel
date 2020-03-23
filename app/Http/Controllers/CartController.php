@@ -80,7 +80,7 @@ class CartController extends Controller
         }
         $request->session()->put('cart', $cart);
         return back();
-        
+
     }
 
     public function addToCart(Request $request)
@@ -110,7 +110,7 @@ class CartController extends Controller
                 return view('frontend.partials.outOfStockCart');
             }
             // if($variations->$str->qty >= $request['quantity']){
-                
+
             // }else{
             //     return view('frontend.partials.outOfStockCart');
             // }
@@ -146,7 +146,7 @@ class CartController extends Controller
             $price += $product->tax;
         }
 
-        
+
         $data['quantity'] = $request['quantity'];
         $data['price'] = $price;
         $data['start_date'] = $request['start_date'];
@@ -161,7 +161,7 @@ class CartController extends Controller
                         foreach ($cart as $seller_id => $c) {
                             foreach ($c as $key => $cartItem) {
                                 if ($cartItem['id'] === $data['id']) {
-                                    return view('frontend.partials.ItemHashCart');   
+                                    return view('frontend.partials.ItemHashCart');
                                 }else {
                                     $c[$key+1] = $data;
                                 }
@@ -224,12 +224,12 @@ class CartController extends Controller
             $request->session()->forget('cart');
         }
 
-        return view('frontend.partials.cart_details'); 
+        return view('frontend.partials.cart_details');
     }
 
     //updated the quantity for a cart item
     public function updateQuantity(Request $request)
-    {   
+    {
         if ($request->session()->has('cart')) {
             $cart = $request->session()->get('cart');
             foreach ($cart as $seller_id => $c) {
@@ -280,5 +280,13 @@ class CartController extends Controller
 
         $request->session()->put('cart', $cart);
         return view('frontend.partials.cart_details');
+    }
+
+    public function adjust_budget(Request $request) {
+        $this->validate($request,[
+            'budget' => 'required|numeric'
+        ]);
+        $request->session()->put('budget', $request->input('budget'));
+        return redirect()->back()->with('table_id',$request->input('budget'));
     }
 }

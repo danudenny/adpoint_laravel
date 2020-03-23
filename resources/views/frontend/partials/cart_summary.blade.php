@@ -30,7 +30,7 @@
                 @endphp
                 <div data-toggle="collapse" href="#headSeller{{$user->id}}" role="button" aria-expanded="false" aria-controls="headSeller{{$user->id}}" style="height: 40px; background: #FBFBFB; border-bottom: 1px solid #ccc; cursor: pointer;">
                     <b style="line-height: 40px;" class="ml-2">
-                        # {{ $user->name }} 
+                        # {{ $user->name }}
                         <span class="pull-right mr-2 text-primary">
                             <i class="fa fa-eye"></i> Detail
                         </span>
@@ -72,7 +72,7 @@
                                 @endforeach
                             </tbody>
                         </table>
-                        
+
                         <hr>
                         <table class="table-cart table-cart-review">
                             <tfoot>
@@ -115,6 +115,10 @@
                             if(Session::has('coupon_discount')){
                                 $total -= Session::get('coupon_discount');
                             }
+                            $budget = \Session::get('budget');
+                            if (Session::has('budget')) {
+                                $budget -= $total;
+                            }
                         @endphp
                         <tr>
                             <td align="center">
@@ -128,11 +132,27 @@
                                 </div>
                             </td>
                         </tr>
+                        @if (Session::has('budget'))
+                            <tr>
+                                <td align="center">
+                                    <b>{{__('YOUR CURRENT BUDGET')}}</b>
+                                    @if ($budget < 0)
+                                        <span class="badge badge-danger"> Overlimit</span>
+                                    @endif
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="center">
+                                    <div style="border: 1px dashed; border-radius: 10px; padding:10px; width: 100%; text-align: center; background-color: #f9f9f9">
+                                        <h4 class="text-warning strong-700">{{ single_price($budget) }}</h4>
+                                    </div>
+                                </td>
+                            </tr>
+                        @endif
                     </tfoot>
                 </table>
             </div>
         </div>
-        
 
         @if (Auth::check() && \App\BusinessSetting::where('type', 'coupon_system')->first()->value == 1)
             @if (Session::has('coupon_discount'))

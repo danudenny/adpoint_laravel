@@ -173,6 +173,7 @@ return [
         Igoshev\Captcha\Providers\CaptchaServiceProvider::class,
         MaddHatter\LaravelFullcalendar\ServiceProvider::class,
         \Jlorente\Laravel\Pushy\PushyServiceProvider::class,
+        SimpleSoftwareIO\QrCode\QrCodeServiceProvider::class
 
     ],
 
@@ -230,6 +231,7 @@ return [
         'Tracker' => PragmaRX\Tracker\Vendor\Laravel\Facade::class,
         'Calendar' => MaddHatter\LaravelFullcalendar\Facades\Calendar::class,
         'Pushy' => \Jlorente\Laravel\Pushy\Facades\Pushy::class,
+        'QrCode' => SimpleSoftwareIO\QrCode\Facades\QrCode::class
     ],
 
 ];

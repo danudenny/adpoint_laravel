@@ -486,6 +486,9 @@
                                                                     <h3 class="heading heading-6 strong-700">
                                                                         <i class="fa fa-shopping-cart"></i> {{__('Your Cart is empty')}}
                                                                     </h3>
+                                                                    <a href="{{ route('cart') }}" class="btn btn-orange btn-circle px-3 py-1 text-white">
+                                                                        <i class="la la-shopping-cart"></i> {{__('View cart')}}
+                                                                    </a>
                                                                 </div>
                                                             @endif
                                                         @else
@@ -493,6 +496,9 @@
                                                                 <h3 class="heading heading-6 strong-700">
                                                                     <i class="fa fa-shopping-cart"></i> {{__('Your Cart is empty')}}
                                                                 </h3>
+                                                                <a href="{{ route('cart') }}" class="btn btn-orange btn-circle px-3 py-1 text-white">
+                                                                    <i class="la la-shopping-cart"></i> {{__('View cart')}}
+                                                                </a>
                                                             </div>
                                                         @endif
                                                     </div>
