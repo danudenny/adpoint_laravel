@@ -244,7 +244,7 @@
 
                                 <div class="col-md-8 mt-3" >
                                     <label>
-                                        <input type="hidden" name="_token" value="{{csrf_token()}}"/>
+                                        <input type="hidden" name="_token" value="{{ csrf_token() }}"/>
                                         <div class="input-group mb-3">
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text" id="basic-addon1">Rp</span>
@@ -325,26 +325,33 @@
                 </div>
                 <div class="modal-body">
                     <h5 class="text-center">
-                        You still have budget : <br>
-                        <h2 class="text-center" style="background-color: #eaeaea; padding: 20px; border-radius: 7px;">
-{{--                            @if($budget > 0)--}}
-{{--                                <b class="text-success">{{ single_price($budget) }}</b>--}}
-{{--                            @endif--}}
-                        </h2>
+                        You still have budget. You can continue with the items in the cart. Start Uploading your advertisement materials.
                     </h5>
                 </div>
 
                 <div class="modal-footer" style="margin: 0 auto">
                     <button type="button" class="btn btn-default btn-circle" data-dismiss="modal"><i class="fa fa-undo"></i> Back to cart</button>
-{{--                    @if (count($advertising) === $count)--}}
-{{--                        <span class="pull-right">--}}
-{{--                          <a type="button" class="btn btn-primary btn-circle" href="{{route('checkout.shipping_info')}}"><i class="fa fa-check"></i>--}}
-{{--                            Continue to Billing Details--}}
-{{--                          </a>--}}
-{{--                        </span>--}}
-{{--                    @else--}}
-{{--                        <button type="button" class="btn btn-success btn-circle" data-dismiss="modal"><i class="fa fa-upload"></i> Upload Your Media Advertising</button>--}}
-{{--                    @endif--}}
+                    @php
+                        $advertising = [];
+                        $count = 0;
+                        foreach (Session::get('cart') as $seller_id => $c) {
+                            $count += count($c);
+                            foreach ($c as $key => $cartItem) {
+                                if ($cartItem['advertising'] !== null) {
+                                    array_push($advertising, $cartItem['advertising']);
+                                }
+                            }
+                        }
+                    @endphp
+                    @if (count($advertising) === $count)
+                        <span class="pull-right">
+                          <a type="button" class="btn btn-primary btn-circle" href="{{route('checkout.shipping_info')}}"><i class="fa fa-check"></i>
+                            Continue to Billing Details
+                          </a>
+                        </span>
+                    @else
+                        <button type="button" class="btn btn-success btn-circle" data-dismiss="modal"><i class="fa fa-check"></i> OK</button>
+                    @endif
                 </div>
             </div>
         </div>

@@ -81,6 +81,22 @@
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="form-group">
+                                                        <label>Link URL</label>
+                                                        <div id="upload-images">
+                                                            <div class="row">
+                                                                <div class="col-md-11">
+                                                                    <input type="file" name="image[]" id="image-1" class="custom-input-file custom-input-file--4" data-multiple-caption="{count} files selected" accept="image/*" />
+                                                                    <label for="image-1" class="mw-100 mb-3">
+                                                                        <span></span>
+                                                                        <strong>
+                                                                            <i class="fa fa-upload"></i>
+                                                                        </strong>
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
                                                         <label>Image</label>
                                                         <div id="upload-images">
                                                             <div class="row">
@@ -149,7 +165,7 @@
                     <div class="col-lg-4 ml-lg-auto">
                         @include('frontend.partials.cart_summary')
                     </div>
-                    
+
                 </div>
             </div>
         </section>
@@ -219,9 +235,9 @@
         });
 
         $('#type-file').on('select2:selecting', function(e){
-            var selected = e.params.args.data.id; 
+            var selected = e.params.args.data.id;
             date = new Date();
-                    
+
             var row = `<tr id="row_`+selected+`">
                         <td><label>`+ capitalize(selected) +`</label></td>
                         <td><input type="file" name="file`+selected+`[]" class="form-control form-control-sm"></td>

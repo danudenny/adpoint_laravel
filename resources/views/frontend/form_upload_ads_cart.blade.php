@@ -21,6 +21,16 @@
                 <input type="hidden" name="seller_id" value="{{$data['seller_id']}}">
                 <input type="hidden" name="index" value="{{$data['index']}}">
                 <div class="form-group">
+                    <label>Link URL</label>
+                    <div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <input type="url" name="link[]" id="link-1" class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
                     <label>Image</label>
                     <div id="upload-images">
                         <div class="row">
