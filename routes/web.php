@@ -73,6 +73,14 @@ Route::post('/cart/updateQuantity', 'CartController@updateQuantity')->name('cart
 
 Route::post('/cart/upload_ads', 'CartController@form_upload_ads')->name('form.upload.ads');
 Route::post('/cart/upload_ads_proses', 'CartController@upload_ads_proses')->name('upload.ads.proses');
+Route::post('/cart/adjust_budget', 'CartController@adjust_budget')->name('adjust.budget');
+Route::get('/cart/reset_budget', function() {
+    Session::forget('budget');
+    if(!Session::has('budget'))
+    {
+        return redirect()->back();
+    }
+});
 
 Route::post('/checkout/payment', 'CheckoutController@checkout')->name('payment.checkout');
 Route::get('/checkout', 'CheckoutController@get_shipping_info')->name('checkout.shipping_info');
