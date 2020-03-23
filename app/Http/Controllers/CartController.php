@@ -63,7 +63,18 @@ class CartController extends Controller
             $filevideo['video'] = null;
         }
 
-        $result = array_merge($filegambar, $filevideo);
+        if ($request->input('link')) {
+            $link = [];
+            $arr = [];
+            foreach ($request->link as $key => $g) {
+                $path = $request->input('link');
+                array_push($arr, $path);
+                $link['link'] = $arr;
+            }
+        }else {
+            $link['link'] = null;
+        }
+        $result = array_merge($filegambar, $filevideo, $link);
         $advertising = json_encode($result);
 
         $cart = Session::get('cart');

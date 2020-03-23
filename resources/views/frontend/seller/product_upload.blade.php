@@ -34,7 +34,9 @@
                         <form class="" action="{{route('products.store')}}" method="POST" enctype="multipart/form-data" id="choice_form">
                             @csrf
                     		<input type="hidden" name="added_by" value="seller">
-
+                            <div class="mt-3">
+                                <button type="submit" class="btn btn-success"><img src="{{asset('uploads\logo\smartmedia_x.png')}}" width="32"> Integrate With Smartmedia</button>
+                            </div>
                             <div class="form-box bg-white mt-4">
                                 <div class="form-box-title px-3 py-2">
                                     {{__('General')}}
