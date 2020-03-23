@@ -61,6 +61,7 @@
     <!--jQuery [ REQUIRED ]-->
     <script src=" {{asset('js/jquery.min.js') }}"></script>
     <script src="{{ asset('frontend/js/bootstrap-select.min.js') }}"></script>
+    <script src="https://cdn.ckeditor.com/4.14.0/standard/ckeditor.js"></script>
     <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
     <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
 
@@ -232,8 +233,6 @@
     {{-- Pusher --}}
     <script src="https://js.pusher.com/5.1/pusher.min.js"></script>
     <script type="text/javascript">
-
-        
         function getCountNotif() {
             $.get('{{ route('count.notif.admin') }}', function(result) {
                 $('.notification-icon').attr('data-count', result);

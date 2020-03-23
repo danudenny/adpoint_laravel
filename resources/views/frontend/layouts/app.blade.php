@@ -1530,6 +1530,18 @@
                 channel : 'item-ready-active-channel',
                 event : 'item-ready-active-event'
             },
+            {
+                channel : 'order-active-channel',
+                event : 'order-active-event'
+            },
+            {
+                channel : 'order-upload-bukti-tayang-channel',
+                event : 'order-upload-bukti-tayang-event'
+            },
+            {
+                channel : 'order-completed-channel',
+                event : 'order-completed-event'
+            },
         ];
         events.forEach(e => {
             var channel = pusher.subscribe(e.channel);

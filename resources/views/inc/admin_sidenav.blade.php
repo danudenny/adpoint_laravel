@@ -222,6 +222,9 @@
                                     <li class="{{ areActiveRoutes(['whatsapp_settings.index'])}}">
                                         <a class="nav-link" href="{{ route('whatsapp_settings.index') }}">{{__('Whatsapp Settings')}}</a>
                                     </li>
+                                    <li class="{{ areActiveRoutes(['email_setting.index'])}}">
+                                        <a class="nav-link" href="{{ route('email_setting.index') }}">{{__('Email Settings')}}</a>
+                                    </li>
                                 </ul>
                             </li>
                             <li>

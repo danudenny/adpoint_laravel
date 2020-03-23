@@ -7,8 +7,11 @@ use App\Review;
 use App\Product;
 use App\OrderDetail;
 use Auth;
+use Mail;
 use DB;
 use App\Pushy;
+use Notification;
+
 
 class ReviewController extends Controller
 {

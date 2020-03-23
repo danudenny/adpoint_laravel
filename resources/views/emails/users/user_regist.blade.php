@@ -9,9 +9,11 @@
                 <td class="content-cell">
                     <div class="f-fallback">
                         <h4>Dear, {{ $user['name'] }}!</h4>
+                        
                         <p>Terima kasih telah melakukan pendaftaran di Adpoint.
                             Pendaftaran anda sedang di review oleh admin.
                             Mohon tunggu informasi selanjutnya dari kami.</p>
+
                         <p>Terimakasih</p>
                         <p>Regards,<br>Adpoint</p>
                     </div>

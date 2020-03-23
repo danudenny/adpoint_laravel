@@ -32,6 +32,12 @@ class BusinessSettingsController extends Controller
         return view('business_settings.whatsapp_settings', compact('whatsapp_settings'));
     }
 
+    public function email_settings(Request $request)
+    {
+        $email_settings = BusinessSetting::where('type', 'email_settings')->first();
+        return view('business_settings.email_settings', compact('email_settings'));
+    }
+
     public function google_analytics(Request $request)
     {
         return view('business_settings.google_analytics');

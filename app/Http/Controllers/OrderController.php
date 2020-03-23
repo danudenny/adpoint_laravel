@@ -41,7 +41,6 @@ use App\Pushy;
 use Notification;
 use App\Notifications\OrderProses;
 use App\Events\OrderProsesEvent;
-
 use App\Notifications\OrderApproveAdminBuyer;
 use App\Events\OrderApproveAdminBuyerEvent;
 use App\Notifications\OrderApproveAdminSeller;
@@ -61,6 +60,10 @@ use App\Notifications\ItemProsesInstall;
 use App\Events\ItemProsesInstallEvent;
 use App\Notifications\ItemReadyActive;
 use App\Events\ItemReadyActiveEvent;
+use App\Notifications\OrderActiveSellerBuyer;
+use App\Events\OrderActiveSellerBuyerEvent;
+use App\Notifications\OrderCompleted;
+use App\Events\OrderCompletedEvent;
 
 
 class OrderController extends Controller
@@ -538,6 +541,7 @@ class OrderController extends Controller
     public function activate(Request $request)
     {
         $item = OrderDetail::where('id', $request->id)->first();
+        $product = Product::where('id', $item->product_id)->first();
         $query = DB::table('orders as o')
                         ->join('order_details as od', 'od.order_id', '=', 'o.id')
                         ->join('users as b', 'b.id', '=', 'o.user_id')
@@ -551,10 +555,14 @@ class OrderController extends Controller
                             'p.name as product_name',
                         ])
                         ->first();
+        $order = Order::where('id', $query->id)->first();
+        $buyer = User::where('id', $order->user_id)->first();
         if ($item !== null) {
             $item->status = 3; // activated
             $item->save();
             Mail::to($query->buyer_email)->send(new OrderActive($query));
+            Notification::send($buyer, new OrderActiveSellerBuyer($product->name));
+            event(new OrderActiveSellerBuyerEvent('Media '.$product->name.' has been activated'));
             $push = DB::table('pushy_tokens as pt')
                         ->join('users as u', 'u.id', '=', 'pt.user_id')
                         ->where(['u.id' => $query->buyer_id])
@@ -562,13 +570,13 @@ class OrderController extends Controller
                         ->first();
             if ($push !== null) {
                 $tokenPushy = $push->device_token;
-                $data = array('message' => 'order has been activated');
+                $data = array('message' => 'Media '.$product->name.' has been activated');
                 $to = array($tokenPushy);
                 $options = array(
                     'notification' => array(
                         'badge' => 1,
                         'sound' => 'ping.aiff',
-                        'body'  => "order has been activated"
+                        'body'  => 'Media '.$product->name.' has been activated'
                     )
                 );
                 Pushy::sendPushNotification($data, $to, $options);
@@ -604,7 +612,10 @@ class OrderController extends Controller
             $product->available = 1;
             $product->save();
             $order_detail->save();
+            $buyer = User::where('id', $query->buyer_id)->first();
             Mail::to($query->buyer_email)->send(new OrderComplete($query));
+            Notification::send($buyer, new OrderCompleted($product->name));
+            event(new OrderCompletedEvent('Media '.$product->name.' has been completed'));
             $push = DB::table('pushy_tokens as pt')
                         ->join('users as u', 'u.id', '=', 'pt.user_id')
                         ->where(['u.id' => $query->buyer_id])
@@ -612,13 +623,13 @@ class OrderController extends Controller
                         ->first();
             if ($push !== null) {
                 $tokenPushy = $push->device_token;
-                $data = array('message' => 'order has been completed');
+                $data = array('message' => 'Media '.$product->name.' has been completed');
                 $to = array($tokenPushy);
                 $options = array(
                     'notification' => array(
                         'badge' => 1,
                         'sound' => 'ping.aiff',
-                        'body'  => "order has been completed"
+                        'body'  => 'Media '.$product->name.' has been completed'
                     )
                 );
                 Pushy::sendPushNotification($data, $to, $options);
