@@ -6,11 +6,13 @@ use App\Product;
 use App\SubSubCategory;
 use App\FlashDealProduct;
 use App\FlashDeal;
+
 use App\Transaction;
 use App\Order;
 use App\OrderDetail;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+
 //highlights the selected navigation on admin panel
 if (! function_exists('areActiveRoutes')) {
     function areActiveRoutes(Array $routes, $output = "active-link")
@@ -158,8 +160,7 @@ if (! function_exists('filter_products')) {
     function filter_products($products) {
         if(BusinessSetting::where('type', 'vendor_system_activation')->first()->value == 1){
             return $products->where('published', '1');
-        }
-        else{
+        } else {
             return $products->where('published', '1')->where('added_by', 'admin');
         }
     }

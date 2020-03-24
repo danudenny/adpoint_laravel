@@ -23,7 +23,7 @@ class UserCtrl extends Controller
     */
     public function index()
     {
-        $users = User::paginate(10);
+        $users = User::orderBy('id','desc')->get();
         return response()->json($users,200);
 
     }
@@ -50,7 +50,7 @@ class UserCtrl extends Controller
     */
     public function show($id)
     {
-        $user = User::where('id', $id)->first();
+        $user = User::where('id', $id)->get();
         if ($user != null) {
             return response()->json($user,200);
         }else{
@@ -61,6 +61,7 @@ class UserCtrl extends Controller
         }
 
     }
+
 
     /**
      * @OA\Get(
@@ -75,6 +76,6 @@ class UserCtrl extends Controller
      */
     public function profile() {
         $profile = auth('api')->user();
-        return response()->json(array($profile));
+        return response()->json([$profile]);
     }
 }

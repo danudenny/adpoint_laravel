@@ -39,7 +39,7 @@
 
 <div class="modal-body px-3 pt-0">
     @php
-        $review = \App\Review::where('product_id', $query->product_id)->first();
+        $review = \App\Review::where(['product_id' => $query->product_id, 'user_id' => Auth::user()->id])->first();
         $product = \App\Product::where('id', $query->product_id)->first();
     @endphp
     @if ($review !== null)

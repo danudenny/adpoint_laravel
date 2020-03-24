@@ -1,7 +1,10 @@
 @extends('frontend.layouts.app')
 
 @section('content')
-
+    @php
+        $trxUnpaid = trx_notif(0, Auth::user()->id)->count();
+        $trxPaid = trx_notif(1, Auth::user()->id)->count();
+    @endphp
     <section class="gry-bg py-4 profile">
         <div class="container">
             <div class="row cols-xs-space cols-sm-space cols-md-space">
@@ -45,8 +48,18 @@
                             <div class="col-md-12">
                                 <nav>
                                     <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                                        <a class="nav-item nav-link" id="nav-unpaid-tab" data-url="{{ route('trx.unpaid') }}" data-toggle="tab" href="#nav-unpaid" role="tab" aria-controls="nav-unpaid" aria-selected="true">Unpaid</a>
-                                        <a class="nav-item nav-link" id="nav-paid-tab" data-url="{{ route('trx.paid') }}" data-toggle="tab" href="#nav-paid" role="tab" aria-controls="nav-paid" aria-selected="false">Paid</a>
+                                        <a class="nav-item nav-link" id="nav-unpaid-tab" data-url="{{ route('trx.unpaid') }}" data-toggle="tab" href="#nav-unpaid" role="tab" aria-controls="nav-unpaid" aria-selected="true">
+                                            Unpaid
+                                            @if ($trxUnpaid > 0)
+                                                <b>({{ $trxUnpaid }})</b>
+                                            @endif
+                                        </a>
+                                        <a class="nav-item nav-link" id="nav-paid-tab" data-url="{{ route('trx.paid') }}" data-toggle="tab" href="#nav-paid" role="tab" aria-controls="nav-paid" aria-selected="false">
+                                            Paid
+                                            @if ($trxPaid > 0)
+                                                <b>({{ $trxPaid }})</b>
+                                            @endif
+                                        </a>
                                     </div>
                                 </nav>
                             </div>

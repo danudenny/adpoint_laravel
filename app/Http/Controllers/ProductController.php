@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Bundle;
 use App\Pushy;
 use Illuminate\Http\Request;
 use App\Product;
@@ -11,6 +12,8 @@ use Auth;
 use App\SubSubCategory;
 use Session;
 use ImageOptimizer;
+
+use DB;
 
 class ProductController extends Controller
 {
@@ -236,24 +239,27 @@ class ProductController extends Controller
         saveJSONFile('en', $data);
 
         if($product->save()){
-            $query = DB::table('pushy_tokens as pt')
-                ->join('users as u', 'u.id', '=', 'pt.user_id')
-                ->where(['u.user_type' => 'admin'])
-                ->select(['pt.*'])
-                ->get();
-            $tokenPushy = $query[0]->device_token;
-            $data = array('message' => 'Product Baru telah ditambahkan!');
-            $to = array($tokenPushy);
-            $options = array(
-                'notification' => array(
-                    'badge' => 1,
-                    'sound' => 'ping.aiff',
-                    'body'  => "Product Baru telah ditambahkan!"
-                )
-            );
+            // pushy notif
+            $push = DB::table('pushy_tokens as pt')
+                    ->join('users as u', 'u.id', '=', 'pt.user_id')
+                    ->where(['u.user_type' => 'admin'])
+                    ->select(['pt.*'])
+                    ->first();
+            if ($push !== null) {
+                $tokenPushy = $push->device_token;
+                $data = array('message' => 'New product has been added!');
+                $to = array($tokenPushy);
+                $options = array(
+                    'notification' => array(
+                        'badge' => 1,
+                        'sound' => 'ping.aiff',
+                        'body'  => "New product has been added!"
+                    )
+                );
+                Pushy::sendPushNotification($data, $to, $options);
+            }
 
             flash(__('Product has been inserted successfully'))->success();
-            Pushy::sendPushNotification($data, $to, $options);
             if(Auth::user()->user_type == 'admin'){
                 return redirect()->route('products.admin');
             }
@@ -658,6 +664,36 @@ class ProductController extends Controller
 
         $combinations = combinations($options);
         return view('partials.sku_combinations_edit', compact('combinations', 'unit_price', 'colors_active', 'product_name', 'product'));
+    }
+
+    public function bundleProduct() {
+        $bundles = Bundle::all();
+        return view('products.bundle.index', compact('bundles'));
+    }
+
+    public function create_bundleProduct() {
+        $products = Product::all();
+        return view('products.bundle.create', compact('products'));
+    }
+
+    public function save_bundle(Request $request) {
+        $bundle = new Bundle;
+        $bundle->name = $request->name;
+        $bundle->brands = json_encode($request->products);
+        $bundle->meta_description = $request->meta_description;
+
+        $data = openJSONFile('en');
+        $data[$bundle->name] = $bundle->name;
+        saveJSONFile('en', $data);
+
+        if($bundle->save()){
+            flash(__('Subcategory has been inserted successfully'))->success();
+            return redirect()->route('products.bundle.index');
+        }
+        else{
+            flash(__('Something went wrong'))->error();
+            return back();
+        }
     }
 
 }

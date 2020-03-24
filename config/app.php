@@ -80,7 +80,7 @@ return [
     |
     */
 
-    'locale' => 'en',
+    'locale' => 'id',
 
     /*
     |--------------------------------------------------------------------------
@@ -162,7 +162,7 @@ return [
          */
         App\Providers\AppServiceProvider::class,
         App\Providers\AuthServiceProvider::class,
-        // App\Providers\BroadcastServiceProvider::class,
+        App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         // App\Providers\TelescopeServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
@@ -171,6 +171,7 @@ return [
         // Barryvdh\Debugbar\ServiceProvider::class,
         PragmaRX\Tracker\Vendor\Laravel\ServiceProvider::class,
         Igoshev\Captcha\Providers\CaptchaServiceProvider::class,
+        MaddHatter\LaravelFullcalendar\ServiceProvider::class,
 
     ],
 
@@ -226,6 +227,7 @@ return [
         'Paystack' => Mehedi\Paystack\Facades\Paystack::class,
         // 'Debugbar' => Barryvdh\Debugbar\Facade::class,
         'Tracker' => PragmaRX\Tracker\Vendor\Laravel\Facade::class,
+        'Calendar' => MaddHatter\LaravelFullcalendar\Facades\Calendar::class,
     ],
 
 ];

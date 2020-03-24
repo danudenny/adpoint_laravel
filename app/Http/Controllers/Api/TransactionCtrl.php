@@ -16,22 +16,13 @@ class TransactionCtrl extends Controller
      *     tags={"Transactions"},
      *     summary="Display a listing of the transaction",
      *     security={{"bearerAuth":{}}},
-     *     @OA\Parameter(
-     *         description="Page number",
-     *         in="query",
-     *         name="page",
-     *         @OA\Schema(
-     *           type="integer",
-     *           format="int64"
-     *         )
-     *     ),
      *     @OA\Response(response="200",description="ok"),
      *     @OA\Response(response="401",description="unauthorized")
      * )
      */
     public function index()
     {
-        $trans = Transaction::paginate(10);
+        $trans = Transaction::orderBy('id', 'desc')->get();
         return response()->json($trans, 200);
     }
 

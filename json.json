@@ -1,0 +1,25 @@
+{
+    "logo": "img/email/logo.png",
+    "data": [{
+            "judul": "Register User",
+            "subject": "Pendafataran akun berhasil",
+            "content": "<p>Terima kasih telah melakukan pendaftaran di Adpoint. Pendaftaran anda sedang di review oleh admin. Mohon tunggu informasi selanjutnya dari kami.</p>"
+        },
+        {
+            "judul": "Accept User",
+            "subject": "Akun anda telah disetujui",
+            "content": "<p>Selamat.<br>Proses registrasi berhasil dilakukan. Sekarang anda sudah terdaftar sebagai buyer.Silahkan tekan tombol login. Anda juga dapat login versi mobile dengan cara menginstall aplikasi <a href=''>adpoint.id</a> di playstore.<p>"
+        },
+        {
+            "judul": "Reject User",
+            "subject": "Akun anda tidak disetujui",
+            "content": "<p>Terimakasih telah melakukan pendafataran.<br>Maaf pendaftaran anda <b>ditolak</b> karena data yang anda masukkan tidak sesuai.Silahkan melakukan pendaftaran kembali.<p>"
+        },
+        {
+            "judul": "Reset Password User",
+            "subject": "Akun anda telah disetujui",
+            "content": "<p>Reset Password anda, silahkan klik tombol reset password.</p>"
+        }
+    ],
+    "footer": "&copy; 2018. PT. Adpoint Media Online allright reserved. <br> Semua content di lindungi oleh undang undang hak cipta. Dilarang mencopy atau mencontoh tanpaseizin adpoint indonesia."
+}

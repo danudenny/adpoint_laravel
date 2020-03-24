@@ -6,7 +6,6 @@
 @endif
 <head>
 
-
 @php
     $seosetting = \App\SeoSetting::first();
     $product = \App\Product::first();
@@ -86,8 +85,8 @@
         font-family: Roboto;
         font-size: 15px;
         font-weight: 300;
-        margin-left: 12px;
-        padding: 0 11px 0 13px;
+        margin-top: 12px;
+        /*padding: 0 11px 0 13px;*/
         text-overflow: ellipsis;
         width: 400px;
     }
@@ -114,6 +113,7 @@
 
 <!-- color theme -->
 <link href="{{ asset('frontend/css/colors/'.\App\GeneralSetting::first()->frontend_color.'.css')}}" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-notifications@1.0.3/dist/stylesheets/bootstrap-notifications.min.css">
 
 <!-- jQuery -->
 <script src="{{ asset('frontend/js/vendor/jquery-3.3.1.js') }}"></script>
@@ -125,23 +125,23 @@
 <script src="{{ asset('frontend/js/bootstrap-select.min.js') }}"></script>
 
 
+
 <link rel="stylesheet" href="{{ asset('css/dropzone.css') }}">
 
 
-@if (\App\BusinessSetting::where('type', 'google_analytics')->first()->value == 1)
-<!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-133955404-1"></script>
+{{-- @if (\App\BusinessSetting::where('type', 'google_analytics')->first()->value == 1)
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-133955404-1"></script>
 
-<script>
-      window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', @php env('TRACKING_ID') @endphp);
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', @php env('TRACKING_ID') @endphp);
     </script>
-@endif
-{{-- Datepicker css --}}
+@endif --}}
+
 <link href="{{ asset('frontend/css/gijgo.min.css')}}" rel="stylesheet">
-<!-- Latest compiled and minified JavaScript -->
 
 </head>
 <body>
@@ -294,7 +294,6 @@
             return result;
         }
 
-        // var token = 'ZG0MysXFq2utuYL96oPI3P08EMl8E7i1IVDw3MHOdedBgrRoik';
         var token = getToken();
         var url = 'https://x.rajaapi.com/MeP7c5ne'+ token +'/m/wilayah/';
 
@@ -854,7 +853,7 @@
 
 
 <script>
-
+    // Map
     $(document).ready(function(){
         function getDataProduct(){
             var dataProduct = [];
@@ -869,8 +868,6 @@
             });
             return dataProduct;
         }
-
-        // console.log(getDataProduct());
         var map;
         var key = 'AIzaSyBsVHufr4pDssMKPVCFZO6yXe58oalrtHs';
         var idMap = $('.map').attr('id');
@@ -900,8 +897,178 @@
             map = new google.maps.Map(document.getElementById('addProductMap'), {
                 center: {lat: -2.6000285, lng: 118.015776},
                 zoom: 10,
-                gestureHandling: 'greedy'
+                gestureHandling: 'greedy',
             });
+            var styledMapType = new google.maps.StyledMapType(
+                [
+                    {
+                        "elementType": "geometry",
+                        "stylers": [
+                            {
+                                "color": "#242f3e"
+                            }
+                        ]
+                    },
+                    {
+                        "elementType": "labels.text.fill",
+                        "stylers": [
+                            {
+                                "color": "#746855"
+                            }
+                        ]
+                    },
+                    {
+                        "elementType": "labels.text.stroke",
+                        "stylers": [
+                            {
+                                "color": "#242f3e"
+                            }
+                        ]
+                    },
+                    {
+                        "featureType": "administrative.locality",
+                        "elementType": "labels.text.fill",
+                        "stylers": [
+                            {
+                                "color": "#d59563"
+                            }
+                        ]
+                    },
+                    {
+                        "featureType": "poi",
+                        "elementType": "labels.text.fill",
+                        "stylers": [
+                            {
+                                "color": "#d59563"
+                            }
+                        ]
+                    },
+                    {
+                        "featureType": "poi.park",
+                        "elementType": "geometry",
+                        "stylers": [
+                            {
+                                "color": "#263c3f"
+                            }
+                        ]
+                    },
+                    {
+                        "featureType": "poi.park",
+                        "elementType": "labels.text.fill",
+                        "stylers": [
+                            {
+                                "color": "#6b9a76"
+                            }
+                        ]
+                    },
+                    {
+                        "featureType": "road",
+                        "elementType": "geometry",
+                        "stylers": [
+                            {
+                                "color": "#38414e"
+                            }
+                        ]
+                    },
+                    {
+                        "featureType": "road",
+                        "elementType": "geometry.stroke",
+                        "stylers": [
+                            {
+                                "color": "#212a37"
+                            }
+                        ]
+                    },
+                    {
+                        "featureType": "road",
+                        "elementType": "labels.text.fill",
+                        "stylers": [
+                            {
+                                "color": "#9ca5b3"
+                            }
+                        ]
+                    },
+                    {
+                        "featureType": "road.highway",
+                        "elementType": "geometry",
+                        "stylers": [
+                            {
+                                "color": "#746855"
+                            }
+                        ]
+                    },
+                    {
+                        "featureType": "road.highway",
+                        "elementType": "geometry.stroke",
+                        "stylers": [
+                            {
+                                "color": "#1f2835"
+                            }
+                        ]
+                    },
+                    {
+                        "featureType": "road.highway",
+                        "elementType": "labels.text.fill",
+                        "stylers": [
+                            {
+                                "color": "#f3d19c"
+                            }
+                        ]
+                    },
+                    {
+                        "featureType": "transit",
+                        "elementType": "geometry",
+                        "stylers": [
+                            {
+                                "color": "#2f3948"
+                            }
+                        ]
+                    },
+                    {
+                        "featureType": "transit.station",
+                        "elementType": "labels.text.fill",
+                        "stylers": [
+                            {
+                                "color": "#d59563"
+                            }
+                        ]
+                    },
+                    {
+                        "featureType": "water",
+                        "elementType": "geometry",
+                        "stylers": [
+                            {
+                                "color": "#17263c"
+                            }
+                        ]
+                    },
+                    {
+                        "featureType": "water",
+                        "elementType": "labels.text.fill",
+                        "stylers": [
+                            {
+                                "color": "#515c6d"
+                            }
+                        ]
+                    },
+                    {
+                        "featureType": "water",
+                        "elementType": "labels.text.stroke",
+                        "stylers": [
+                            {
+                                "color": "#17263c"
+                            }
+                        ]
+                    }
+                ],
+                {name: 'Styled Map'});
+            map.mapTypes.set('styled_map', styledMapType);
+            map.setMapTypeId('styled_map');
+            // Start Style Maps
+
+
+            // End Style Maps
+
 
             var input = document.getElementById('pac-input');
             var searchBox = new google.maps.places.SearchBox(input);
@@ -1259,9 +1426,8 @@
                 handleLocationError(false, map.getCenter());
             }
         }
-
     });
-
+    // end map
 
     // whatsapp chat
     var url_send_wa = 'https://api.whatsapp.com/send?phone=';
@@ -1293,48 +1459,139 @@
         $('#btn_close').hide();
         $('.triangle-left').hide();
     }
-    // end whatsapp
-
-
+    
     $('#table').DataTable();
     $('.dataTables_filter').addClass('pull-right');
     $('#table_paginate').addClass('pull-right');
 
 </script>
 
-@auth
+    {{-- Pusher --}}
+    <script src="https://js.pusher.com/5.1/pusher.min.js"></script>
+    <script type="text/javascript">
 
-<script src="https://sdk.pushy.me/web/1.0.5/pushy-sdk.js"></script>
-<script src="{{ asset('service-worker.js')}}"></script>
-
-@php
-$user = Auth::id();
-@endphp
-
-<script>
-    Pushy.register({ appId: '5e2bf22ecc95c3343ee338d8' }).then(function (deviceToken) {
-        const url = 'http://127.0.0.1:8000/api/pushy_token/register/device';
-
-        const data_token = {
-            user_id: {{Auth::id()}},
-            device_token: deviceToken
-        };
-
-        const options = {
-            method: 'POST',
-            body: JSON.stringify(data_token),
-            headers: {
-                'Content-Type': 'application/json'
-            }
+        
+        function getCountNotif() {
+            $.get('{{ route('count.notif.member') }}', function(result) {
+                $('.notification-icon').attr('data-count', result);
+                $('.notif-count').text(result);
+            })
+        }
+        
+        function getDataNotif() {
+            var notificationsWrapper   = $('.dropdown-notifications');
+            var notifications          = notificationsWrapper.find('ul.dropdown-menu');
+            $.get('{{ route('notif.member') }}', function(result) {
+                notifications.html(result);
+            });
         }
 
-        fetch(url, options)
-            .then(res => res.json())
-            .then(res => console.log(res));
-    }).catch(function (err) {
-        console.error(err);
-    });
-</script>
-@endauth
+        getCountNotif();
+        getDataNotif();
+
+        // Enable pusher logging - don't include this in production
+        // Pusher.logToConsole = true;
+
+        var pusher = new Pusher('71b68429916df972419b', {
+            cluster: 'ap1',
+            forceTLS: true
+        });
+
+        var events = [
+            {
+                channel : 'order-approve-admin-buyer-channel',
+                event : 'order-approve-admin-buyer-event'
+            },
+            {
+                channel : 'order-approve-admin-seller-channel',
+                event : 'order-approve-admin-seller-event'
+            },
+            {
+                channel : 'order-confirm-by-admin-channel',
+                event : 'order-confirm-by-admin-event'
+            },
+            {
+                channel : 'order-change-to-paid-buyer-channel',
+                event : 'order-change-to-paid-buyer-event'
+            },
+            {
+                channel : 'order-change-to-paid-seller-channel',
+                event : 'order-change-to-paid-seller-event'
+            },
+            {
+                channel : 'item-proses-edit-channel',
+                event : 'item-proses-edit-event'
+            },
+            {
+                channel : 'item-proses-install-channel',
+                event : 'item-proses-install-event'
+            },
+            {
+                channel : 'item-ready-active-channel',
+                event : 'item-ready-active-event'
+            },
+            {
+                channel : 'order-active-channel',
+                event : 'order-active-event'
+            },
+            {
+                channel : 'order-upload-bukti-tayang-channel',
+                event : 'order-upload-bukti-tayang-event'
+            },
+            {
+                channel : 'order-completed-channel',
+                event : 'order-completed-event'
+            },
+        ];
+        events.forEach(e => {
+            var channel = pusher.subscribe(e.channel);
+            channel.bind(e.event, function(data) {
+                getCountNotif();
+                getDataNotif();
+            });
+        });
+
+        
+        function markAllAssRead(e) {
+            e.stopPropagation();
+            $.get('{{ route('mark.all.as.read') }}');
+            getCountNotif();
+            getDataNotif();
+        } 
+        
+    </script>
+    {{-- Pushy --}}
+    @auth
+        <script src="https://sdk.pushy.me/web/1.0.5/pushy-sdk.js"></script>
+        <script src="{{ asset('service-worker.js')}}"></script>
+        @php
+            $user = Auth::id();
+        @endphp
+        <script>
+            Pushy.register({ appId: '5e68a08102c9bc5414aad613' }).then(function (deviceToken) {
+                const url = '{{ route('token.register') }}';
+
+                const data_token = {
+                    user_id: {{Auth::id()}},
+                    device_token: deviceToken
+                };
+
+                const options = {
+                    method: 'POST',
+                    body: JSON.stringify(data_token),
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                }
+
+                fetch(url, options)
+                    .then(res => res.json())
+                    .then(res => console.log(res));
+            }).catch(function (err) {
+                console.error(err);
+            });
+
+        </script>
+    @endauth
 </body>
 </html>

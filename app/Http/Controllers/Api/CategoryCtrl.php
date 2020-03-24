@@ -18,22 +18,13 @@ class CategoryCtrl extends Controller
      *     tags={"Categories"},
      *     summary="Display a listing of the categories",
      *     security={{"bearerAuth":{}}},
-     *     @OA\Parameter(
-     *         description="Page number",
-     *         in="query",
-     *         name="page",
-     *         @OA\Schema(
-     *           type="integer",
-     *           format="int64"
-     *         )
-     *     ),
      *     @OA\Response(response="200",description="ok"),
      *     @OA\Response(response="401",description="unauthorized")
      * )
     */
     public function index()
     {
-        $categories = Category::paginate(10);
+        $categories = Category::orderBy('id', 'desc')->get();
         return response()->json($categories, 200);
     }
 
@@ -114,7 +105,7 @@ class CategoryCtrl extends Controller
     */
     public function show($id)
     {
-        $category = Category::where('id', $id)->first();
+        $category = Category::where('id', $id)->get();
         if ($category != null) {
             return response()->json($category, 200);
         }else{

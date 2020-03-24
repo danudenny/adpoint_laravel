@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Evidence;
 use App\User;
+use App\Product;
 use App\OrderDetail;
 use App\Order;
 use Mail;
@@ -12,6 +13,10 @@ use App\Mail\Order\OrderBuktiTayang;
 use App\Pushy;
 use DB;
 use Auth;
+use Notification;
+
+use App\Notifications\OrderUploadBuktiTayang;
+use App\Events\OrderUploadBuktiTayangEvent;
 
 class EvidenceController extends Controller
 {
@@ -139,9 +144,13 @@ class EvidenceController extends Controller
             $evidence->order_detail_id = $request->order_detail_id;
             $evidence->no_order = $request->order_id;
             $order_detail = OrderDetail::where('id', $request->order_detail_id)->first();
+            $product = Product::where('id', $order_detail->product_id)->first();
             if ($order_detail != null) {
                 $order_detail->status = 3; // uploaded
+                $buyer = User::where('id', $query->buyer_id)->first();
                 Mail::to($query->buyer_email)->send(new OrderBuktiTayang($query));
+                Notification::send($buyer, new OrderUploadBuktiTayang($product->name));
+                event(new OrderUploadBuktiTayangEvent('Media '.$product->name.' has been uploaded bukti tayang'));
                 $push = DB::table('pushy_tokens as pt')
                         ->join('users as u', 'u.id', '=', 'pt.user_id')
                         ->where(['u.id' => $query->buyer_id])
@@ -149,13 +158,13 @@ class EvidenceController extends Controller
                         ->first();
                 if ($push !== null) {
                     $tokenPushy = $push->device_token;
-                    $data = array('message' => 'bukti tayang has been uploaded');
+                    $data = array('message' => 'Media '.$product->name.' has been uploaded bukti tayang');
                     $to = array($tokenPushy);
                     $options = array(
                         'notification' => array(
                             'badge' => 1,
                             'sound' => 'ping.aiff',
-                            'body'  => "bukti tayang has been uploaded"
+                            'body'  => 'Media '.$product->name.' has been uploaded bukti tayang'
                         )
                     );
                     Pushy::sendPushNotification($data, $to, $options);

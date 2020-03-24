@@ -7,31 +7,31 @@
 @endphp
 <ul class="list-group list-group-flush">
     <li class="list-group-item list-group-item-action">
-        <a href="{{ route('purchase_history.index') }}" onclick="moveTab('#nav-order-place','{{ route('myorder.place.order') }}')"><i class="fa fa-fw fa-shopping-bag"></i> Order Placed</a>
+        <a href="{{ route('purchase_history.index') }}" class="text-dark" onclick="moveTab('#nav-order-place','{{ route('myorder.place.order') }}')"><i class="fa fa-fw fa-shopping-bag"></i> Order Placed</a>
         @if ($orderPlaced > 0)
             <span class="badge badge-danger badge-pill pull-right">{{ $orderPlaced }}</span>   
         @endif
     </li>
     <li class="list-group-item list-group-item-action">
-        <a href="{{ route('purchase_history.index') }}" onclick="moveTab('#nav-onreview','{{ route('myorder.review.order') }}')"><i class="fa fa-fw fa-sticky-note-o"></i> Order Reviewed</a>
+        <a href="{{ route('purchase_history.index') }}" class="text-dark" onclick="moveTab('#nav-onreview','{{ route('myorder.review.order') }}')"><i class="fa fa-fw fa-sticky-note-o"></i> Order Reviewed</a>
         @if ($orderOnreviewed > 0)
             <span class="badge badge-danger badge-pill pull-right">{{ $orderOnreviewed }}</span>  
         @endif
     </li>
     <li class="list-group-item list-group-item-action">
-        <a href="{{ route('purchase_history.index') }}" onclick="moveTab('#nav-active','{{ route('myorder.active.order') }}')"><i class="fa fa-fw fa-calendar-check-o"></i> Order Actived</a>
+        <a href="{{ route('purchase_history.index') }}" class="text-dark" onclick="moveTab('#nav-active','{{ route('myorder.active.order') }}')"><i class="fa fa-fw fa-calendar-check-o"></i> Order Actived</a>
         @if ($orderActived > 0)
             <span class="badge badge-danger badge-pill pull-right">{{ $orderActived }}</span> 
         @endif
     </li>
     <li class="list-group-item list-group-item-action">
-        <a href="{{ route('purchase_history.index') }}" onclick="moveTab('#nav-complete','{{ route('myorder.complete.order') }}')"><i class="fa fa-fw fa-check"></i> Order Completed</a>
+        <a href="{{ route('purchase_history.index') }}" class="text-dark" onclick="moveTab('#nav-complete','{{ route('myorder.complete.order') }}')"><i class="fa fa-fw fa-check"></i> Order Completed</a>
         @if ($orderCompleted > 0)
             <span class="badge badge-danger badge-pill pull-right">{{ $orderCompleted }}</span>   
         @endif
     </li>
     <li class="list-group-item list-group-item-action">
-        <a href="{{ route('purchase_history.index') }}" onclick="moveTab('#nav-cancel','{{ route('myorder.cancelled.order') }}')"><i class="fa fa-fw fa-exclamation-triangle"></i> Order Cancelled</a>
+        <a href="{{ route('purchase_history.index') }}" class="text-dark" onclick="moveTab('#nav-cancel','{{ route('myorder.cancelled.order') }}')"><i class="fa fa-fw fa-exclamation-triangle"></i> Order Cancelled</a>
         @if ($orderCancelled > 0)
             <span class="badge badge-danger badge-pill pull-right">{{ $orderCancelled }}</span>
         @endif

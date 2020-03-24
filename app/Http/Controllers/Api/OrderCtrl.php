@@ -19,22 +19,13 @@ class OrderCtrl extends Controller
      *     tags={"Orders"},
      *     summary="Display a listing of the orders",
      *     security={{"bearerAuth":{}}},
-     *     @OA\Parameter(
-     *         description="Page number",
-     *         in="query",
-     *         name="page",
-     *         @OA\Schema(
-     *           type="integer",
-     *           format="int64"
-     *         )
-     *     ),
      *     @OA\Response(response="200",description="ok"),
      *     @OA\Response(response="401",description="unauthorized")
      * )
     */
     public function index()
     {
-        $orders = Order::paginate(10);
+        $orders = Order::orderBy('id', 'desc')->get();
         return response()->json($orders, 200);
     }
 
@@ -173,7 +164,7 @@ class OrderCtrl extends Controller
     */
     public function show($id)
     {
-        $order = Order::where('id', $id)->first();
+        $order = Order::where('id', $id)->get();
         if ($order != null) {
             return response()->json($order, 200);
         }else{

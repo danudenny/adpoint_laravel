@@ -14,22 +14,13 @@ class PushyCtrl extends Controller {
      *     operationId="list pushy token devices",
      *     tags={"Pushy"},
      *     summary="Display a listing of the pushy token devices",
-     *     @OA\Parameter(
-     *         description="Page number",
-     *         in="query",
-     *         name="page",
-     *         @OA\Schema(
-     *           type="integer",
-     *           format="int64"
-     *         )
-     *     ),
      *     @OA\Response(response="200",description="ok"),
      *     @OA\Response(response="401",description="unauthorized")
      * )
     */
     public function index()
     {
-        $pushy_token = PushyToken::paginate(10);
+        $pushy_token = PushyToken::orderBy('id', 'desc');
         return response()->json($pushy_token, 200);
     }
 

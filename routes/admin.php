@@ -13,6 +13,8 @@
 
 Route::get('/admin', 'HomeController@admin_dashboard')->name('admin.dashboard')->middleware(['auth', 'admin']);
 Route::group(['prefix' =>'admin', 'middleware' => ['auth', 'admin']], function(){
+
+
 	Route::resource('categories','CategoryController');
 	Route::get('/categories/destroy/{id}', 'CategoryController@destroy')->name('categories.destroy');
 	Route::post('/categories/featured', 'CategoryController@updateFeatured')->name('categories.featured');
@@ -50,6 +52,10 @@ Route::group(['prefix' =>'admin', 'middleware' => ['auth', 'admin']], function()
 	Route::get('/products/seller/{id}/edit','ProductController@seller_product_edit')->name('products.seller.edit');
 	Route::post('/products/todays_deal', 'ProductController@updateTodaysDeal')->name('products.todays_deal');
 	Route::post('/products/get_products_by_subsubcategory', 'ProductController@get_products_by_subsubcategory')->name('products.get_products_by_subsubcategory');
+    Route::get('/products/bundle','ProductController@bundleProduct')->name('products.bundle.index');
+    Route::get('/products/bundle/create','ProductController@create_bundleProduct')->name('products.bundle.create');
+
+    Route::resource('bundle', 'BundleController');
 
 	Route::resource('sellers','SellerController');
 	Route::get('/sellers/destroy/{id}', 'SellerController@destroy')->name('sellers.destroy');
@@ -79,6 +85,7 @@ Route::group(['prefix' =>'admin', 'middleware' => ['auth', 'admin']], function()
 	Route::get('/social-login', 'BusinessSettingsController@social_login')->name('social_login.index');
 	Route::get('/smtp-settings', 'BusinessSettingsController@smtp_settings')->name('smtp_settings.index');
 	Route::get('/whatsapp-settings', 'BusinessSettingsController@whatsapp_settings')->name('whatsapp_settings.index');
+	Route::get('/email-settings', 'BusinessSettingsController@email_settings')->name('email_setting.index');
 	Route::get('/google-analytics', 'BusinessSettingsController@google_analytics')->name('google_analytics.index');
 	Route::get('/facebook-chat', 'BusinessSettingsController@facebook_chat')->name('facebook_chat.index');
 	Route::post('/env_key_update', 'BusinessSettingsController@env_key_update')->name('env_key_update.update');
@@ -103,6 +110,7 @@ Route::group(['prefix' =>'admin', 'middleware' => ['auth', 'admin']], function()
 
 	Route::get('/frontend_settings/home', 'HomeController@home_settings')->name('home_settings.index');
 	Route::post('/frontend_settings/home/top_10', 'HomeController@top_10_settings')->name('top_10_settings.store');
+	Route::post('/frontend_settings/home/how_to', 'HomeController@how_to_settings')->name('how_to_settings');
 	Route::get('/sellerpolicy/{type}', 'PolicyController@index')->name('sellerpolicy.index');
 	Route::get('/returnpolicy/{type}', 'PolicyController@index')->name('returnpolicy.index');
 	Route::get('/supportpolicy/{type}', 'PolicyController@index')->name('supportpolicy.index');
@@ -148,6 +156,8 @@ Route::group(['prefix' =>'admin', 'middleware' => ['auth', 'admin']], function()
 	Route::get('/orders/{id}/show', 'OrderController@show')->name('orders.show');
 	Route::get('/orders/destroy/{id}', 'OrderController@destroy')->name('orders.destroy');
 	Route::get('/sales', 'OrderController@sales')->name('sales.index');
+
+    Route::get('/slot', 'OrderController@slot_available')->name('slot.index');
 
 	Route::resource('links','LinkController');
 	Route::get('/links/destroy/{id}', 'LinkController@destroy')->name('links.destroy');

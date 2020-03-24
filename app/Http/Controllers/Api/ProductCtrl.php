@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Api;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Product;
+use App\Review;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class ProductCtrl extends Controller
 {
@@ -17,22 +19,17 @@ class ProductCtrl extends Controller
      *     tags={"Products"},
      *     summary="Display a listing of the products",
      *     security={{"bearerAuth":{}}},
-     *     @OA\Parameter(
-     *         description="Page number",
-     *         in="query",
-     *         name="page",
-     *         @OA\Schema(
-     *           type="integer",
-     *           format="int64"
-     *         )
-     *     ),
      *     @OA\Response(response="200",description="ok"),
      *     @OA\Response(response="401",description="unauthorized")
      * )
     */
     public function index()
     {
-        $products = Product::paginate(10);
+        $products = DB::table('products as p')
+                    -> join('users as u', 'p.user_id', '=', 'u.id')
+                    -> select('p.*', 'u.name as sellerName', 'u.id as userID', 'u.avatar_original', 'u.city', 'u.address')
+                    -> where('u.user_type', 'seller')
+                    -> orderBy('p.id', 'desc')->get();
         return response()->json($products, 200);
     }
 
@@ -156,10 +153,59 @@ class ProductCtrl extends Controller
     */
     public function show($id)
     {
-        $product = Product::where('id', $id)->first();
+        $product = DB::table('products as p')
+            -> join('users as u', 'p.user_id', '=', 'u.id')
+            -> select('p.*', 'u.name as sellerName', 'u.id as userID', 'u.avatar_original', 'u.city', 'u.address')
+            -> where('u.user_type', 'seller')
+            -> where('p.id', '=',$id)
+            -> get();
         if ($product != null) {
             return response()->json($product, 200);
         }else{
+            return response()->json([
+                'success' => false,
+                'message' => 'Data tidak ditemukan'
+            ], 401);
+        }
+    }
+
+    /**
+    * @OA\Get(
+    *     path="/product_review/{id}",
+    *     operationId="list product review by id",
+    *     tags={"Products"},
+    *     summary="Display a listing of the product review by id",
+    *     security={{"bearerAuth":{}}},
+    *     @OA\Parameter(
+    *         description="ID of product review to return",
+    *         in="path",
+    *         name="id",
+    *         required=true,
+    *         @OA\Schema(
+    *           type="integer",
+    *           format="int64"
+    *         )
+    *     ),
+    *     @OA\Response(response="200",description="ok"),
+    *     @OA\Response(response="401",description="unauthorized")
+    * )
+    */
+
+    public function product_review($id)
+    {
+        $review = DB::table('reviews as r')
+                    ->join('users as b', 'b.id', '=', 'r.user_id')
+                    ->where('r.product_id', $id)
+                    ->select([
+                        'r.*',
+                        'b.name as buyer_name',
+                        'b.email as buyer_email',
+                        'b.avatar_original as buyer_avatar'
+                    ])
+                    ->get();
+        if (count($review) > 0) {
+            return response()->json($review, 200);
+        }else {
             return response()->json([
                 'success' => false,
                 'message' => 'Data tidak ditemukan'
@@ -358,29 +404,46 @@ class ProductCtrl extends Controller
 
     /**
      * @OA\Get(
-     *     path="/product_bycategory/{category_id}",
+     *     path="/product_bycategory/{category_id}/{sort}",
      *     operationId="list product by category id",
      *     tags={"Products"},
      *     summary="Display a listing of the product by category id",
      *     security={{"bearerAuth":{}}},
      *     @OA\Parameter(
-     *         description="Category ID of product to return",
+     *         description="category id",
      *         in="path",
      *         name="category_id",
-     *         required=true,
      *         @OA\Schema(
      *           type="integer",
      *           format="int64"
      *         )
      *     ),
+     *      @OA\Parameter(
+     *         description="sort by id",
+     *         in="path",
+     *         name="sort",
+     *         @OA\Schema(
+     *           type="string",
+     *         )
+     *     ),
      *     @OA\Response(response="200",description="ok"),
      *     @OA\Response(response="401",description="unauthorized")
      * )
+     * @param $category_id
+     * @param $sort
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function product_bycategory($category_id)
+    public function product_bycategory($category_id, $sort)
     {
-        $product = Product::where('category_id', $category_id)->get();
-        if ($product != null) {
+        $product = DB::table('products as p')
+            -> join('users as u', 'p.user_id', '=', 'u.id')
+            -> select('p.*', 'u.name as sellerName', 'u.id as userID', 'u.avatar_original', 'u.city', 'u.address')
+            -> where('u.user_type', 'seller')
+            -> where('p.category_id', $category_id)
+            -> orderBy('p.id', $sort)
+            -> get();
+
+        if (count($product) > 0) {
             return response()->json($product, 200);
         }else{
             return response()->json([
@@ -398,10 +461,9 @@ class ProductCtrl extends Controller
      *     summary="Display a listing of the product by category id and current user",
      *     security={{"bearerAuth":{}}},
      *     @OA\Parameter(
-     *         description="Category ID of product to return",
+     *         description="category id",
      *         in="path",
      *         name="category_id",
-     *         required=true,
      *         @OA\Schema(
      *           type="integer",
      *           format="int64"
@@ -414,7 +476,7 @@ class ProductCtrl extends Controller
     public function product_bycategoryseller($category_id)
     {
         $product = Product::where('category_id', $category_id)->where('user_id', Auth::user()->id)->get();
-        if ($product != null) {
+        if (count($product) > 0) {
             return response()->json($product, 200);
         }else{
             return response()->json([
@@ -423,4 +485,57 @@ class ProductCtrl extends Controller
             ], 401);
         }
     }
+
+
+    /**
+     * @OA\Get(
+     *     path="/product_image/{id}",
+     *     operationId="list product image by id",
+     *     tags={"Products"},
+     *     summary="Display a listing of the product image by id",
+     *     security={{"bearerAuth":{}}},
+     *     @OA\Parameter(
+     *         description="ID of product image to return",
+     *         in="path",
+     *         name="id",
+     *         required=true,
+     *         @OA\Schema(
+     *           type="integer",
+     *           format="int64"
+     *         )
+     *     ),
+     *     @OA\Response(response="200",description="ok"),
+     *     @OA\Response(response="401",description="unauthorized")
+     * )
+     */
+
+    public function productImage($id)
+    {
+        $products = Product::where('id', $id)->first();
+
+        if ($products !== null) {
+            $photos = json_decode($products->photos);
+
+            $result = [];
+            foreach($photos as $key => $p) {
+                array_push($result, ['value'=>$p]);
+            }
+
+            if (count($result) > 0) {
+                return response()->json($result, 200);
+            }else {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Data tidak ditemukan'
+                ], 401);
+            }
+        }else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Data tidak ditemukan'
+            ], 401);
+        }
+    }
+
+
 }

@@ -25,29 +25,20 @@
                     {{ __($product->name) }}
                 </h2>
 
-                {{-- <div class="row no-gutters mt-4">
-                    <div class="col-2">
-                        <div class="product-description-label">{{__('Price')}}:</div>
-                    </div>
-                    <div class="col-10">
-                        <div class="product-price-old">
-                            <del>
-                                {{ home_price($product->id) }}
-                                <span>/{{ $product->unit }}</span>
-                            </del>
-                        </div>
-                    </div>
-                </div> --}}
                 <div class="row no-gutters mt-3">
                     <div class="col-2">
                         <div class="product-description-label">{{__('Price')}}:</div>
                     </div>
                     <div class="col-10">
                         <div class="product-price">
-                            <strong>
-                                {{ home_discounted_price($product->id) }}
-                            </strong>
-                            <span class="piece">{{ $product->unit }}</span>
+                            @if (Auth::check())
+                                <strong>
+                                    {{ home_discounted_price($product->id) }}
+                                </strong>
+                                <span class="piece">{{ $product->unit }}</span>
+                            @else 
+                                <strong title="Please login for show price">XXX</strong>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -122,18 +113,20 @@
 
                     <hr>
 
-                    <div class="row no-gutters pb-3 d-none" id="chosen_price_div">
-                        <div class="col-2">
-                            <div class="product-description-label">{{__('Total Price')}}:</div>
-                        </div>
-                        <div class="col-10">
-                            <div class="product-price">
-                                <strong id="chosen_price">
+                    @if (Auth::check())
+                        <div class="row no-gutters pb-3 d-none" id="chosen_price_div">
+                            <div class="col-2">
+                                <div class="product-description-label">{{__('Total Price')}}:</div>
+                            </div>
+                            <div class="col-10">
+                                <div class="product-price">
+                                    <strong id="chosen_price">
 
-                                </strong>
+                                    </strong>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    @endif
 
                 </form>
 

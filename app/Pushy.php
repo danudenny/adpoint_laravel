@@ -4,7 +4,7 @@ namespace App;
 
 class Pushy {
     static public function sendPushNotification($data, $to, $options) {
-        $apiKey = '5d469f27c87fcd88ae4b7a15cb3ee3ed7c5dc1b5fd142675b0ec63fb7ccc2eeb';
+        $apiKey = '3d8ceb0686df3285dde7576d23bb65feb8d9e95f93f7f354054024bf35a32a99';
         $post = $options ?: array();
         $post['to'] = $to;
         $post['data'] = $data;
@@ -26,7 +26,7 @@ class Pushy {
         curl_close($ch);
         $response = @json_decode($result);
         if (isset($response) && isset($response->error)) {
-            throw new Exception('Pushy API returned an error: ' . $response->error);
+            throw new \Exception('Pushy API returned an error: ' . $response->error);
         }
     }
 }

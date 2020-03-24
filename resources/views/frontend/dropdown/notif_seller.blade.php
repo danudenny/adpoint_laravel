@@ -7,19 +7,19 @@
 @endphp
 <ul class="list-group list-group-flush">
     <li class="list-group-item list-group-item-action">
-        <a href="{{ route('orders.index') }}" onclick="moveTab('#nav-order-place','{{ route('orders.place.order') }}')"><i class="fa fa-fw fa-shopping-bag"></i> Order Placed</a>
+        <a href="{{ route('orders.index') }}" class="text-dark" onclick="moveTab('#nav-order-place','{{ route('orders.place.order') }}')"><i class="fa fa-fw fa-shopping-bag"></i> Order Placed</a>
         @if ($orderPlaced > 0)
             <span class="badge badge-danger badge-pill pull-right">{{ $orderPlaced }}</span> 
         @endif
     </li>
     <li class="list-group-item list-group-item-action">
-        <a href="{{ route('orders.index') }}" onclick="moveTab('#nav-onreview','{{ route('orders.review.order') }}')"><i class="fa fa-fw fa-sticky-note-o"></i> Order Reviewed</a>
+        <a href="{{ route('orders.index') }}" class="text-dark" onclick="moveTab('#nav-onreview','{{ route('orders.review.order') }}')"><i class="fa fa-fw fa-sticky-note-o"></i> Order Reviewed</a>
         @if ($orderOnReviewed > 0)
             <span class="badge badge-danger badge-pill pull-right">{{ $orderOnReviewed }}</span>
         @endif
     </li>
     <li class="list-group-item list-group-item-action">
-        <a href="{{ route('orders.index') }}" onclick="moveTab('#nav-active','{{ route('orders.active.order') }}')"><i class="fa fa-fw fa-calendar-check-o"></i> Order Actived</a>
+        <a href="{{ route('orders.index') }}" class="text-dark" onclick="moveTab('#nav-active','{{ route('orders.active.order') }}')"><i class="fa fa-fw fa-calendar-check-o"></i> Order Actived</a>
         @if ($orderActived > 0)
             <span class="badge badge-danger badge-pill pull-right">{{ $orderActived }}</span>  
         @endif
@@ -31,7 +31,7 @@
         @endif
     </li>
     <li class="list-group-item list-group-item-action">
-        <a href="{{ route('orders.index') }}" onclick="moveTab('#nav-cancel','{{ route('orders.cancelled.order') }}')"><i class="fa fa-fw fa-exclamation-triangle"></i> Order Cancelled</a>
+        <a href="{{ route('orders.index') }}" class="text-dark" onclick="moveTab('#nav-cancel','{{ route('orders.cancelled.order') }}')"><i class="fa fa-fw fa-exclamation-triangle"></i> Order Cancelled</a>
         @if ($orderCancelled > 0)
             <span class="badge badge-danger badge-pill pull-right">{{ $orderCancelled }}</span> 
         @endif

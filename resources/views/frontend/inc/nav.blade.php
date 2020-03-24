@@ -87,7 +87,6 @@
                     <div class="side-menu-close" onclick="sideMenuClose()">
                         <i class="la la-close"></i>
                     </div>
-
                     @auth
                         <div class="widget-profile-box px-3 py-4 d-flex align-items-center">
                                 <div class="image " style="background-image:url('{{ Auth::user()->avatar_original }}')"></div>
@@ -321,7 +320,7 @@
                         @foreach (\App\Category::all() as $key => $category)
                             <li>
                                 <a href="{{ route('products.category', $category->slug) }}" class="text-truncate">
-                                    <img class="cat-image" src="{{ asset($category->icon) }}" width="13">
+                                    <img class="cat-image" src="{{ asset($category->banner) }}" width="13">
                                     <span>{{ __($category->name) }}</span>
                                 </a>
                             </li>
@@ -502,11 +501,14 @@
                                         </div>
                                     </div>
 
-                                    <div class="d-inline-block">
+                                    {{-- <div class="d-inline-block">
                                         <div class="nav-cart-box dropdown" id="head-notif">
                                             <a id="notif-load-btn" class="nav-box-link" style="cursor: pointer">
                                                 <i class="fa fa-bell fa-2x text-dark"></i>
-                                                @if($orderPlaced > 0 || $orderOnReviewed > 0 || $orderActived > 0 || $orderCompleted > 0 || $orderCancelled > 0 || $trxUnpaid > 0 || $trxPaid > 0)
+                                                @php
+                                                    $user = Auth::user();
+                                                @endphp
+                                                @if($user->unreadNotifications->count() > 0)
                                                     <span class="badge-header fa-pulse"><i class="fa fa-circle"></i></span>
                                                 @endif
                                             </a>
@@ -522,7 +524,7 @@
                                                     <div class="row loading-notif">
                                                         <div class="col-md-12">
                                                             <h3 class="text-center">
-                                                                <i class="fa fa-spin fa-spinner"></i>   
+                                                                <i class="fa fa-spin fa-spinner"></i>
                                                             </h3>
                                                         </div>
                                                     </div>
@@ -532,13 +534,34 @@
                                                 </li>
                                             </ul>
                                         </div>
+                                    </div> --}}
+                                    <div class="d-inline-block">
+                                        <li class="dropdown dropdown-notifications d-inline-block">
+                                            <a href="#notifications-panel" class="dropdown-toggle" data-toggle="dropdown">
+                                              <i data-count="0" class="fa fa-bell fa-2x text-dark notification-icon"></i>
+                                            </a>
+                              
+                                            <div class="dropdown-container dropdown-menu dropdown-menu-sm dropdown-menu-right panel-default">
+                                              <div class="dropdown-toolbar">
+                                                <div class="dropdown-toolbar-actions">
+                                                  <a href="#" onclick="markAllAssRead(event)">Mark all as read</a>
+                                                </div>
+                                                <h3 class="dropdown-toolbar-title">Notifications (<span class="notif-count">0</span>)</h3>
+                                              </div>
+                                              <ul class="dropdown-menu">
+                                              </ul>
+                                              <div class="dropdown-footer text-center">
+                                                <a href="#">View All</a>
+                                              </div>
+                                            </div>
+                                        </li>
                                     </div>
                                 @else
                                 <div class="d-none d-lg-inline-block topnav-text">
                                     <a href="{{ route('user.login') }}" class="login-text"> Login</a>
                                 </div>
                                 <div class="d-none d-lg-inline-block topnav-text">
-                                    <a href="{{ route('user.registration') }}" class="icon-nav"> Register</a>
+                                    <a href="{{ route('user.registration') }}" class="btn btn-dark btn-circle"> Create Account</a>
                                 </div>
                                 @endauth
                             </div>
@@ -547,6 +570,7 @@
                 </div>
             </div>
         </div>
+
         <div class="hover-category-menu" id="hover-category-menu">
             <div class="container">
                 <div class="row no-gutters position-relative">
@@ -645,6 +669,7 @@
     </div>
 </div>
 
+
 <script>
     function confirm_delete(e, seller_id, index) {
         if (confirm('Are you sure delete?')) {
@@ -671,7 +696,7 @@
         });
     }
 
-    $('#notif-load-btn').on('mouseenter', function(e) {
+    $('#notif-load-btn').on('click', function(e) {
         $('#head-notif').addClass('show');
         $('#content-notif').addClass('show');
         $.get('{{ route('notif.loading') }}', function(result) {

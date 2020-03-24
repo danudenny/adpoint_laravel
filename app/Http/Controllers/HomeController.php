@@ -24,14 +24,64 @@ use ImageOptimizer;
 use App\Pushy;
 use Tracker;
 
-use Mail;
+// Notif
 use Notification;
+use App\Notifications\UserRegister;
+use App\Events\UserRegisterEvent;
+
+
+// Mail
+use Mail;
 use App\Mail\User\RegistUser;
-use App\Notifications\UserRegistPush;
 use Illuminate\Support\Facades\Cache;
+
 
 class HomeController extends Controller
 {
+    public function get_all_notif_admin()
+    {
+        return view('real-notif.admin_notif');
+    }
+
+    public function get_all_notif_member()
+    {
+        return view('real-notif.member_notif');
+    }
+
+    public function count_notif_admin()
+    {
+        $user = Auth::user();
+        return $user->unreadNotifications->count();
+    }
+
+    public function count_notif_member()
+    {
+        $user = Auth::user();
+        if ($user->user_type == "customer") {
+            return $user->unreadNotifications->count();
+        }else if($user->user_type == "seller") {
+            return $user->unreadNotifications->count();
+        }
+    }
+
+    public function mark_as_read($id) {
+        $user = Auth::user();
+        foreach ($user->unreadNotifications as $notif) {
+            if ($notif->id === $id) {
+                $notif->markAsRead();
+            }
+        }
+        return back();
+    }
+
+    public function mark_all_as_read() {
+        $user = Auth::user();
+        foreach ($user->unreadNotifications as $notif) {
+            $notif->markAsRead();
+        }
+        return back();
+    }
+
     public function login()
     {
         if(Auth::check()){
@@ -65,8 +115,9 @@ class HomeController extends Controller
             'password' => 'required|string|min:6|confirmed',
             'ktp' => 'required',
             'npwp' => 'required',
-            'captcha' => 'required|captcha'
+            'captcha' => 'captcha'
         ]);
+        
         $register = new User;
         $register->name = $request->name;
         $register->email = $request->email;
@@ -80,21 +131,23 @@ class HomeController extends Controller
                     ->join('users as u', 'u.id', '=', 'pt.user_id')
                     ->where(['u.user_type' => 'admin'])
                     ->select(['pt.*'])
-                    ->get();
-            $tokenPushy = $query[0]->device_token;
-            $data = array('message' => 'User Baru telah terdaftar!');
+                    ->first();
+            $tokenPushy = $query->device_token;
+            $data = array('message' => 'New user has registered');
             $to = array($tokenPushy);
             $options = array(
                 'notification' => array(
                     'badge' => 1,
                     'sound' => 'ping.aiff',
-                    'body'  => "User Baru telah terdaftar!"
+                    'body'  => "New user has registered"
                 )
             );
 
             $register->verified = 0;
             $request->session()->flash('message', 'Thanks for your registration, please check your email!.');
             Pushy::sendPushNotification($data, $to, $options);
+            Notification::send(User::where('user_type','admin')->first(), new UserRegister($request->name));
+            event(new UserRegisterEvent('New user has registered '.$request->name));
             Mail::to($request->email)->send(new RegistUser($user));
             return back();
         }
@@ -407,7 +460,6 @@ class HomeController extends Controller
 
     public function search(Request $request)
     {
-        // dd($request);
 
         $query = $request->q;
         $brand_id = (Brand::where('slug', $request->brand)->first() != null) ? Brand::where('slug', $request->brand)->first()->id : null;
@@ -420,6 +472,7 @@ class HomeController extends Controller
         $seller_id = $request->seller_id;
         $states = urldecode($request->location);
         // dd($states);
+        $alamat = $request->alamat;
 
         $conditions = ['published' => 1];
 
@@ -435,13 +488,15 @@ class HomeController extends Controller
         if ($states != null) {
             $conditions = array_merge($conditions, ['provinsi' => $states]);
         }
-
         if($seller_id != null){
             $conditions = array_merge($conditions, ['user_id' => Seller::findOrFail($seller_id)->user->id]);
         }
 
-        $products = Product::where($conditions);
+        // if ($alamat) {
+        //     $products = Product::where($conditions)->where('alamat', 'LIKE', '%'.$alamat.'%');
+        // }
 
+        $products = Product::where($conditions);
         if($min_price != null && $max_price != null){
             $products = $products->where('unit_price', '>=', $min_price)->where('unit_price', '<=', $max_price);
         }
@@ -519,6 +574,17 @@ class HomeController extends Controller
 
         flash(__('Top 10 categories and brands have been updated successfully'))->success();
         return redirect()->route('home_settings.index');
+    }
+
+    public function how_to_settings(Request $request)
+    {
+        $bs = BusinessSetting::where('type', 'how_to')->first();
+        $result['buy'] = $request->buy;
+        $result['sell'] = $request->sell;
+
+        $bs->value = json_encode($result);
+        $bs->save();
+        return back();
     }
 
     public function variant_price(Request $request)
@@ -637,6 +703,22 @@ class HomeController extends Controller
     public function notif_trx()
     {
         return view('frontend.dropdown.notif_trx');
+    }
+
+    public function notif_update()
+    {
+        return view('frontend.dropdown.notif_update');
+    }
+
+
+    public function how_to_buy()
+    {
+        return view('frontend.howtobuy');
+    }
+
+    public function how_to_sell()
+    {
+        return view('frontend.howtosell');
     }
 
 }

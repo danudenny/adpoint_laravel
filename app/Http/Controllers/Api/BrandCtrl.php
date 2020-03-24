@@ -17,22 +17,13 @@ class BrandCtrl extends Controller
      *     tags={"Brands"},
      *     summary="Display a listing of the brands",
      *     security={{"bearerAuth":{}}},
-     *     @OA\Parameter(
-     *         description="Page number",
-     *         in="query",
-     *         name="page",
-     *         @OA\Schema(
-     *           type="integer",
-     *           format="int64"
-     *         )
-     *     ),
      *     @OA\Response(response="200",description="ok"),
      *     @OA\Response(response="401",description="unauthorized")
      * )
     */
     public function index()
     {
-        $brands = Brand::orderBy('id', 'desc')->paginate(10);
+        $brands = Brand::orderBy('id', 'desc')->get();
         return response()->json($brands, 200);
     }
 
@@ -111,7 +102,7 @@ class BrandCtrl extends Controller
     */
     public function show($id)
     {
-        $brand = Brand::where('id', $id)->first();
+        $brand = Brand::where('id', $id)->get();
         if ($brand != null) {
             return response()->json($brand, 200);
         }else{

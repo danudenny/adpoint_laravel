@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -11,13 +12,16 @@
 |
 */
 
-use Illuminate\Support\Facades\Redis;
-Route::get('/redis', function () {
-    $p = Redis::incr('p');
-    return $p;
-});
+Route::get('/all-notif-admin', 'HomeController@get_all_notif_admin')->name('notif.admin');
+Route::get('/all-notif-member', 'HomeController@get_all_notif_member')->name('notif.member');
+Route::get('/count-notif-admin', 'HomeController@count_notif_admin')->name('count.notif.admin');
+Route::get('/count-notif-member', 'HomeController@count_notif_member')->name('count.notif.member');
+
+Route::get('/mark-as-read/{id}', 'HomeController@mark_as_read')->name('mark.as.read');
+Route::get('/mark-all-as-read', 'HomeController@mark_all_as_read')->name('mark.all.as.read');
 
 Auth::routes(['verify' => true]);
+
 Route::get('/logout', '\App\Http\Controllers\Auth\LoginController@logout');
 Route::post('/language', 'LanguageController@changeLanguage')->name('language.change');
 Route::post('/currency', 'CurrencyController@changeCurrency')->name('currency.change');
@@ -49,6 +53,10 @@ Route::get('/', 'HomeController@index')->name('home');
 Route::get('/sitemap.xml', function(){
 	return base_path('sitemap.xml');
 });
+
+// How To
+Route::get('/how-to-buy', 'HomeController@how_to_buy')->name('how.to.buy');
+Route::get('/how-to-sell', 'HomeController@how_to_sell')->name('how.to.sell');
 
 // push notif
 Route::post('/push','HomeController@push');
@@ -122,12 +130,14 @@ Route::get('/terms', 'HomeController@terms')->name('terms');
 Route::get('/privacypolicy', 'HomeController@privacypolicy')->name('privacypolicy');
 
 Route::group(['middleware' => ['user', 'verified', 'auth']], function(){
+	
 	Route::get('/dashboard', 'HomeController@dashboard')->name('dashboard');
 
 	Route::get('/notification', 'HomeController@notification')->name('notif.loading');
 	Route::get('/notif-buyer', 'HomeController@notif_buyer')->name('notif.buyer');
 	Route::get('/notif-seller', 'HomeController@notif_seller')->name('notif.seller');
 	Route::get('/notif-trx', 'HomeController@notif_trx')->name('notif.trx');
+	Route::get('/notif-update', 'HomeController@notif_update')->name('notif.update');
 
 	Route::get('/profile', 'HomeController@profile')->name('profile');
 	Route::post('/customer/update-profile', 'HomeController@customer_update_profile')->name('customer.profile.update');
@@ -177,7 +187,7 @@ Route::group(['prefix' =>'seller', 'middleware' => ['seller', 'verified']], func
 	Route::get('/product/{id}/edit', 'HomeController@show_product_edit_form')->name('seller.products.edit');
 	Route::resource('payments','PaymentController');
 
-	Route::get('/shop/apply_for_verification', 'ShopController@verify_form')->name('update_password');
+	Route::get('/shop/apply_form_verif', 'ShopController@verify_form')->name('shop.verify');
 	Route::post('/shop/apply_for_verification', 'ShopController@verify_form_store')->name('shop.verify.store');
 
 	Route::get('/reviews', 'ReviewController@seller_reviews')->name('reviews.seller');
