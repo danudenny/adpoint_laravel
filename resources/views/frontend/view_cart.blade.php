@@ -17,7 +17,7 @@
                 <div class="col-4">
                     <div class="icon-block icon-block--style-1-v5 text-center">
                         <div class="block-icon c-gray-light mb-0">
-                            <i class="la la-truck"></i>
+                            <i class="la la-user"></i>
                         </div>
                         <div class="block-content d-none d-md-block">
                             <h3 class="heading heading-sm strong-300 c-gray-light text-capitalize">2. {{__('Shipping info')}}</h3>
@@ -38,7 +38,7 @@
             </div>
         </div>
     </section>
-    
+
     <section class="py-4 gry-bg" id="cart-summary">
         @if(Session::has('cart'))
             @php
@@ -67,10 +67,17 @@
                                             $product = \App\Product::find($cartItem['id']);
                                             $total += $cartItem['price']*$cartItem['quantity'];
                                             $product_name_with_choice = $product->name;
-                                        
+
                                             foreach (json_decode($product->choice_options) as $choice){
                                                 $str = $choice->title;
                                                 $product_name_with_choice .= ' - '.$cartItem[$str];
+                                            }
+
+                                            $budget = Session::get('budget');
+                                            $tax = $total * 0.1;
+                                            $jumlah_dengan_pajak = $total + $tax;
+                                            if (Session::has('budget')) {
+                                                $budget -= $jumlah_dengan_pajak;
                                             }
                                         @endphp
                                         <tr>
@@ -82,7 +89,7 @@
                                                 <strong>
                                                     <a href="{{ route('product', $product->slug) }}">
                                                         {{ $product_name_with_choice }}
-                                                    </a>    
+                                                    </a>
                                                 </strong><br>
                                                 @php
                                                     if ($cartItem['Periode'] === 'Harian') {
@@ -157,7 +164,7 @@
                                                     <button class="btn btn-outline-success btn-circle btn-sm" disabled style="cursor: not-allowed">
                                                         <i class="fa fa-check"></i> Uploaded
                                                     </button>
-                                                @else 
+                                                @else
                                                     <button onclick="uploadAds({{$seller_id}}, {{$key}})" class="btn btn-outline-primary btn-circle btn-sm">
                                                         <i class="fa fa-upload"></i> Upload
                                                     </button>
@@ -180,6 +187,10 @@
                                 <i class="la la-mail-reply"></i>
                                 {{__('Return to shop')}}
                             </a>
+                            <button data-toggle="collapse" data-target="#adjustBudget" class="btn btn-success btn-circle">
+                                <i class="la la-money"></i>
+                                {{__('Budget')}}
+                            </button>
                         </div>
                         <div class="col-6 text-right">
                             @if(Auth::check())
@@ -199,7 +210,15 @@
                                     <a href="{{ route('checkout.shipping_info') }}" class="btn btn-orange btn-circle">
                                         <i class="fa fa-shopping-bag"></i> {{__('Continue to Billing Details')}}
                                     </a>
-                                @else 
+                                @elseif ($budget < 0)
+                                    <button class="btn btn-orange btn-circle" onclick="showBudgetAlert('warning', 'Your budget is overlimit, please Change your product with your budget limit instead!')">
+                                        <i class="fa fa-shopping-bag"></i> {{__('Continue to Billing Details')}}
+                                    </button>
+                                @elseif ($budget > 0)
+                                    <button class="btn btn-orange btn-circle" data-toggle="modal" data-target="#modalContinueToBillingDetails">
+                                        <i class="fa fa-shopping-bag"></i> {{__('Continue to Billing Details')}}
+                                    </button>
+                                @else
                                     <button class="btn btn-orange btn-circle" onclick="showFrontendAlert('info', 'You have not uploaded the material')">
                                         <i class="fa fa-shopping-bag"></i> {{__('Continue to Billing Details')}}
                                     </button>
@@ -209,6 +228,42 @@
                                     <i class="fa fa-shopping-bag"></i> {{__('Continue to Billing Details')}}
                                 </button>
                             @endif
+                        </div>
+                        <hr>
+                        <div id="adjustBudget" class="collapse" style="padding: 30px; background-color: #eaeaea; margin: 20px;">
+                            <form method="post" action="{{URL::to('cart/adjust_budget')}}" >
+                                <div class="col-md-12 mt-3">
+                                    @if (count($errors) > 0)
+                                        <div class="alert alert-danger">
+                                            @foreach ($errors->all() as $error)
+                                                <span>{{ $error }}</span>
+                                            @endforeach
+                                        </div>
+                                    @endif
+                                </div>
+
+                                <div class="col-md-8 mt-3" >
+                                    <label>
+                                        <input type="hidden" name="_token" value="{{ csrf_token() }}"/>
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" id="basic-addon1">Rp</span>
+                                            </div>
+                                            <input  name="budget" type="text" class="form-control" placeholder="Enter your budget" aria-label="Enter your budget" aria-describedby="basic-addon1">
+                                        </div>
+                                        @if(Session::has('budget'))
+                                            <p class="mt-2">Your Budget is : </p>
+                                            <h2>{{ single_price(Session::get('budget')) }}</h2>
+                                        @endif
+                                    </label>
+                                </div>
+                                <div style="margin-bottom: 30px">
+                                    <button type="submit" name="button" class="btn btn-lg btn-success btn-circle"><i class="fa fa-money"></i> Adjust Your Budget</button>
+                                    @if(Session::has('budget'))
+                                        <a type="button" href="/cart/reset_budget" class="btn btn-lg btn-warning btn-circle"><i class="fa fa-retweet"></i> Reset</a>
+                                    @endif
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -223,10 +278,84 @@
                 <div class="col mt-3 d-flex justify-content-center">
                     <img src="{{ url('img/not-found.png') }}" alt="">
                 </div>
+                <form method="post" action="{{URL::to('cart/adjust_budget')}}" >
+                    <div class="col-md-8 mt-3" style="margin: 0 auto">
+                        @if (count($errors) > 0)
+                            <div class="alert alert-danger">
+                                @foreach ($errors->all() as $error)
+                                    <span>{{ $error }}</span>
+                                @endforeach
+                            </div>
+                        @endif
+                    </div>
+
+                    <div class="col-md-8 mt-3" style="margin: 0 auto">
+                        <label>
+                            <input type="hidden" name="_token" value="{{csrf_token()}}"/>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="basic-addon1">Rp</span>
+                                </div>
+                                <input  name="budget" type="text" class="form-control" placeholder="Enter your budget" aria-label="Enter your budget" aria-describedby="basic-addon1">
+                            </div>
+                            @if(Session::has('budget'))
+                                <p class="mt-2">Your Budget is : </p>
+                                <h2>{{ single_price(Session::get('budget')) }}</h2>
+                            @endif
+                        </label>
+                    </div>
+                    <div style="margin-bottom: 30px">
+                        <button type="submit" name="button" class="btn btn-lg btn-success"><i class="fa fa-money"></i> Adjust Your Budget</button>
+                        @if(Session::has('budget'))
+                            <a type="button" href="/cart/reset_budget" class="btn btn-lg btn-warning"><i class="fa fa-retweet"></i> Reset</a>
+                        @endif
+                    </div>
+                </form>
             </div>
         @endif
     </section>
 
+    <div class="modal fade" id="modalContinueToBillingDetails"
+         tabindex="-1" role="dialog"
+         aria-labelledby="modalContinueToBillingDetails">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="favoritesModalLabel">Confirmation</h4>
+                </div>
+                <div class="modal-body">
+                    <h5 class="text-center">
+                        You still have budget. You can continue with the items in the cart. Start Uploading your advertisement materials.
+                    </h5>
+                </div>
+
+                <div class="modal-footer" style="margin: 0 auto">
+                    <button type="button" class="btn btn-default btn-circle" data-dismiss="modal"><i class="fa fa-undo"></i> Back to cart</button>
+                    @php
+                        $advertising = [];
+                        $count = 0;
+                        foreach (Session::get('cart') as $seller_id => $c) {
+                            $count += count($c);
+                            foreach ($c as $key => $cartItem) {
+                                if ($cartItem['advertising'] !== null) {
+                                    array_push($advertising, $cartItem['advertising']);
+                                }
+                            }
+                        }
+                    @endphp
+                    @if (count($advertising) === $count)
+                        <span class="pull-right">
+                          <a type="button" class="btn btn-primary btn-circle" href="{{route('checkout.shipping_info')}}"><i class="fa fa-check"></i>
+                            Continue to Billing Details
+                          </a>
+                        </span>
+                    @else
+                        <button type="button" class="btn btn-success btn-circle" data-dismiss="modal"><i class="fa fa-check"></i> OK</button>
+                    @endif
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- Modal -->
     <div class="modal fade" id="GuestCheckout" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-zoom" role="document">
@@ -334,6 +463,18 @@
 @section('script')
     <script type="text/javascript">
 
+        function showBudgetAlert(type, message){
+            if(type == 'danger'){
+                type = 'error';
+            }
+            swal({
+                position: 'center',
+                type: type,
+                title: message,
+                showConfirmButton: true
+            });
+        }
+
         function uploadAds(seller_id, index) {
             $('#uploadAdsbody').html(null);
             $('#uploadAds').modal();
@@ -345,10 +486,10 @@
         }
 
         function updateQuantity(qty, seller_id, index, start_date){
-            $.post('{{ route('cart.updateQuantity') }}', { 
-                _token:'{{ csrf_token() }}', 
+            $.post('{{ route('cart.updateQuantity') }}', {
+                _token:'{{ csrf_token() }}',
                 seller_id:seller_id,
-                index:index, 
+                index:index,
                 quantity: qty,
                 start_date : start_date
             },function(data){
@@ -356,7 +497,7 @@
                 $('#cart-summary').html(data);
             });
         }
-        
+
         function showCheckoutModal(){
             $('#GuestCheckout').modal();
         }
@@ -369,6 +510,11 @@
         }
 
     </script>
+    @foreach (session('flash_notification', collect())->toArray() as $message)
+        <script type="text/javascript">
+            showBudgetAlert('{{ $message['level'] }}', '{{ $message['message'] }}');
+        </script>
+    @endforeach
 @endsection
 
 

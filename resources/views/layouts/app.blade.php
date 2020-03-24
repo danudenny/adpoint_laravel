@@ -145,7 +145,6 @@
                         $.post('{{ route('language.change') }}',{_token:'{{ csrf_token() }}', locale:locale}, function(data){
                             location.reload();
                         });
-
                     });
                 });
             }

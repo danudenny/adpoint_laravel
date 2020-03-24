@@ -1,0 +1,2333 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Laravel Adpoint API",
+        "contact": {
+            "email": "alkhamilnaz@gmail.com"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8000/api",
+            "description": "Laravel Adpoint API"
+        },
+        {
+            "url": "https://localhost:8000/api",
+            "description": "Laravel Adpoint API"
+        }
+    ],
+    "paths": {
+        "/brands": {
+            "get": {
+                "tags": [
+                    "Brands"
+                ],
+                "summary": "Display a listing of the brands",
+                "operationId": "list brands",
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/brand/add": {
+            "post": {
+                "tags": [
+                    "Brands"
+                ],
+                "summary": "Add Brand",
+                "operationId": "Add Brand",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/BrandSchema"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/brand/{id}": {
+            "get": {
+                "tags": [
+                    "Brands"
+                ],
+                "summary": "Display a listing of the brand by id",
+                "operationId": "list brand by id",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of brand to return",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Brands"
+                ],
+                "summary": "Delete brand by id",
+                "operationId": "Delete brand by id",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "brand id",
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/search_brand": {
+            "get": {
+                "tags": [
+                    "Brands"
+                ],
+                "summary": "Search brand by name",
+                "operationId": "Search brand by name",
+                "parameters": [
+                    {
+                        "name": "query",
+                        "in": "query",
+                        "description": "name of brand to return",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/brand/edit/{id}": {
+            "put": {
+                "tags": [
+                    "Brands"
+                ],
+                "summary": "Edit of the brand by id",
+                "operationId": "Edit brand",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of edit brand",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/BrandSchema"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/categories": {
+            "get": {
+                "tags": [
+                    "Categories"
+                ],
+                "summary": "Display a listing of the categories",
+                "operationId": "list categories",
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/category/add": {
+            "post": {
+                "tags": [
+                    "Categories"
+                ],
+                "summary": "Add Category",
+                "operationId": "Add Category",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CategorySchema"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/category/{id}": {
+            "get": {
+                "tags": [
+                    "Categories"
+                ],
+                "summary": "Display a listing of the category by id",
+                "operationId": "list category by id",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of category to return",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Categories"
+                ],
+                "summary": "Delete category by id",
+                "operationId": "Delete category by id",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "category id",
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/category/edit/{id}": {
+            "put": {
+                "tags": [
+                    "Categories"
+                ],
+                "summary": "Edit of the category by id",
+                "operationId": "Edit category",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of edit category",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CategorySchema"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/flashdeals": {
+            "get": {
+                "tags": [
+                    "Flash Deals"
+                ],
+                "summary": "Display a listing of the flashdeal",
+                "operationId": "list flashdeal",
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/flashdeal/add": {
+            "post": {
+                "tags": [
+                    "Flash Deals"
+                ],
+                "summary": "Add Flashdeal",
+                "operationId": "Add Flashdeal",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/FlashDealSchema"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/flashdeal/{id}": {
+            "get": {
+                "tags": [
+                    "Flash Deals"
+                ],
+                "summary": "Display a listing of the flashdeal by id",
+                "operationId": "list flashdeal by id",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of flashdeal to return",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Flash Deals"
+                ],
+                "summary": "Delete flashdeal by id",
+                "operationId": "Delete flashdeal by id",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "flashdeal id",
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/flashdeal_products": {
+            "get": {
+                "tags": [
+                    "Flash Deals"
+                ],
+                "summary": "Display a listing of the flashdeal products",
+                "operationId": "list flashdeal products",
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/flashdeal_product/{id}": {
+            "get": {
+                "tags": [
+                    "Flash Deals"
+                ],
+                "summary": "Display a listing of the flashdeal product by id",
+                "operationId": "list flashdeal product by id",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of flashdeal product to return",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/flashdeal/edit/{id}": {
+            "put": {
+                "tags": [
+                    "Flash Deals"
+                ],
+                "summary": "Edit of the flashdeal by id",
+                "operationId": "Edit flashdeal",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of edit brand",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/FlashDealSchema"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/login": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Login user",
+                "operationId": "Login user",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object",
+                                "example": {
+                                    "email": "nazmudin@imaniprima.com",
+                                    "password": "polisi86"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    }
+                }
+            }
+        },
+        "/orders": {
+            "get": {
+                "tags": [
+                    "Orders"
+                ],
+                "summary": "Display a listing of the orders",
+                "operationId": "list orders",
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/order/add": {
+            "post": {
+                "tags": [
+                    "Orders"
+                ],
+                "summary": "Add Brand",
+                "operationId": "Add Order",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/OrderSchema"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/order/{id}": {
+            "get": {
+                "tags": [
+                    "Orders"
+                ],
+                "summary": "Display a listing of the order by id",
+                "operationId": "list order by id",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of order to return",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/orderplaced": {
+            "get": {
+                "tags": [
+                    "Orders By Current Customer"
+                ],
+                "summary": "Display a listing of the order by current user",
+                "operationId": "list order by current user",
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/orderonreview": {
+            "get": {
+                "tags": [
+                    "Orders By Current User"
+                ],
+                "summary": "Display order on review by current user",
+                "operationId": "list order on review by current user",
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/orderactive": {
+            "get": {
+                "tags": [
+                    "Orders By Current User"
+                ],
+                "summary": "Display order active by current user",
+                "operationId": "list order active by current user",
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/products": {
+            "get": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Display a listing of the products",
+                "operationId": "list products",
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/product/add": {
+            "post": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Add Product",
+                "operationId": "Add Product",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ProductSchema"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/product/{id}": {
+            "get": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Display a listing of the product by id",
+                "operationId": "list product by id",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of product to return",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Delete product by id",
+                "operationId": "Delete product by id",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "brand id",
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/product_review/{id}": {
+            "get": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Display a listing of the product review by id",
+                "operationId": "list product review by id",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of product review to return",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/product/edit/{id}": {
+            "put": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Edit of the product by id",
+                "operationId": "Edit product",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of edit product",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ProductSchema"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/product_bycategory/{category_id}/{sort}": {
+            "get": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Display a listing of the product by category id",
+                "operationId": "list product by category id",
+                "parameters": [
+                    {
+                        "name": "category_id",
+                        "in": "path",
+                        "description": "category id",
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    },
+                    {
+                        "name": "sort",
+                        "in": "path",
+                        "description": "sort by id",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/product_bycategoryseller/{category_id}": {
+            "get": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Display a listing of the product by category id and current user",
+                "operationId": "list product by category id and current user",
+                "parameters": [
+                    {
+                        "name": "category_id",
+                        "in": "path",
+                        "description": "category id",
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/product_image/{id}": {
+            "get": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Display a listing of the product image by id",
+                "operationId": "list product image by id",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of product image to return",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/pushy_token": {
+            "get": {
+                "tags": [
+                    "Pushy"
+                ],
+                "summary": "Display a listing of the pushy token devices",
+                "operationId": "list pushy token devices",
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    }
+                }
+            }
+        },
+        "/pushy_token/register/device": {
+            "post": {
+                "tags": [
+                    "Pushy"
+                ],
+                "summary": "Add Device Token",
+                "operationId": "Add Device Token",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PushySchema"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    }
+                }
+            }
+        },
+        "/register": {
+            "post": {
+                "tags": [
+                    "Registrasi"
+                ],
+                "summary": "Register user",
+                "operationId": "Registration user",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string"
+                                    },
+                                    "password_confirmation": {
+                                        "type": "string"
+                                    },
+                                    "ktp": {
+                                        "type": "string"
+                                    },
+                                    "npwp": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    }
+                }
+            }
+        },
+        "/sellers": {
+            "get": {
+                "tags": [
+                    "Sellers"
+                ],
+                "summary": "Display a listing of the seller",
+                "operationId": "list seller",
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/visit_shop/{id}": {
+            "get": {
+                "tags": [
+                    "Sellers"
+                ],
+                "summary": "Display a listing of the seller by id",
+                "operationId": "list product by id seller",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of seller to return",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/seller_byid/{id}": {
+            "get": {
+                "tags": [
+                    "Sellers"
+                ],
+                "summary": "Display a seller information by id",
+                "operationId": "list seller by id seller",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of seller to return information",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/subcategories": {
+            "get": {
+                "tags": [
+                    "Sub Categories"
+                ],
+                "summary": "Display a listing of the subcategories",
+                "operationId": "list subcategories",
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/subcategory/add": {
+            "post": {
+                "tags": [
+                    "Sub Categories"
+                ],
+                "summary": "Add Subcategory",
+                "operationId": "Add Subcategory",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SubCategorySchema"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/subcategory/{id}": {
+            "get": {
+                "tags": [
+                    "Sub Categories"
+                ],
+                "summary": "Display a listing of the subcategory by id",
+                "operationId": "list subcategory by id",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of subcategory to return",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Sub Categories"
+                ],
+                "summary": "Delete subcategory by id",
+                "operationId": "Delete subcategory by id",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "subcategory id",
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/subcategory/edit/{id}": {
+            "put": {
+                "tags": [
+                    "Sub Categories"
+                ],
+                "summary": "Edit of the subcategory by id",
+                "operationId": "Edit subcategory",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of edit subcategory",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SubCategorySchema"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/transaction": {
+            "get": {
+                "tags": [
+                    "Transactions"
+                ],
+                "summary": "Display a listing of the transaction",
+                "operationId": "list transaction",
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/transaction-details/{id}/{user_id}": {
+            "get": {
+                "tags": [
+                    "Transactions"
+                ],
+                "summary": "Display a listing of the transaction details by id and user_id",
+                "operationId": "list transaction details by id and user_id",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of transaction to return",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    },
+                    {
+                        "name": "user_id",
+                        "in": "path",
+                        "description": "User Id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/upload-buktitransfer/{id}": {
+            "post": {
+                "tags": [
+                    "Transactions"
+                ],
+                "summary": "Upload bukti transfer",
+                "operationId": "Upload buktitransfer",
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "file"
+                                ],
+                                "properties": {
+                                    "file": {
+                                        "type": "file",
+                                        "items": {
+                                            "type": "string",
+                                            "format": "binary"
+                                        }
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/upload": {
+            "post": {
+                "tags": [
+                    "Upload Media"
+                ],
+                "summary": "Upload image and file",
+                "operationId": "Upload image and file",
+                "parameters": [
+                    {
+                        "name": "parent",
+                        "in": "query",
+                        "description": "directory parent ( users/brands/categories/products )",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "child",
+                        "in": "query",
+                        "description": "directory child ( users:ktp/npwp | brands:logo | categories:banner/icon | products:photos/thumbnail/featured/flashdeal/meta/pdf  )",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "file"
+                                ],
+                                "properties": {
+                                    "file": {
+                                        "type": "file",
+                                        "items": {
+                                            "type": "string",
+                                            "format": "binary"
+                                        }
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/users": {
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Display a listing of the user",
+                "operationId": "list user",
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/user/{id}": {
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Display a listing of the user by id",
+                "operationId": "list user by id",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of user to return",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/profile": {
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Display a current logged in user",
+                "operationId": "Current User Profile",
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "BrandSchema": {
+                "title": "Brand",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 0
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "string"
+                    },
+                    "logo": {
+                        "type": "string",
+                        "example": "string"
+                    },
+                    "slug": {
+                        "type": "string",
+                        "example": "string"
+                    },
+                    "meta_title": {
+                        "type": "string",
+                        "example": "string"
+                    },
+                    "meta_description": {
+                        "type": "string",
+                        "example": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "CategorySchema": {
+                "title": "Category",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 0
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "string"
+                    },
+                    "banner": {
+                        "type": "string",
+                        "example": "string"
+                    },
+                    "icon": {
+                        "type": "string",
+                        "example": "string"
+                    },
+                    "slug": {
+                        "type": "string",
+                        "example": "string"
+                    },
+                    "meta_title": {
+                        "type": "string",
+                        "example": "string"
+                    },
+                    "meta_description": {
+                        "type": "string",
+                        "example": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "FlashDealSchema": {
+                "title": "Flash Deal",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 0
+                    },
+                    "title": {
+                        "type": "string",
+                        "example": "string"
+                    },
+                    "start_date": {
+                        "type": "string",
+                        "example": "string"
+                    },
+                    "end_date": {
+                        "type": "string",
+                        "example": "string"
+                    },
+                    "products": {
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "example": "string"
+                        },
+                        "collectionFormat": "multi",
+                        "enum": [
+                            "4",
+                            "3"
+                        ]
+                    },
+                    "discount": {
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "example": "string"
+                        },
+                        "collectionFormat": "multi",
+                        "enum": [
+                            "10",
+                            "20"
+                        ]
+                    },
+                    "discount_type": {
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "example": "string"
+                        },
+                        "collectionFormat": "multi",
+                        "enum": [
+                            "percent",
+                            "dollar"
+                        ]
+                    },
+                    "status": {
+                        "type": "string",
+                        "example": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "OrderSchema": {
+                "title": "Order",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 0
+                    },
+                    "user_id": {
+                        "type": "string",
+                        "example": "string"
+                    },
+                    "shipping_address": {
+                        "properties": {
+                            "name": {
+                                "type": "string",
+                                "example": "string"
+                            },
+                            "email": {
+                                "type": "string",
+                                "example": "string"
+                            },
+                            "address": {
+                                "type": "text",
+                                "example": "string"
+                            },
+                            "country": {
+                                "type": "string",
+                                "example": "string"
+                            },
+                            "city": {
+                                "type": "string",
+                                "example": "string"
+                            },
+                            "postal_code": {
+                                "type": "string",
+                                "example": "string"
+                            },
+                            "phone": {
+                                "type": "string",
+                                "example": "string"
+                            },
+                            "checkout_type": {
+                                "type": "string",
+                                "example": "string"
+                            }
+                        },
+                        "type": "object"
+                    },
+                    "payment_type": {
+                        "type": "string",
+                        "example": "string"
+                    },
+                    "file_advertising": {
+                        "type": "string",
+                        "example": "string"
+                    },
+                    "desc_advertising": {
+                        "type": "string",
+                        "example": "string"
+                    },
+                    "order_details": {
+                        "type": "array",
+                        "items": {
+                            "properties": {
+                                "seller_id": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "product_id": {
+                                                "type": "string",
+                                                "example": "string"
+                                            },
+                                            "user_id": {
+                                                "type": "string",
+                                                "example": "seller_id"
+                                            },
+                                            "periode": {
+                                                "type": "string",
+                                                "example": "string"
+                                            },
+                                            "quantity": {
+                                                "type": "integer",
+                                                "example": 0
+                                            },
+                                            "price": {
+                                                "type": "integer",
+                                                "example": 0
+                                            },
+                                            "tax": {
+                                                "type": "string",
+                                                "example": "string"
+                                            },
+                                            "shipping_type": {
+                                                "type": "string",
+                                                "example": "string"
+                                            },
+                                            "start_date": {
+                                                "type": "string",
+                                                "example": "string"
+                                            },
+                                            "end_date": {
+                                                "type": "string",
+                                                "example": "string"
+                                            },
+                                            "shipping": {
+                                                "type": "integer",
+                                                "example": 0
+                                            }
+                                        },
+                                        "type": "object"
+                                    },
+                                    "collectionFormat": "multi",
+                                    "enum": [
+                                        "{}"
+                                    ]
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "ProductSchema": {
+                "title": "Products",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 0
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "string"
+                    },
+                    "added_by": {
+                        "type": "string",
+                        "example": "string"
+                    },
+                    "user_id": {
+                        "type": "string",
+                        "example": "string"
+                    },
+                    "category_id": {
+                        "type": "string",
+                        "example": "string"
+                    },
+                    "subcategory_id": {
+                        "type": "string",
+                        "example": "string"
+                    },
+                    "brand_id": {
+                        "type": "string",
+                        "example": "string"
+                    },
+                    "photos": {
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "example": "string"
+                        },
+                        "collectionFormat": "multi",
+                        "enum": [
+                            "uploads/products/photos/img1.png",
+                            "uploads/products/photos/img2.png"
+                        ]
+                    },
+                    "thumbnail_img": {
+                        "type": "string",
+                        "example": "string"
+                    },
+                    "featured_img": {
+                        "type": "string",
+                        "example": "string"
+                    },
+                    "flash_deal_img": {
+                        "type": "string",
+                        "example": "string"
+                    },
+                    "tags": {
+                        "type": "string",
+                        "example": "string"
+                    },
+                    "description": {
+                        "type": "text",
+                        "example": "string"
+                    },
+                    "video_provider": {
+                        "type": "string",
+                        "example": "string"
+                    },
+                    "video_link": {
+                        "type": "string",
+                        "example": "string"
+                    },
+                    "unit_price": {
+                        "type": "string",
+                        "example": "string"
+                    },
+                    "choice_options": {
+                        "type": "array",
+                        "items": {
+                            "properties": {
+                                "title": {
+                                    "type": "string",
+                                    "example": "string"
+                                },
+                                "options": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string",
+                                        "example": "string"
+                                    },
+                                    "collectionFormat": "multi",
+                                    "enum": [
+                                        "Bulanan",
+                                        "Tahunan"
+                                    ]
+                                }
+                            },
+                            "type": "object"
+                        }
+                    },
+                    "variations": {
+                        "properties": {
+                            "periode": {
+                                "properties": {
+                                    "price": {
+                                        "type": "string",
+                                        "example": "string"
+                                    },
+                                    "sku": {
+                                        "type": "string",
+                                        "example": "string"
+                                    },
+                                    "qty": {
+                                        "type": "string",
+                                        "example": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        },
+                        "type": "object"
+                    },
+                    "tax": {
+                        "type": "string",
+                        "example": "string"
+                    },
+                    "tax_type": {
+                        "type": "string",
+                        "example": "string"
+                    },
+                    "discount": {
+                        "type": "string",
+                        "example": "string"
+                    },
+                    "discount_type": {
+                        "type": "string",
+                        "example": "string"
+                    },
+                    "meta_title": {
+                        "type": "string",
+                        "example": "string"
+                    },
+                    "meta_description": {
+                        "type": "string",
+                        "example": "string"
+                    },
+                    "meta_img": {
+                        "type": "string",
+                        "example": "string"
+                    },
+                    "pdf": {
+                        "type": "string",
+                        "example": "string"
+                    },
+                    "slug": {
+                        "type": "string",
+                        "example": "string"
+                    },
+                    "latlong": {
+                        "type": "string",
+                        "example": "string"
+                    },
+                    "alamat": {
+                        "type": "string",
+                        "example": "string"
+                    },
+                    "provinsi": {
+                        "type": "string",
+                        "example": "string"
+                    },
+                    "kota": {
+                        "type": "string",
+                        "example": "string"
+                    },
+                    "kecamatan": {
+                        "type": "string",
+                        "example": "string"
+                    },
+                    "audien_target": {
+                        "type": "text",
+                        "example": "string"
+                    },
+                    "statistik_masyarakat": {
+                        "type": "text",
+                        "example": "string"
+                    },
+                    "jumlah_pendengarradio": {
+                        "type": "string",
+                        "example": "string"
+                    },
+                    "target_pendengarradio": {
+                        "type": "string",
+                        "example": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "PushySchema": {
+                "title": "PushyToken",
+                "properties": {
+                    "user_id": {
+                        "type": "integer",
+                        "example": "123456"
+                    },
+                    "device_token": {
+                        "type": "string",
+                        "example": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "ReviewSchema": {
+                "title": "Review",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 0
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "SubCategorySchema": {
+                "title": "Sub Category",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 0
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "string"
+                    },
+                    "category_id": {
+                        "type": "integer",
+                        "example": "string"
+                    },
+                    "slug": {
+                        "type": "string",
+                        "example": "string"
+                    },
+                    "brands": {
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "example": "string"
+                        },
+                        "collectionFormat": "multi",
+                        "enum": [
+                            "7",
+                            "4",
+                            "3"
+                        ]
+                    },
+                    "meta_title": {
+                        "type": "string",
+                        "example": "string"
+                    },
+                    "meta_description": {
+                        "type": "string",
+                        "example": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "TransactionSchema": {
+                "title": "Order",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 0
+                    },
+                    "user_id": {
+                        "type": "string",
+                        "example": "string"
+                    },
+                    "code": {
+                        "type": "string",
+                        "example": "string"
+                    },
+                    "payment_status": {
+                        "type": "string",
+                        "example": "string"
+                    },
+                    "payment_type": {
+                        "type": "string",
+                        "example": "string"
+                    },
+                    "payment_detail": {
+                        "type": "string",
+                        "example": "string"
+                    },
+                    "file_advertising": {
+                        "type": "string",
+                        "example": "string"
+                    },
+                    "description": {
+                        "type": "string",
+                        "example": "string"
+                    },
+                    "viewed": {
+                        "type": "string",
+                        "example": "string"
+                    },
+                    "status": {
+                        "type": "string",
+                        "example": "string"
+                    },
+                    "is_rejected": {
+                        "type": "string",
+                        "example": "string"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "example": "string"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "example": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "UserSchema": {
+                "title": "User",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 0
+                    },
+                    "user_type": {
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "example": "string"
+                        },
+                        "enum": [
+                            "customer",
+                            "seller",
+                            "admin"
+                        ]
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "string"
+                    },
+                    "email": {
+                        "type": "string",
+                        "example": "string"
+                    },
+                    "password": {
+                        "type": "string",
+                        "example": "string"
+                    },
+                    "avatar_original": {
+                        "type": "string",
+                        "example": "string"
+                    },
+                    "address": {
+                        "type": "string",
+                        "example": "string"
+                    },
+                    "country": {
+                        "type": "string",
+                        "example": "string"
+                    },
+                    "city": {
+                        "type": "string",
+                        "example": "string"
+                    },
+                    "postal_code": {
+                        "type": "string",
+                        "example": "string"
+                    },
+                    "phone": {
+                        "type": "string",
+                        "example": "string"
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "responses": {
+            "200": {
+                "description": "ok"
+            },
+            "401": {
+                "description": "bad"
+            }
+        },
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "scheme": "bearer"
+            }
+        }
+    }
+}

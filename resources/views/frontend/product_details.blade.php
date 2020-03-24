@@ -110,7 +110,7 @@
                                                     <i class="fa fa-check"></i> {{__('Available')}}
                                                 </span>
                                             </li>
-                                        @else 
+                                        @else
                                             <li>
                                                 <span class="badge badge-md badge-pill bg-red">
                                                     <i class="fa fa-times"></i> {{__('Not Available')}}
@@ -165,7 +165,7 @@
                                         </div>
                                     </div>
                                 @endif
-                            @else 
+                            @else
                                 <div class="row no-gutters mt-3">
                                     <div class="col-2">
                                         <div class="product-description-label">{{__('Price')}}:</div>
@@ -180,7 +180,7 @@
                                     </div>
                                 </div>
                             @endif
-                            
+
 
                             <hr>
 
@@ -228,13 +228,13 @@
                                                     </button>
                                                 </span>
                                             </div>
-                                            
+
                                         </div>
                                     </div>
                                 </div>
 
                                 <hr>
-                                
+
                                 <div class="row no-gutters">
                                     <div class="col-2">
                                         <div class="product-description-label mt-2">{{__('Date')}}:</div>
@@ -252,9 +252,9 @@
                                     </div>
                                 </div>
 
-                                
+
                                 <hr>
-                                
+
                                 <div class="row no-gutters pb-3 d-none" id="chosen_price_div">
                                     <div class="col-2">
                                         <div class="product-description-label">{{__('Total Price')}}:</div>
@@ -262,7 +262,7 @@
                                     <div class="col-10">
                                         <div class="product-price">
                                             <strong id="chosen_price">
-                                                
+
                                             </strong>
                                         </div>
                                     </div>
@@ -303,15 +303,14 @@
                                     </button>
                                 </div>
                             </div>
-                            
-                            <hr class="mt-2">
 
+                            <hr class="mt-2">
                             @if ($product->added_by == 'seller')
                                 <div class="row no-gutters mt-3">
                                     <div class="col-2">
                                         <div class="product-description-label alpha-6">{{__('Seller Guarantees')}}:</div>
                                     </div>
-                                    <div class="col-7 pull-left">
+                                    <div class="col-10 pull-left">
                                         @if ($product->user->seller->verification_status == 1)
                                             <b>{{__('Verified seller')}}</b> <i class="fa fa-check-square text-success"></i>
                                         @else
@@ -335,7 +334,20 @@
                                     </ul>
                                 </div>
                             </div>
-                            
+
+                            <div class="row no-gutters mt-3">
+                                <div class="col-10">
+                                    <button data-toggle="collapse" data-target="#showQR" class="btn btn-success btn-circle">
+                                        <i class="fa fa-qrcode"></i>
+                                        {{__('Show QRCode')}}
+                                    </button>
+                                    <div id="showQR" class="collapse">
+                                        <img src="data:image/png;base64, {!! base64_encode(QrCode::format('png')->size(200)->merge('\public\uploads\admin_logo\logo_ad_qr.png', .3)->generate(Request::url())) !!} ">
+                                    </div>
+                                </div>
+                            </div>
+
+
                             <hr class="mt-4">
                             <div class="row no-gutters mt-4">
                                 <div class="col-2">
@@ -802,13 +814,13 @@
                         case 'Harian':
                             dateEndByDay();
                             break;
-                        case 'Mingguan':                        
+                        case 'Mingguan':
                             dateEndByWeek();
                             break;
-                        case 'Bulanan':                        
+                        case 'Bulanan':
                             dateEndByMonth();
                             break;
-                        case 'TigaBulan':                        
+                        case 'TigaBulan':
                             dateEndByThreeMonth();
                             break;
                         case 'EnamBulan':
@@ -867,7 +879,7 @@
                 }
                 $('#endDate').attr('value', dateFormat(newDate))
             }
-            
+
 
             $('#quantity').change(function(){
                 let checked = $('input[name=Periode]:checked').val();
@@ -898,10 +910,10 @@
                 }
             })
 
-           
+
             function nol(x){
                 const y = (x>9)?(x>99)?x:''+x:'0'+x;
-                return y; 
+                return y;
             }
 
             function dateFormat(date){
@@ -914,6 +926,6 @@
         });
 
 
-        
+
     </script>
 @endsection

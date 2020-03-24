@@ -52,7 +52,7 @@
                                                     {{ __($product->name) }}
                                                 </a>
                                             </span>
-    
+
                                             <span class="dc-quantity">x{{ $cartItem['quantity'] }}</span>
                                             <span class="dc-price">{{ single_price($cartItem['price']*$cartItem['quantity']) }}</span>
                                         </div>
