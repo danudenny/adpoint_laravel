@@ -168,7 +168,7 @@
                                     </li>
                                 </ul>
                             </li>
-                            <li>
+                            {{-- <li>
                                 <a href="#">
                                     <i class="fa fa-money"></i>
                                     <span class="menu-title">{{__('Payments')}}</span>
@@ -184,7 +184,7 @@
                                         <a class="nav-link" href="{{ route('admin.payment.confirm') }}">{{__('Confirm Payment')}}</a>
                                     </li>
                                 </ul>
-                            </li>
+                            </li> --}}
                             <li>
                                 <a href="#">
                                     <i class="fa fa-envelope"></i>
@@ -224,6 +224,9 @@
                                     </li>
                                     <li class="{{ areActiveRoutes(['email_setting.index'])}}">
                                         <a class="nav-link" href="{{ route('email_setting.index') }}">{{__('Email Settings')}}</a>
+                                    </li>
+                                    <li class="{{ areActiveRoutes(['languages.index'])}}">
+                                        <a class="nav-link" href="{{ route('languages.index') }}">{{__('Language')}}</a>
                                     </li>
                                 </ul>
                             </li>

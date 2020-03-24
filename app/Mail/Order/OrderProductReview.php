@@ -6,19 +6,30 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use App\BusinessSetting;
 
 class OrderProductReview extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
-
+    public  $data,
+            $email, 
+            $value, 
+            $subject;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($data)
     {
-        //
+        $this->data = $data;
+        $this->email = BusinessSetting::where('type','email_settings')->first()->value;
+        $this->value = json_decode($this->email);
+        foreach ($this->value->data as $key => $d) {
+            if ($d->judul == "Product Review") {
+                $this->subject = $d->subject;
+            }
+        }
     }
 
     /**
@@ -29,6 +40,6 @@ class OrderProductReview extends Mailable implements ShouldQueue
     public function build()
     {
         return $this->view('emails.orders.order_product_review')
-            ->subject('Your product has been reviewed');
+            ->subject($this->subject.' #'.$this->data['product_name']);
     }
 }

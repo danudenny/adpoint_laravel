@@ -17,7 +17,17 @@
                             $user = \App\User::where('id', $trx->user_id)->first();
                         @endphp
                         <h4>Dear {{$user->name}},</h4>
-                        <p>Terimakasih sudah melakukan order. rincian sebagai berikut.</p>
+                        @php
+                            $email = \App\BusinessSetting::where('type','email_settings')->first()->value;
+                            $value = json_decode($email);
+                            $content = "";
+                            foreach ($value->data as $key => $d) {
+                                if ($d->judul == "Order Confirmation Admin") {
+                                    $content = $d->content;
+                                }
+                            }
+                        @endphp
+                        {!! $content !!}
                         @if (count($note) > 0)
                             @foreach ($note as $key => $item) 
                                 @php 

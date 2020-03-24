@@ -14,9 +14,18 @@ use Illuminate\Support\Facades\Hash;
 use DB;
 
 use App\Pushy;
+// Notif
+use Notification;
+use App\Notifications\ShopApprove;
+use App\Events\ShopApproveEvent;
+use App\Notifications\ShopReject;
+use App\Events\ShopRejectEvent;
+
 use Mail;
 use App\Mail\Shop\ShopApproved;
 use App\Mail\Shop\ShopRejected;
+
+
 
 class SellerController extends Controller
 {
@@ -195,6 +204,9 @@ class SellerController extends Controller
                 );
                 Pushy::sendPushNotification($data, $to, $options);
             }
+            $seller_send = User::where('id', $seller->user_id)->first();
+            Notification::send($seller_send, new ShopApprove());
+            event(new ShopApproveEvent('Congratulations, your shop has been approved!'));
             flash(__('Seller has been approved successfully'))->success();
             return redirect()->route('sellers.index');
         }
@@ -230,6 +242,9 @@ class SellerController extends Controller
                 );
                 Pushy::sendPushNotification($data, $to, $options);
             }
+            $seller_send = User::where('id', $seller->user_id)->first();
+            Notification::send($seller_send, new ShopReject());
+            event(new ShopRejectEvent('Sorry, your registration as seller has been rejected!'));
             flash(__('Seller verification request has been rejected successfully'))->success();
             return redirect()->route('sellers.index');
         }

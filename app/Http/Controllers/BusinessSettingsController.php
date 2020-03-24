@@ -38,6 +38,39 @@ class BusinessSettingsController extends Controller
         return view('business_settings.email_settings', compact('email_settings'));
     }
 
+    public function update_email_setting(Request $request)
+    {   
+        $email_settings = BusinessSetting::where('type', 'email_settings')->first();
+        $value = json_decode($email_settings->value);
+        if ($request->file('logo_email') !== null) {
+            if (file_exists($value->logo)) {
+                unlink($value->logo);
+                $value->logo = $request->file('logo_email')->store('img/email');
+            }
+        }
+        $value->footer = $request->footer_email;
+        $email_settings->value = json_encode($value);
+        $email_settings->save();
+        flash("Settings updated successfully")->success();
+        return back();
+    }
+
+    public function update_content_email(Request $request)
+    {
+        $email_settings = BusinessSetting::where('type', 'email_settings')->first();
+        $value = json_decode($email_settings->value);
+        foreach ($value->data as $key => $d) {
+            if ($key === (int)$request->key) {
+                $d->subject = $request->subject_email;
+                $d->content = $request->content_email;
+            }
+        }
+        $email_settings->value = json_encode($value);
+        $email_settings->save();
+        flash("Settings updated successfully")->success();
+        return back();
+    }
+
     public function google_analytics(Request $request)
     {
         return view('business_settings.google_analytics');

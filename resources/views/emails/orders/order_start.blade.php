@@ -9,10 +9,18 @@
                     <div class="f-fallback">
                         <h4>Dear {{ \App\user::where('id', $trx->user_id)->first()->name }},</h4>
                         
-                        <p>Terimakasih.<br>
-                            Anda sudah melakukan order. Mohon menunggu orderan di review admin.
-                        </p>
-                        <p>Berikut rinciannya :</p>
+                        @php
+                            $email = \App\BusinessSetting::where('type','email_settings')->first()->value;
+                            $value = json_decode($email);
+                            $content = "";
+                            foreach ($value->data as $key => $d) {
+                                if ($d->judul == "Shop Approved") {
+                                    $content = $d->content;
+                                }
+                            }
+                        @endphp
+                        {!! $content !!}
+                        
                         <table class="purchase" width="100%" cellpadding="0" cellspacing="0">
                             <tr>
                                 <td colspan="2">

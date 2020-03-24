@@ -86,6 +86,8 @@ Route::group(['prefix' =>'admin', 'middleware' => ['auth', 'admin']], function()
 	Route::get('/smtp-settings', 'BusinessSettingsController@smtp_settings')->name('smtp_settings.index');
 	Route::get('/whatsapp-settings', 'BusinessSettingsController@whatsapp_settings')->name('whatsapp_settings.index');
 	Route::get('/email-settings', 'BusinessSettingsController@email_settings')->name('email_setting.index');
+	Route::post('/update-email-settings', 'BusinessSettingsController@update_email_setting')->name('update.email.settings');
+	Route::post('/update-content-email', 'BusinessSettingsController@update_content_email')->name('update.content.email');
 	Route::get('/google-analytics', 'BusinessSettingsController@google_analytics')->name('google_analytics.index');
 	Route::get('/facebook-chat', 'BusinessSettingsController@facebook_chat')->name('facebook_chat.index');
 	Route::post('/env_key_update', 'BusinessSettingsController@env_key_update')->name('env_key_update.update');

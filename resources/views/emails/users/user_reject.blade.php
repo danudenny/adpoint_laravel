@@ -9,12 +9,20 @@
                 <td class="content-cell">
                     <div class="f-fallback">
                         <h4>Dear, {{ $user['name'] }}!</h4>
-                        <p>Terimakasih telah melakukan pendafataran.<br>
-                            Maaf pendaftaran anda <b>ditolak</b> karena data yang anda masukkan tidak sesuai.
-                            Silahkan melakukan pendaftaran kembali.<p>
+                        @php
+                            $email = \App\BusinessSetting::where('type','email_settings')->first()->value;
+                            $value = json_decode($email);
+                            $content = "";
+                            foreach ($value->data as $key => $d) {
+                                if ($d->judul == "Reject User") {
+                                    $content = $d->content;
+                                }
+                            }
+                        @endphp
+                        {!! $content !!}
                             
-                            <p>Terimakasih</p>
-                            <p>Regards,<br>Adpoint</p>
+                        <p>Terimakasih</p>
+                        <p>Regards,<br>Adpoint</p>
                     </div>
                 </td>
             </tr>

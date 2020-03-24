@@ -9,7 +9,18 @@
                     <div class="f-fallback">
                         <h4>Dear {{ $user['name'] }},</h4>
                         
-                        <p>Reset Password anda, silahkan klik tombol reset password.</p>
+                        @php
+                            $email = \App\BusinessSetting::where('type','email_settings')->first()->value;
+                            $value = json_decode($email);
+                            $content = "";
+                            foreach ($value->data as $key => $d) {
+                                if ($d->judul == "Reset Password User") {
+                                    $content = $d->content;
+                                }
+                            }
+                        @endphp
+                        {!! $content !!}
+
                         <div class="center">
                             <a href="{{ url('/users/change-password?email='.$user['email'].'&token='.urlencode($user['token']).'') }}" class="button button--red">Reset Password</a>
                         </div>

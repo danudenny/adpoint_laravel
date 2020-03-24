@@ -6,11 +6,15 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use App\BusinessSetting;
 
 class OrderStart extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
-    public $trx;
+    public  $trx, 
+            $email, 
+            $value, 
+            $subject;
     /**
      * Create a new message instance.
      *
@@ -19,6 +23,13 @@ class OrderStart extends Mailable implements ShouldQueue
     public function __construct($data)
     {
         $this->trx = $data;
+        $this->email = BusinessSetting::where('type','email_settings')->first()->value;
+        $this->value = json_decode($this->email);
+        foreach ($this->value->data as $key => $d) {
+            if ($d->judul == "Order Start") {
+                $this->subject = $d->subject;
+            }
+        }
     }
 
     /**
@@ -29,6 +40,6 @@ class OrderStart extends Mailable implements ShouldQueue
     public function build()
     {
         return $this->view('emails.orders.order_start')
-            ->subject('Terimakasih sudah order '.$this->trx->code);
+            ->subject($this->subject.' #'.$this->trx->code);
     }
 }

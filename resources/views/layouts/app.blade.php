@@ -279,6 +279,10 @@
                 channel : 'order-continue-buyer-channel',
                 event : 'order-continue-buyer-event'
             },
+            {
+                channel : 'new-shop-register-channel',
+                event : 'new-shop-register-event'
+            },
         ];
         events.forEach(e => {
             var channel = pusher.subscribe(e.channel);
