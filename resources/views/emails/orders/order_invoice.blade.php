@@ -15,7 +15,29 @@
                             $user = \App\User::where('id', $trx->user_id)->first();
                         @endphp
                         <h4>Dear {{$user->name}},</h4>
-                        <p>Terimakasih sudah melakukan order. rincian sebagai berikut.</p>
+                        <!-- Action -->
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0" role="presentation">
+                            <tr>
+                                @php
+                                    $email = \App\BusinessSetting::where('type','email_settings')->first()->value;
+                                    $value = json_decode($email);
+                                    $content = "";
+                                    foreach ($value->data as $key => $d) {
+                                        if ($d->judul == "Order Invoice") {
+                                            $content = $d->content;
+                                        }
+                                    }
+                                @endphp
+                                {!! $content !!}
+                                {{ date('d M Y H:i:s', strtotime(\Carbon\Carbon::createFromTimestamp(strtotime($trx->created_at))->addHour(24))) }}
+                            </tr>
+                            <tr>
+                                <td class="purchase_heading" align="left">
+                                    <a href="{{ route('confirm.payment.id', encrypt($trx->id)) }}" target="_blank" class="f-fallback button button--green" target="_blank">Pay</a>
+                                </td>
+                            </tr>
+                        </table>
+
                         @if (count($note) > 0)
                             @foreach ($note as $key => $item) 
                                 @php 
@@ -112,20 +134,6 @@
                                     <span class="f-fallback">
                                         <h2>Grantotal: {{ single_price($grandtotal) }}</h2>
                                     </span>
-                                </td>
-                            </tr>
-                        </table>
-                        <!-- Action -->
-                        <table width="100%" border="0" cellspacing="0" cellpadding="0" role="presentation">
-                            <tr>
-                                <p>Terimakasih.<br>
-                                    Anda sudah melakukan order. Mohon segera melakukan pembayaran <br>
-                                    lakukan pembaran sebelum tanggal {{ date('d M Y H:i:s', strtotime(\Carbon\Carbon::createFromTimestamp(strtotime($trx->created_at))->addHour(24))) }}
-                                </p>
-                            </tr>
-                            <tr>
-                                <td class="purchase_heading" align="left">
-                                    <a href="{{ route('confirm.payment.id', encrypt($trx->id)) }}" target="_blank" class="f-fallback button button--green" target="_blank">Pay</a>
                                 </td>
                             </tr>
                         </table>

@@ -6,12 +6,16 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use App\BusinessSetting;
 
 class ShopApproved extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
-    public $user;
+    public  $user, 
+            $email, 
+            $value, 
+            $subject;
 
     /**
      * Create a new message instance.
@@ -21,6 +25,13 @@ class ShopApproved extends Mailable implements ShouldQueue
     public function __construct($user)
     {
         $this->user = $user;
+        $this->email = BusinessSetting::where('type','email_settings')->first()->value;
+        $this->value = json_decode($this->email);
+        foreach ($this->value->data as $key => $d) {
+            if ($d->judul == "Shop Approved") {
+                $this->subject = $d->subject;
+            }
+        }
     }
 
     /**
@@ -31,6 +42,6 @@ class ShopApproved extends Mailable implements ShouldQueue
     public function build()
     {
         return $this->view('emails.shops.shop_approved')
-            ->subject('Media owner approved!');
+            ->subject($this->subject);
     }
 }

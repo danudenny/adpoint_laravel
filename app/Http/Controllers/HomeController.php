@@ -127,25 +127,26 @@ class HomeController extends Controller
         $user['name'] = $register->name;
         $user['email'] = $register->email;
         if ($register->save()) {
-            $query = DB::table('pushy_tokens as pt')
+            $push = DB::table('pushy_tokens as pt')
                     ->join('users as u', 'u.id', '=', 'pt.user_id')
                     ->where(['u.user_type' => 'admin'])
                     ->select(['pt.*'])
                     ->first();
-            $tokenPushy = $query->device_token;
-            $data = array('message' => 'New user has registered');
-            $to = array($tokenPushy);
-            $options = array(
-                'notification' => array(
-                    'badge' => 1,
-                    'sound' => 'ping.aiff',
-                    'body'  => "New user has registered"
-                )
-            );
-
+            if ($push !== null) {
+                $tokenPushy = $push->device_token;
+                $data = array('message' => 'New user has registered ('.$request->name.')');
+                $to = array($tokenPushy);
+                $options = array(
+                    'notification' => array(
+                        'badge' => 1,
+                        'sound' => 'ping.aiff',
+                        'body'  => 'New user has registered ('.$request->name.')'
+                    )
+                );
+                Pushy::sendPushNotification($data, $to, $options);
+            }
             $register->verified = 0;
             $request->session()->flash('message', 'Thanks for your registration, please check your email!.');
-            Pushy::sendPushNotification($data, $to, $options);
             Notification::send(User::where('user_type','admin')->first(), new UserRegister($request->name));
             event(new UserRegisterEvent('New user has registered '.$request->name));
             Mail::to($request->email)->send(new RegistUser($user));

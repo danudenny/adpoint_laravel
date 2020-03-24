@@ -9,10 +9,19 @@
                     <div class="f-fallback">
                         <h4>Dear {{ $user->buyer_name }},</h4>
                         
-                        <p>Selamat.<br>
-                            Iklan anda telah di aktifkan di <br>
-                            <b>{{ $user->product_name }}</b>
-                        </p>
+                        @php
+                            $email = \App\BusinessSetting::where('type','email_settings')->first()->value;
+                            $value = json_decode($email);
+                            $content = "";
+                            foreach ($value->data as $key => $d) {
+                                if ($d->judul == "Order Item Active") {
+                                    $content = $d->content;
+                                }
+                            }
+                        @endphp
+                        {!! $content !!}
+
+                        <b>{{ $user->product_name }}</b>
                         
                         <p>Terimakasih</p>
                         <p>Regards,<br>Adpoint</p>

@@ -683,7 +683,7 @@
                    //$('#addToCart-modal-body').html(data);
                    updateNavCart();
                    $('#cart_items_sidenav').html(parseInt($('#cart_items_sidenav').html())+1);
-                   window.location.replace("{{ route('checkout.shipping_info') }}");
+                   window.location.replace("{{ route('cart') }}");
                }
            });
         }
@@ -1542,6 +1542,18 @@
                 channel : 'order-completed-channel',
                 event : 'order-completed-event'
             },
+            {
+                channel : 'shop-approve-channel',
+                event : 'shop-approve-event'
+            },
+            {
+                channel : 'shop-reject-channel',
+                event : 'shop-reject-event'
+            },
+            {
+                channel : 'product-review-channel',
+                event : 'product-review-event'
+            }
         ];
         events.forEach(e => {
             var channel = pusher.subscribe(e.channel);

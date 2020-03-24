@@ -61,7 +61,7 @@
 
 <script>
     function acceptUser(id) {
-        $('#acc').html(`<i class="fa fa-spinner"></i> Loading...`);
+        $('#acc').html(`<i class="fa fa-spin fa-spinner"></i> Loading...`);
         $.post('{{ route('customer.accept') }}',{_token:'{{ csrf_token() }}', id:id}, function(data){
             if (data) {
                 location.reload();
@@ -71,7 +71,7 @@
         });
     }
     function rejectUser(id) {
-        $('#rjt').html(`<i class="fa fa-spinner"></i> Loading...`);
+        $('#rjt').html(`<i class="fa fa-spin fa-spinner"></i> Loading...`);
         $.post('{{ route('customer.reject') }}',{_token:'{{ csrf_token() }}', id:id}, function(data){
             if (data) {
                 location.reload();

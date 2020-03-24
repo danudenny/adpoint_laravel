@@ -116,7 +116,7 @@
       border-bottom: 10px solid #3869D4;
       border-left: 18px solid #3869D4;
       display: inline-block;
-      color: #FFF;
+      color: white;
       text-decoration: none;
       border-radius: 3px;
       box-shadow: 0 2px 3px rgba(0, 0, 0, 0.16);
@@ -130,6 +130,16 @@
       border-right: 18px solid #22BC66;
       border-bottom: 10px solid #22BC66;
       border-left: 18px solid #22BC66;
+      color: white;
+    }
+
+    .button--blue {
+      background-color: #E9DD27;
+      border-top: 10px solid #E9DD27;
+      border-right: 18px solid #E9DD27;
+      border-bottom: 10px solid #E9DD27;
+      border-left: 18px solid #E9DD27;
+      color: white;
     }
 
     .button--red {
@@ -138,6 +148,7 @@
       border-right: 18px solid #FF6136;
       border-bottom: 10px solid #FF6136;
       border-left: 18px solid #FF6136;
+      color: white;
     }
 
     @media only screen and (max-width: 500px) {
@@ -309,7 +320,7 @@
       -premailer-width: 100%;
       -premailer-cellpadding: 0;
       -premailer-cellspacing: 0;
-      background-color: #F4F4F7;
+      background-color: #E9DD27;
     }
 
     .email-content {
@@ -443,7 +454,13 @@
 </head>
 
 <body>
-
+  @php
+      $email = \App\BusinessSetting::where('type','email_settings')->first()->value;
+      $value = json_decode($email);
+      $logo = $value->logo;
+      $footer = $value->footer;
+  @endphp
+  
   <table class="email-wrapper" width="100%" cellpadding="0" cellspacing="0" role="presentation">
     <tr>
       <td align="center">
@@ -451,7 +468,7 @@
           <tr>
             <td class="email-masthead">
               <a href="#" class="f-fallback email-masthead_name">
-                Adpoint
+                <img src="{{ $message->embed(url($logo)) }}" alt="Adpoint Logo" height="50">
               </a>
             </td>
           </tr>
@@ -465,10 +482,8 @@
                 role="presentation">
                 <tr>
                   <td class="content-cell" align="center">
-                    <p class="f-fallback sub align-center">&copy; 2018. PT. Adpoint Media Online allright reserved.</p>
                     <p class="f-fallback sub align-center">
-                      <br>Semua content di lindungi oleh undang undang hak cipta. Dilarang mencopy atau mencontoh tanpa
-                      seizin adpoint indonesia.
+                      {!! $footer !!}
                     </p>
                   </td>
                 </tr>

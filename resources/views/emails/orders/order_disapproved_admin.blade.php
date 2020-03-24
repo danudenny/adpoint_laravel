@@ -9,10 +9,18 @@
                     <div class="f-fallback">
                         <h4>Dear {{ $user['buyer_name'] }},</h4>
                         
-                        <p>Mohon maaf.<br>
-                            Sayaangnya orderan anda kami tolak dengan alasan.<br>
-                            <b style="color: red">"{{ $user['alasan'] }}"</b>
-                        </p>
+                        @php
+                            $email = \App\BusinessSetting::where('type','email_settings')->first()->value;
+                            $value = json_decode($email);
+                            $content = "";
+                            foreach ($value->data as $key => $d) {
+                                if ($d->judul == "Order Approved Admin") {
+                                    $content = $d->content;
+                                }
+                            }
+                        @endphp
+                        {!! $content !!}
+                        <b style="color: red">"{{ $user['alasan'] }}"</b>
                         
                         <p>Terimakasih</p>
                         <p>Regards,<br>Adpoint</p>

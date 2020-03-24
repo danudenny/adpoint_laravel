@@ -9,9 +9,17 @@
                     <div class="f-fallback">
                         <h4>Dear {{ $user['buyer_name'] }},</h4>
                         
-                        <p>Selamat.<br>
-                            Orderan anda telah di review dan sedang diteruskan ke pihak seller
-                        </p>
+                        @php
+                            $email = \App\BusinessSetting::where('type','email_settings')->first()->value;
+                            $value = json_decode($email);
+                            $content = "";
+                            foreach ($value->data as $key => $d) {
+                                if ($d->judul == "Order Approved Admin") {
+                                    $content = $d->content;
+                                }
+                            }
+                        @endphp
+                        {!! $content !!}
                         
                         <p>Terimakasih</p>
                         <p>Regards,<br>Adpoint</p>

@@ -9,10 +9,17 @@
                     <div class="f-fallback">
                         <h4>Dear {{ $user['name'] }},</h4>
                         
-                        <p>Selamat.<br>
-                        Proses registrasi berhasil dilakukan. Sekarang anda sudah terdaftar sebagai buyer.
-                        Silahkan tekan tombol login. 
-                        Anda juga dapat login versi mobile dengan cara menginstall aplikasi <a href="#">adpoint.id</a> di playstore.<p>
+                        @php
+                            $email = \App\BusinessSetting::where('type','email_settings')->first()->value;
+                            $value = json_decode($email);
+                            $content = "";
+                            foreach ($value->data as $key => $d) {
+                                if ($d->judul == "Accept User") {
+                                    $content = $d->content;
+                                }
+                            }
+                        @endphp
+                        {!! $content !!}
                         
                         <p>Terimakasih</p>
                         <p>Regards,<br>Adpoint</p>

@@ -1,25 +1,95 @@
 {
-    "logo": "img/email/logo.png",
+    "logo": "img\/email\/hZVQhFeyQIG5ORjZNosxJVZ42zsx9bn49H8nytzC.png",
     "data": [{
             "judul": "Register User",
-            "subject": "Pendafataran akun berhasil",
-            "content": "<p>Terima kasih telah melakukan pendaftaran di Adpoint. Pendaftaran anda sedang di review oleh admin. Mohon tunggu informasi selanjutnya dari kami.</p>"
+            "subject": "Pendafataran Akun Berhasil",
+            "content": "<p>Terima kasih telah melakukan pendaftaran di Adpoint. Pendaftaran anda sedang di review oleh admin. Mohon tunggu informasi selanjutnya dari kami.<\/p>"
         },
         {
             "judul": "Accept User",
             "subject": "Akun anda telah disetujui",
-            "content": "<p>Selamat.<br>Proses registrasi berhasil dilakukan. Sekarang anda sudah terdaftar sebagai buyer.Silahkan tekan tombol login. Anda juga dapat login versi mobile dengan cara menginstall aplikasi <a href=''>adpoint.id</a> di playstore.<p>"
+            "content": "<p>Selamat.<br>Proses registrasi berhasil dilakukan. Sekarang anda sudah terdaftar sebagai buyer.Silahkan tekan tombol login. Anda juga dapat login versi mobile dengan cara menginstall aplikasi <a href=''>adpoint.id<\/a> di playstore.<p>"
         },
         {
             "judul": "Reject User",
-            "subject": "Akun anda tidak disetujui",
-            "content": "<p>Terimakasih telah melakukan pendafataran.<br>Maaf pendaftaran anda <b>ditolak</b> karena data yang anda masukkan tidak sesuai.Silahkan melakukan pendaftaran kembali.<p>"
+            "subject": "Akun Anda Tidak Disetujui",
+            "content": "<p>Terimakasih telah melakukan pendafataran.<br \/>\r\nMaaf pendaftaran anda <strong>ditolak<\/strong> karena data yang anda masukkan tidak sesuai.Silahkan melakukan pendaftaran kembali.<\/p>\r\n\r\n<p>&nbsp;<\/p>"
         },
         {
             "judul": "Reset Password User",
-            "subject": "Akun anda telah disetujui",
-            "content": "<p>Reset Password anda, silahkan klik tombol reset password.</p>"
+            "subject": "Reset Password",
+            "content": "<p>Reset password anda, silahkan klik tombol reset password.<\/p>"
+        },
+        {
+            "judul": "Shop Approved",
+            "subject": "Pembuatan toko disetujui",
+            "content": "<p>Selamat.<br \/>\r\nPermintaan anda menjadi media owner, telah kami setujui.<\/p>\r\n\r\n<p>&nbsp;<\/p>"
+        },
+        {
+            "judul": "Shop Rejected",
+            "subject": "Pembuatan toko tidak disetujui",
+            "content": "<p>Maaf.<br \/>\r\nPermintaan anda menjadi media owner, tidak kami setujui.karena dokumen yang anda kirim tidak sesuai.<\/p>\r\n\r\n<p>&nbsp;<\/p>"
+        },
+        {
+            "judul": "Order Start",
+            "subject": "Terimakasih sudah order",
+            "content": "<p>Terimakasih.<br>Anda sudah melakukan order.Mohon menunggu orderan di review admin. <\/p> <p> Berikut rinciannya: <\/p>"
+        },
+        {
+            "judul": "Order Approved Admin",
+            "subject": "Selamat. Order telah direview",
+            "content": "<p>Selamat.<br>Orderan anda telah di review dan sedang diteruskan ke pihak seller<\/p>"
+        },
+        {
+            "judul": "Order Disapprove Admin",
+            "subject": "Mohon Maaf Orderan anda di tolak",
+            "content": "<p>Mohon maaf.<br>Sayangnya orderan anda kami tolak dengan alasan.<br><\/p>"
+        },
+        {
+            "judul": "Order Sold",
+            "subject": "Product di order",
+            "content": "<p>Selamat.<br>Ordered</p>"
+        },
+        {
+            "judul": "Order Confirmation Admin",
+            "subject": "Selamat orderan telah disetujui",
+            "content": "<p>Terimakasih sudah melakukan order. rincian sebagai berikut.<\/p>"
+        },
+        {
+            "judul": "Order Invoice",
+            "subject": "Silahkan lakukan pembayaran!",
+            "content": "<p>Terimakasih.<br>Anda sudah melakukan order. Mohon segera melakukan pembayaran <br>lakukan pembaran sebelum tanggal<\/p>"
+        },
+        {
+            "judul": "Order Notif Payment Buyer",
+            "subject": "Terimakasih sudah melakukan pembayaran",
+            "content": "<p>Terimakasih.<br>Anda telah melakukan pembayaran<\/p>"
+        },
+        {
+            "judul": "Order Notif Payment Seller",
+            "subject": "Orderan telah dibayar",
+            "content": "<p>Selamat.<br>Orderan anda telah terbayar. Segera aktifkan product<\/p>"
+        },
+        {
+            "judul": "Order Item Active",
+            "subject": "Selamat. Iklan telah aktif di #",
+            "content": "<p>Selamat.<br>Iklan anda telah di aktifkan di <br><\/p>"
+        },
+        {
+            "judul": "Order Bukti Tayang",
+            "subject": "Iklan anda telah tayang di #",
+            "content": "<p>Selamat.<br>Iklan anda telah di aktifkan dan di tayangkan di media <br><\/p>"
+        },
+        {
+            "judul": "Order Complete",
+            "subject": "Terimakasih sudah beriklan di #",
+            "content": "<p>Terimakasih.<br>Anda sudah memakai media kami untuk beriklan <br><\/p>"
+        },
+        {
+            "judul": "Product Review",
+            "subject": "Your product has been reviewed",
+            "content": "<p>Terimakasih.<br>Anda sudah memakai media kami untuk beriklan <br><\/p>"
         }
     ],
-    "footer": "&copy; 2018. PT. Adpoint Media Online allright reserved. <br> Semua content di lindungi oleh undang undang hak cipta. Dilarang mencopy atau mencontoh tanpaseizin adpoint indonesia."
+    "footer": "<p>&copy; 2020. PT. Adpoint Media Online allright reserved.<br \/>\r\nSemua content di lindungi oleh undang undang hak cipta. Dilarang mencopy atau mencontoh tanpa seizin adpoint indonesia.<\/p>"
 }

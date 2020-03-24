@@ -5,12 +5,17 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Review;
 use App\Product;
+use App\User;
 use App\OrderDetail;
 use Auth;
 use Mail;
 use DB;
 use App\Pushy;
 use Notification;
+
+use App\Mail\Order\OrderProductReview;
+use App\Notifications\ProductReviewed;
+use App\Events\ProductReviewedEvent;
 
 
 class ReviewController extends Controller
@@ -55,7 +60,10 @@ class ReviewController extends Controller
         $review->user_id = $request->user_id;
         $review->rating = $request->rating;
         $review->comment = $request->comment;
+
         if($review->save()){
+            $seller_id = Product::where('id',$request->product_id)->first()->user_id;
+            $seller = User::where('id', $seller_id)->first();
             $product = Product::findOrFail($request->product_id);
             if(count(Review::where('product_id', $product->id)->where('status', 1)->get()) > 0){
                 $product->rating = Review::where('product_id', $product->id)->where('status', 1)->sum('rating')/count(Review::where('product_id', $product->id)->where('status', 1)->get());
@@ -83,6 +91,11 @@ class ReviewController extends Controller
                 );
                 Pushy::sendPushNotification($data, $to, $options);
             }
+            $data['seller_name'] = $seller->name;
+            $data['product_name'] = $product->name;
+            Mail::to($seller->email)->send(new OrderProductReview($data));
+            Notification::send($seller, new ProductReviewed($request->name));
+            event(new ProductReviewedEvent('Your product has been reviewed by the buyer'));
             flash('Review has been submitted successfully')->success();
             return back();
         }

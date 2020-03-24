@@ -9,10 +9,17 @@
                 <td class="content-cell">
                     <div class="f-fallback">
                         <h4>Dear, {{ $user['name'] }}!</h4>
-                        
-                        <p>Terima kasih telah melakukan pendaftaran di Adpoint.
-                            Pendaftaran anda sedang di review oleh admin.
-                            Mohon tunggu informasi selanjutnya dari kami.</p>
+                        @php
+                            $email = \App\BusinessSetting::where('type','email_settings')->first()->value;
+                            $value = json_decode($email);
+                            $content = "";
+                            foreach ($value->data as $key => $d) {
+                                if ($d->judul == "Register User") {
+                                    $content = $d->content;
+                                }
+                            }
+                        @endphp
+                        {!! $content !!}
 
                         <p>Terimakasih</p>
                         <p>Regards,<br>Adpoint</p>

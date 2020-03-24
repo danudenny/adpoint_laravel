@@ -13,6 +13,10 @@ use Hash;
 use DB;
 
 use App\Pushy;
+// Notif
+use Notification;
+use App\Notifications\NewShop;
+use App\Events\NewShopEvent;
 
 class ShopController extends Controller
 {
@@ -100,6 +104,8 @@ class ShopController extends Controller
             $shop->name = $request->name;
             $shop->address = $request->address;
             $shop->slug = preg_replace('/\s+/', '-', $request->name).'-'.$shop->id;
+            $shop->logo = $request->file('logo')->store('uploads/shop/logo');
+
 
             if($shop->save()){
                 auth()->login($user, false);
@@ -261,17 +267,19 @@ class ShopController extends Controller
                     ->first();
             if ($push !== null) {
                 $tokenPushy = $push->device_token;
-                $data = array('message' => 'New Seller has been created!, please check!');
+                $data = array('message' => 'New shop has been created ('.$request->element_0.')');
                 $to = array($tokenPushy);
                 $options = array(
                     'notification' => array(
                         'badge' => 1,
                         'sound' => 'ping.aiff',
-                        'body'  => "New Seller has been created!, please check!"
+                        'body'  => 'New shop has been created ('.$request->element_0.')'
                     )
                 );
                 Pushy::sendPushNotification($data, $to, $options);
             }
+            Notification::send(User::where('user_type','admin')->first(), new NewShop($request->element_0));
+            event(new NewShopEvent('New shop has been created ('.$request->element_0.')'));
 
             flash(__('Your shop verification request has been submitted successfully!'))->success();
             return redirect()->route('dashboard');
