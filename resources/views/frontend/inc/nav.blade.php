@@ -680,7 +680,6 @@
     function confirm_delete(e, seller_id, index) {
         if (confirm('Are you sure delete?')) {
             removeFromCart(seller_id, index);
-            location.reload();
         }
     }
 

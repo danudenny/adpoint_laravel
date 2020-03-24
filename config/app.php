@@ -172,7 +172,7 @@ return [
         PragmaRX\Tracker\Vendor\Laravel\ServiceProvider::class,
         Igoshev\Captcha\Providers\CaptchaServiceProvider::class,
         MaddHatter\LaravelFullcalendar\ServiceProvider::class,
-        \Jlorente\Laravel\Pushy\PushyServiceProvider::class,
+        // \Jlorente\Laravel\Pushy\PushyServiceProvider::class,
         SimpleSoftwareIO\QrCode\QrCodeServiceProvider::class
 
     ],
