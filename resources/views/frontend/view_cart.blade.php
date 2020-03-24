@@ -197,11 +197,13 @@
                                 @php
                                     $advertising = [];
                                     $count = 0;
-                                    foreach (Session::get('cart') as $seller_id => $c) {
-                                        $count += count($c);
-                                        foreach ($c as $key => $cartItem) {
-                                            if ($cartItem['advertising'] !== null) {
-                                                array_push($advertising, $cartItem['advertising']);
+                                    if (Session::has('cart')) {
+                                        foreach (Session::get('cart') as $seller_id => $c) {
+                                            $count += count($c);
+                                            foreach ($c as $key => $cartItem) {
+                                                if ($cartItem['advertising'] !== null) {
+                                                    array_push($advertising, $cartItem['advertising']);
+                                                }
                                             }
                                         }
                                     }
@@ -334,11 +336,13 @@
                     @php
                         $advertising = [];
                         $count = 0;
-                        foreach (Session::get('cart') as $seller_id => $c) {
-                            $count += count($c);
-                            foreach ($c as $key => $cartItem) {
-                                if ($cartItem['advertising'] !== null) {
-                                    array_push($advertising, $cartItem['advertising']);
+                        if (Session::has('cart')) {
+                            foreach (Session::get('cart') as $seller_id => $c) {
+                                $count += count($c);
+                                foreach ($c as $key => $cartItem) {
+                                    if ($cartItem['advertising'] !== null) {
+                                        array_push($advertising, $cartItem['advertising']);
+                                    }
                                 }
                             }
                         }
@@ -505,7 +509,6 @@
         function confirm_delete(e, seller_id, index) {
             if (confirm('Are you sure delete?')) {
                 removeFromCart(seller_id, index);
-                location.reload();
             }
         }
 
