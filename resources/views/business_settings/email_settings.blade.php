@@ -35,7 +35,7 @@
                         <div class="col-md-4">
                             <h4>Proses Registrasi User</h4>
                             @foreach ($data->data as $key => $d)
-                                @if ($key <= 3)
+                                @if ($key <= 4)
                                     <div>
                                         <a class="btn btn-primary" style="margin-top:10px" data-toggle="modal" data-target="#collapse{{$key}}" aria-expanded="false" aria-controls="collapse{{$key}}">
                                             <b>{{ $d->judul }}</b> <i class="fa fa-edit"></i> Edit
@@ -85,7 +85,7 @@
                         <div class="col-md-4">
                             <h4>Proses Registrasi Shop</h4>
                             @foreach ($data->data as $key => $d)
-                                @if ($key==4 || $key==5)
+                                @if ($key==5 || $key==6 || $key==7)
                                     <div>
                                         <a class="btn btn-primary" style="margin-top:10px" data-toggle="modal" data-target="#collapse{{$key}}" aria-expanded="false" aria-controls="collapse{{$key}}">
                                             <b>{{ $d->judul }}</b> <i class="fa fa-edit"></i> Edit
@@ -135,7 +135,7 @@
                         <div class="col-md-4">
                             <h4>Proses Order</h4>
                             @foreach ($data->data as $key => $d)
-                                @if ($key>=6)
+                                @if ($key>=8)
                                     <div>
                                         <a class="btn btn-primary" style="margin-top:10px" data-toggle="modal" data-target="#collapse{{$key}}" aria-expanded="false" aria-controls="collapse{{$key}}">
                                             <b>{{ $d->judul }}</b> <i class="fa fa-edit"></i> Edit

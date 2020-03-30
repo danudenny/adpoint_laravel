@@ -13,7 +13,7 @@
                 </div>
             </div>
             <div class="media-body ml-3">
-                <a href="{{ url($data->url) }}">
+                <a style="cursor: pointer" onclick="markAsRead(event)" data-id="{{$notif->id}}" data-url="{{url($data->url)}}">
                     <strong class="notification-title" @if ($notif->read_at !== null) style="color: grey" @else style="color: black" @endif>{{ $data->title }}</strong>
                 </a>
                 <div class="notification-meta">

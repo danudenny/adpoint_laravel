@@ -132,7 +132,7 @@
                     <div class="dropdown-container dropdown-menu dropdown-menu-sm dropdown-menu-right panel-default">
                       <div class="dropdown-toolbar">
                         <div class="dropdown-toolbar-actions">
-                          <a href="#" onclick="markAllAssRead(event)">Mark all as read</a>
+                          <a href="#" onclick="markAllAsRead(event)">Mark all as read</a>
                         </div>
                         <h3 class="dropdown-toolbar-title">Notifications (<span class="notif-count">0</span>)</h3>
                       </div>

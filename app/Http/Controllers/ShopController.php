@@ -13,6 +13,8 @@ use Hash;
 use DB;
 
 use App\Pushy;
+use Mail;
+use App\Mail\Admin\AdminShopRegist;
 // Notif
 use Notification;
 use App\Notifications\NewShop;
@@ -278,9 +280,10 @@ class ShopController extends Controller
                 );
                 Pushy::sendPushNotification($data, $to, $options);
             }
-            Notification::send(User::where('user_type','admin')->first(), new NewShop($request->element_0));
+            $admin = User::where('user_type','admin')->first();
+            Notification::send($admin, new NewShop($request->element_0));
             event(new NewShopEvent('New shop has been created ('.$request->element_0.')'));
-
+            Mail::to($admin->email)->send(new AdminShopRegist($admin));
             flash(__('Your shop verification request has been submitted successfully!'))->success();
             return redirect()->route('dashboard');
         }else {

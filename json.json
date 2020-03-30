@@ -6,6 +6,11 @@
             "content": "<p>Terima kasih telah melakukan pendaftaran di Adpoint. Pendaftaran anda sedang di review oleh admin. Mohon tunggu informasi selanjutnya dari kami.<\/p>"
         },
         {
+            "judul": "Admin User Regist",
+            "subject": "User baru telah mendaftar",
+            "content": "<p>Silahkan cek di menu customer</p>"
+        },
+        {
             "judul": "Accept User",
             "subject": "Akun anda telah disetujui",
             "content": "<p>Selamat.<br>Proses registrasi berhasil dilakukan. Sekarang anda sudah terdaftar sebagai buyer.Silahkan tekan tombol login. Anda juga dapat login versi mobile dengan cara menginstall aplikasi <a href=''>adpoint.id<\/a> di playstore.<p>"
@@ -19,6 +24,11 @@
             "judul": "Reset Password User",
             "subject": "Reset Password",
             "content": "<p>Reset password anda, silahkan klik tombol reset password.<\/p>"
+        },
+        {
+            "judul": "Admin Shop Regist",
+            "subject": "Shop baru telah mendaftar",
+            "content": "<p>Silahkan cek di menu sellers</p>"
         },
         {
             "judul": "Shop Approved",
@@ -36,6 +46,11 @@
             "content": "<p>Terimakasih.<br>Anda sudah melakukan order.Mohon menunggu orderan di review admin. <\/p> <p> Berikut rinciannya: <\/p>"
         },
         {
+            "judul": "Admin Order Start",
+            "subject": "Order baru telah masuk",
+            "content": "<p>Silahkan cek di menu orders</p>"
+        },
+        {
             "judul": "Order Approved Admin",
             "subject": "Selamat. Order telah direview",
             "content": "<p>Selamat.<br>Orderan anda telah di review dan sedang diteruskan ke pihak seller<\/p>"
@@ -48,7 +63,7 @@
         {
             "judul": "Order Sold",
             "subject": "Product di order",
-            "content": "<p>Selamat.<br>Ordered</p>"
+            "content": "<p>Selamat.<br>Ordered<\/p>"
         },
         {
             "judul": "Order Confirmation Admin",
@@ -87,8 +102,8 @@
         },
         {
             "judul": "Product Review",
-            "subject": "Your product has been reviewed",
-            "content": "<p>Terimakasih.<br>Anda sudah memakai media kami untuk beriklan <br><\/p>"
+            "subject": "Product anda telah direview",
+            "content": "<p>Terimakasih.<br \/>\r\nProduct anda telah di review<\/p>"
         }
     ],
     "footer": "<p>&copy; 2020. PT. Adpoint Media Online allright reserved.<br \/>\r\nSemua content di lindungi oleh undang undang hak cipta. Dilarang mencopy atau mencontoh tanpa seizin adpoint indonesia.<\/p>"
