@@ -3,7 +3,7 @@
     "data": [{
             "judul": "Register User",
             "subject": "Pendafataran Akun Berhasil",
-            "content": "<p>Terima kasih telah melakukan pendaftaran di Adpoint. Pendaftaran anda sedang di review oleh admin. Mohon tunggu informasi selanjutnya dari kami.<\/p>"
+            "content": "<p>Terima kasih telah melakukan pendaftaran di InnovAPS. Pendaftaran anda sedang di review oleh admin. Mohon tunggu informasi selanjutnya dari kami.<\/p>"
         },
         {
             "judul": "Admin User Regist",
@@ -106,5 +106,5 @@
             "content": "<p>Terimakasih.<br \/>\r\nProduct anda telah di review<\/p>"
         }
     ],
-    "footer": "<p>&copy; 2020. PT. Adpoint Media Online allright reserved.<br \/>\r\nSemua content di lindungi oleh undang undang hak cipta. Dilarang mencopy atau mencontoh tanpa seizin adpoint indonesia.<\/p>"
+    "footer": "<p>&copy; 2020. PT. InnovAPS Media Online allright reserved.<br \/>\r\nSemua content di lindungi oleh undang undang hak cipta. Dilarang mencopy atau mencontoh tanpa seizin adpoint indonesia.<\/p>"
 }

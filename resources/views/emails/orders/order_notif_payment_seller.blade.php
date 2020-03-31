@@ -8,7 +8,7 @@
                 <td class="content-cell">
                     <div class="f-fallback">
                         <h4>Dear {{ $user['seller_name'] }},</h4>
-                        
+
                         @php
                             $email = \App\BusinessSetting::where('type','email_settings')->first()->value;
                             $value = json_decode($email);
@@ -24,9 +24,9 @@
                         <div class="center">
                             <a href="#" class="button button--blue">Aktifkan Product</a>
                         </div>
-                        
+
                         <p>Terimakasih</p>
-                        <p>Regards,<br>Adpoint</p>
+                        <p>Regards,<br>InnovAPS</p>
                     </div>
                 </td>
             </tr>

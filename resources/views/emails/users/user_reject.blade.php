@@ -20,9 +20,9 @@
                             }
                         @endphp
                         {!! $content !!}
-                            
+
                         <p>Terimakasih</p>
-                        <p>Regards,<br>Adpoint</p>
+                        <p>Regards,<br>InnovAPS</p>
                     </div>
                 </td>
             </tr>
