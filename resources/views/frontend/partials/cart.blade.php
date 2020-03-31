@@ -82,7 +82,7 @@
                             </li>
                             @if (Auth::check())
                             <li class="px-1">
-                                <a href="{{ route('checkout.shipping_info') }}" class="btn btn-success btn-circle text-white px-3 py-1">
+                                <a href="{{ route('cart') }}" class="btn btn-success btn-circle text-white px-3 py-1">
                                     <i class="la la-mail-forward"></i> {{__('Checkout')}}
                                 </a>
                             </li>

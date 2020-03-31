@@ -33,6 +33,7 @@ use App\Events\UserRegisterEvent;
 // Mail
 use Mail;
 use App\Mail\User\RegistUser;
+use App\Mail\Admin\AdminUserRegister;
 use Illuminate\Support\Facades\Cache;
 
 
@@ -146,10 +147,12 @@ class HomeController extends Controller
                 Pushy::sendPushNotification($data, $to, $options);
             }
             $register->verified = 0;
+            $admin = User::where('user_type','admin')->first();
             $request->session()->flash('message', 'Thanks for your registration, please check your email!.');
-            Notification::send(User::where('user_type','admin')->first(), new UserRegister($request->name));
+            Notification::send($admin, new UserRegister($request->name));
             event(new UserRegisterEvent('New user has registered '.$request->name));
             Mail::to($request->email)->send(new RegistUser($user));
+            Mail::to($admin->email)->send(new AdminUserRegister($admin));
             return back();
         }
         return back();

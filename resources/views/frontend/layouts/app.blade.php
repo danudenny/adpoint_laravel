@@ -1555,12 +1555,27 @@
         });
 
         
-        function markAllAssRead(e) {
+        function markAllAsRead(e) {
             e.stopPropagation();
             $.get('{{ route('mark.all.as.read') }}');
             getCountNotif();
             getDataNotif();
         } 
+
+        function markAsRead(e){
+            e.stopPropagation();
+            var $this = e.target.parentElement;
+            var data_id = $($this).attr('data-id')
+            var data_url = $($this).attr('data-url')
+            var base_url = {!! json_encode(url('/')) !!}
+            var mark_url = base_url+'/mark-as-read/'+data_id;
+            $.get(mark_url)
+            getCountNotif();
+            getDataNotif();
+            setTimeout(() => {
+                location.href = data_url;
+            }, 1000);
+        }
         
     </script>
     {{-- Pushy --}}
