@@ -8,7 +8,7 @@
                 <td class="content-cell">
                     <div class="f-fallback">
                         <h4>Dear {{ \App\user::where('id', $trx->user_id)->first()->name }},</h4>
-                        
+
                         @php
                             $email = \App\BusinessSetting::where('type','email_settings')->first()->value;
                             $value = json_decode($email);
@@ -20,7 +20,7 @@
                             }
                         @endphp
                         {!! $content !!}
-                        
+
                         <table class="purchase" width="100%" cellpadding="0" cellspacing="0">
                             <tr>
                                 <td colspan="2">
@@ -94,7 +94,7 @@
                         <!-- Action -->
 
                         <p>Terimakasih</p>
-                        <p>Regards,<br>Adpoint</p>
+                        <p>Regards,<br>InnovAPS</p>
                     </div>
                 </td>
             </tr>

@@ -8,13 +8,13 @@
                 <td class="content-cell">
                     <div class="f-fallback">
                         <h4>Dear {{ $user['name'] }},</h4>
-                        
+
                         <p>Mohon maaf.<br>
                             Sayaang nya orderan anda kami tolak.
                         </p>
-                        
+
                         <p>Terimakasih</p>
-                        <p>Regards,<br>Adpoint</p>
+                        <p>Regards,<br>InnovAPS</p>
                     </div>
                 </td>
             </tr>

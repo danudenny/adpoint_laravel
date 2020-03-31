@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="x-apple-disable-message-reformatting" />
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-  <title>Adpoint</title>
+  <title>InnovAPS</title>
   <style type="text/css" rel="stylesheet" media="all">
     /* Base ------------------------------ */
 
@@ -134,11 +134,11 @@
     }
 
     .button--blue {
-      background-color: #E9DD27;
-      border-top: 10px solid #E9DD27;
-      border-right: 18px solid #E9DD27;
-      border-bottom: 10px solid #E9DD27;
-      border-left: 18px solid #E9DD27;
+      background-color: #4367a3;
+      border-top: 10px solid #4367a3;
+      border-right: 18px solid #4367a3;
+      border-bottom: 10px solid #4367a3;
+      border-left: 18px solid #4367a3;
       color: white;
     }
 
@@ -320,7 +320,7 @@
       -premailer-width: 100%;
       -premailer-cellpadding: 0;
       -premailer-cellspacing: 0;
-      background-color: #E9DD27;
+      background-color: #4367a3;
     }
 
     .email-content {
@@ -460,7 +460,7 @@
       $logo = $value->logo;
       $footer = $value->footer;
   @endphp
-  
+
   <table class="email-wrapper" width="100%" cellpadding="0" cellspacing="0" role="presentation">
     <tr>
       <td align="center">
@@ -468,13 +468,13 @@
           <tr>
             <td class="email-masthead">
               <a href="#" class="f-fallback email-masthead_name">
-                <img src="{{ $message->embed(url($logo)) }}" alt="Adpoint Logo" height="50">
+                <img src="{{ $message->embed(url($logo)) }}" alt="InnovAPS Logo" height="50">
               </a>
             </td>
           </tr>
           <!-- Email Body -->
           @yield('content')
-          
+
 
           <tr>
             <td>

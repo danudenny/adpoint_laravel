@@ -8,7 +8,7 @@
                 <td class="content-cell">
                     <div class="f-fallback">
                         <h4>Dear {{ $user->buyer_name }},</h4>
-                        
+
                         @php
                             $email = \App\BusinessSetting::where('type','email_settings')->first()->value;
                             $value = json_decode($email);
@@ -22,9 +22,9 @@
                         {!! $content !!}
 
                         <b>{{ $user->product_name }}</b>
-                        
+
                         <p>Terimakasih</p>
-                        <p>Regards,<br>Adpoint</p>
+                        <p>Regards,<br>InnovAPS</p>
                     </div>
                 </td>
             </tr>

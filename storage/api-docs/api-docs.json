@@ -1,7 +1,7 @@
 {
     "openapi": "3.0.0",
     "info": {
-        "title": "Laravel Adpoint API",
+        "title": "Laravel InnovAPS API",
         "contact": {
             "email": "alkhamilnaz@gmail.com"
         },
@@ -13,12 +13,12 @@
     },
     "servers": [
         {
-            "url": "http://localhost:8000/api",
-            "description": "Laravel Adpoint API"
+            "url": "http://localhost:8000/mobile/api",
+            "description": "Laravel InnovAPS API"
         },
         {
-            "url": "https://localhost:8000/api",
-            "description": "Laravel Adpoint API"
+            "url": "https://localhost:8000/mobile/api",
+            "description": "Laravel InnovAPS API"
         }
     ],
     "paths": {

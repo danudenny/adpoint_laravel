@@ -7,4 +7,4 @@
 <a name="section-1"></a>
 ## First Section
 
-Adpoint is an Advertising Marketplace.. 🦊
+InnovAPS is an Advertising Marketplace.. 🦊

@@ -367,7 +367,7 @@ input[type="submit"] {
     font-size: 14px;
     position: relative;
     top: -1px;
-    color: black;
+    color: #bbbbbb;
 }
 
 .icon-nav {
@@ -380,11 +380,11 @@ input[type="submit"] {
 }
 
 .login-text {
-    color: black;
+    color: #bbbbbb;
 }
 
 .login-text:hover {
-    color: #333
+    color: grey;
 }
 
 .browse-cat {
@@ -676,7 +676,7 @@ select+.select2-container {
 .logo-bar-area {
     padding: 10px;
     z-index: 101;
-    background: #e9dd27;
+    background: #4367a3;
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
 }
 
@@ -1502,7 +1502,7 @@ select+.select2-container {
 }
 
 .select2-container--default .select2-selection--multiple .select2-selection__choice {
-    background-color: #E9DD27;
+    background-color: #4367a3;
     padding: 2px;
     color: white;
     margin-top: 4px;
@@ -3321,7 +3321,7 @@ section.home-banner-area {
 @media (max-width: 991px) {
     .logo-bar-area {
         padding: 12px 0;
-        background: #e9dd27;
+        background: #4367a3;
     }
     .mobile-menu-icon-box {
         padding: 8px 0;

@@ -376,7 +376,7 @@
                             <div class="logo-bar-icons d-inline-block ml-auto">
                                 <div class="d-none d-lg-inline-block topnav-text">
                                     <i class="fa fa-envelope"></i>
-                                    <span> hello@adpoint.id</span>
+                                    <span> hello@innovaps.id</span>
                                 </div>
                                 <div class="d-none d-lg-inline-block topnav-text">
                                     <i class="fa fa-phone"></i>
@@ -546,7 +546,7 @@
                                             <a href="#notifications-panel" class="dropdown-toggle" data-toggle="dropdown">
                                               <i data-count="0" class="fa fa-bell fa-2x text-dark notification-icon"></i>
                                             </a>
-                              
+
                                             <div class="dropdown-container dropdown-menu dropdown-menu-sm dropdown-menu-right panel-default">
                                               <div class="dropdown-toolbar">
                                                 <div class="dropdown-toolbar-actions">
