@@ -10,6 +10,7 @@ use App\Category;
 use App\Language;
 use Auth;
 use App\SubSubCategory;
+use Ixudra\Curl\Facades\Curl;
 use Session;
 use ImageOptimizer;
 
@@ -694,6 +695,17 @@ class ProductController extends Controller
             flash(__('Something went wrong'))->error();
             return back();
         }
+    }
+
+    public function getCurl() {
+        $response = Curl::to('http://202.152.24.156:8118/api/users/login')
+            ->withData(['email'=>'adpoint@imaniprima.com', 'password'=>'123456'])
+            ->post();
+        $decode = json_decode($response);
+        if ($decode->status = "success") {
+            $bearer = 'successful';
+        }
+        dd($decode);
     }
 
 }
