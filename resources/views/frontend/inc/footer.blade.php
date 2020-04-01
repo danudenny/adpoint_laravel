@@ -79,7 +79,7 @@
                             <div class="row">
                                 <div class="col-md-7">
                                     <h4 class="heading text-dark heading-xs strong-600 text-uppercase mb-2">
-                                        {{__('About Adpoint')}}
+                                        {{__('About InnovAPS')}}
                                     </h4>
                                     <ul class="footer-links">
                                         <li><a href="#" title="">About Us</a></li>

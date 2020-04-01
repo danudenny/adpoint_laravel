@@ -122,7 +122,7 @@ ul.categories--style-3>li>ul>li>a.active,
 .product-box-1 .price-bar .price,
 .sub-category-menu ul li a:hover,
 .product-box-2 .add-to-cart {
-    color: #E9DD27;
+    color: #4367a3;
 }
 
 .hov-shaddow:hover {
@@ -135,7 +135,7 @@ ul.categories--style-3>li>ul>li>a.active,
 
 .c-base-1,
 .link-menu--style-2 a.active {
-    color: #E9DD27 !important;
+    color: #4367a3 !important;
 }
 
 .search-box button,
@@ -220,12 +220,12 @@ input:checked+.toggle-switch-slider:before,
 .section-title-1 li a.active,
 .section-title-1 li a:hover,
 .product-box-1 .cart-add .btn:hover {
-    background: #E9DD27;
+    background: #4367a3;
 }
 
 .pace .pace-progress,
 .widget-profile-menu a:hover {
-    background: #E9DD27 !important;
+    background: #4367a3 !important;
 }
 
 .btn-anim-primary:before,
@@ -264,7 +264,7 @@ input:checked+.toggle-switch-slider:before,
 #map-zoom-in:hover,
 #map-zoom-out:hover,
 .product-box-2 .add-to-cart:hover {
-    background-color: #E9DD27;
+    background-color: #4367a3;
 }
 
 .btn-base-1.btn-outline:active,
@@ -273,7 +273,7 @@ input:checked+.toggle-switch-slider:before,
 .flatpickr-day.selected,
 .flatpickr-day.selected:hover,
 .bg-base-1 {
-    background-color: #E9DD27 !important;
+    background-color: #4367a3 !important;
 }
 
 .btn-anim-primary,
@@ -335,14 +335,14 @@ a>.feature--boxed-border:hover,
 .product-box-2 .add-to-cart,
 .seller-shop-menu li.active a,
 .seller-shop-menu li a:hover {
-    border-color: #E9DD27;
+    border-color: #4367a3;
 }
 
 .btn-base-1.btn-outline,
 .btn-base-1.btn-outline:active,
 .btn-base-1.btn-outline:focus,
 .btn-base-1.btn-outline:hover {
-    border-color: #E9DD27 !important;
+    border-color: #4367a3 !important;
 }
 
 .slice--arrow.slice--arrow.bg-base-1:before,
@@ -350,7 +350,7 @@ a>.feature--boxed-border:hover,
 .block--style-4-v2 .block-body.bg-base-1:after,
 .form-card--style-2 .form-header:after,
 .icon-block--arrow .block-icon:after {
-    border-top-color: #E9DD27;
+    border-top-color: #4367a3;
 }
 
 @media (min-width: 992px) {
@@ -367,11 +367,11 @@ a>.feature--boxed-border:hover,
     .navbar-dropdown--inverse .dropdown-menu .open .dropdown-item,
     .mega-dropdown-menu .mega-dropdown-col-icon>a:hover,
     .navbar-dropdown--inverse .mega-dropdown-menu .meganav-section-title>a:hover {
-        color: #E9DD27;
+        color: #4367a3;
     }
     .tabs .nav-pills.nav-pills--rounded .active .nav-pill .nav-pill-circle,
     .tabs .nav-pills.nav-pills--rounded a.active:hover .nav-pill .nav-pill-circle {
-        background: #E9DD27;
+        background: #4367a3;
     }
 }
 
@@ -383,7 +383,7 @@ a>.feature--boxed-border:hover,
     .navbar-nav .show .nav-link:hover,
     .navbar-inverse .dropdown-menu .dropdown-item:focus,
     .navbar-inverse .dropdown-menu .dropdown-item:hover {
-        color: #E9DD27;
+        color: #4367a3;
     }
 }
 
@@ -392,29 +392,29 @@ a>.feature--boxed-border:hover,
     .navbar-aside .navbar-expand-lg .navbar-nav .nav-link:focus,
     .navbar-aside .navbar-expand-lg .navbar-nav .show .nav-link,
     .navbar-aside .navbar-expand-lg .navbar-nav .show .nav-link:hover {
-        color: #E9DD27;
+        color: #4367a3;
     }
 }
 
 .shape-container[data-shape-fill="primary"] .shape-item {
-    fill: #E9DD27;
+    fill: #4367a3;
 }
 
 input:focus+.toggle-switch-slider {
-    box-shadow: 0 0 1px #E9DD27;
+    box-shadow: 0 0 1px #4367a3;
 }
 
 .bg-base-1.ss-style-zigzag::after {
-    background-image: -webkit-gradient(linear, 0 0, 300% 100%, color-stop(0.25, #E9DD27), color-stop(0.25, #E9DD27));
-    background-image: linear-gradient(135deg, #E9DD27 25%, transparent 25%), linear-gradient(225deg, #E9DD27 25%, transparent 25%);
+    background-image: -webkit-gradient(linear, 0 0, 300% 100%, color-stop(0.25, #4367a3), color-stop(0.25, #4367a3));
+    background-image: linear-gradient(135deg, #4367a3 25%, transparent 25%), linear-gradient(225deg, #4367a3 25%, transparent 25%);
 }
 
 .photostream .photo-wrapper img:hover {
-    box-shadow: 0 0 0 3px #E9DD27;
+    box-shadow: 0 0 0 3px #4367a3;
 }
 
 .map-container address {
-    background-color: fade(#E9DD27, 80%);
+    background-color: fade(#4367a3, 80%);
 }
 
 

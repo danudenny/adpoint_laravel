@@ -3,7 +3,7 @@ namespace App\Http\Controllers\API;
 
 /**
  * @OA\Info(
- *     title="Laravel Adpoint API",
+ *     title="Laravel InnovAPS API",
  *     version="1.0.0",
  *     @OA\Contact(
  *         email="alkhamilnaz@gmail.com"
@@ -19,12 +19,12 @@ namespace App\Http\Controllers\API;
  *     scheme="bearer"
  * ),
  * @OA\Server(
- *     description="Laravel Adpoint API",
- *     url="http://localhost:8000/api"
+ *     description="Laravel InnovAPS API",
+ *     url="http://localhost:8000/api-mobile"
  * )
  * @OA\Server(
- *     description="Laravel Adpoint API",
- *     url="https://localhost:8000/api"
+ *     description="Laravel InnovAPS API",
+ *     url="https://localhost:8000/api-mobile"
  * )
  * @OA\Response(response=200,description="ok")
  * @OA\Response(response=401,description="bad")

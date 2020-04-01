@@ -40,7 +40,7 @@
 <!-- Favicon -->
 <link name="favicon" type="image/x-icon" href="{{ asset(\App\GeneralSetting::first()->favicon) }}" rel="shortcut icon" />
 
-<title>@yield('meta_title', config('app.name', 'Adpoint'))</title>
+<title>@yield('meta_title', config('app.name', 'InnovAPS'))</title>
 
 <!-- Fonts -->
 <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i" rel="stylesheet">
@@ -1461,14 +1461,14 @@
     <script src="https://js.pusher.com/5.1/pusher.min.js"></script>
     <script type="text/javascript">
 
-        
+
         function getCountNotif() {
             $.get('{{ route('count.notif.member') }}', function(result) {
                 $('.notification-icon').attr('data-count', result);
                 $('.notif-count').text(result);
             })
         }
-        
+
         function getDataNotif() {
             var notificationsWrapper   = $('.dropdown-notifications');
             var notifications          = notificationsWrapper.find('ul.dropdown-menu');
@@ -1554,14 +1554,29 @@
             });
         });
 
-        
-        function markAllAssRead(e) {
+
+        function markAllAsRead(e) {
             e.stopPropagation();
             $.get('{{ route('mark.all.as.read') }}');
             getCountNotif();
             getDataNotif();
-        } 
-        
+        }
+
+        function markAsRead(e){
+            e.stopPropagation();
+            var $this = e.target.parentElement;
+            var data_id = $($this).attr('data-id')
+            var data_url = $($this).attr('data-url')
+            var base_url = {!! json_encode(url('/')) !!}
+            var mark_url = base_url+'/mark-as-read/'+data_id;
+            $.get(mark_url)
+            getCountNotif();
+            getDataNotif();
+            setTimeout(() => {
+                location.href = data_url;
+            }, 1000);
+        }
+
     </script>
     {{-- Pushy --}}
     @auth

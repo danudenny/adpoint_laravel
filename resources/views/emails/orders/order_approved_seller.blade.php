@@ -8,7 +8,7 @@
                 <td class="content-cell">
                     <div class="f-fallback">
                         <h4>Dear {{ $user['name'] }},</h4>
-                         
+
                          <p>Terimakasih.<br>
                              Anda sudah melakukan order. Mohon menunggu orderan di review admin
                              @php
@@ -16,9 +16,9 @@
                              @endphp
                              {{ $data }}
                          </p>
-                         
+
                          <p>Terimakasih</p>
-                         <p>Regards,<br>Adpoint</p>
+                         <p>Regards,<br>InnovAPS</p>
                     </div>
                 </td>
 

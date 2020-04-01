@@ -138,7 +138,7 @@ Route::get('/terms', 'HomeController@terms')->name('terms');
 Route::get('/privacypolicy', 'HomeController@privacypolicy')->name('privacypolicy');
 
 Route::group(['middleware' => ['user', 'verified', 'auth']], function(){
-	
+
 	Route::get('/dashboard', 'HomeController@dashboard')->name('dashboard');
 
 	Route::get('/notification', 'HomeController@notification')->name('notif.loading');
@@ -259,6 +259,8 @@ Route::group(['middleware' => ['auth']], function(){
 	Route::resource('/reviews', 'ReviewController');
 	Route::post('/review/review_product', 'ReviewController@review_product')->name('review.product');
 	Route::post('/review/create_review_product', 'ReviewController@create_review_product')->name('create.review.product');
+
+    Route::get('check_curl', 'ProductController@getCurl');
 });
 
 Route::resource('shops', 'ShopController');

@@ -122,7 +122,7 @@
 						</tr>
 						<tr>
 							<td colspan="4" align="right">
-								<strong>{{__('Adpoint Fee')}}</strong>
+								<strong>{{__('InnovAPS Fee')}}</strong>
 							</td>
 							<td class="text-bold h4" align="right">
 								{{ single_price($o->adpoint_earning) }}

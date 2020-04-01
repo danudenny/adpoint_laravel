@@ -41,7 +41,7 @@
                         <div class="color-radio col-sm-3">
                             <label>
                                 <input type="radio" name="frontend_color" class="color-control-input" value="4" @if(\App\GeneralSetting::first()->frontend_color == '4') checked @endif>
-                                <span class="color-control-box" style="background:#E9DD27;"></span>
+                                <span class="color-control-box" style="background:#4367a3;"></span>
                             </label>
                         </div>
                         <div class="color-radio col-sm-3">

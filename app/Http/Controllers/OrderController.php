@@ -26,6 +26,7 @@ use Carbon\Carbon;
 use App\ActivatedProces;
 
 use App\Mail\Order\OrderStart;
+use App\Mail\Admin\AdminOrderStart;
 use App\Mail\Order\OrderApprovedAdmin;
 use App\Mail\Order\OrderSold;
 use App\Mail\Order\OrderDisapprovedAdmin;
@@ -756,9 +757,11 @@ class OrderController extends Controller
         $buyer_name = Auth::user()->name;
         $buyer_email = Auth::user()->email;
         $data = Transaction::where('id', $trx->id)->first();
+        $admin = User::where('user_type','admin')->first();
         Mail::to($buyer_email)->send(new OrderStart($data));
-        Notification::send(User::where('user_type','admin')->first(), new OrderProses($buyer_name, $trx->id, $trx->code));
+        Notification::send($admin, new OrderProses($buyer_name, $trx->id, $trx->code));
         event(new OrderProsesEvent('New transactions '.$trx->code.' from '.$buyer_name));
+        Mail::to($admin->email)->send(new AdminOrderStart($admin));
         $push = DB::table('pushy_tokens as pt')
                 ->join('users as u', 'u.id', '=', 'pt.user_id')
                 ->where(['u.user_type' => 'admin'])

@@ -320,7 +320,7 @@
                         @foreach (\App\Category::all() as $key => $category)
                             <li>
                                 <a href="{{ route('products.category', $category->slug) }}" class="text-truncate">
-                                    <img class="cat-image" src="{{ asset($category->banner) }}" width="13">
+                                    <img class="cat-image" src="{{ asset($category->icon) }}" width="13">
                                     <span>{{ __($category->name) }}</span>
                                 </a>
                             </li>
@@ -376,7 +376,7 @@
                             <div class="logo-bar-icons d-inline-block ml-auto">
                                 <div class="d-none d-lg-inline-block topnav-text">
                                     <i class="fa fa-envelope"></i>
-                                    <span> hello@adpoint.id</span>
+                                    <span> hello@innovaps.id</span>
                                 </div>
                                 <div class="d-none d-lg-inline-block topnav-text">
                                     <i class="fa fa-phone"></i>
@@ -474,7 +474,7 @@
                                                                         </li>
                                                                         @if (Auth::check())
                                                                         <li class="px-1">
-                                                                            <a href="{{ route('checkout.shipping_info') }}" class="btn btn-success btn-circle text-white px-3 py-1">
+                                                                            <a href="{{ route('cart') }}" class="btn btn-success btn-circle text-white px-3 py-1">
                                                                                 <i class="la la-mail-forward"></i> {{__('Checkout')}}
                                                                             </a>
                                                                         </li>
@@ -546,11 +546,11 @@
                                             <a href="#notifications-panel" class="dropdown-toggle" data-toggle="dropdown">
                                               <i data-count="0" class="fa fa-bell fa-2x text-dark notification-icon"></i>
                                             </a>
-                              
+
                                             <div class="dropdown-container dropdown-menu dropdown-menu-sm dropdown-menu-right panel-default">
                                               <div class="dropdown-toolbar">
                                                 <div class="dropdown-toolbar-actions">
-                                                  <a href="#" onclick="markAllAssRead(event)">Mark all as read</a>
+                                                  <a href="#" onclick="markAllAsRead(event)">Mark all as read</a>
                                                 </div>
                                                 <h3 class="dropdown-toolbar-title">Notifications (<span class="notif-count">0</span>)</h3>
                                               </div>

@@ -69,7 +69,7 @@
                                                                 <img src="{{ asset('frontend/images/icons/cards/mandiri.png')}}" class="img-fluid w-25">
                                                             </label>
                                                         </div>
-                                                        
+
                                                         <div class="form-group">
                                                             <label>
                                                                 <input type="radio" id="bca" name="payment_option" value="BCA">
@@ -79,7 +79,7 @@
                                                     </div>
                                                     <div class="col-md-6">
                                                         <div id="detailbank">
-                                                            
+
                                                         </div>
                                                     </div>
                                                 @endif
@@ -132,7 +132,7 @@
                             <div class="card-body text-dark">
                                 <h5 class="card-title">Bank Mandiri</h5>
                                 <h5 class="card-title">13300290929</h5>
-                                <p class="card-text">PT. Adpoint Media Online</p>
+                                <p class="card-text">PT. InnovAPS Media Online</p>
                             </div>
                         </div>`
             $('#detailbank').html(body);
@@ -143,12 +143,12 @@
                             <div class="card-body text-dark">
                                 <h5 class="card-title">Bank BCA</h5>
                                 <h5 class="card-title">14090279782</h5>
-                                <p class="card-text">PT. Adpoint Media Online</p>
+                                <p class="card-text">PT. InnovAPS Media Online</p>
                             </div>
                         </div>`
             $('#detailbank').html(body);
         })
-        
+
         function moveTab(activeTab, routeTab) {
             localStorage.setItem('activeTabTrx', activeTab);
             localStorage.setItem('routeTabTrx', routeTab);
