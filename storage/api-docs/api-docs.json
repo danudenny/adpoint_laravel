@@ -13,11 +13,11 @@
     },
     "servers": [
         {
-            "url": "http://localhost:8000/api-mobile",
+            "url": "https://aps.jaladara.com/api-mobile",
             "description": "Laravel InnovAPS API"
         },
         {
-            "url": "https://localhost:8000/api-mobile",
+            "url": "https://aps.jaladara.com/api-mobile",
             "description": "Laravel InnovAPS API"
         }
     ],
