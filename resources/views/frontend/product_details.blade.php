@@ -342,7 +342,7 @@
                                         {{__('Show QRCode')}}
                                     </button>
                                     <div id="showQR" class="collapse">
-                                        <img src="data:image/png;base64, {!! base64_encode(QrCode::format('png')->size(200)->merge('\public\uploads\admin_logo\logo_ad_qr.png', .3)->generate(Request::url())) !!} ">
+                                        <img src="data:image/png;base64, {!! base64_encode(QrCode::format('png')->size(200)->merge('/public/uploads/admin_logo/logo_ad_qr.png', .3)->generate(Request::url())) !!} ">
                                     </div>
                                 </div>
                             </div>
