@@ -20,11 +20,11 @@ namespace App\Http\Controllers\API;
  * ),
  * @OA\Server(
  *     description="Laravel InnovAPS API",
- *     url="https://aps.jaladara.com/api"
+ *     url="https://aps.jaladara.com/mobile/api"
  * )
  * @OA\Server(
  *     description="Laravel InnovAPS API",
- *     url="https://aps.jaladara.com/api"
+ *     url="https://aps.jaladara.com/mobile/api"
  * )
  * @OA\Response(response=200,description="ok")
  * @OA\Response(response=401,description="bad")
