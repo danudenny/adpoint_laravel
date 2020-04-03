@@ -161,7 +161,7 @@
                                 <a href="{{ route('profile.index') }}"><i class="demo-pli-male icon-lg icon-fw"></i> {{__('Profile')}}</a>
                             </li>
                             <li>
-                                <a href="{{ route('logout')}}" onclick="logoutSession()"><i class="demo-pli-unlock icon-lg icon-fw"></i> {{__('Logout')}}</a>
+                                <a href="{{ route('signout')}}" onclick="logoutSession()"><i class="demo-pli-unlock icon-lg icon-fw"></i> {{__('Logout')}}</a>
                             </li>
                         </ul>
                     </div>

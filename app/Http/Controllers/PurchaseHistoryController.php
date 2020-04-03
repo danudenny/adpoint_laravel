@@ -61,6 +61,7 @@ class PurchaseHistoryController extends Controller
                         'od.product_id as item_name',
                         'od.seller_id',
                         'od.status as od_status',
+                        'od.rejected as od_rejected',
                         'od.file_advertising as od_file_advertising'
                     ])
                     ->first();

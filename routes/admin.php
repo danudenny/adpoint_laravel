@@ -28,6 +28,7 @@ Route::group(['prefix' =>'admin', 'middleware' => ['auth', 'admin']], function()
 	Route::get('/transaction/paid_invoice/{id}', 'TransactionController@paid_invoice')->name('transaction.paid.invoice');
 
 	Route::post('/reject/details', 'TransactionController@reject_detail')->name('reject.detail');
+	Route::get('/confirm-reject-to-buyer/{id}', 'TransactionController@confirm_reject_to_buyer')->name('confirm.reject.to.buyer');
 	Route::post('/reject/detail/proses', 'TransactionController@reject_detail_proses')->name('reject.detail.proses');
 
 

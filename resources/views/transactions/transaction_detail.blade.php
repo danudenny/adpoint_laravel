@@ -44,8 +44,20 @@
                                 <i>Approved</i>
                             @elseif ($transaction->status === "rejected")
                                 <i>Rejected</i> - <i class="text-danger">{{ $transaction->is_rejected }}</i>
-                            @elseif ($transaction->status === "ready")
-                                <i>Checked Seller</i>
+                            @elseif ($transaction->status === "ready") 
+                                @php
+                                    foreach ($transaction->orders as $key => $o) {
+                                        $reject_list = [];
+                                        foreach ($o->orderDetails as $key => $od) {
+                                            array_push($reject_list, $od->rejected);
+                                        }
+                                    }
+                                @endphp
+                                @if (count($reject_list) > 0)
+                                    <i class="text-danger">Rejected by Seller</i>
+                                @else 
+                                    <i>Checked Seller</i>
+                                @endif
                             @elseif ($transaction->status === "confirmed")
                                 <i>Confirmed</i>
                             @elseif ($transaction->status === "continue")
@@ -72,12 +84,14 @@
                         @php
                             $true = [];
                             $false = [];
+                            $od_rejected = [];
                         @endphp
                         @foreach (\App\Transaction::where('id', $transaction->id)->get() as $key => $t)
                             @foreach ($t->orders as $key => $o)
                                 @foreach ($o->orderDetails as $key => $od)
                                     @php
                                         array_push($false, $od->is_confirm);
+                                        array_push($od_rejected, $od->rejectd);
                                     @endphp
                                     @if ($od->is_confirm === 1)
                                         @php
@@ -87,6 +101,9 @@
                                 @endforeach
                             @endforeach
                         @endforeach
+                        @if (count($od_rejected) > 0)
+                            <button id="btn-cal" onclick="confirmToBuyerToCalculate({{$transaction->id}})"  class="btn btn-warning">Confirm Reject To Buyer</but>
+                        @endif
                         @if (count($true) === count($false))
                             <button onclick="confirmToBuyer({{$transaction->id}})" class="btn btn-primary">Confirm</button>
                         @endif
@@ -207,6 +224,11 @@
                                                                 <b><a href="{{ url($v) }}" download>Video {{ $key+1 }}</a></b> <br>
                                                             @endforeach
                                                         @endif
+                                                        @if ($file->link !== null)
+                                                            @foreach ($file->link as $key => $l)
+                                                                <b><a href="{{ $l }}" target="_blank">Link {{ $key+1 }}</a></b> <br>
+                                                            @endforeach
+                                                        @endif
                                                     @endif                                                   
                                                 </td>
                                                 <td>
@@ -218,7 +240,7 @@
                                                 <td>
                                                     @if ($od->is_confirm == 0)
                                                         <button data-toggle="tooltip" title="Details" onclick="rejectDetail({{ $od->id }})" class="btn btn-sm btn-primary">
-                                                            <i class="fa fa-eye"></i>
+                                                            <i class="fa fa-eye"></i> Details
                                                         </button>
                                                     @endif
                                                 </td>
@@ -245,6 +267,11 @@
                                                         @if ($file->video !== null)
                                                             @foreach ($file->video as $key => $v)
                                                                 <b><a href="{{ url($v) }}" download>Video {{ $key+1 }}</a></b> <br>
+                                                            @endforeach
+                                                        @endif
+                                                        @if ($file->link !== null)
+                                                            @foreach ($file->link as $key => $l)
+                                                                <b><a href="{{ $l }}" target="_blank">Link {{ $key+1 }}</a></b> <br>
                                                             @endforeach
                                                         @endif
                                                     @endif
@@ -313,6 +340,12 @@
             $.post('{{ route('reject.detail') }}', {_token:'{{ csrf_token() }}', order_detail_id:id}, function(data){
                 $('#rejectDetailbody').html(data);
             });
+        }
+
+        function confirmToBuyerToCalculate(id){
+            $('#btn-cal').html('<i class="fa fa-spin fa-spinner"></i>');
+            let url = '{{ url("/admin/confirm-reject-to-buyer") }}'+"/"+id;
+            location.replace(url);
         }
     </script>
 @endsection

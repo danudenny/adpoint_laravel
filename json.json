@@ -66,6 +66,16 @@
             "content": "<p>Selamat.<br>Ordered<\/p>"
         },
         {
+            "judul": "Admin Order Approve By Seller",
+            "subject": "Order Approved #",
+            "content": "<p>Orderan telah di setujui oleh pihak seller. silahkan lanjutkan<\/p>"
+        },
+        {
+            "judul": "Admin Order Reject By Seller",
+            "subject": "Media",
+            "content": "<p>Silahkan cek informasi nya</p>"
+        },
+        {
             "judul": "Order Confirmation Admin",
             "subject": "Selamat orderan telah disetujui",
             "content": "<p>Terimakasih sudah melakukan order. rincian sebagai berikut.<\/p>"
@@ -74,6 +84,11 @@
             "judul": "Order Invoice",
             "subject": "Silahkan lakukan pembayaran!",
             "content": "<p>Terimakasih.<br>Anda sudah melakukan order. Mohon segera melakukan pembayaran <br>lakukan pembaran sebelum tanggal<\/p>"
+        },
+        {
+            "judul": "Admin Order Pay",
+            "subject": "Pemabayaran baru telah masuk dari #",
+            "content": "<p>Silahkan informasikan ke pihak seller untuk di tindak lanjuti</p>"
         },
         {
             "judul": "Order Notif Payment Buyer",

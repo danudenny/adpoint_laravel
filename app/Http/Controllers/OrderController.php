@@ -29,10 +29,13 @@ use App\Mail\Order\OrderStart;
 use App\Mail\Admin\AdminOrderStart;
 use App\Mail\Order\OrderApprovedAdmin;
 use App\Mail\Order\OrderSold;
+use App\Mail\Admin\AdminOrderApproveBySeller;
+use App\Mail\Admin\AdminRejectedBySeller;
 use App\Mail\Order\OrderDisapprovedAdmin;
 use App\Mail\Order\OrderApprovedSeller;
 use App\Mail\Order\OrderConfirmation;
 use App\Mail\Order\OrderInvoice;
+use App\Mail\Admin\AdminOrderPay;
 use App\Mail\Order\OrderDisapprovedSeller;
 use App\Mail\Order\OrderActive;
 use App\Mail\Order\OrderComplete;
@@ -65,6 +68,8 @@ use App\Notifications\OrderActiveSellerBuyer;
 use App\Events\OrderActiveSellerBuyerEvent;
 use App\Notifications\OrderCompleted;
 use App\Events\OrderCompletedEvent;
+use App\Notifications\DisapproveSellerToAdmin;
+use App\Events\DisapproveSellerToAdminEvent;
 
 
 class OrderController extends Controller
@@ -123,6 +128,7 @@ class OrderController extends Controller
                         'od.product_id as item_name',
                         'od.seller_id',
                         'od.status as od_status',
+                        'od.rejected as od_rejected',
                         'od.file_advertising as od_file_advertising'
                     ])
                     ->first();
@@ -307,8 +313,10 @@ class OrderController extends Controller
                     $trx->status = "ready";
                     $trx->save();
                     // pushy notif
-                    Notification::send(User::where('user_type', 'admin')->first(), new OrderApproveSellerAdmin($trx->id, $trx->code));
-                    event(new OrderApproveSellerAdminEvent('Order '.$trx->code.' has been approved by the seller, please continue!'));
+                    $admin = User::where('user_type', 'admin')->first();
+                    Notification::send($admin, new OrderApproveSellerAdmin($trx->id, $order->code));
+                    event(new OrderApproveSellerAdminEvent('Order '.$order->code.' has been approved by the seller, please continue!'));
+                    Mail::to($admin->email)->send(new AdminOrderApproveBySeller($admin, $order->code));
                     $push = DB::table('pushy_tokens as pt')
                             ->join('users as u', 'u.id', '=', 'pt.user_id')
                             ->where(['u.user_type' => 'admin'])
@@ -353,9 +361,15 @@ class OrderController extends Controller
                 $order = Order::where('id', $order_detail->order_id)->first();
                 $default_status_od = $this->_cek_default_status_order_details($order->transaction_id);
                 if (count($default_status_od) === 0) {
+                    
                     $trx = Transaction::where('id', $order->transaction_id)->first();
                     $trx->status = "ready";
                     $trx->save();
+
+                    $admin = User::where('user_type', 'admin')->first();
+                    Notification::send($admin, new DisapproveSellerToAdmin($product->name,$trx->id));
+                    event(new DisapproveSellerToAdminEvent('Media telah di batalkan oleh seller '.$product->name));
+                    Mail::to($admin->email)->send(new AdminRejectedBySeller($admin, $product->name));
                 }
                 flash('Item '.$product->name.' Rejected')->success();
                 return back();
@@ -509,8 +523,10 @@ class OrderController extends Controller
             
             $user_id = $trx->user_id;
             $buyer_name = User::where('id', $user_id)->first()->name;
-            Notification::send(User::where('user_type','admin')->first(), new OrderPay($buyer_name, $trx->id));
+            $admin = User::where('user_type','admin')->first();
+            Notification::send($admin, new OrderPay($buyer_name, $trx->id));
             event(new OrderPayEvent('New payment entered from '.$buyer_name));
+            Mail::to($admin->email)->send(new AdminOrderPay($admin,$buyer_name));
             $push = DB::table('pushy_tokens as pt')
                         ->join('users as u', 'u.id', '=', 'pt.user_id')
                         ->where(['u.user_type' => 'admin'])
