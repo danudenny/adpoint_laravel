@@ -86,6 +86,18 @@ Route::group(['middleware' => ['auth.jwt','jsonify']], function () {
     Route::get('transaction/{id}', 'Api\TransactionCtrl@transaction');
     Route::get('transaction-details/{id}/{user_id}', 'Api\TransactionCtrl@transactionDetails');
     Route::post('/upload-buktitransfer/{id}', 'Api\TransactionCtrl@uploadTrx');
+
+    //    Cart
+    Route::get('cart_session', 'Api\OrderCtrl@cartSession');
+    Route::get('session/test',function(){
+        if (session()->has('cart'))
+        {
+            echo 'session storage , data:' . session('cart');
+        }else{
+            session('cart','this is test');
+            dd(session('cart'));
+        }
+    });
 });
 
 // Pushy

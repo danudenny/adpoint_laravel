@@ -13,11 +13,11 @@
     },
     "servers": [
         {
-            "url": "https://aps.jaladara.com/api-mobile",
+            "url": "https://aps.jaladara.com/api",
             "description": "Laravel InnovAPS API"
         },
         {
-            "url": "https://aps.jaladara.com/api-mobile",
+            "url": "https://aps.jaladara.com/api",
             "description": "Laravel InnovAPS API"
         }
     ],
@@ -770,6 +770,28 @@
                 ],
                 "summary": "Display order active by current user",
                 "operationId": "list order active by current user",
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/cart_session": {
+            "get": {
+                "tags": [
+                    "Cart"
+                ],
+                "summary": "Display a listing of the cart session",
+                "operationId": "cart session",
                 "responses": {
                     "200": {
                         "description": "ok"
