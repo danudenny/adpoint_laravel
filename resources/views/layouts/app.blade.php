@@ -283,6 +283,10 @@
                 channel : 'new-shop-register-channel',
                 event : 'new-shop-register-event'
             },
+            {
+                channel : 'disapprove-seller-to-admin-channel',
+                event : 'disapprove-seller-to-admin-event'
+            },
         ];
         events.forEach(e => {
             var channel = pusher.subscribe(e.channel);

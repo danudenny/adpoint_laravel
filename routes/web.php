@@ -22,8 +22,9 @@ Route::get('/mark-all-as-read', 'HomeController@mark_all_as_read')->name('mark.a
 
 Auth::routes(['verify' => true]);
 
-Route::get('/logout', '\App\Http\Controllers\Auth\LoginController@logout');
-Route::post('/language', 'LanguageController@changeLanguage')->name('language.change');
+// Route::get('/logout', '\App\Http\Controllers\Auth\LoginController@logout');
+Route::get('/logout', 'HomeController@logout')->name('signout');
+Route::post('/language', 'HomeController@changeLanguage')->name('language.change');
 Route::post('/currency', 'CurrencyController@changeCurrency')->name('currency.change');
 
 Route::get('/social-login/redirect/{provider}', 'Auth\LoginController@redirectToProvider')->name('social.login');

@@ -93,7 +93,7 @@
                                 <div class="name">{{ Auth::user()->name }}</div>
                         </div>
                         <div class="side-login px-3 pb-3">
-                            <a href="{{ route('logout') }}" onclick="logoutSession()">{{__('Sign Out')}}</a>
+                            <a href="{{ route('signout') }}" onclick="logoutSession()">{{__('Sign Out')}}</a>
                         </div>
                     @else
                         <div class="widget-profile-box px-3 py-4 d-flex align-items-center">
@@ -387,7 +387,7 @@
                                         <a href="{{ route('dashboard') }}" class="login-text">{{__('My Account')}}</a>
                                     </div>
                                     <div class="d-none d-lg-inline-block topnav-text">
-                                        <a href="{{ route('logout') }}" onclick="logoutSession()" class="login-text">{{__('Logout')}}</a>
+                                        <a href="{{ route('signout') }}" onclick="logoutSession()" class="login-text">{{__('Logout')}}</a>
                                     </div>
                                     <div class="d-inline-block" data-hover="dropdown">
                                         <div class="nav-cart-box dropdown" id="cart_items">

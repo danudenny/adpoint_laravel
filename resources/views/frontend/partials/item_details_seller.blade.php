@@ -52,6 +52,11 @@
                                         <b><a href="{{ url($v) }}" download>Video {{ $key+1 }} <i class="fa fa-download"></i></a></b> <br>
                                     @endforeach
                                 @endif
+                                @if ($file->link !== null)
+                                    @foreach ($file->link as $key => $l)
+                                        <b><a href="{{ $l }}" target="_blank">Link {{ $key+1 }} <i class="fa fa-download"></i></a></b> <br>
+                                    @endforeach
+                                @endif
                             @endif
                         </td>
                     </tr>
@@ -89,6 +94,16 @@
                                     <i class="text-default">On Review</i>
                                 @elseif ($query->od_status == 2)
                                     <i class="text-danger">Cancelled</i>
+                                    @php
+                                        $reject_by_admin = \App\Transaction::where('code', $query->code_trx)->first()->is_rejected;
+                                    @endphp
+                                    @if ($reject_by_admin !== null)
+                                        <div>Reject by seller: <b class="text-danger">{{ $reject_by_admin }}</b></div> 
+                                    @else 
+                                        @if ($query->od_rejected !== null)
+                                            <div>Reject by seller: <b class="text-danger">{{ $query->od_rejected }}</b></div> 
+                                        @endif
+                                    @endif
                                 @elseif ($query->od_status == 3)
                                     <i class="text-primary">Actived</i>
                                 @elseif ($query->od_status == 4)

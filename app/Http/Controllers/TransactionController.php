@@ -49,8 +49,12 @@ class TransactionController extends Controller
 
     public function pdf_invoice(Request $request, $id)
     {
-        $inv = Invoice::where('transaction_id', $id)->first();
-        $pdf = PDF::loadview('transactions.pdf_inv', compact('inv'));
+        $inv = Invoice::where('id', $id)->first();
+        $pdf = PDF::setOptions([
+                    'isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true,
+                    'logOutputFile' => storage_path('logs/log.htm'),
+                    'tempDir' => storage_path('logs/')
+                ])->loadView('transactions.pdf_inv', compact('inv'));
         return $pdf->download($inv->code);
     }
 
@@ -211,9 +215,31 @@ class TransactionController extends Controller
         return view('transactions.reject_detail', compact('order_detail'));
     }
 
-    public function reject_detail_proses(Request $request)
+    public function confirm_reject_to_buyer(Request $request, $trx_id)
     {
-        $order_detail = OrderDetail::where('id', $request->order_detail_id)->first();
+        $trx = Transaction::where('id', $trx_id)->first();
+        $od_rejected = [];
+        foreach ($trx->orders as $key => $o) {
+            foreach ($o->orderDetails as $key => $od) {
+                array_push($od_rejected, $od->rejected);
+            }
+        }
+        if (count($od_rejected) == 1) {
+            dd('Langsung kabari buyer');
+        }elseif (count($od_rejected) > 1) {
+            foreach ($trx->orders as $key => $o) {
+                foreach ($o->orderDetails as $key => $od) {
+                    if ($od->status == 2) {
+                        $this->reject_detail_proses($id);
+                    }
+                }
+            }
+        }
+    }
+
+    public function reject_detail_proses($od_id)
+    {
+        $order_detail = OrderDetail::where('id', $od_id)->first();
 
         if ($order_detail !== null) {
             $order_detail->is_confirm = 1;
@@ -233,10 +259,6 @@ class TransactionController extends Controller
 
             $order_detail->save();
             $order->save();
-
-            return back();
         }
-        
-        
     }
 }

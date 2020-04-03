@@ -21,7 +21,7 @@ class AdminOrderStart extends Mailable implements ShouldQueue
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($user)
     {
         $this->user = $user;
         $this->email = BusinessSetting::where('type','email_settings')->first()->value;

@@ -54,8 +54,8 @@ class CartController extends Controller
         if ($request->hasFile('video')) {
             $filevideo = [];
             $arr = [];
-            foreach ($request->video as $key => $g) {
-                $path = $g->store('uploads/materi_advertising');
+            foreach ($request->video as $key => $v) {
+                $path = $v->store('uploads/materi_advertising');
                 array_push($arr, $path);
                 $filevideo['video'] = $arr;
             }
@@ -64,17 +64,17 @@ class CartController extends Controller
         }
 
         if ($request->input('link')) {
-            $link = [];
+            $filelink = [];
             $arr = [];
-            foreach ($request->link as $key => $g) {
-                $path = $request->input('link');
+            foreach ($request->link as $key => $l) {
+                $path = $l;
                 array_push($arr, $path);
-                $link['link'] = $arr;
+                $filelink['link'] = $arr;
             }
         }else {
-            $link['link'] = null;
+            $filelink['link'] = null;
         }
-        $result = array_merge($filegambar, $filevideo, $link);
+        $result = array_merge($filegambar, $filevideo, $filelink);
         $advertising = json_encode($result);
 
         $cart = Session::get('cart');

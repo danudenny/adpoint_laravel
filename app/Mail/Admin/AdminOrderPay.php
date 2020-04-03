@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Mail\Order;
+namespace App\Mail\Admin;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
@@ -8,25 +8,29 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use App\BusinessSetting;
 
-class OrderSold extends Mailable implements ShouldQueue
+
+class AdminOrderPay extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
     public  $user,
             $email, 
-            $value, 
+            $value,
+            $buyer_name,
             $subject;
+
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($user)
+    public function __construct($user, $name)
     {
         $this->user = $user;
+        $this->buyer_name = $name;
         $this->email = BusinessSetting::where('type','email_settings')->first()->value;
         $this->value = json_decode($this->email);
         foreach ($this->value->data as $key => $d) {
-            if ($d->judul == "Order Sold") {
+            if ($d->judul == "Admin Order Pay") {
                 $this->subject = $d->subject;
             }
         }
@@ -39,7 +43,7 @@ class OrderSold extends Mailable implements ShouldQueue
      */
     public function build()
     {
-        return $this->view('emails.orders.order_sold')
-            ->subject($this->subject.' #'.$this->user['code']);
+        return $this->view('emails.admin.admin_order_pay')
+            ->subject($this->subject.$this->buyer_name);
     }
 }

@@ -185,6 +185,16 @@ class HomeController extends Controller
         }
     }
 
+    public function logout(){
+        if (Auth::user()->user_type !== "admin") {
+            Auth::logout();
+            return redirect('/');
+        }else{
+            Auth::logout();
+            return redirect('/login');
+        }
+    }
+
     public function cart_login(Request $request)
     {
         $user = User::whereIn('user_type', ['customer', 'seller'])->where('email', $request->email)->first();

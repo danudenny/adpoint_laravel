@@ -7,20 +7,20 @@ use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 
-class OrderApproveSellerAdmin extends Notification
+class DisapproveSellerToAdmin extends Notification
 {
     use Queueable;
-    public $trx_id, $order_code;
+    public $product_name, $trx_id;
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct($id, $code)
+    public function __construct($product_name, $trx_id)
     {
-        $this->trx_id = $id;
-        $this->order_code = $code;
+        $this->product_name = $product_name;
+        $this->trx_id = $trx_id;
     }
 
     /**
@@ -57,8 +57,8 @@ class OrderApproveSellerAdmin extends Notification
     public function toArray($notifiable)
     {
         return [
-            'title' => 'Order '.$this->order_code.' has been approved by the seller, please continue!',
-            'body' => 'Order '.$this->order_code.' has been approved by the seller, please continue!',
+            'title' => 'Media '.$this->product_name.' is rejected by the seller',
+            'body' => 'Media '.$this->product_name.' is rejected by the seller',
             'url' => url('/admin/transaction/details/'.encrypt($this->trx_id))
         ];
     }

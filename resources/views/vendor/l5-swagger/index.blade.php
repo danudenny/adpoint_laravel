@@ -97,7 +97,6 @@ window.onload = function() {
 
     layout: "StandaloneLayout"
   })
-
   window.ui = ui
 }
 </script>
