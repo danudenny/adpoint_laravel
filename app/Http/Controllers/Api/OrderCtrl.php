@@ -302,4 +302,39 @@ class OrderCtrl extends Controller
     {
         //
     }
+
+    /**
+     * @OA\Get(
+     *     path="/cart_session",
+     *     operationId="cart session",
+     *     tags={"Cart"},
+     *     summary="Display a listing of the cart session",
+     *     security={{"bearerAuth":{}}},
+     *     @OA\Response(response="200",description="ok"),
+     *     @OA\Response(response="401",description="unauthorized")
+     * )
+     */
+    public function cartSession()
+    {
+        if (\Session::has('cart')) {
+            $get = \Session::get('cart');
+            if ($get != null) {
+                return response()->json($get, 200);
+            }else{
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Data tidak ditemukan'
+                ], 401);
+            }
+        }
+//        $order = Order::where('id', $id)->get();
+//        if ($order != null) {
+//            return response()->json($order, 200);
+//        }else{
+//            return response()->json([
+//                'success' => false,
+//                'message' => 'Data tidak ditemukan'
+//            ], 401);
+//        }
+    }
 }

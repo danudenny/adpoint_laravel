@@ -62,7 +62,7 @@ class LoginController extends Controller
 
         // check if they're an existing user
         $existingUser = User::where('email', $user->email)->first();
-        
+
         if($existingUser){
             // log them in
             auth()->login($existingUser, true);
@@ -122,7 +122,7 @@ class LoginController extends Controller
         }else{
             return back();
         }
-        
+
     }
 
     /**
