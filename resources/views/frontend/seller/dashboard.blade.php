@@ -54,15 +54,14 @@
                                     <a href="javascript:;" class="d-block">
                                         <img src="{{ asset('frontend/images/icons/payroll.png') }}" alt="">
                                         @php
-                                            $orders = \App\Order::where('seller_id', Auth::user()->id)->get();
-                                            $total = 0;
-                                            foreach ($orders as $key => $o) {
-                                                if($o->approved == 1){
-                                                    $total += $o->grand_total-$o->adpoint_earning;
-                                                }
+                                             $orders = DB::table('orders')
+                                                ->selectRaw('sum(grand_total - adpoint_earning) as jumlah')
+                                                ->get();
+                                            foreach ($orders as $key => $value) {
+                                                $jumlah = $value->jumlah;
                                             }
                                         @endphp
-                                        <span class="d-block title heading-6 strong-400">{{ single_price($total) }}</span>
+                                        <span class="d-block title heading-6 strong-400">{{ single_price($jumlah) }}</span>
                                         <span class="d-block sub-title">{{__('Total earnings')}}</span>
                                     </a>
                                 </div>

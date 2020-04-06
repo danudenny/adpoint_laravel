@@ -13,11 +13,11 @@
     },
     "servers": [
         {
-            "url": "http://localhost:8000/mobile/api",
+            "url": "https://aps.jaladara.com/mobile/api",
             "description": "Laravel InnovAPS API"
         },
         {
-            "url": "https://localhost:8000/mobile/api",
+            "url": "https://aps.jaladara.com/mobile/api",
             "description": "Laravel InnovAPS API"
         }
     ],
@@ -1002,7 +1002,7 @@
                 ]
             }
         },
-        "/product_bycategory/{category_id}/{sort}": {
+        "/product_bycategory/{category_id}": {
             "get": {
                 "tags": [
                     "Products"
@@ -1017,14 +1017,6 @@
                         "schema": {
                             "type": "integer",
                             "format": "int64"
-                        }
-                    },
-                    {
-                        "name": "sort",
-                        "in": "path",
-                        "description": "sort by id",
-                        "schema": {
-                            "type": "string"
                         }
                     }
                 ],
