@@ -34,7 +34,6 @@ class ProductCtrl extends Controller
         $products = Product::get()->toArray();
         $variants = Product::get()->pluck('variations');
         $variant_array = [];
-        $harian = array('Periode' => 'Harian');
         foreach ($variants as $variant => $values) {
             $decode = json_decode($values);
             $periode_values = array_values((array)$decode);
@@ -173,19 +172,44 @@ class ProductCtrl extends Controller
     */
     public function show($id)
     {
+        // $product = DB::table('products as p')
+        //     -> join('users as u', 'p.user_id', '=', 'u.id')
+        //     -> select('p.*', 'u.name as sellerName', 'u.id as userID', 'u.avatar_original', 'u.city', 'u.address')
+        //     -> where('u.user_type', 'seller')
+        //     -> where('p.id', '=',$id)
+        //     -> get();
+        // if ($product != null) {
+        //     return response()->json($product, 200);
+        // }else{
+        //     return response()->json([
+        //         'success' => false,
+        //         'message' => 'Data tidak ditemukan'
+        //     ], 401);
+        // }
+
         $product = DB::table('products as p')
             -> join('users as u', 'p.user_id', '=', 'u.id')
             -> select('p.*', 'u.name as sellerName', 'u.id as userID', 'u.avatar_original', 'u.city', 'u.address')
             -> where('u.user_type', 'seller')
             -> where('p.id', '=',$id)
-            -> get();
-        if ($product != null) {
-            return response()->json($product, 200);
-        }else{
-            return response()->json([
-                'success' => false,
-                'message' => 'Data tidak ditemukan'
-            ], 401);
+            -> get()->toArray();
+        $variants = Product::get()->pluck('variations');
+        $variant_array = [];
+        foreach ($variants as $variant => $values) {
+            $decode = json_decode($values);
+            $periode_values = array_values((array)$decode);
+            array_push($variant_array, ['variasi'=>[$decode]]);
+        }
+        if ($products != null) {
+            $merged = array_replace_recursive($products, $variant_array);
+            if (count($merged) > 0) {
+                return response()->json($merged, 200);
+            }else {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Data tidak ditemukan'
+                ], 401);
+            }
         }
     }
 
@@ -424,7 +448,7 @@ class ProductCtrl extends Controller
 
     /**
      * @OA\Get(
-     *     path="/product_bycategory/{category_id}/{sort}",
+     *     path="/product_bycategory/{category_id}",
      *     operationId="list product by category id",
      *     tags={"Products"},
      *     summary="Display a listing of the product by category id",
@@ -438,14 +462,6 @@ class ProductCtrl extends Controller
      *           format="int64"
      *         )
      *     ),
-     *      @OA\Parameter(
-     *         description="sort by id",
-     *         in="path",
-     *         name="sort",
-     *         @OA\Schema(
-     *           type="string",
-     *         )
-     *     ),
      *     @OA\Response(response="200",description="ok"),
      *     @OA\Response(response="401",description="unauthorized")
      * )
@@ -453,14 +469,13 @@ class ProductCtrl extends Controller
      * @param $sort
      * @return \Illuminate\Http\JsonResponse
      */
-    public function product_bycategory($category_id, $sort)
+    public function product_bycategory($category_id)
     {
         $product = DB::table('products as p')
             -> join('users as u', 'p.user_id', '=', 'u.id')
             -> select('p.*', 'u.name as sellerName', 'u.id as userID', 'u.avatar_original', 'u.city', 'u.address')
             -> where('u.user_type', 'seller')
             -> where('p.category_id', $category_id)
-            -> orderBy('p.id', $sort)
             -> get();
 
         if (count($product) > 0) {
