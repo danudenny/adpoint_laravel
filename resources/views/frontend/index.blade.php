@@ -11,7 +11,7 @@
             <div class="main-banner">
                 <div class="row">
                     <div class="col-md-12">
-                        <h1 class="title-head">Cari space iklan yang sesuai dengan <br> kebutuhan Anda sekarang juga</h1>
+                        <h1 class="title-head" style="color: white">Cari space iklan yang sesuai dengan <br> kebutuhan Anda sekarang juga</h1>
                     </div>
                 </div>
                 <form action="{{ route('search') }}">
@@ -84,10 +84,7 @@
                 <div class="col-md-4 col-md-offset-12 d-flex justify-content-center" style="display: inline-block">
                     <a href="{{ route('products.category', $les['slug']) }}">
                         <div class="box-cat">
-
                             <img src="{{ asset($les['icon']) }}" alt="" class="img-fluid img">
-                            <p id="overlay-text">{{ $les['count'] }}</p>
-
                         </div>
                     </a>
                 </div>
@@ -99,7 +96,6 @@
                     <a href="{{ route('products.category', $mor['slug']) }}">
                         <div class="box-cat">
                             <img src="{{ asset($mor['icon']) }}" alt="" class="img-fluid img">
-                            <p id="overlay-text">{{ $mor['count'] }}</p>
                         </div>
                     </a>
                 </div>
@@ -108,7 +104,7 @@
         </div>
     </section>
     <section class="mb-4">
-        <div class="container">
+        <div>
             <div class="row mt-3">
                 <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
                     <div class="carousel-inner">

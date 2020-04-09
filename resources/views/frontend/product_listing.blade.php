@@ -139,143 +139,68 @@
             <div class="col-md-9">
                     <div class="brands-bar row bg-white py-3">
                         <div class="col-11">
-                            <div class="brands-collapse-box" id="brands-collapse-box">
-                                <ul class="inline-links">
-                                    @php
-                                        $brands = array();
-                                    @endphp
-                                    @if(isset($subcategory_id))
-                                        @php
-                                            foreach (json_decode(\App\SubCategory::find($subcategory_id)->brands) as $brand) {
-                                                if(!in_array($brand, $brands)){
-                                                    array_push($brands, $brand);
-                                                }
-                                            }
-                                        @endphp
-                                    @elseif(isset($subcategory_id))
-                                        @foreach (\App\SubCategory::find($subcategory_id)->subcategories as $key => $subcategory)
-                                            @php
-                                                foreach (json_decode($subcategory->brands) as $brand) {
-                                                    if(!in_array($brand, $brands)){
-                                                        array_push($brands, $brand);
-                                                    }
-                                                }
-                                            @endphp
-                                        @endforeach
-                                    @elseif(isset($category_id))
-                                        @foreach (\App\Category::find($category_id)->subcategories as $key => $subcategory)
-                                            @php
-                                                foreach (json_decode($subcategory->brands) as $brand) {
-                                                    if(!in_array($brand, $brands)){
-                                                        array_push($brands, $brand);
-                                                    }
-                                                }
-                                            @endphp
-                                        @endforeach
-                                    @else
-                                        @php
-                                            foreach (\App\Brand::all() as $key => $brand){
-                                                if(!in_array($brand->id, $brands)){
-                                                    array_push($brands, $brand->id);
-                                                }
-                                            }
-                                        @endphp
-                                    @endif
+                            <form class="" id="search-form" action="{{ route('search') }}" method="GET">
+                            @isset($category_id)
+                                <input type="hidden" name="category" value="{{ \App\Category::find($category_id)->slug }}">
+                            @endisset
+                            @isset($subcategory_id)
+                                <input type="hidden" name="subcategory" value="{{ \App\SubCategory::find($subcategory_id)->slug }}">
+                            @endisset
+                            @isset($subsubcategory_id)
+                                <input type="hidden" name="subsubcategory" value="{{ \App\SubSubCategory::find($subsubcategory_id)->slug }}">
+                            @endisset
+                            
 
-                                    @foreach ($brands as $key => $id)
-                                        @if (\App\Brand::find($id) != null)
-                                            <li><a href="{{ route('products.brand', \App\Brand::find($id)->slug) }}"><img src="{{ asset(\App\Brand::find($id)->logo) }}" alt="" class="img-fluid"></a></li>
-                                        @endif
-                                    @endforeach
-                                </ul>
+                            <div class="row bg-white pt-0">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>State</label>
+                                        <select class="form-control" data-placeholder="{{__('All State')}}" name="location" onchange="filter()">
+                                            <option value="" selected disabled>{{__('All State')}}</option>
+                                            @foreach (\App\State::all() as $key => $state)
+                                                <option value="{{ urlencode($state->name) }}" @isset($states) @if ($states == $state->name) selected @endif @endisset>{{ $state->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Display</label><br>
+                                        <div class="btn-group" role="group" aria-label="Basic example">
+                                            <button type="button" id="grid" class="p-2 btn btn-secondary active" title="Grid View">
+                                                <i class="fa fa-th"></i> Grid
+                                            </button>
+                                            <button type="button" id="list" class="p-2 btn btn-secondary" title="List View">
+                                                <i class="fa fa-list"></i> List
+                                            </button>
+                                            <button type="button" id="list" class="p-2 btn btn-secondary" title="List View">
+                                                <i class="fa fa-sort"></i> Sort
+                                            </button>
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="row no-gutters">
+                                        <div class="col-4">
+                                            <div class="form-group">
+                                                <label>{{__('Sort by')}}</label>
+                                                <select class="form-control" data-minimum-results-for-search="Infinity" name="sort_by" onchange="filter()">
+                                                    <option value="1" @isset($sort_by) @if ($sort_by == '1') selected @endif @endisset>{{__('Newest')}}</option>
+                                                    <option value="2" @isset($sort_by) @if ($sort_by == '2') selected @endif @endisset>{{__('Oldest')}}</option>
+                                                    <option value="3" @isset($sort_by) @if ($sort_by == '3') selected @endif @endisset>{{__('Price low to high')}}</option>
+                                                    <option value="4" @isset($sort_by) @if ($sort_by == '4') selected @endif @endisset>{{__('Price high to low')}}</option>
+                                                    <option value="5" @isset($sort_by) @if ($sort_by == '5') selected @endif @endisset>{{__('Highest Rating')}}</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-1">
-                            <button type="button" name="button" onclick="morebrands(this)" class="more-brands-btn">
-                                <i class="fa fa-plus"></i>
-                                <span class="d-none d-md-inline-block">{{__('More')}}</span>
-                            </button>
+                            <input type="hidden" name="min_price" value="">
+                            <input type="hidden" name="max_price" value="">
+                        </form>
                         </div>
                     </div>
-                    <form class="" id="search-form" action="{{ route('search') }}" method="GET">
-                        @isset($category_id)
-                            <input type="hidden" name="category" value="{{ \App\Category::find($category_id)->slug }}">
-                        @endisset
-                        @isset($subcategory_id)
-                            <input type="hidden" name="subcategory" value="{{ \App\SubCategory::find($subcategory_id)->slug }}">
-                        @endisset
-                        @isset($subsubcategory_id)
-                            <input type="hidden" name="subsubcategory" value="{{ \App\SubSubCategory::find($subsubcategory_id)->slug }}">
-                        @endisset
                         
-
-                        <div class="row bg-white pt-0">
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label>State</label>
-                                    <select class="form-control" data-placeholder="{{__('All State')}}" name="location" onchange="filter()">
-                                        <option value="" selected disabled>{{__('All State')}}</option>
-                                        @foreach (\App\State::all() as $key => $state)
-                                            <option value="{{ urlencode($state->name) }}" @isset($states) @if ($states == $state->name) selected @endif @endisset>{{ $state->name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label>Display</label><br>
-                                    <div class="btn-group" role="group" aria-label="Basic example">
-                                        <button type="button" id="grid" class="p-2 btn btn-secondary active" title="Grid View">
-                                            <i class="fa fa-th"></i> Grid
-                                        </button>
-                                        <button type="button" id="list" class="p-2 btn btn-secondary" title="List View">
-                                            <i class="fa fa-list"></i> List
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-8">
-                                <div class="row no-gutters">
-                                    <div class="col-4">
-                                        <div class="form-group">
-                                            <label>{{__('Sort by')}}</label>
-                                            <select class="form-control" data-minimum-results-for-search="Infinity" name="sort_by" onchange="filter()">
-                                                <option value="1" @isset($sort_by) @if ($sort_by == '1') selected @endif @endisset>{{__('Newest')}}</option>
-                                                <option value="2" @isset($sort_by) @if ($sort_by == '2') selected @endif @endisset>{{__('Oldest')}}</option>
-                                                <option value="3" @isset($sort_by) @if ($sort_by == '3') selected @endif @endisset>{{__('Price low to high')}}</option>
-                                                <option value="4" @isset($sort_by) @if ($sort_by == '4') selected @endif @endisset>{{__('Price high to low')}}</option>
-                                                <option value="5" @isset($sort_by) @if ($sort_by == '5') selected @endif @endisset>{{__('Highest Rating')}}</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-4">
-                                        <div class="form-group">
-                                            <label>{{__('Brands')}}</label>
-                                            <select class="form-control" data-placeholder="{{__('All Brands')}}" name="brand" onchange="filter()">
-                                                <option value="">{{__('All Brands')}}</option>
-                                                @foreach ($brands as $key => $id)
-                                                    @if (\App\Brand::find($id) != null)
-                                                        <option value="{{ \App\Brand::find($id)->slug }}" @isset($brand_id) @if ($brand_id == $id) selected @endif @endisset>{{ \App\Brand::find($id)->name }}</option>
-                                                    @endif
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-4">
-                                        <div class="form-group">
-                                            <label>{{__('Sellers')}}</label>
-                                            <select class="form-control" data-placeholder="{{__('All Sellers')}}" name="seller_id" onchange="filter()">
-                                                <option value="">{{__('All Sellers')}}</option>
-                                                @foreach (\App\Seller::all() as $key => $seller)
-                                                    <option value="{{ $seller->id }}" @isset($seller_id) @if ($seller_id == $seller->id) selected @endif @endisset>{{ $seller->user->shop->name }}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <input type="hidden" name="min_price" value="">
-                        <input type="hidden" name="max_price" value="">
-                    </form>
 
                     <div class="row bg-white mt-2">
                         <div class="col-md-12">
@@ -306,17 +231,9 @@
                                                     </h2>
                                                     <div class="d-flex justify-content-between">
                                                         <div>
-                                                            <div>
-                                                                <a target="_blank" href="{{ route('shop.visit', $product->user->shop->slug) }}">
-                                                                    <i class="text-primary">{{ $product->user->shop->name }}</i>
-                                                                </a>
-                                                            </div>
                                                             <div class="star-rating mb-1">
                                                                 {{ renderStarRating($product->rating) }}
                                                             </div>
-                                                        </div>
-                                                        <div>
-                                                            <img src="{{ url($product->user->shop->logo) }}" alt="" width="50">
                                                         </div>
                                                     </div>
                                                     <div class="clearfix">
@@ -328,7 +245,7 @@
                                                                 <span class="product-price strong-600">{{ home_discounted_base_price($product->id) }}</span>
                                                             </div>
                                                         @else
-                                                            <span class="product-price strong-600" title="Please login for show price">xxx</span>
+                                                            <span class="product-price strong-600" title="Please login for show price">Login to show price</span>
                                                         @endif
                                                     </div>
                                                     <p>
