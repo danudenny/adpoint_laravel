@@ -187,13 +187,14 @@ class ProductCtrl extends Controller
         //     ], 401);
         // }
 
-        $product = DB::table('products as p')
-            -> join('users as u', 'p.user_id', '=', 'u.id')
-            -> select('p.*', 'u.name as sellerName', 'u.id as userID', 'u.avatar_original', 'u.city', 'u.address')
-            -> where('u.user_type', 'seller')
-            -> where('p.id', '=',$id)
-            -> get()->toArray();
-        $variants = Product::get()->pluck('variations');
+        // $products = DB::table('products as p')
+        //     -> join('users as u', 'p.user_id', '=', 'u.id')
+        //     -> select('p.*', 'u.name as sellerName', 'u.id as userID', 'u.avatar_original', 'u.city', 'u.address')
+        //     -> where('u.user_type', 'seller')
+        //     -> where('p.id', '=',$id)
+        //     -> get()->toArray();
+        $products = Product::where('id', '=',$id)->get()->toArray();
+        $variants = Product::where('id', '=',$id)->get()->pluck('variations');
         $variant_array = [];
         foreach ($variants as $variant => $values) {
             $decode = json_decode($values);
@@ -471,21 +472,43 @@ class ProductCtrl extends Controller
      */
     public function product_bycategory($category_id)
     {
-        $product = DB::table('products as p')
-            -> join('users as u', 'p.user_id', '=', 'u.id')
-            -> select('p.*', 'u.name as sellerName', 'u.id as userID', 'u.avatar_original', 'u.city', 'u.address')
-            -> where('u.user_type', 'seller')
-            -> where('p.category_id', $category_id)
-            -> get();
-
-        if (count($product) > 0) {
-            return response()->json($product, 200);
+        $product = Product::where('category_id', $category_id)->get()->toArray();
+        $variants = Product::where('category_id', $category_id)->get()->pluck('variations');
+        $variant_array = [];
+        foreach ($variants as $variant => $values) {
+            $decode = json_decode($values);
+            $periode_values = array_values((array)$decode);
+            array_push($variant_array, ['variasi'=>[$decode]]);
+        }
+        if ($product != null) {
+            $merged = array_replace_recursive($product, $variant_array);
+            return response()->json($merged, 200);
         }else{
             return response()->json([
                 'success' => false,
                 'message' => 'Data tidak ditemukan'
             ], 401);
         }
+
+        // $products = Product::get()->toArray();
+        // $variants = Product::get()->pluck('variations');
+        // $variant_array = [];
+        // foreach ($variants as $variant => $values) {
+        //     $decode = json_decode($values);
+        //     $periode_values = array_values((array)$decode);
+        //     array_push($variant_array, ['variasi'=>[$decode]]);
+        // }
+        // if ($products != null) {
+        //     $merged = array_replace_recursive($products, $variant_array);
+        //     if (count($merged) > 0) {
+        //         return response()->json($merged, 200);
+        //     }else {
+        //         return response()->json([
+        //             'success' => false,
+        //             'message' => 'Data tidak ditemukan'
+        //         ], 401);
+        //     }
+        // }
     }
 
     /**

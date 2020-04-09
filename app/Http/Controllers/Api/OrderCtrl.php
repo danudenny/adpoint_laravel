@@ -179,7 +179,7 @@ class OrderCtrl extends Controller
      * @OA\Get(
      *     path="/orderplaced",
      *     operationId="list order by current user",
-     *     tags={"Orders By Current Customer"},
+     *     tags={"Orders By Current User"},
      *     summary="Display a listing of the order by current user",
      *     security={{"bearerAuth":{}}},
      *     @OA\Response(response="200",description="ok"),

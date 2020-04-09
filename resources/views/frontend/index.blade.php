@@ -81,7 +81,7 @@
             @endphp
             <div class="row" id="lessBox">
                 @foreach ($lessCat as $key => $les)
-                <div class="col-md-2 col-lg-2 col-sm-4 col-6 d-flex justify-content-center">
+                <div class="col-md-4 col-md-offset-12 d-flex justify-content-center" style="display: inline-block">
                     <a href="{{ route('products.category', $les['slug']) }}">
                         <div class="box-cat">
 
@@ -105,48 +105,8 @@
                 </div>
                 @endforeach
             </div>
-
-            <div class="row mt-3 justify-content-center">
-                <button class="btn btn-lg btn-dark" id="moreless-button">Show More</button>
-            </div>
         </div>
     </section>
-
-    <section class="pt-5 pb-5 bg-gray">
-        <div class="container">
-            <div class="row">
-                @php
-                    $bs = \App\BusinessSetting::where('type', 'how_to')->first();
-                    $result = json_decode($bs->value);
-                @endphp
-                @foreach ($result as $key => $r)
-                    @if ($key == "buy")
-                        <div class="mt-2 col-md-6 d-flex justify-content-center">
-                            <div class="card">
-                                <div class="card-body text-center">
-                                    <h3 class="card-title">Are You a Buyer</h3>
-                                    <p class="card-text">{{ $r }}</p>
-                                    <a href="#" class="btn btn-success">Buy with us</a>
-                                </div>
-                            </div>
-                        </div>
-                    @else
-                        <div class="mt-2 col-md-6 d-flex justify-content-center">
-                            <div class="card">
-                                <div class="card-body text-center">
-                                    <h3 class="card-title">Are You a Seller</h3>
-                                    <p class="card-text">{{ $r }}</p>
-                                    <a href="#" class="btn btn-orange">Sell with us</a>
-                                </div>
-                            </div>
-                        </div>
-                    @endif
-
-                @endforeach
-            </div>
-        </div>
-    </section>
-
     <section class="mb-4">
         <div class="container">
             <div class="row mt-3">
@@ -321,7 +281,7 @@
             }
             asort($array);
         @endphp
-        <section class="mb-5">
+        {{-- <section class="mb-5">
             <div class="container">
                 <div class="px-2 py-4 p-md-4 bg-white shadow-sm">
                     <div class="section-title-1 clearfix">
@@ -368,7 +328,7 @@
                     </div>
                 </div>
             </div>
-        </section>
+        </section> --}}
     @endif
 
 @endsection

@@ -65,6 +65,7 @@ class PurchaseHistoryController extends Controller
                         'od.file_advertising as od_file_advertising'
                     ])
                     ->first();
+                    // dd($query);
         return view('frontend.partials.item_details', compact('query'));
     }
 

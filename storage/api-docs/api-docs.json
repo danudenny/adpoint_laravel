@@ -13,11 +13,11 @@
     },
     "servers": [
         {
-            "url": "https://aps.jaladara.com/mobile/api",
+            "url": "http://localhost:8000/mobile/api",
             "description": "Laravel InnovAPS API"
         },
         {
-            "url": "https://aps.jaladara.com/mobile/api",
+            "url": "http://localhost:8000/mobile/api",
             "description": "Laravel InnovAPS API"
         }
     ],
@@ -722,7 +722,7 @@
         "/orderplaced": {
             "get": {
                 "tags": [
-                    "Orders By Current Customer"
+                    "Orders By Current User"
                 ],
                 "summary": "Display a listing of the order by current user",
                 "operationId": "list order by current user",
@@ -1465,7 +1465,7 @@
                 ]
             }
         },
-        "/transaction-details/{id}/{user_id}": {
+        "/transaction-details/{id}": {
             "get": {
                 "tags": [
                     "Transactions"
@@ -1477,16 +1477,6 @@
                         "name": "id",
                         "in": "path",
                         "description": "ID of transaction to return",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "format": "int64"
-                        }
-                    },
-                    {
-                        "name": "user_id",
-                        "in": "path",
-                        "description": "User Id",
                         "required": true,
                         "schema": {
                             "type": "integer",
@@ -1537,6 +1527,74 @@
                         }
                     }
                 },
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/transaction-unpaid/{user_id}": {
+            "get": {
+                "tags": [
+                    "Transactions"
+                ],
+                "summary": "Display a listing of the transaction unpaid by user_id",
+                "operationId": "list transaction unpaid by user_id",
+                "parameters": [
+                    {
+                        "name": "user_id",
+                        "in": "path",
+                        "description": "User Id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/transaction-paid/{user_id}": {
+            "get": {
+                "tags": [
+                    "Transactions"
+                ],
+                "summary": "Display a listing of the transaction paid by user_id",
+                "operationId": "list transaction paid by user_id",
+                "parameters": [
+                    {
+                        "name": "user_id",
+                        "in": "path",
+                        "description": "User Id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "ok"

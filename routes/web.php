@@ -261,7 +261,16 @@ Route::group(['middleware' => ['auth']], function(){
 	Route::post('/review/review_product', 'ReviewController@review_product')->name('review.product');
 	Route::post('/review/create_review_product', 'ReviewController@create_review_product')->name('create.review.product');
 
-    Route::get('check_curl', 'ProductController@getCurl');
+	Route::get('check_curl', 'ProductController@getCurl');
+	Route::get('/cancel_integrate', function() {
+		Session::forget('integrate');
+		if(!Session::has('integrate'))
+		{
+			return redirect()->back();
+		}
+	});
+
+	Route::get('display_log', 'ProductController@getDisplayLog')->name('display_log');
 });
 
 Route::resource('shops', 'ShopController');
