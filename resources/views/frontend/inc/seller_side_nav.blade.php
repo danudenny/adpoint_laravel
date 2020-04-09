@@ -31,9 +31,17 @@
                     </div>
                 @endif
             @endif
-            <div class="mt-4">
-                <a type="button" class="btn" style="color: white; background-color: #0ab1fc">Connect to Smartmedia</a>
-            </div>
+            @if (!Session::has('integrate'))
+                <div class="mt-3">
+                    <button onclick="location.href='{{ url('check_curl') }}'" class="btn btn-success btn-block"><img src="{{asset('uploads\logo\smartmedia_x.png')}}" width="32"> Integrate With Smartmedia</button>
+                </div>
+            @else
+                <div class="mt-3">
+                    {{-- <button class="btn btn-primary btn-block"><img src="{{asset('uploads\logo\smartmedia_x.png')}}" width="32"> Already Integrated With Smartmedia</button> --}}
+                    <button onclick="location.href='{{ url('cancel_integrate') }}'" class="btn btn-warning btn-block"><img src="{{asset('uploads\logo\smartmedia_x.png')}}" width="32"> Cancel Integrate With Smartmedia</button>
+                </div>
+            @endif
+            
         </div>
         <div class="sidebar-widget-title py-3">
             <span>{{ __('Buyer Menu') }}</span>
@@ -150,24 +158,26 @@
                 </ul>
 
             </div>
-            <div class="sidebar-widget-title py-3">
-                <span><img src="{{ asset('uploads/smartmedia.png') }}" alt="" height="24px"></span>
-            </div>
-            <div class="widget-profile-menu py3">
-                <ul class="categories categories--style-3">
-                    <li>
-                        <a href="{{ route('seller.products') }}"
-                            class="{{ areActiveRoutesHome(['seller.products', 'seller.products.upload', 'seller.products.edit']) }}">
-                            <i class="la la-diamond"></i>
-                            <span class="category-name">
-                                {{ __('Report Device Logs') }}
-                            </span>
-                        </a>
-                    </li>
+            @if(Session::has('integrate'))
+                <div class="sidebar-widget-title py-3">
+                    <span><img src="{{ asset('uploads/smartmedia.png') }}" alt="" height="24px"></span>
+                </div>
+                <div class="widget-profile-menu py3">
+                    <ul class="categories categories--style-3">
+                        <li>
+                            <a href="{{ route('display_log') }}"
+                                class="{{ areActiveRoutesHome(['display_log']) }}">
+                                <i class="la la-tv"></i>
+                                <span class="category-name">
+                                    {{ __('Report Display') }}
+                                </span>
+                            </a>
+                        </li>
 
-                </ul>
+                    </ul>
 
-            </div>
+                </div>
+            @endif
             <div class="sidebar-widget-title py-3">
                 <span>{{ __('Earnings') }}</span>
             </div>
@@ -176,30 +186,30 @@
                     <div class="heading-4 strong-700 mb-4">
                         @php
                             $orders = DB::table('orders')
-                                    ->selectRaw('sum(grand_total - adpoint_earning) as jumlah')
-                                    ->whereRaw('YEAR(created_at) = YEAR(CURRENT_DATE)')
-                                    ->whereRaw('MONTH(created_at) = MONTH(CURRENT_DATE)')
-                                    ->get();
+                                ->selectRaw('sum(grand_total - adpoint_earning) as jumlah')
+                                ->get();
                             foreach ($orders as $key => $value) {
                                 $jumlah = $value->jumlah;
                             }
                         @endphp
                         <small
-                            class="d-block text-sm alpha-5 mb-2">{{ __('Your earnings (current month)') }}</small>
+                            class="d-block text-sm alpha-5 mb-2">{{ __('Total Earnings') }}</small>
                         <span class="p-2 bg-base-1 rounded">{{ single_price($jumlah) }}</span>
                     </div>
                     <table class="text-left mb-0 table w-75 m-auto">
                         <tr>
                             @php
                                 $orders = DB::table('orders')
-                                    ->selectRaw('sum(grand_total - adpoint_earning) as jumlah')
-                                    ->get();
+                                        ->selectRaw('sum(grand_total - adpoint_earning) as jumlah')
+                                        ->whereRaw('YEAR(created_at) = YEAR(CURRENT_DATE)')
+                                        ->whereRaw('MONTH(created_at) = MONTH(CURRENT_DATE)')
+                                        ->get();
                                 foreach ($orders as $key => $value) {
                                     $jumlah = $value->jumlah;
                                 }
                             @endphp
                             <td class="p-1 text-sm">
-                                {{ __('Total earnings') }}:
+                                {{ __('Current Month Earnings') }}:
                             </td>
                             <td class="p-1">
                                 {{ single_price($jumlah) }}
@@ -217,7 +227,7 @@
                                 }
                             @endphp
                             <td class="p-1 text-sm">
-                                {{ __('Last Month earnings') }}:
+                                {{ __('Last Month Earnings') }}:
                             </td>
                             <td class="p-1">
                                 {{ single_price($jumlah) }}

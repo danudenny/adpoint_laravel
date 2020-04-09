@@ -84,7 +84,9 @@ Route::group(['middleware' => ['auth.jwt','jsonify']], function () {
     // Transaction
     Route::get('transaction', 'Api\TransactionCtrl@index');
     Route::get('transaction/{id}', 'Api\TransactionCtrl@transaction');
-    Route::get('transaction-details/{id}/{user_id}', 'Api\TransactionCtrl@transactionDetails');
+    Route::get('transaction-details/{id}', 'Api\TransactionCtrl@transactionDetails');
+    Route::get('transaction-unpaid/{user_id}', 'Api\TransactionCtrl@transactionUnpaid');
+    Route::get('transaction-paid/{user_id}', 'Api\TransactionCtrl@transactionPaid');
     Route::post('/upload-buktitransfer/{id}', 'Api\TransactionCtrl@uploadTrx');
 
     //    Cart

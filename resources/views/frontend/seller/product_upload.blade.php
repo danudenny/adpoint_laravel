@@ -31,12 +31,21 @@
                                 </div>
                             </div>
                         </div>
+                        @if (!Session::has('integrate'))
+                            <div class="mt-3">
+                                <button onclick="location.href='{{ url('check_curl') }}'" class="btn btn-success"><img src="{{asset('uploads\logo\smartmedia_x.png')}}" width="32"> Integrate With Smartmedia</button>
+                            </div>
+                        @else
+                            <div class="mt-3">
+                                <button class="btn btn-primary"><img src="{{asset('uploads\logo\smartmedia_x.png')}}" width="32"> Already Integrated With Smartmedia</button>
+                                <button onclick="location.href='{{ url('cancel_integrate') }}'" class="btn btn-warning"><img src="{{asset('uploads\logo\smartmedia_x.png')}}" width="32"> Cancel Integrate With Smartmedia</button>
+                            </div>
+                        @endif
+
                         <form class="" action="{{route('products.store')}}" method="POST" enctype="multipart/form-data" id="choice_form">
                             @csrf
-                    		<input type="hidden" name="added_by" value="seller">
-                            <div class="mt-3">
-                                <button type="submit" class="btn btn-success"><img src="{{asset('uploads\logo\smartmedia_x.png')}}" width="32"> Integrate With Smartmedia</button>
-                            </div>
+                            <input type="hidden" name="added_by" value="seller">
+                            
                             <div class="form-box bg-white mt-4">
                                 <div class="form-box-title px-3 py-2">
                                     {{__('General')}}
@@ -905,5 +914,23 @@
             $(em).closest('.row').remove();
         }
 
+        function integrate(type, message){
+            if(type == 'success'){
+                type = 'success';
+            }
+            swal({
+                position: 'center',
+                type: type,
+                title: message,
+                showConfirmButton: true
+            });
+        }
+
     </script>
+
+    @foreach (session('flash_notification', collect())->toArray() as $message)
+        <script type="text/javascript">
+            integrate('{{ $message['level'] }}', '{{ $message['message'] }}');
+        </script>
+    @endforeach
 @endsection

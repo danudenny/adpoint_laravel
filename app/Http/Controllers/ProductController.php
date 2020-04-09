@@ -698,14 +698,45 @@ class ProductController extends Controller
     }
 
     public function getCurl() {
-        $response = Curl::to('http://202.152.24.156:8118/api/users/login')
+        $response = Curl::to('http://192.168.100.64/api/users/login')
             ->withData(['email'=>'adpoint@imaniprima.com', 'password'=>'123456'])
             ->post();
         $decode = json_decode($response);
         if ($decode->status = "success") {
             $bearer = 'successful';
         }
-        dd($decode);
+        $token = $decode->token;
+        $result = 'Bearer ' . $token;
+
+        Session::put('integrate', $result);
+        return redirect()->back();
     }
+
+    public function getDisplayLog() {
+        $getToken = Session::get('integrate');
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+        CURLOPT_URL => "http://192.168.100.64/api/reports/displaylog/all?deviceid=SmartMedia5054&interval=2017-04-01,2020-04-07&limit=20&media_type=Commercial&offset=0&order=displaydate&ordertype=desc&q=",
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_ENCODING => "",
+        CURLOPT_MAXREDIRS => 10,
+        CURLOPT_TIMEOUT => 0,
+        CURLOPT_FOLLOWLOCATION => true,
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        CURLOPT_CUSTOMREQUEST => "GET",
+        CURLOPT_HTTPHEADER => array(
+            "Authorization: ". $getToken
+        ),
+        ));
+
+        $response = curl_exec($curl);
+
+        curl_close($curl);
+        $data = json_decode($response);
+        $collect = $data->data;
+        return view('frontend.seller.display_log', compact('collect'));
+    }
+
 
 }
