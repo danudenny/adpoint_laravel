@@ -271,6 +271,7 @@ Route::group(['middleware' => ['auth']], function(){
 	});
 
 	Route::get('display_log', 'ProductController@getDisplayLog')->name('display_log');
+	Route::post('send_to_smartmedia', 'ProductController@sendToSmartmedia')->name('send_to_smartmedia');
 });
 
 Route::resource('shops', 'ShopController');

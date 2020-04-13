@@ -720,28 +720,52 @@ class ProductController extends Controller
 
     public function getDisplayLog() {
         $getToken = Session::get('integrate');
+        $client = new Client(['base_uri' => 'https://aps.jaladara.com/']);
+        
+        $headers = [
+            'Authorization' => $getToken,        
+            'Accept'        => 'application/json',
+        ];
 
-        $curl = curl_init();
+        $request = $client->request('GET', 'api/reports/displaylog/all?deviceid=SmartMedia5054&interval=2017-04-01,2020-04-07&limit=20&media_type=Commercial&offset=0&order=displaydate&ordertype=desc&q=', [
+            'headers' => $headers
+        ]);
 
-        curl_setopt_array($curl, array(
-        CURLOPT_URL => "https://aps.jaladara.com/api/reports/displaylog/all?deviceid=SmartMedia5054&interval=2017-04-01,2020-04-07&limit=20&media_type=Commercial&offset=0&order=displaydate&ordertype=desc&q=",
-        CURLOPT_RETURNTRANSFER => true,
-        CURLOPT_ENCODING => "",
-        CURLOPT_MAXREDIRS => 10,
-        CURLOPT_TIMEOUT => 0,
-        CURLOPT_FOLLOWLOCATION => true,
-        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-        CURLOPT_CUSTOMREQUEST => "GET",
-        CURLOPT_HTTPHEADER => array(
-            "Authorization: ". $getToken
-        ),
-        ));
-
-        $response = curl_exec($curl);
-        dd($getToken );
-        curl_close($curl);
+        $response = $request->getBody()->getContents();
         $data = json_decode($response);
         $collect = $data->data;
         return view('frontend.seller.display_log', compact('collect'));
+    }
+
+    public function sendToSmartmedia() {
+        $getToken = Session::get('integrate');
+        $headers = [
+            'Authorization' => $getToken,        
+            'Accept'        => 'application/json',
+        ];
+        $client = new Client([
+            'base_uri' => 'https://aps.jaladara.com/'
+        ]);
+        
+        $response = $client->request('POST', 'api/device/save', [
+            'json' => 
+                [
+                    'dateregister' => 'adpoint@imaniprima.com', 
+                    'desc' => '123456',
+                    'deviceid' => '123456',
+                    'firmware' => '123456',
+                    'groupid' => '123456',
+                    'hdcapacity' => '123456',
+                    'macaddress' => '123456',
+                    'serialno' => '123456',
+                    'isactive' => 1
+                ],
+            'headers' => $headers
+        ]);
+        $response = $request->getBody()->getContents();
+        $data = json_decode($response);
+        $collect = $data->data;
+
+        return redirect()->back();
     }
 }
