@@ -15,6 +15,7 @@ use Session;
 use ImageOptimizer;
 
 use DB;
+use GuzzleHttp\Client;
 
 class ProductController extends Controller
 {
@@ -698,15 +699,20 @@ class ProductController extends Controller
     }
 
     public function getCurl() {
-        $response = Curl::to('http://192.168.100.64/api/users/login')
-            ->withData(['email'=>'adpoint@imaniprima.com', 'password'=>'123456'])
-            ->post();
-        $decode = json_decode($response);
-        if ($decode->status = "success") {
-            $bearer = 'successful';
+        $client = new Client([
+            'base_uri' => 'https://aps.jaladara.com/api/users/login'
+        ]);
+        
+        $response = $client->request('POST', 'https://aps.jaladara.com/api/users/login', [
+            'json' => ['email' => 'adpoint@imaniprima.com', 'password' => '123456']
+        ]);
+        if ($response->hasHeader('Authorization')) {
+            $auth_headers = $response->getHeaders('Authorization');
         }
-        $token = $decode->token;
-        $result = 'Bearer ' . $token;
+        $token = json_encode($auth_headers['Authorization']);
+        $repl1 = str_replace('["', '', $token);
+        $repl2 = str_replace('"]', '', $repl1);
+        $result = 'Bearer ' . $repl2;
 
         Session::put('integrate', $result);
         return redirect()->back();
@@ -714,10 +720,11 @@ class ProductController extends Controller
 
     public function getDisplayLog() {
         $getToken = Session::get('integrate');
+
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-        CURLOPT_URL => "http://192.168.100.64/api/reports/displaylog/all?deviceid=SmartMedia5054&interval=2017-04-01,2020-04-07&limit=20&media_type=Commercial&offset=0&order=displaydate&ordertype=desc&q=",
+        CURLOPT_URL => "https://aps.jaladara.com/api/reports/displaylog/all?deviceid=SmartMedia5054&interval=2017-04-01,2020-04-07&limit=20&media_type=Commercial&offset=0&order=displaydate&ordertype=desc&q=",
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_ENCODING => "",
         CURLOPT_MAXREDIRS => 10,
@@ -731,12 +738,10 @@ class ProductController extends Controller
         ));
 
         $response = curl_exec($curl);
-
+        dd($getToken );
         curl_close($curl);
         $data = json_decode($response);
         $collect = $data->data;
         return view('frontend.seller.display_log', compact('collect'));
     }
-
-
 }
