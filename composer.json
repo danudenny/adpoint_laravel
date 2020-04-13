@@ -15,6 +15,7 @@
         "gabrielbull/ups-api": "^0.8.0",
         "geoip2/geoip2": "^2.10",
         "gonoware/laravel-maps": "^1.0",
+        "guzzlehttp/guzzle": "^6.5",
         "instamojo/instamojo-php": "^0.4.0",
         "ixudra/curl": "^6.19",
         "jlorente/laravel-pushy": "^1.0",
