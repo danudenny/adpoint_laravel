@@ -225,11 +225,6 @@
                                                 <h2 class="product-title mb-0 p-0 text-truncate-2">
                                                     <a href="{{ route('product', $product->slug) }}">{{ __($product->name) }}</a>
                                                 </h2>
-                                                <div>
-                                                    <a target="_blank" href="{{ route('shop.visit', $product->user->shop->slug) }}">
-                                                        <i class="text-primary">{{ $product->user->shop->name }}</i>
-                                                    </a>
-                                                </div>
                                                 <div class="star-rating star-rating-sm mb-2">
                                                     {{ renderStarRating($product->rating) }}
                                                 </div>
@@ -241,7 +236,7 @@
                                                             @endif<br>
                                                             <span class="product-price strong-600">{{ home_discounted_base_price($product->id) }}</span>
                                                         @else
-                                                            <span class="product-price strong-600" title="Please login for show price">xxx</span>
+                                                            <span class="product-price strong-600" title="Please login for show price">Please login for show price</span>
                                                         @endif
                                                     </div>
                                                     <div class="float-right">

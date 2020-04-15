@@ -700,10 +700,10 @@ class ProductController extends Controller
 
     public function getCurl() {
         $client = new Client([
-            'base_uri' => 'https://aps.jaladara.com/api/users/login'
+            'base_uri' => 'https://aps.jaladara.com'
         ]);
         
-        $response = $client->request('POST', 'https://aps.jaladara.com/api/users/login', [
+        $response = $client->request('POST', '/api/users/login', [
             'json' => ['email' => 'adpoint@imaniprima.com', 'password' => '123456']
         ]);
         if ($response->hasHeader('Authorization')) {

@@ -37,7 +37,9 @@
         "stripe/stripe-php": "^6.29",
         "tymon/jwt-auth": "dev-develop",
         "veritrans/veritrans-php": "^1.2",
-        "watson/rememberable": "^3.2"
+        "watson/rememberable": "^3.2",
+        "xendit/xendit-php": "^2.3",
+        "xendit/xendit-php-clients": "^2.3"
     },
     "require-dev": {
         "beyondcode/laravel-dump-server": "^1.0",

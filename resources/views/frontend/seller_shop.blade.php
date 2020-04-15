@@ -208,16 +208,7 @@
                             <div class="title">{{__('Seller Info')}}</div>
                             <a href="" class="name d-block">{{ $shop->name }}</a>
                             <div class="location">{{ $shop->address }}</div>
-                            <div class="rating text-center d-block">
-                                <span class="star-rating star-rating-sm d-block">
-                                    @if ($total > 0)
-                                        {{ renderStarRating($rating/$total) }}
-                                    @else
-                                        {{ renderStarRating(0) }}
-                                    @endif
-                                </span>
-                                <span class="rating-count d-block ml-0">({{ $total }} {{__('customer reviews')}})</span>
-                            </div>
+                            
                         </div>
                         <div class="row no-gutters">
                             <div class="col">
@@ -248,7 +239,7 @@
                     </div>
                     <div class="seller-category-box bg-white sidebar-box mb-3">
                         <div class="box-title">
-                            {{__('This Sellers Categories')}}
+                            {{__('Media Categories')}}
                         </div>
                         <div class="box-content">
                             <div class="category-accordion">
@@ -283,22 +274,6 @@
                                     </div>
                                 @endforeach
                             </div>
-                        </div>
-                    </div>
-                    <div class="seller-top-products-box bg-white sidebar-box mb-4">
-                        <div class="box-title">
-                            {{__('Related Media Owner')}}
-                        </div>
-                        <div class="box-content">
-                            <div class="seller-brands">
-                        		<ul class="seller-brand-list">
-                                    @foreach ($brands as $brand_id)
-                                        <li class="brand-item">
-                                            <a href="{{ route('products.brand', \App\Brand::find($brand_id)->slug) }}"><img src="{{ asset(\App\Brand::find($brand_id)->logo) }}" class="img-fluid"></a>
-                                        </li>
-                                    @endforeach
-                        		</ul>
-                        	</div>
                         </div>
                     </div>
                 </div>
@@ -347,7 +322,7 @@
                                                         <span class="product-price strong-600">{{ home_discounted_base_price($product->id) }}</span>
                                                     @endif
                                                 @else
-                                                <span class="product-price strong-600" title="Please login for show price">xxx</span> 
+                                                <span class="product-price strong-600" title="Please login for show price">Please login for show price</span> 
                                                 @endif
                                                 <div class="row">
                                                         <div class="col-12 col-centered">
