@@ -67,6 +67,9 @@
         <div class="row pl-4 pr-4">
             <div class="col-md-3 d-none d-md-block">
                 <div class="bg-white sidebar-box mb-3">
+                    <button class="btn btn-block btn-success btn-lg"><i class="fa fa-map"></i> View Media Ads on Maps</button>
+                </div>
+                <div class="bg-white sidebar-box mb-3">
                     <div class="box-title text-center">
                         {{__('Categories')}}
                     </div>
@@ -171,9 +174,9 @@
                                             <button type="button" id="list" class="p-2 btn btn-secondary" title="List View">
                                                 <i class="fa fa-list"></i> List
                                             </button>
-                                            <button type="button" id="list" class="p-2 btn btn-secondary" title="List View">
+                                            {{-- <button type="button" id="list" class="p-2 btn btn-secondary" title="List View">
                                                 <i class="fa fa-sort"></i> Sort
-                                            </button>
+                                            </button> --}}
                                         </div>
                                         
                                     </div>
@@ -249,7 +252,7 @@
                                                         @endif
                                                     </div>
                                                     <p>
-                                                        {{ substr($product->alamat, 0, 50) }}
+                                                        <i class="fa fa-map-marker"></i> {{ substr($product->alamat, 0, 40) }}...
                                                     </p>
                                                 </div>
                                             </div>
