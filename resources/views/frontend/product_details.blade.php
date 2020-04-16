@@ -86,22 +86,6 @@
                                         </span>
                                         <span class="rating-count">({{ $total }} {{__('customer reviews')}})</span>
                                     </div>
-                                    <div class="sold-by">
-                                        <div class="row">
-                                            <div class="col-md-3">
-
-                                            </div>
-                                            <div class="col-md-9">
-                                                <small class="mr-2">{{__('Sold by')}}: </small>
-                                                @if ($product->added_by == 'seller' && \App\BusinessSetting::where('type', 'vendor_system_activation')->first()->value == 1)
-                                                    <a href="{{ route('shop.visit', $product->user->shop->slug) }}">{{ $product->user->shop->name }}</a>
-                                                @else
-                                                    {{ __('Inhouse product') }}
-                                                @endif
-        
-                                            </div>
-                                        </div>
-                                    </div>
                                 </div>
                                 <div class="col-6 text-right">
                                     <ul class="inline-links inline-links--style-1">
@@ -399,7 +383,7 @@
                             @endphp
                             <div class="row">
                                 <div class="col-md-3">
-                                    <img src="{{ asset($sellerInfo->logo) }}" alt="" width="80">
+                                    <img src="{{ asset($sellerInfo->logo) }}" alt="" width="100%">
                                 </div>
                                 <div class="col-md-9">
                                     <a href="{{ route('shop.visit', $sellerInfo->slug) }}" class="name d-block">{{ $sellerInfo->name }}

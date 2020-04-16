@@ -62,8 +62,14 @@
                     </div>
                 </div>
                 <button type="submit" class="btn btn-primary btn-lg btn-block">
-                    {{ __('Login') }}
+                    <i class="fa fa-lock"></i> {{ __('Login as Admin') }}
                 </button>
+                <a type="button" href="{{ url('/')}}" class="btn btn-info btn-lg btn-block">
+                    <i class="fa fa-arrow-left"></i> {{ __('InnovAPS Web') }}
+                </a>
+                <a type="button" href="{{ url('/users/login')}}" class="btn btn-warning btn-lg btn-block">
+                    <i class="fa fa-user"></i> {{ __('Login as User') }}
+                </a>
             </form>
         </div>
     </div>
