@@ -282,3 +282,8 @@ Route::get('/instamojo/payment/pay-success', 'InstamojoController@success')->nam
 Route::post('rozer/payment/pay-success', 'RazorpayController@payment')->name('payment.rozer');
 
 Route::get('/paystack/payment/callback', 'PaystackController@handleGatewayCallback');
+
+// Wilayah indonesia
+Route::get('/provinsi', 'IndoCtrl@provinsi')->name('provinsi');
+Route::get('/city/{state_id}', 'IndoCtrl@city')->name('city');
+Route::get('/district/{city_id}', 'IndoCtrl@district')->name('district');

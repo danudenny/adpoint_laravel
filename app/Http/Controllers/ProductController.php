@@ -712,7 +712,7 @@ class ProductController extends Controller
         $token = json_encode($auth_headers['Authorization']);
         $repl1 = str_replace('["', '', $token);
         $repl2 = str_replace('"]', '', $repl1);
-        $result = 'Bearer ' . $repl2;
+        $result = $repl2;
 
         Session::put('integrate', $result);
         return redirect()->back();
@@ -720,10 +720,11 @@ class ProductController extends Controller
 
     public function getDisplayLog() {
         $getToken = Session::get('integrate');
+        // dd($getToken);   
         $client = new Client(['base_uri' => 'https://aps.jaladara.com/']);
         
         $headers = [
-            'Authorization' => $getToken,        
+            'Authorization' => 'Bearer '.$getToken,        
             'Accept'        => 'application/json',
         ];
 
@@ -740,7 +741,7 @@ class ProductController extends Controller
     public function sendToSmartmedia() {
         $getToken = Session::get('integrate');
         $headers = [
-            'Authorization' => $getToken,        
+            'Authorization' => 'Bearer '.$getToken,        
             'Accept'        => 'application/json',
         ];
         $client = new Client([

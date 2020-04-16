@@ -186,12 +186,16 @@ class HomeController extends Controller
     }
 
     public function logout(){
-        if (Auth::user()->user_type !== "admin") {
-            Auth::logout();
+        if (Auth::check()) {
+            if (Auth::user()->user_type !== "admin") {
+                Auth::logout();
+                return redirect('/');
+            }else{
+                Auth::logout();
+                return redirect('/login');
+            }
+        }else {
             return redirect('/');
-        }else{
-            Auth::logout();
-            return redirect('/login');
         }
     }
 

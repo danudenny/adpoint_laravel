@@ -597,7 +597,8 @@
                                 </div>
                             </div>
                             <div class="form-box mt-4 text-right">
-                                <button type="submit" class="btn btn-styled btn-base-1">{{ __('Save') }}</button>
+                                {{-- <button type="submit" @if (Session::has('integrate')) onclick="sendToSmartMedia()" @endif class="btn btn-styled btn-base-1">{{ __('Save') }}</button> --}}
+                                <button type="button" id="btn-send" @if (Session::has('integrate')) onclick="sendToSmartMedia()" @endif class="btn btn-styled btn-base-1">{{ __('Save') }}</button>
                             </div>
                         </form>
                     </div>
@@ -927,6 +928,92 @@
                 showConfirmButton: true
             });
         }
+
+        // submit to smartmedia 
+        function getTokenSmartMedia(){
+            var token = "";
+            $.ajax({
+                async: false,
+                url: "https://aps.jaladara.com/api/users/login",
+                type: "POST",
+                dataType: "JSON",
+                crossDomain: true,
+                data: {
+                    'email':'adpoint@imaniprima.com',
+                    'password': '123456'
+                },
+                success: function(res){
+                    token = res.token;
+                },
+                error: function(err) {
+                    console.log(err);
+                }
+            })
+            return token;
+        }
+
+        var tokenSmart = getTokenSmartMedia();
+
+        var d = new Date();
+        var month = new Array();
+        month[0] = "01";
+        month[1] = "02";
+        month[2] = "03";
+        month[3] = "04";
+        month[4] = "05";
+        month[5] = "06";
+        month[6] = "07";
+        month[7] = "08";
+        month[8] = "09";
+        month[9] = "10";
+        month[10] = "11";
+        month[11] = "12";
+        var year = d.getFullYear().toString();
+        var month = month[d.getMonth()];
+        var date = d.getDate().toString();
+        var dateregister = year+' '+month+' '+date;
+        
+        
+        function sendToSmartMedia() {
+            $('#btn-send').html('<i class="fa fa-spin fa-spinner"></i> Loading...');
+            var deviceid = $('#product_name').val();   
+            const data = {
+                dateregister:dateregister,
+                desc:'',
+                deviceid:deviceid,
+                firmware:'test',
+                groupid:41,
+                hdcapacity:'test',
+                macaddress:'test',
+                serialno:'test',
+                isactive:1
+            }; 
+            fetch('https://aps.jaladara.com/api/device/save', {
+                method: 'POST', // or 'PUT'
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${tokenSmart}`,
+                },
+                body: JSON.stringify(data),
+            }).then((response) => response.json()).then((data) => {
+                console.log('Success:', data);
+            }).catch((error) => {
+                console.error('Error:', error);
+            });
+
+            setTimeout(() => {
+                $('#choice_form').submit();
+            }, 1500);
+        }
+
+        $('#choice_form').on('keyup keypress', function(e) {
+            var keyCode = e.keyCode || e.which;
+            if (keyCode === 13) { 
+                e.preventDefault();
+                return false;
+            }
+        });
 
     </script>
 

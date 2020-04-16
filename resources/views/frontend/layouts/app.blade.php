@@ -268,33 +268,35 @@
                 });
             });
         }
+
         // get propinsi kabupaten dan kecamatan
+        // function getToken(){
+        //     var endpoint = "https://x.rajaapi.com/poe";
+        //     var result;
+        //     $.ajax({
+        //         async: false,
+        //         url: endpoint,
+        //         type: 'get',
+        //         dataType: 'json',
+        //         success: function(data){
+        //             result = data.token
+        //         }
+        //     })
+        //     return result;
+        // }
 
-        function getToken(){
-            var endpoint = "https://x.rajaapi.com/poe";
-            var result;
-            $.ajax({
-                async: false,
-                url: endpoint,
-                type: 'get',
-                dataType: 'json',
-                success: function(data){
-                    result = data.token
-                }
-            })
-            return result;
-        }
-
-        var token = getToken();
-        var url = 'https://x.rajaapi.com/MeP7c5ne'+ token +'/m/wilayah/';
+        // var token = getToken();
+        // var url = 'https://x.rajaapi.com/MeP7c5ne'+ token +'/m/wilayah/';
+        var url = '{{ url('/') }}';
 
         // --load data awal--
         $.ajax({
-            url : url+'provinsi',
+            url : url + '/provinsi',
             type : "get",
             dataType : "json"
         }).done(function(result){
-            let provinsi = result.data;
+            let provinsi = result;
+            // console.log(provinsi);
             $.each(provinsi, function (i, data) {
                 $('#prov').append(`<option id="`+ data.id +`" value="`+ data.name +`">`+ data.name +`</option>`)
             })
@@ -308,11 +310,11 @@
             $('#kab').empty();
             if (id_prov) {
                 $.ajax({
-                    url : url + 'kabupaten?idpropinsi=' + id_prov,
+                    url : url + '/city/' + id_prov,
                     type : "get",
                     dataType : "json"
                     }).done(function(result){
-                        let kabupaten = result.data;
+                        let kabupaten = result;
                         // console.log(kabupaten);
                         $.each(kabupaten, function (i, data) {
                             var kab = `<option id="`+ data.id +`" value="`+ data.name +`">`+ data.name +`</option>`;
@@ -320,11 +322,11 @@
                             if (i === 0) {
                                 $('#kec').empty();
                                 $.ajax({
-                                    url: url +'kecamatan?idkabupaten='+ data.id,
+                                    url: url +'/district/'+ data.id,
                                     type: 'get',
                                     dataType: 'json',
                                     success: function(result){
-                                        var kecamatan = result.data;
+                                        var kecamatan = result;
                                         $.each(kecamatan, function(i, data){
                                             var kec = `<option id="`+ data.id +`" value="`+ data.name +`">`+ data.name +`</option>`;
                                             $('#kec').append(kec);
@@ -348,11 +350,11 @@
             $('#kec').empty();
             if (id_kec) {
                 $.ajax({
-                    url : url + 'kecamatan?idkabupaten=' + id_kec,
+                    url : url + '/district/' + id_kec,
                     type : "get",
                     dataType : "json"
                     }).done(function(result){
-                        let kecamatan = result.data;
+                        let kecamatan = result;
                         // console.log(kecamatan);
                         $.each(kecamatan, function (i, data) {
                             var kec = `<option value="`+ data.name +`">`+ data.name +`</option>`;
@@ -370,11 +372,11 @@
         // get data wilayah indonesia di edit product
         var namaProv = $('#namaProv').text();
         $.ajax({
-            url: url+'provinsi',
+            url: url+'/provinsi',
             type: 'get',
             dataType: 'json',
             success: function(result){
-                var prov = result.data;
+                var prov = result;
                 $.each(prov, function(i, data){
                     $('#provEdit').append(`<option class="provEdit" id="`+ data.id +`" value="`+ data.name +`">`+ data.name +`</option>`);
                     if (namaProv === data.name) {
@@ -391,11 +393,11 @@
         var namaKota = $('#namaKota').text();
         function getKab(id){
             $.ajax({
-                url: url +'kabupaten?idpropinsi='+ id,
+                url: url +'/city/'+ id,
                 type: 'get',
                 dataType: 'json',
                 success: function(result){
-                    var kec = result.data;
+                    var kec = result;
                     $.each(kec, function(i, data){
                         $('#kotaEdit').append(`<option class="kotaEdit" id="`+ data.id +`" value="`+ data.name +`">`+ data.name +`</option>`);
                         if (namaKota === data.name) {
@@ -413,11 +415,11 @@
         var namaKec = $('#namaKec').text();
         function getKec(id){
             $.ajax({
-                url: url +'kecamatan?idkabupaten='+ id,
+                url: url +'/district/'+ id,
                 type: 'get',
                 dataType: 'json',
                 success: function(result){
-                    var kab = result.data;
+                    var kab = result;
                     $.each(kab, function(i, data){
                         $('#kecEdit').append(`<option class="kecEdit" id="`+ data.id +`" value="`+ data.name +`">`+ data.name +`</option>`);
                         if (namaKec === data.name) {
@@ -436,11 +438,11 @@
             $('#kotaEdit').empty();
             if (id_prov) {
                 $.ajax({
-                    url : url + 'kabupaten?idpropinsi=' + id_prov,
+                    url : url + '/city/' + id_prov,
                     type : "get",
                     dataType : "json"
                 }).done(function(result){
-                    let kabupaten = result.data;
+                    let kabupaten = result;
                     // console.log(kabupaten);
                     $.each(kabupaten, function (i, data) {
                         var kab = `<option id="`+ data.id +`" value="`+ data.name +`">`+ data.name +`</option>`;
@@ -448,11 +450,11 @@
                         if (i === 0) {
                             $('#kecEdit').empty();
                             $.ajax({
-                                url: url +'kecamatan?idkabupaten='+ data.id,
+                                url: url +'/district/'+ data.id,
                                 type: 'get',
                                 dataType: 'json',
                                 success: function(result){
-                                    var kecamatan = result.data;
+                                    var kecamatan = result;
                                     $.each(kecamatan, function(i, data){
                                         var kec = `<option id="`+ data.id +`" value="`+ data.name +`">`+ data.name +`</option>`;
                                         $('#kecEdit').append(kec);
@@ -474,7 +476,7 @@
             $('#kecEdit').empty();
             if (id_kec) {
                 $.ajax({
-                    url : url + 'kecamatan?idkabupaten=' + id_kec,
+                    url : url + '/district/' + id_kec,
                     type : "get",
                     dataType : "json"
                 }).done(function(result){
