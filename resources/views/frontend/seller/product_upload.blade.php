@@ -116,7 +116,7 @@
                                     <div class="form-box-content p-3">
                                         <div class="row">
                                             <div class="col-md-2">
-                                                <label>{{__('Description')}}</label>
+                                                <label>{{__('Description')}} <span class="required-star">*</span></label>
                                             </div>
                                             <div class="col-md-10">
                                                 <div class="mb-3">
@@ -308,6 +308,7 @@
                             <div class="form-box bg-white mt-4">
                                 <div class="form-box-title px-3 py-2">
                                     {{__('Periode')}}
+                                    <span class="required-star">*</span>
                                 </div>
                                 <div class="form-box-content p-3">
                                     <div class="{{ $errors->has('periode') ? 'has-error' : ''}}">
@@ -334,6 +335,7 @@
                             <div class="form-box bg-white mt-4">
                                 <div class="form-box-title px-3 py-2">
                                     {{__('Price')}}
+                                    <span class="required-star">*</span>
                                 </div>
                                 <div class="form-box-content p-3">
                                     <div class="row">
@@ -449,6 +451,7 @@
                             <div class="form-box bg-white mt-4" >
                                 <div class="form-box-title px-3 py-2">
                                     {{__('Lokasi')}}
+                                    <span class="required-star">*</span>
                                 </div>
                                 <input id="pac-input" style="cursor:pointer;" class="form-control" type="text" placeholder="Masukkan alamat yang anda cari disini">
 
@@ -460,7 +463,7 @@
                                     <div class="{{ $errors->has('alamat') ? 'has-error' : ''}}">
                                         <div class="row">
                                             <div class="col-md-2">
-                                                <label>{{__('Alamat')}}</label>
+                                                <label>{{__('Alamat')}} <span class="required-star">*</span></label>
                                             </div>
                                             <div class="col-md-10">
                                                 <textarea name="alamat" class="form-control mb-3" id="alamat" cols="20" rows="5" autocomplete="off">{{ old('name') }}</textarea>
@@ -472,7 +475,7 @@
                                     <div class="{{ $errors->has('provinsi') ? 'has-error' : ''}}">
                                         <div class="row">
                                             <div class="col-md-2">
-                                                <label>{{__('Provinsi')}}</label>
+                                                <label>{{__('Provinsi')}} <span class="required-star">*</span></label>
                                             </div>
                                             <div class="col-md-10">
                                                 <select name="provinsi" id="prov" class="form-control mb-3">
@@ -486,7 +489,7 @@
                                     <div class="{{ $errors->has('kota') ? 'has-error' : ''}}">
                                         <div class="row">
                                             <div class="col-md-2">
-                                                <label>{{__('Kota / Kabupaten')}}</label>
+                                                <label>{{__('Kota / Kab')}} <span class="required-star">*</span></label>
                                             </div>
                                             <div class="col-md-10">
                                                 <select name="kota" id="kab" class="form-control mb-3">
@@ -500,7 +503,7 @@
                                     <div class="{{ $errors->has('kecamatan') ? 'has-error' : ''}}">
                                         <div class="row">
                                             <div class="col-md-2">
-                                                <label>{{__('Kecamatan')}}</label>
+                                                <label>{{__('Kecamatan')}} <span class="required-star">*</span></label>
                                             </div>
                                             <div class="col-md-10">
                                                 <select name="kecamatan" id="kec" class="form-control mb-3">
@@ -598,7 +601,7 @@
                             </div>
                             <div class="form-box mt-4 text-right">
                                 {{-- <button type="submit" @if (Session::has('integrate')) onclick="sendToSmartMedia()" @endif class="btn btn-styled btn-base-1">{{ __('Save') }}</button> --}}
-                                <button type="button" id="btn-send" @if (Session::has('integrate')) onclick="sendToSmartMedia()" @endif class="btn btn-styled btn-base-1">{{ __('Save') }}</button>
+                                <button type="button" id="btn-send" @if (Session::has('integrate')) onclick="sendToSmartMedia()" @else onclick="sendToApsOnly()"  @endif class="btn btn-styled btn-base-1">{{ __('Save') }}</button>
                             </div>
                         </form>
                     </div>
@@ -1002,6 +1005,13 @@
                 console.error('Error:', error);
             });
 
+            setTimeout(() => {
+                $('#choice_form').submit();
+            }, 1500);
+        }
+
+        function sendToApsOnly() {
+            $('#btn-send').html('<i class="fa fa-spin fa-spinner"></i> Loading...');
             setTimeout(() => {
                 $('#choice_form').submit();
             }, 1500);
