@@ -33,12 +33,17 @@
             @endif
             @if (!Session::has('integrate'))
                 <div class="mt-3">
-                    <button onclick="location.href='{{ url('check_curl') }}'" class="btn btn-success btn-block"><img src="{{asset('uploads\logo\smartmedia_x.png')}}" width="32"> Integrate With Smartmedia</button>
+                    <button onclick="location.href='{{ url('check_curl') }}'" class="btn btn-success btn-block"><img src="{{asset('uploads\logo\smartmedia_x.png')}}" width="32">
+                        <div>Integrate</div>
+                        <div>With Smartmedia</div>
+                    </button>
                 </div>
             @else
                 <div class="mt-3">
-                    {{-- <button class="btn btn-primary btn-block"><img src="{{asset('uploads\logo\smartmedia_x.png')}}" width="32"> Already Integrated With Smartmedia</button> --}}
-                    <button onclick="location.href='{{ url('cancel_integrate') }}'" class="btn btn-warning btn-block"><img src="{{asset('uploads\logo\smartmedia_x.png')}}" width="32"> Cancel Integrate With Smartmedia</button>
+                    <button onclick="location.href='{{ url('cancel_integrate') }}'" class="btn btn-warning btn-block"><img src="{{asset('uploads\logo\smartmedia_x.png')}}" width="32">
+                        <div>Cancel Integrate</div>
+                        <div>With Smartmedia</div>
+                    </button>
                 </div>
             @endif
             
