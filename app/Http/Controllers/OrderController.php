@@ -566,13 +566,14 @@ class OrderController extends Controller
                         ->where('od.id', $request->id)
                         ->select([
                             'od.*',
+                            'od.id as order_id',
                             'b.id as buyer_id',
                             'b.name as buyer_name',
                             'b.email as buyer_email',
                             'p.name as product_name',
                         ])
                         ->first();
-        $order = Order::where('id', $query->id)->first();
+        $order = Order::where('id', $query->order_id)->first();
         $buyer = User::where('id', $order->user_id)->first();
         if ($item !== null) {
             $item->status = 3; // activated
