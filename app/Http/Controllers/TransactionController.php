@@ -230,7 +230,8 @@ class TransactionController extends Controller
             foreach ($trx->orders as $key => $o) {
                 foreach ($o->orderDetails as $key => $od) {
                     if ($od->status == 2) {
-                        $this->reject_detail_proses($id);
+                        $this->reject_detail_proses($od->id);
+                        return redirect()->back();
                     }
                 }
             }

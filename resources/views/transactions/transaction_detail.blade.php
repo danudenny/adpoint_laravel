@@ -102,11 +102,12 @@
                                 @endforeach
                             @endforeach
                         @endforeach
-                        @if (count($od_rejected) > 0)
+                        {{-- @if (count($od_rejected) > 0)
                             <button id="btn-cal" onclick="confirmToBuyerToCalculate({{$transaction->id}})"  class="btn btn-warning">Confirm Reject To Buyer</but>
-                        @endif
+                        @endif --}}
                         @if (count($true) === count($false))
-                            <button onclick="confirmToBuyer({{$transaction->id}})" class="btn btn-primary">Confirm</button>
+                            <button onclick="confirmToBuyer({{$transaction->id}})" class="btn btn-primary">
+                                <i class="fa fa-check"></i> Confirm to Buyer</button>
                         @endif
                     @elseif ($transaction->status === "paid")
                         <a class="btn btn-primary" href="{{ route('transaction.show.invoice', encrypt($transaction->id)) }}">
