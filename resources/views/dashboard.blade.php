@@ -162,45 +162,6 @@
             </div>
         </div>
     </div>
-    <div class="col-md-6">
-        <div class="panel">
-            <!--Panel heading-->
-            <div class="panel-heading">
-                <h3 class="panel-title">Category wise product stock</h3>
-            </div>
-
-            <!--Panel body-->
-            <div class="panel-body">
-                <div class="table-responsive">
-                    <table class="table table-striped mar-no">
-                        <thead>
-                            <tr>
-                                <th>Category Name</th>
-                                <th>Stock</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (\App\Category::all() as $key => $category)
-                                @php
-                                    $products = \App\Product::where('category_id', $category->id)->get();
-                                    $qty = 0;
-                                    foreach ($products as $key => $product) {
-                                        foreach (json_decode($product->variations) as $key => $variation) {
-                                            $qty += $variation->qty;
-                                        }
-                                    }
-                                @endphp
-                                <tr>
-                                    <td>{{ __($category->name) }}</td>
-                                    <td>{{ $qty }}</td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
 </div>
 @endif
 
