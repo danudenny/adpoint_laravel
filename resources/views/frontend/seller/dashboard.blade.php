@@ -56,6 +56,7 @@
                                         @php
                                              $orders = DB::table('orders')
                                                 ->selectRaw('sum(grand_total - adpoint_earning) as jumlah')
+                                                ->where('user_id', Auth::user()->id)
                                                 ->get();
                                             foreach ($orders as $key => $value) {
                                                 $jumlah = $value->jumlah;
