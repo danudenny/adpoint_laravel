@@ -51,9 +51,10 @@
                                         foreach ($o->orderDetails as $key => $od) {
                                             array_push($reject_list, $od->rejected);
                                         }
+                                        // dd($od->rejected);
                                     }
                                 @endphp
-                                @if (count($reject_list) > 0)
+                                @if ($reject_list == null)
                                     <i class="text-danger">Rejected by Seller</i>
                                 @else 
                                     <i>Checked Seller</i>

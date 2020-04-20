@@ -18,4 +18,5 @@ yarn-error.log
 
 updates/
 Dockerfile
+.env
 app/Http/Controllers/Api/Controller.php

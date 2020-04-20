@@ -1,3 +1,4 @@
+
 <div class="modal-content">
     <div class="modal-header">
     <h5 class="modal-title" id="exampleModalLongTitle">CODE: {{ $trx->code }}</h5>
@@ -30,7 +31,7 @@
                         @php
                             $product = \App\Product::where('id', $od->product_id)->first();
                         @endphp
-                        @if ($od->status == 2)
+                        @if ($od->status == 2 || $od->rejected == 1)
                             <tr style="text-decoration: line-through">
                                 <td width="250"> <i class="fa fa-fw fa-times text-danger"></i> {{ $product->name }}</td>
                                 <td width="50">{{ $od->quantity }}</td>
