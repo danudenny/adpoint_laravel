@@ -1588,7 +1588,7 @@
             $user = Auth::id();
         @endphp
         <script>
-            Pushy.register({ appId: '5e68a08102c9bc5414aad613' }).then(function (deviceToken) {
+            Pushy.register({ appId: '5e9db0a4cf7292be0cce1540' }).then(function (deviceToken) {
                 const url = '{{ route('token.register') }}';
 
                 const data_token = {
