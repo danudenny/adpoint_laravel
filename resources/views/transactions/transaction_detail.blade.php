@@ -51,9 +51,10 @@
                                         foreach ($o->orderDetails as $key => $od) {
                                             array_push($reject_list, $od->rejected);
                                         }
+                                        // dd($od->rejected);
                                     }
                                 @endphp
-                                @if (count($reject_list) > 0)
+                                @if ($reject_list == null)
                                     <i class="text-danger">Rejected by Seller</i>
                                 @else 
                                     <i>Checked Seller</i>
@@ -72,28 +73,13 @@
                 </table>
             </div>
             <div class="col-md-8">
-                <div class="row pull-right btn-group">
-                    @php
-                        $order_det = DB::table('orders as o')
-                                    -> join('order_details as od', 'od.order_id', '=', 'o.id')
-                                    -> join('transactions as t', 't.id', '=', 'o.transaction_id')
-                                    -> where('t.id', $transaction->id)
-                                    -> where('od.rejected', 1)
-                                    ->get();
-                                    // dd($order_det);
-                    @endphp
-
-                    @if ($order_det != null)
-                    <button class="btn btn-primary" onclick="disapprove_by_admin({{$transaction->id}})">
-                        <i class="fa fa-check"></i> Confirms to Buyer
-                    </button>
-                    @endif
-                    @if ($transaction->status === "on proses" && $order_det == null)
+                <div class="row pull-right">
+                    @if ($transaction->status === "on proses")
                         <button class="btn btn-success" onclick="approve_by_admin({{ $transaction->id }})">
-                            <i class="fa fa-check"></i> Approve All
+                            <i class="fa fa-check"></i> Approve
                         </button>
                         <button class="btn btn-danger" onclick="disapprove_by_admin({{$transaction->id}})">
-                            <i class="fa fa-times"></i> Reject All
+                            <i class="fa fa-times"></i> Reject
                         </button>
                     @elseif ($transaction->status === "ready")
                         @php
@@ -209,13 +195,13 @@
                                         <th>File Advertising</th>
                                         <th>Price</th>
                                         <th>Total</th>
-                                        <th width="10%">Action</th>
+                                        <th></th>
                                     </tr>
                                     @foreach ($o->orderDetails as $key => $od)
                                         @php
                                             $product = \App\Product::where('id', $od->product_id)->first();
                                         @endphp
-                                        @if ($od->rejected == 1)
+                                        @if ($od->status == 2)
                                             <tr style="text-decoration: line-through">
                                                 <td>{{ $key+1 }}</td>
                                                 <td>
@@ -223,7 +209,6 @@
                                                     <a target="_blank" href="{{ route('product', $product->slug) }}">
                                                         <strong>{{ $product->name }}</strong> ( <strong>{{ $od->quantity }}</strong> <i><strong>{{ $od->variation }}</strong></i>) 
                                                     </a>
-                                                    <label class="badge badge-warning">Rejected</label>
                                                 </td>
                                                 <td>
                                                     @php
@@ -259,11 +244,6 @@
                                                             <i class="fa fa-eye"></i> Details
                                                         </button>
                                                     @endif
-                                                    @if ($od->rejected == 1)
-                                                        <button data-toggle="tooltip" title="Re Approve" onclick="rejectDetail({{ $od->id }})" class="btn btn-warning">
-                                                            <i class="fa fa-retweet"></i> Re Approve
-                                                        </button>
-                                                    @endif
                                                 </td>
                                             </tr>
                                         @else 
@@ -274,7 +254,6 @@
                                                     <a target="_blank" href="{{ route('product', $product->slug) }}">
                                                         <strong>{{ $product->name }}</strong> ( <strong>{{ $od->quantity }}</strong> <i><strong>{{ $od->variation }}</strong></i>) 
                                                     </a>
-                                                    <label class="badge badge-success">Approved</label>
                                                 </td>
                                                 <td>
                                                     @php
@@ -304,20 +283,7 @@
                                                 <td align="right">
                                                     <strong>{{ single_price($od->total) }}</strong>
                                                 </td>
-                                                <td>
-                                                    @if($od->rejected == null)
-                                                    <div class="btn-group">
-                                                        <a href="{{ route('approve.detail.proses', $od->id) }}" class="btn btn-success">Approve</a>
-                                                        <a href="{{ route('reject.detail.proses', $od->id) }}" class="btn btn-danger">Reject</a>
-                                                    </div>
-                                                    @elseif($od->rejected == 0)
-                                                    <div class="btn-group">
-                                                        <button data-toggle="tooltip" title="Details" onclick="rejectDetail({{ $od->id }})" class="btn btn-primary">
-                                                            <i class="fa fa-eye"></i> Details
-                                                        </button>
-                                                    </div>
-                                                    @endif
-                                                </td>
+                                                <td></td>
                                             </tr>
                                         @endif
                                     @endforeach

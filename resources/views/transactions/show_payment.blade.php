@@ -51,6 +51,7 @@
                                 <div class="alert alert-success">Paid</div>
                             @else 
                                 <a data-toggle="modal" data-target="#sure" class="btn btn-primary"><i class="fa fa-check"></i> Change to paid</a>
+                                <a href="{{ URL::previous() }}" class="btn btn-default"><i class="fa fa-arrow-left"></i> Back To Details</a>
                             @endif
                         </div>
                     </div>

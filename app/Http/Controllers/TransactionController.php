@@ -243,7 +243,6 @@ class TransactionController extends Controller
 
         if ($order_detail !== null) {
             $order_detail->is_confirm = 1;
-            $order_detail->rejected = 1;
             // calculate earning
             $order = Order::where('id', $order_detail->order_id)->first();
             $mintotal = $order->total-$order_detail->total;
@@ -270,7 +269,6 @@ class TransactionController extends Controller
 
         if ($order_detail !== null) {
             $order_detail->is_confirm = 0;
-            $order_detail->rejected = 0;
             // calculate earning
             $order = Order::where('id', $order_detail->order_id)->first();
             $mintotal = $order->total-$order_detail->total;
