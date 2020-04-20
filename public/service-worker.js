@@ -7,7 +7,7 @@ self.addEventListener('push', function(e) {
     var data = e.data.json() || {};
     console.log(data);
 
-    var image = data.image || 'https://sdk.pushy.me/web/assets/img/icon.png';
+    var image = data.image || 'https://aps.jaladara.com/uploads/favicon/07vbhUtSLagrkDL3t4H8HaHxV2UBtC0m0qTM4Y46.png';
     var title = data.title || '';
     var body = data.message || '';
 
@@ -16,7 +16,7 @@ self.addEventListener('push', function(e) {
         icon: image,
         badge: image,
         data: {
-            url: data.url
+            url: 'aps.jaladara.com'
         }
     };
 
