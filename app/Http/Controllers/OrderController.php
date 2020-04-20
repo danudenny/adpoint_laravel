@@ -573,8 +573,8 @@ class OrderController extends Controller
                             'p.name as product_name',
                         ])
                         ->first();
-        $order = Order::where('id', $query->order_id)->first();
-        $buyer = User::where('id', $order->user_id)->first();
+        $order = OrderDetail::where('id', $query->order_id)->first();
+        $buyer = User::where('id', $order->buyer_id)->first();
         if ($item !== null) {
             $item->status = 3; // activated
             $item->save();
