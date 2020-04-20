@@ -92,7 +92,7 @@
                                 @foreach ($o->orderDetails as $key => $od)
                                     @php
                                         array_push($false, $od->is_confirm);
-                                        array_push($od_rejected, $od->rejectd);
+                                        array_push($od_rejected, $od->rejected);
                                     @endphp
                                     @if ($od->is_confirm === 1)
                                         @php
@@ -102,9 +102,10 @@
                                 @endforeach
                             @endforeach
                         @endforeach
-                        {{-- @if (count($od_rejected) > 0)
-                            <button id="btn-cal" onclick="confirmToBuyerToCalculate({{$transaction->id}})"  class="btn btn-warning">Confirm Reject To Buyer</but>
-                        @endif --}}
+                        @if (count($od_rejected) > 0 &&  $od->is_reject == 0)
+                            <button id="btn-cal" onclick="confirmToBuyerToCalculate({{$transaction->id}})" class="btn btn-warning _btn_">
+                                <i class="fa fa-calculator"></i> Recalculate</button>
+                        @endif
                         @if (count($true) === count($false))
                             <button onclick="confirmToBuyer({{$transaction->id}})" class="btn btn-primary">
                                 <i class="fa fa-check"></i> Confirm to Buyer</button>
@@ -349,5 +350,7 @@
             let url = '{{ url("/admin/confirm-reject-to-buyer") }}'+"/"+id;
             location.replace(url);
         }
+
+        
     </script>
 @endsection

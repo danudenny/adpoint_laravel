@@ -225,7 +225,8 @@ class TransactionController extends Controller
             }
         }
         if (count($od_rejected) == 1) {
-            dd('Langsung kabari buyer');
+            $od->is_reject = 1;
+            return redirect()->back();
         }elseif (count($od_rejected) > 1) {
             foreach ($trx->orders as $key => $o) {
                 foreach ($o->orderDetails as $key => $od) {
@@ -244,6 +245,7 @@ class TransactionController extends Controller
 
         if ($order_detail !== null) {
             $order_detail->is_confirm = 1;
+            $order_detail->is_reject = 1;
             // calculate earning
             $order = Order::where('id', $order_detail->order_id)->first();
             $mintotal = $order->total-$order_detail->total;
