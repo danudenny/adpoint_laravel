@@ -192,6 +192,7 @@
                         @php
                             $orders = DB::table('orders')
                                 ->selectRaw('sum(grand_total - adpoint_earning) as jumlah')
+                                ->where('user_id', Auth::user()->id)
                                 ->get();
                             foreach ($orders as $key => $value) {
                                 $jumlah = $value->jumlah;
@@ -208,6 +209,7 @@
                                         ->selectRaw('sum(grand_total - adpoint_earning) as jumlah')
                                         ->whereRaw('YEAR(created_at) = YEAR(CURRENT_DATE)')
                                         ->whereRaw('MONTH(created_at) = MONTH(CURRENT_DATE)')
+                                        ->where('user_id', Auth::user()->id)
                                         ->get();
                                 foreach ($orders as $key => $value) {
                                     $jumlah = $value->jumlah;
@@ -226,6 +228,7 @@
                                     ->selectRaw('sum(grand_total - adpoint_earning) as jumlah')
                                     ->whereRaw('YEAR(created_at) = YEAR(CURRENT_DATE - INTERVAL 1 MONTH)')
                                     ->whereRaw('MONTH(created_at) = MONTH(CURRENT_DATE - INTERVAL 1 MONTH)')
+                                    ->where('user_id', Auth::user()->id)
                                     ->get();
                                 foreach ($orders as $key => $value) {
                                     $jumlah = $value->jumlah;
