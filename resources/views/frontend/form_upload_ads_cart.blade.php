@@ -14,7 +14,7 @@
 <div class="modal-body px-3 pt-0">
     <div class="row mt-4">
         <div class="col-md-12">
-            <h4 class="text-center">Upload this here</h4>
+            <h4 class="text-center">Upload your Ads Materials</h4>
             <hr>
             <form action="{{ route('upload.ads.proses') }}" method="POST" enctype="multipart/form-data">
                 @csrf
@@ -61,7 +61,7 @@
                                 </div>
                             </div>
                             <div class="col-md-11">
-                                <input type="file" name="video[]" id="video-1" class="custom-input-file custom-input-file--4" data-multiple-caption="{count} files selected" accept="image/*" />
+                                <input type="file" name="video[]" id="video-1" class="custom-input-file custom-input-file--4" data-multiple-caption="{count} files selected" accept="video/*" />
                                 <label for="video-1" class="mw-100 mb-3">
                                     <span></span>
                                     <strong>
@@ -110,7 +110,7 @@
             photoAdd +=  '<button type="button" onclick="delete_this_row(this)" class="btn btn-link btn-icon text-danger"><i class="fa fa-trash-o"></i></button>';
             photoAdd +=  '</div>';
             photoAdd +=  '<div class="col-md-11">';
-            photoAdd +=  '<input type="file" name="video[]" id="video-'+vid_id+'" class="custom-input-file custom-input-file--4" data-multiple-caption="{count} files selected" multiple accept="image/*" />';
+            photoAdd +=  '<input type="file" name="video[]" id="video-'+vid_id+'" class="custom-input-file custom-input-file--4" data-multiple-caption="{count} files selected" multiple accept="video/*" />';
             photoAdd +=  '<label for="video-'+vid_id+'" class="mw-100 mb-3">';
             photoAdd +=  '<span></span>';
             photoAdd +=  '<strong>';
