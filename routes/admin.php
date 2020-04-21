@@ -29,8 +29,9 @@ Route::group(['prefix' =>'admin', 'middleware' => ['auth', 'admin']], function()
 
 	Route::post('/reject/details', 'TransactionController@reject_detail')->name('reject.detail');
 	Route::get('/confirm-reject-to-buyer/{id}', 'TransactionController@confirm_reject_to_buyer')->name('confirm.reject.to.buyer');
-	Route::post('/reject/detail/proses', 'TransactionController@reject_detail_proses')->name('reject.detail.proses');
-
+	Route::get('/reject/detail/proses/{od_id}', 'TransactionController@reject_detail_proses')->name('reject.detail.proses');
+	Route::get('/approve/detail/proses/{od_id}', 'TransactionController@approve_detail_proses')->name('approve.detail.proses');
+	Route::get('/reject/order_details/{id}', 'TransactionController@partialReject')->name('reject.order.details');
 
 
 

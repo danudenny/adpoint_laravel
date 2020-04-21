@@ -7,6 +7,11 @@
                 <div class="row justify-content-center">
                     <div class="col-md-5">
                         <div>
+                            @if(session('status_expired'))
+                            <div class="alert alert-danger">
+                                <i class="fa fa-lock"></i> {!! session('status_expired') !!}
+                            </div>
+                            @endif
                             @if (Session::has('message'))
                                 <div class="alert alert-danger">
                                     {!! session('message') !!}

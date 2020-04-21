@@ -25,8 +25,8 @@
                         <th>#</th>
                         <th width="20%">{{__('Name')}}</th>
                         <th>{{__('Photo')}}</th>
-                        <th>{{__('Current qty')}}</th>
                         <th>{{__('Base Price')}}</th>
+                        <th width="10%">{{__('Periode')}}</th>
                         <th>{{__('Todays Deal')}}</th>
                         <th>{{__('Published')}}</th>
                         <th>{{__('Featured')}}</th>
@@ -35,20 +35,25 @@
                 </thead>
                 <tbody>
                     @foreach($products as $key => $product)
+                    @php
+                        $periode = json_decode($product->choice_options);
+                        foreach ($periode as $i => $value) {
+                            $periods = $value->options;
+                            $period_name = "";
+                            foreach ($periods as $keys) {
+                                $period_name .= $keys . ", ";
+                                $period = rtrim($period_name, ', ');
+                            }
+                        }
+                    @endphp
+                        
+                    {{-- @dd($period_name); --}}
                         <tr>
                             <td>{{$key+1}}</td>
                             <td><a href="{{ route('product', $product->slug) }}" target="_blank">{{ __($product->name) }}</a></td>
                             <td><img class="img-md" src="{{ asset($product->thumbnail_img)}}" alt="Image"></td>
-                            <td>
-                                @php
-                                    $qty = 0;
-                                    foreach (json_decode($product->variations) as $key => $variation) {
-                                        $qty += $variation->qty;
-                                    }
-                                    echo $qty;
-                                @endphp
-                            </td>
-                            <td>{{ number_format($product->unit_price,2) }}</td>
+                            <td style="text-align: right">{{ number_format($product->unit_price,0) }}</td>
+                            <td>{{ $period }}</td>
                             <td><label class="switch">
                                 <input onchange="update_todays_deal(this)" value="{{ $product->id }}" type="checkbox" <?php if($product->todays_deal == 1) echo "checked";?> >
                                 <span class="slider round"></span></label></td>
@@ -64,11 +69,6 @@
                                         {{__('Actions')}} <i class="dropdown-caret"></i>
                                     </button>
                                     <ul class="dropdown-menu dropdown-menu-right">
-                                        @if ($type == 'Seller')
-                                            <li><a href="{{route('products.seller.edit', encrypt($product->id))}}">{{__('Edit')}}</a></li>
-                                        @else
-                                            <li><a href="{{route('products.admin.edit', encrypt($product->id))}}">{{__('Edit')}}</a></li>
-                                        @endif
                                         <li><a onclick="confirm_modal('{{route('products.destroy', $product->id)}}');">{{__('Delete')}}</a></li>
                                         <li><a href="{{route('products.duplicate', $product->id)}}">{{__('Duplicate')}}</a></li>
                                     </ul>

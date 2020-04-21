@@ -566,6 +566,7 @@ class OrderController extends Controller
                         ->where('od.id', $request->id)
                         ->select([
                             'od.*',
+                            'od.id as order_id',
                             'b.id as buyer_id',
                             'o.id as order_id',
                             'b.name as buyer_name',

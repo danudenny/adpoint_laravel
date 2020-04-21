@@ -225,12 +225,14 @@ class TransactionController extends Controller
             }
         }
         if (count($od_rejected) == 1) {
-            dd('Langsung kabari buyer');
+            $od->is_reject = 1;
+            return redirect()->back();
         }elseif (count($od_rejected) > 1) {
             foreach ($trx->orders as $key => $o) {
                 foreach ($o->orderDetails as $key => $od) {
                     if ($od->status == 2) {
-                        $this->reject_detail_proses($id);
+                        $this->reject_detail_proses($od->id);
+                        return redirect()->back();
                     }
                 }
             }
@@ -243,6 +245,7 @@ class TransactionController extends Controller
 
         if ($order_detail !== null) {
             $order_detail->is_confirm = 1;
+            $order_detail->is_reject = 1;
             // calculate earning
             $order = Order::where('id', $order_detail->order_id)->first();
             $mintotal = $order->total-$order_detail->total;
@@ -260,5 +263,32 @@ class TransactionController extends Controller
             $order_detail->save();
             $order->save();
         }
+        return redirect()->back();
+    }
+
+    public function approve_detail_proses($od_id)
+    {
+        $order_detail = OrderDetail::where('id', $od_id)->first();
+
+        if ($order_detail !== null) {
+            $order_detail->is_confirm = 0;
+            // calculate earning
+            $order = Order::where('id', $order_detail->order_id)->first();
+            $mintotal = $order->total-$order_detail->total;
+            $mintax = $mintotal*0.1;
+            $mingrandtotal = $mintotal+$mintax;
+
+            $seller = Seller::where('user_id', $order->seller_id)->first();
+            $minadpointearning = $seller->commission/100*$mingrandtotal;
+
+            $order->total = $mintotal;
+            $order->tax = $mintax;
+            $order->grand_total = $mingrandtotal;
+            $order->adpoint_earning = $minadpointearning;
+
+            $order_detail->save();
+            $order->save();
+        }
+        return redirect()->back();
     }
 }
