@@ -187,7 +187,7 @@
         if (confirm('Are you sure to activate?')) {
             localStorage.setItem('activeTabSeller', '#nav-active');
             localStorage.setItem('routeTabSeller', '{{ route('orders.active.order') }}');
-            location.reload();
+            location.reload(); // ini di hapus dulu
             $.post('{{ route('order.activate') }}', {_token:'{{ csrf_token() }}', id:id}, function(result) {
                 var activeTab = localStorage.getItem('activeTabSeller');
                 if(activeTab !== null){

@@ -96,6 +96,7 @@ class CartController extends Controller
 
     public function addToCart(Request $request)
     {
+        
         $product = Product::find($request->id);
         $data = array();
         $data['id'] = $product->id;
@@ -165,19 +166,26 @@ class CartController extends Controller
         $data['advertising'] = null;
 
         if (Auth::check()) {
-            if ($product->user_id !== Auth::user()->id) {
+            if ((int)$product->user_id !== (int)Auth::user()->id) {
                 if($request->session()->has('cart')){
                     $cart = $request->session()->get('cart');
                     if (isset($cart[$product->user_id])) {
+                        $product_same = false;
                         foreach ($cart as $seller_id => $c) {
                             foreach ($c as $key => $cartItem) {
-                                if ($cartItem['id'] === $data['id']) {
-                                    return view('frontend.partials.ItemHashCart');
-                                }else {
-                                    $c[$key+1] = $data;
+                                if ((int)$cartItem['id'] === (int)$data['id']) {
+                                    $product_same = true;
                                 }
+                                // else {
+                                //     $c[$key+1] = $data;
+                                // }
                             }
-                            $cart[$product->user_id] = $c;
+                            // $cart[$product->user_id] = $c;
+                        }
+                        if ($product_same === true) {
+                            return view('frontend.partials.ItemHashCart');
+                        }else {
+                            $cart[$product->user_id][] = $data;
                         }
                     }else {
                         $cart[$product->user_id][] = $data;
