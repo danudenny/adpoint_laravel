@@ -720,23 +720,23 @@ class ProductController extends Controller
     }
 
     public function getDisplayLog() {
-        $getToken = Session::get('integrate');
-        // dd($getToken);   
-        $client = new Client(['base_uri' => 'https://aps.jaladara.com/']);
+        // $getToken = Session::get('integrate');
+        // // dd($getToken);   
+        // $client = new Client(['base_uri' => 'https://aps.jaladara.com/']);
         
-        $headers = [
-            'Authorization' => 'Bearer '.$getToken,        
-            'Accept'        => 'application/json',
-        ];
+        // $headers = [
+        //     'Authorization' => 'Bearer '.$getToken,        
+        //     'Accept'        => 'application/json',
+        // ];
 
-        $request = $client->request('GET', 'api/reports/displaylog/all?deviceid=SmartMedia5054&interval=2017-04-01,2020-04-07&limit=20&media_type=Commercial&offset=0&order=displaydate&ordertype=desc&q=', [
-            'headers' => $headers
-        ]);
+        // $request = $client->request('GET', 'api/reports/displaylog/all?deviceid=SmartMedia5054&interval=2017-04-01,2020-04-07&limit=20&media_type=Commercial&offset=0&order=displaydate&ordertype=desc&q=', [
+        //     'headers' => $headers
+        // ]);
 
-        $response = $request->getBody()->getContents();
-        $data = json_decode($response);
-        $collect = $data->data;
-        return view('frontend.seller.display_log', compact('collect'));
+        // $response = $request->getBody()->getContents();
+        // $data = json_decode($response);
+        // $collect = $data->data;
+        return view('frontend.seller.display_log');
     }
 
     public function sendToSmartmedia() {
