@@ -193,7 +193,6 @@ class BusinessSettingsController extends Controller
         foreach ($request->types as $key => $type) {
                 $this->overWriteEnvFile($type, $request[$type]);
         }
-
         flash("Settings updated successfully")->success();
         return back();
     }
@@ -214,7 +213,6 @@ class BusinessSettingsController extends Controller
                     $type.'="'.env($type).'"', $type.'='.$val, file_get_contents($path)
                 ));
             }
-
             else{
                 file_put_contents($path, file_get_contents($path).$type.'='.$val);
             }
