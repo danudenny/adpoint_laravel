@@ -8,7 +8,6 @@
                 <div class="col-lg-3 d-none d-lg-block">
                     @include('frontend.inc.seller_side_nav')
                 </div>
-
                 <div class="col-lg-9">
                     <div class="main-content">
                         <!-- Page title -->
@@ -31,29 +30,27 @@
                             </div>
                         </div>
                         <div class="row no-border mt-4">
-                            <div class="col-md-10">
+                            <div class="col-md-5">
                                 <div class="form-group">
-                                    <div id="reportrange" style="background: #fff; cursor: pointer; padding: 8px; border: 1px solid #ccc; width: 100%; border-radius: 3px;">
-                                        <i class="fa fa-calendar"></i>&nbsp;
-                                        <span></span> <i class="fa fa-caret-down"></i>
-                                    </div>
+                                    <input type="text" class="form-control" placeholder="Start Date" id="Awal">
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                    <input type="text" class="form-control" placeholder="End Date" id="Akhir">
                                 </div>
                             </div>
 
                             <div class="col-md-2">
-                                <input type="hidden" name="date_start" id="date_start" value="">
-                                <input type="hidden" name="date_end" id="date_end" value="">
-                                <input type="hidden" name="status" id="status" value="">
                                 <div class="form-group">
-                                    <button onclick="findLogs()" class="btn btn-block btn-outline-info">Apply</button>
+                                    <button onclick="findLogs()" id="btn-apply" class="btn btn-block btn-info">Apply</button>
                                 </div>
                             </div>
                         </div>
-
                         <!-- Order history table -->
                         <div class="card no-border mt-4">
                             <div>
-                                <table class="table table-sm table-hover table-responsive-md" id="table">
+                                <table class="table table-sm table-bordered">
                                     <thead>
                                         <tr>
                                             <th>Log ID</th>
@@ -63,26 +60,24 @@
                                             <th>{{__('Device Group')}}</th>
                                             <th>{{__('Device ID')}}</th>
                                             <th>{{__('Display Date')}}</th>
-                                            <th>{{__('Actions')}}</th>   
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                        @foreach($collect as $key => $val)
-                                        <tr>
-                                            <td>{{ $val->displaylogid }}</td>
-                                            <td>{{ $val->media_name }}</td>
-                                            <td>{{ $val->media_type }}</td>
-                                            <td>{{ $val->playlistname }}</td>
-                                            <td>{{ $val->devicegroupname }}</td>
-                                            <td>{{ $val->deviceid }}</td>
-                                            <td>{{ $val->displaydate_str }}</td>
-                                            <td></td>
-                                        </tr>
-                                        @endforeach
+                                    <tbody id="data-display-log">
+                                        <div class="c-nav-load">
+                                            <div class="ph-item border-0 p-0 mt-3">
+                                                <div class="ph-col-12">
+                                                    <div class="ph-row">
+                                                        <div class="ph-col-12 big"></div>
+                                                        <div class="ph-col-12 big"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </tbody>
                                 </table>
                             </div>
                         </div>
+                        
 
                     </div>
                 </div>
@@ -94,64 +89,160 @@
 
 @section('script')
     <script>
-        // date range picker
-        var start = moment().subtract(29, 'days');
-        var end = moment();
+        $('#Awal').datepicker({
+            uiLibrary: 'bootstrap4',
+            iconsLibrary: 'fontawesome',
+            format: 'dd mmm yyyy',
+            maxDate: function () {
+                return $('#Akhir').val();
+            }
+        });
+        $('#Akhir').datepicker({
+            uiLibrary: 'bootstrap4',
+            iconsLibrary: 'fontawesome',
+            format: 'dd mmm yyyy',
+            minDate: function () {
+                return $('#Awal').val();
+            }
+        });
 
-        function cb(start, end) {
-            $('#reportrange span').html(start.format('D MMMM YYYY') + ' - ' + end.format('D MMMM YYYY'));
-            var val_date_start = start.format('YYYY-MM-DD');
-            var val_date_end = end.format('YYYY-MM-DD');
-            $('#date_start').val(val_date_start);
-            $('#date_end').val(val_date_end);
+        var d = new Date();
+        var month = new Array();
+        month[0] = "Jan";
+        month[1] = "Feb";
+        month[2] = "Mar";
+        month[3] = "Apr";
+        month[4] = "May";
+        month[5] = "Jun";
+        month[6] = "Jul";
+        month[7] = "Aug";
+        month[8] = "Sep";
+        month[9] = "Oct";
+        month[10] = "Nov";
+        month[11] = "Dec";
+        var date = d.getDate().toString();
+        var month = month[d.getMonth()];
+        var year = d.getFullYear().toString();
+        var result = date+' '+month+' '+year;
+
+        $('#Awal').val(result);
+        $('#Akhir').val(result);
+
+        changeFormatTglAwal($('#Awal').val());
+        changeFormatTglAkhir($('#Akhir').val());
+
+        function changeFormatTglAwal(awal) {
+            var dAwal = new Date(awal);
+            var bulan = new Array();
+                bulan[0] = "01";
+                bulan[1] = "02";
+                bulan[2] = "03";
+                bulan[3] = "04";
+                bulan[4] = "05";
+                bulan[5] = "06";
+                bulan[6] = "07";
+                bulan[7] = "08";
+                bulan[8] = "09";
+                bulan[9] = "10";
+                bulan[10] = "11";
+                bulan[11] = "12";
+            var tglAwalParam = dAwal.getFullYear().toString()+'-'+bulan[dAwal.getMonth()]+'-'+dAwal.getDate().toString();
+            return tglAwalParam;
         }
 
-        $('#reportrange').daterangepicker({
-            startDate: start,
-            endDate: end,
-            ranges: {
-               'Today': [moment(), moment()],
-               'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-               'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-               'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-               'This Month': [moment().startOf('month'), moment().endOf('month')],
-               'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-            }
-        }, cb);
+        function changeFormatTglAkhir(akhir) {
+            var dAkhir = new Date(akhir);
+            var bulan = new Array();
+                bulan[0] = "01";
+                bulan[1] = "02";
+                bulan[2] = "03";
+                bulan[3] = "04";
+                bulan[4] = "05";
+                bulan[5] = "06";
+                bulan[6] = "07";
+                bulan[7] = "08";
+                bulan[8] = "09";
+                bulan[9] = "10";
+                bulan[10] = "11";
+                bulan[11] = "12";
+            var tglAkhirParam = dAkhir.getFullYear().toString()+'-'+bulan[dAkhir.getMonth()]+'-'+dAkhir.getDate().toString();
+            return tglAkhirParam;
+        }
 
-        cb(start, end);
+        function getTokenSmartMedia(){
+            var token = "";
+            $.ajax({
+                async: false,
+                url: "https://aps.jaladara.com/api/users/login",
+                type: "POST",
+                dataType: "JSON",
+                crossDomain: true,
+                data: {
+                    'email':'adpoint@imaniprima.com',
+                    'password': '123456'
+                },
+                success: function(res){
+                    token = res.token;
+                },
+                error: function(err) {
+                    console.log(err);
+                }
+            })
+            return token;
+        }
+
+        var tokenSmart = getTokenSmartMedia();
+
+        function getDisplayLog(s, e) {
+            $.ajax({
+                url: 'https://aps.jaladara.com/api/reports/displaylog/all?deviceid=SmartMedia5054&interval='+s+','+e+'&limit=20&media_type=Commercial&offset=0&order=displaydate&ordertype=desc&q=',
+                type: 'GET',
+                dataType: 'JSON',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${tokenSmart}`,
+                },
+                success: function(res) {
+                    var result = res.data;
+                    if (result.length > 0) {
+                        $.each(result, function(i, data){
+                            var row = `<tr>
+                                            <td>`+data.displaylogid+`</td>
+                                            <td>`+data.media_name+`</td>
+                                            <td>`+data.media_type+`</td>
+                                            <td>`+data.playlistname+`</td>
+                                            <td>`+data.devicegroupname+`</td>
+                                            <td>`+data.deviceid+`</td>
+                                            <td>`+data.displaydate_str+`</td>
+                                        </tr>`
+                            $('#data-display-log').append(row);
+                        });
+                    }else {
+                        var row = `<tr>
+                                    <td colspan="7" align="center">Tidak ada log</td>
+                                </tr>`
+                        $('#data-display-log').append(row);
+                    }
+                    $('#btn-apply').html('Apply');
+                    $('.c-nav-load').hide();
+                },
+                error: function(err) {
+                    console.log(err)
+                }
+            })
+        }
+
+        
+        getDisplayLog(changeFormatTglAwal($('#Awal').val()), changeFormatTglAkhir($('#Akhir').val()));
 
         function findLogs() {
+            $('#btn-apply').html('<i class="fa fa-spin fa-spinner"></i> Loading...');
             $('.c-nav-load').show();
-            var start = $('#date_start').val();
-            var end = $('#date_end').val();
-
-            var data = {
-                _token:'{{ csrf_token() }}',
-                start : start,
-                end : end,
-            }
-            var myHeaders = new Headers();
-                myHeaders.append("Authorization", $SESSION_['integrate']);
-
-            var requestOptions = {
-                method: 'GET',
-                headers: myHeaders,
-                redirect: 'follow'
-            };
-
-            fetch("http://192.168.100.64/api/reports/displaylog/all?deviceid=SmartMedia5054&interval=2017-04-01,2020-04-07&limit=20&media_type=Commercial&offset=0&order=displaydate&ordertype=desc&q=", requestOptions)
-                .then(response => response.text())
-                .then(result => console.log(result))
-                .catch(error => console.log('error', error));
-
+            $('#data-display-log').empty();
+            getDisplayLog(changeFormatTglAwal($('#Awal').val()), changeFormatTglAkhir($('#Akhir').val()));
         }
+    </script>    
+@endsection
 
-        function findLogsProses(object, attr) {
-            $.post('{{ route('find.orders') }}', object, function(data){
-                $('.c-nav-load').hide();
-                $(attr).html(data);
-            });
-        }
-    </script>
-@show
+
