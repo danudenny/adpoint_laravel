@@ -13,11 +13,11 @@
     },
     "servers": [
         {
-            "url": "http://localhost:8000/api/mobile/api",
+            "url": "http://localhost:8000/mobile/api",
             "description": "Laravel InnovAPS API"
         },
         {
-            "url": "https://localhost:8000/api/mobile/api",
+            "url": "https://localhost:8000/mobile/api",
             "description": "Laravel InnovAPS API"
         }
     ],

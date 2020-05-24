@@ -70,11 +70,16 @@ use App\Notifications\OrderCompleted;
 use App\Events\OrderCompletedEvent;
 use App\Notifications\DisapproveSellerToAdmin;
 use App\Events\DisapproveSellerToAdminEvent;
+use Xendit\Xendit;
 
 
 class OrderController extends Controller
 {
     // page seller
+
+    function __construct () {
+        Xendit::setApiKey('xnd_development_MsQ1xnlMPn2pOdDLos8Wkr4fkttdRyQbS8i2cJABBwIzgsNkhgtrMH7IGVFrO');
+    }
 
     public function get_items($status = null)
     {
@@ -361,7 +366,7 @@ class OrderController extends Controller
                 $order = Order::where('id', $order_detail->order_id)->first();
                 $default_status_od = $this->_cek_default_status_order_details($order->transaction_id);
                 if (count($default_status_od) === 0) {
-                    
+
                     $trx = Transaction::where('id', $order->transaction_id)->first();
                     $trx->status = "ready";
                     $trx->save();
@@ -487,7 +492,17 @@ class OrderController extends Controller
     {
         $trx_id = decrypt($trx_id);
         $trx = Transaction::where('id', $trx_id)->first();
-        return view('frontend.confirm_payment', compact('trx'));
+        $ord = Order::where('transaction_id', $trx->id)->first();
+        $bank_name = strtoupper ($trx->payment_type);
+        $name = json_decode($ord->address);
+        $getName = $name->name;
+        $params = ["external_id" => "VA_fixed-12341234",
+            "bank_code" => $bank_name,
+            "name" => $getName
+        ];
+
+        $createVA = \Xendit\VirtualAccounts::create($params);
+        return view('frontend.confirm_payment', compact('trx', 'createVA'));
     }
 
     public function insert_confirm_payment(Request $request)
@@ -520,7 +535,7 @@ class OrderController extends Controller
             $confirm_payment->bukti = $request->bukti->store('uploads/bukti_transfer');
             $confirm_payment->approved = 0;
             $confirm_payment->save();
-            
+
             $user_id = $trx->user_id;
             $buyer_name = User::where('id', $user_id)->first()->name;
             $admin = User::where('user_type','admin')->first();
@@ -575,7 +590,7 @@ class OrderController extends Controller
                         ])
                         ->first();
         $order = Order::where('id', $query->order_id)->first();
-        $buyer = User::where('id', $order->user_id)->first(); 
+        $buyer = User::where('id', $order->user_id)->first();
         if ($item !== null) {
             $item->status = 3; // activated
             $item->save();
