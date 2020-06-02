@@ -20,14 +20,32 @@ class SellerCtrl extends Controller
     *     tags={"Sellers"},
     *     summary="Display a listing of the seller",
     *     security={{"bearerAuth":{}}},
+    *     @OA\Parameter(
+    *         description="name",
+    *         in="query",
+    *         name="name",
+    *         required=false,
+    *         @OA\Schema(
+    *           type="string"
+    *         )
+    *     ),
     *     @OA\Response(response="200",description="ok"),
     *     @OA\Response(response="401",description="unauthorized")
     * )
     */
-    public function index()
+    public function index(Request $request)
     {
-        $sellers = User::where('user_type','seller')->orderBy('id', 'desc')->get();
-        return response()->json($sellers,200);
+        $sellersFilter = Seller::orderBy('id', 'desc');
+        if($request->has('name')) {
+            $sellersFilter->where('verification_info', 'LIKE', "%$request->name%");
+        }
+
+        $sellers = $sellersFilter->get()->toArray();
+        if(count($sellers) > 0) {
+            return response()->json(["jumlah" => count($sellers), "data" => $sellers], 200);
+        } else {
+            return response()->json(["message" => "Data tidak ditemukan"], 200);
+        }
     }
 
     /**

@@ -16,14 +16,45 @@ class TransactionCtrl extends Controller
      *     tags={"Transactions"},
      *     summary="Display a listing of the transaction",
      *     security={{"bearerAuth":{}}},
+     *      @OA\Parameter(
+     *         description="code",
+     *         in="query",
+     *         name="code",
+     *         required=false,
+     *         @OA\Schema(
+     *           type="string"
+     *         )
+     *     ),
+     *      @OA\Parameter(
+     *         description="status",
+     *         in="query",
+     *         name="status",
+     *         required=false,
+     *         @OA\Schema(
+     *           type="string"
+     *         )
+     *     ),
      *     @OA\Response(response="200",description="ok"),
      *     @OA\Response(response="401",description="unauthorized")
      * )
      */
-    public function index()
+    public function index(Request $request)
     {
-        $trans = Transaction::orderBy('id', 'desc')->get();
-        return response()->json($trans, 200);
+        $transFilter = Transaction::orderBy('id', 'desc')->with('orders');
+        if($request->has('code')) {
+            $transFilter->where('code', 'like', "%$request->code%");
+        }
+        if($request->has('status')) {
+            $transFilter->where('status', "$request->status");
+        }
+        $trans = $transFilter->get()->toArray();
+        if ($trans != null) {
+            return response()->json(['jumlah' => count($trans), 'data' => $trans], 200);
+        }else{
+            return response()->json([
+                'message' => 'Data tidak ditemukan'
+            ], 200);
+        }
     }
 
     /**
@@ -47,27 +78,10 @@ class TransactionCtrl extends Controller
      *     @OA\Response(response="401",description="unauthorized")
      * )
      */
-    public function transactionDetails($id)
+    public function transactionDetails(Request $request, $id)
     {
-        $transaction = DB::table('transactions as t')
-            -> join('orders as o', 't.id', '=', 'o.transaction_id')
-            -> join('order_details as od', 'o.id', '=', 'od.order_id')
-            -> orderBy('od.id', 'desc')
-            -> where('t.id', $id)
-            -> get()->toArray();
-        $file_adv = DB::table('transactions as t')
-            -> join('orders as o', 't.id', '=', 'o.transaction_id')
-            -> join('order_details as od', 'o.id', '=', 'od.order_id')
-            -> orderBy('od.id', 'desc')
-            -> where('t.id', $id)
-            -> pluck('od.file_advertising');
-        $file_adv_array = [];
-        foreach ($file_adv as $key => $value) {
-            $decode = json_decode($value);
-            array_push($file_adv_array, $decode);
-        }
+        $transaction = Transaction::where('id', $request->id)->with(['user', 'orders'])->get();
         if ($transaction != null) {
-            $merged = array_replace($transaction, $file_adv_array);
             return response()->json($transaction, 200);
         }else{
             return response()->json([
@@ -142,21 +156,18 @@ class TransactionCtrl extends Controller
      *         )
      *     ),
      *     @OA\Response(response="200",description="ok"),
-     *     @OA\Response(response="401",description="unauthorized")
+     *     @OA\Response(response="204",description="no data available")
      * )
      */
     public function transactionUnpaid($user_id)
     {
-        $transaction = Transaction::where('status', 'approved')
-                    ->where('user_id', $user_id)
-                    ->get();
-        if ($transaction != null) {
+        $transaction = Transaction::where('user_id', $user_id)->where('status', 'approved')->with('user')->get();
+        if (count($transaction) > 0) {
             return response()->json($transaction, 200);
         }else{
             return response()->json([
-                'success' => false,
                 'message' => 'Data tidak ditemukan'
-            ], 401);
+            ], 200);
         }
     }
 
@@ -178,21 +189,18 @@ class TransactionCtrl extends Controller
      *         )
      *     ),
      *     @OA\Response(response="200",description="ok"),
-     *     @OA\Response(response="401",description="unauthorized")
+     *     @OA\Response(response="204",description="no data available")
      * )
      */
     public function transactionPaid($user_id)
     {
-        $transaction = Transaction::where('status', 'paid')
-                    ->where('user_id', $user_id)
-                    ->get();
-        if ($transaction != null) {
+        $transaction = Transaction::where('user_id', $user_id)->where('status', 'paid')->with('user')->get();
+        if (count($transaction) > 0) {
             return response()->json($transaction, 200);
         }else{
             return response()->json([
-                'success' => false,
                 'message' => 'Data tidak ditemukan'
-            ], 401);
+            ], 200);
         }
     }
 }

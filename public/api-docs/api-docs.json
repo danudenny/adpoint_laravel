@@ -639,6 +639,17 @@
                 ],
                 "summary": "Display a listing of the orders",
                 "operationId": "list orders",
+                "parameters": [
+                    {
+                        "name": "code",
+                        "in": "query",
+                        "description": "code",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "ok"
@@ -814,6 +825,26 @@
                 ],
                 "summary": "Display a listing of the products",
                 "operationId": "list products",
+                "parameters": [
+                    {
+                        "name": "provinsi",
+                        "in": "query",
+                        "description": "provinsi",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "product name",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "ok"
@@ -1199,6 +1230,17 @@
                 ],
                 "summary": "Display a listing of the seller",
                 "operationId": "list seller",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "name",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "ok"
@@ -1450,6 +1492,26 @@
                 ],
                 "summary": "Display a listing of the transaction",
                 "operationId": "list transaction",
+                "parameters": [
+                    {
+                        "name": "code",
+                        "in": "query",
+                        "description": "code",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "status",
+                        "in": "query",
+                        "description": "status",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "ok"
@@ -1565,8 +1627,8 @@
                     "200": {
                         "description": "ok"
                     },
-                    "401": {
-                        "description": "unauthorized"
+                    "204": {
+                        "description": "no data available"
                     }
                 },
                 "security": [
@@ -1599,8 +1661,8 @@
                     "200": {
                         "description": "ok"
                     },
-                    "401": {
-                        "description": "unauthorized"
+                    "204": {
+                        "description": "no data available"
                     }
                 },
                 "security": [
@@ -1680,6 +1742,26 @@
                 ],
                 "summary": "Display a listing of the user",
                 "operationId": "list user",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "name",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "email",
+                        "in": "query",
+                        "description": "email",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "ok"

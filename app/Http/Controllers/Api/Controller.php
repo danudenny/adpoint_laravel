@@ -20,19 +20,19 @@ namespace App\Http\Controllers\API;
  * ),
  * @OA\Server(
  *     description="Laravel InnovAPS API",
- *     url="https://aps.jaladara.com/mobile/api"
+ *     url="http://localhost:8000/mobile/api"
  * )
  * @OA\Server(
  *     description="Laravel InnovAPS API",
- *     url="https://aps.jaladara.com/mobile/api"
+ *     url="https://localhost:8000/mobile/api"
  * )
  * @OA\Response(response=200,description="ok")
  * @OA\Response(response=401,description="bad")
  */
 
 //  local
-//  http://localhost:8000/api
-//  https://localhost:8000/api
+//  http://localhost:8000/mobile/api
+//  https://localhost:8000/mobile/api
 //  public
 //  https://aps.jaladara.com/mobile/api
 //  https://aps.jaladara.com/mobile/api

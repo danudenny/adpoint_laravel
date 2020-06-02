@@ -17,14 +17,44 @@ class UserCtrl extends Controller
     *     tags={"Users"},
     *     summary="Display a listing of the user",
     *     security={{"bearerAuth":{}}},
+    *       @OA\Parameter(
+    *         description="name",
+    *         in="query",
+    *         name="name",
+    *         required=false,
+    *         @OA\Schema(
+    *           type="string"
+    *         )
+    *     ),
+    *       @OA\Parameter(
+    *         description="email",
+    *         in="query",
+    *         name="email",
+    *         required=false,
+    *         @OA\Schema(
+    *           type="string"
+    *         )
+    *     ),
     *     @OA\Response(response="200",description="ok"),
     *     @OA\Response(response="401",description="unauthorized")
     * )
     */
-    public function index()
+    public function index(Request $request)
     {
-        $users = User::orderBy('id','desc')->get();
-        return response()->json($users,200);
+        $userFilter = User::orderBy('id','desc')->with(['seller']);
+        if($request->has('name')) {
+            $userFilter->where('name', 'LIKE', "%$request->name%");
+        }
+
+        if($request->has('email')) {
+            $userFilter->where('email', 'LIKE', "%$request->email%");
+        }
+        $users = $userFilter->get();
+        if(count($users) > 0) {
+            return response()->json(["jumlah" => count($users), "data" => $users],200);
+        }else {
+            return response()->json(["message" => "Data tidak ditemukan"],200);
+        }
 
     }
     /**

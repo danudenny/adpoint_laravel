@@ -19,14 +19,56 @@ class OrderCtrl extends Controller
      *     tags={"Orders"},
      *     summary="Display a listing of the orders",
      *     security={{"bearerAuth":{}}},
+     *     @OA\Parameter(
+     *         description="code",
+     *         in="query",
+     *         name="code",
+     *         required=false,
+     *         @OA\Schema(
+     *           type="string"
+     *         )
+     *     ),
      *     @OA\Response(response="200",description="ok"),
      *     @OA\Response(response="401",description="unauthorized")
      * )
     */
-    public function index()
+    public function index(Request $request)
     {
-        $orders = Order::orderBy('id', 'desc')->get();
-        return response()->json($orders, 200);
+        $orderFilter = Order::orderBy('id', 'desc');
+        if ($request->has('code')) {
+            $orderFilter->where('code', 'like', "%$request->code%");
+        }
+
+        $orders = $orderFilter->get()->toArray();
+        $address = $orderFilter->get()->pluck('address');
+        $address_array = [];
+        foreach ($address as $key => $values) {
+            $decode = json_decode($values);
+            array_push($address_array, ['alamat'=>[$decode]]);
+        }
+        
+        if ($orders != null) {
+            $merged = array_replace_recursive($orders, $address_array);
+            
+            if (count($merged) > 0) {
+                return ['jumlah' => count($merged), 'data' => $merged];
+            }else {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Data tidak ditemukan'
+                ], 401);
+            }
+        }
+        
+        if ($orderFilter != null) {
+            return ['jumlah' => count($orderFilter), 'data' => $orderFilter];
+        }else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Data tidak ditemukan'
+            ], 401);
+        }
+        // return response()->json($orders, 200);
     }
 
     /**
@@ -132,6 +174,7 @@ class OrderCtrl extends Controller
                     $product->save();
                 }
                 $order->grand_total = $subtotal + $tax + $shipping;
+                $request->session()->put('cart', $order);
                 return response()->json([
                     'data' => $order,
                     'success' => true,

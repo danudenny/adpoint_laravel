@@ -162,6 +162,7 @@ class HomeController extends Controller
     {
         $valid = Auth::attempt(['email' => $request->email, 'password' => $request->password,'verified'=> 1]);
         $user = User::where('email', $request->email)->first();
+        dd($user);
         if ($user !== null) {
             if (password_verify($request->password, $user->password)) {
                 if ($user->verified === 1) {
