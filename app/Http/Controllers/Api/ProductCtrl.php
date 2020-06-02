@@ -12,7 +12,6 @@ use stdClass;
 
 class ProductCtrl extends Controller
 {
-
     /**
      * @OA\Get(
      *     path="/products",
@@ -20,29 +19,53 @@ class ProductCtrl extends Controller
      *     tags={"Products"},
      *     summary="Display a listing of the products",
      *     security={{"bearerAuth":{}}},
+     *      @OA\Parameter(
+     *         description="provinsi",
+     *         in="query",
+     *         name="provinsi",
+     *         required=false,
+     *         @OA\Schema(
+     *           type="string"
+     *         )
+     *     ),
+     *      @OA\Parameter(
+     *         description="product name",
+     *         in="query",
+     *         name="name",
+     *         required=false,
+     *         @OA\Schema(
+     *           type="string"
+     *         )
+     *     ),
      *     @OA\Response(response="200",description="ok"),
      *     @OA\Response(response="401",description="unauthorized")
      * )
     */
-    public function index()
+    public function index(Request $request)
     {
-//        $products = DB::table('products as p')
-//                    -> join('users as u', 'p.user_id', '=', 'u.id')
-//                    -> select('p.*', 'u.name as sellerName', 'u.id as userID', 'u.avatar_original', 'u.city', 'u.address')
-//                    -> where('u.user_type', 'seller')
-//                    -> orderBy('p.id', 'desc')->get()->toArray();
-        $products = Product::get()->toArray();
-        $variants = Product::get()->pluck('variations');
+        
+        $productsFilter = Product::where('available', 1);
+
+        if ($request->has('name')) {
+            $productsFilter->where('name', 'like', "%$request->name%");
+        }
+
+        if ($request->has('provinsi')) {
+            $productsFilter->Where('provinsi', "$request->provinsi");
+        }
+
+        $products = $productsFilter->get()->toArray();
+        $variants = $productsFilter->get()->pluck('variations');
         $variant_array = [];
         foreach ($variants as $variant => $values) {
             $decode = json_decode($values);
             $periode_values = array_values((array)$decode);
-            array_push($variant_array, ['variasi'=>[$decode]]);
+            array_push($variant_array, ['variasi'=>$periode_values]);
         }
         if ($products != null) {
             $merged = array_replace_recursive($products, $variant_array);
             if (count($merged) > 0) {
-                return response()->json($merged, 200);
+                return ['jumlah' => count($merged), 'data' => $merged];
             }else {
                 return response()->json([
                     'success' => false,
@@ -50,6 +73,8 @@ class ProductCtrl extends Controller
                 ], 401);
             }
         }
+
+        
     }
 
     /**
@@ -479,6 +504,7 @@ class ProductCtrl extends Controller
             $decode = json_decode($values);
             $periode_values = array_values((array)$decode);
             array_push($variant_array, ['variasi'=>$periode_values]);
+            // dd($periode_values);
         }
         if ($product != null) {
             $merged = array_replace_recursive($product, $variant_array);
@@ -594,6 +620,5 @@ class ProductCtrl extends Controller
             ], 401);
         }
     }
-
 
 }

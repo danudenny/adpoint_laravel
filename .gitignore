@@ -16,6 +16,7 @@ npm-debug.log
 yarn-error.log
 .DS_Store
 .idea/
+/public/api-docs/api-docs.json
 
 updates/
 Dockerfile
